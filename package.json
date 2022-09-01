@@ -29,6 +29,8 @@
   "type": "module",
   "files": [
     "dist",
+    "patches",
+    "scripts/postinstall.sh",
     "src"
   ],
   "bin": {
@@ -74,10 +76,9 @@
     "fix:dedupe": "yarn dedupe --strategy=highest",
     "fix:format": "prettier --cache --write .",
     "fix:lint": "yarn check:lint --cache --fix",
-    "postinstall": "chmod +x .husky/* && husky install",
-    "postpack": "toggle-scripts +postinstall",
+    "postinstall": "bash ./scripts/postinstall.sh",
     "postpublish": "toggle-scripts +prepack",
-    "prepack": "toggle-scripts -postinstall && yarn build",
+    "prepack": "yarn build",
     "prepublishOnly": "toggle-scripts -prepack",
     "recommended-bump": "conventional-recommended-bump --preset=conventionalcommits --tag-prefix=$(jq .tagPrefix package.json -r) --verbose",
     "release": "bash ./scripts/release.sh",
@@ -90,7 +91,9 @@
     "esbuild": "0.15.6",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
-    "mlly": "0.5.14"
+    "mlly": "0.5.14",
+    "patch-package": "6.4.7",
+    "postinstall-postinstall": "2.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "17.1.1",
@@ -164,7 +167,7 @@
   },
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
-    "graphql-config": "patch:graphql-config@npm%3A4.3.5#~/.yarn/patches/graphql-config-npm-4.3.5-8989a92a82.patch"
+    "graphql-config": "patch:graphql-config@4.3.5#patches/graphql-config+4.3.5.dev.patch"
   },
   "engines": {
     "yarn": "4.0.0-rc.14"

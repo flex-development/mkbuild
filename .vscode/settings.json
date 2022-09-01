@@ -141,6 +141,11 @@
       "icon": "temp"
     },
     {
+      "extensions": ["patches"],
+      "format": "svg",
+      "icon": "include"
+    },
+    {
       "extensions": ["setup"],
       "format": "svg",
       "icon": "config"
