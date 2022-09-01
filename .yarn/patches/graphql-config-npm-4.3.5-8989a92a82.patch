@@ -1,0 +1,56 @@
+diff --git a/cjs/helpers/cosmiconfig.js b/cjs/helpers/cosmiconfig.js
+index bb8b01763792e325e214b90af229da718cc2de07..ffe11ce0d2a05488805499be029a50ce4af8d773 100644
+--- a/cjs/helpers/cosmiconfig.js
++++ b/cjs/helpers/cosmiconfig.js
+@@ -42,6 +42,7 @@ function prepareCosmiconfig(moduleName, _a) {
+         '#.config.ts',
+         '#.config.js',
+         '#.config.cjs',
++        '#.config.cts',
+         '#.config.json',
+         '#.config.yaml',
+         '#.config.yml',
+@@ -50,6 +51,7 @@ function prepareCosmiconfig(moduleName, _a) {
+         '.#rc.ts',
+         '.#rc.js',
+         '.#rc.cjs',
++        '.#rc.cts',
+         '.#rc.json',
+         '.#rc.yml',
+         '.#rc.yaml',
+@@ -64,6 +66,7 @@ function prepareCosmiconfig(moduleName, _a) {
+     return {
+         searchPlaces: searchPlaces.map(function (place) { return place.replace('#', moduleName); }),
+         loaders: {
++            '.cts': (0, cosmiconfig_typescript_loader_1.TypeScriptLoader)(),
+             '.ts': (0, cosmiconfig_typescript_loader_1.TypeScriptLoader)(),
+             '.js': cosmiconfig_1.defaultLoaders['.js'],
+             '.json': loadJson,
+diff --git a/esm/helpers/cosmiconfig.js b/esm/helpers/cosmiconfig.js
+index a656d4c5f8ecccada2f53f5b87c47cd9551e0ac6..7dff32dcc653d58fa20ad88da78ff12a0d608b70 100644
+--- a/esm/helpers/cosmiconfig.js
++++ b/esm/helpers/cosmiconfig.js
+@@ -36,6 +36,7 @@ function prepareCosmiconfig(moduleName, _a) {
+         '#.config.ts',
+         '#.config.js',
+         '#.config.cjs',
++        '#.config.cts',
+         '#.config.json',
+         '#.config.yaml',
+         '#.config.yml',
+@@ -44,6 +45,7 @@ function prepareCosmiconfig(moduleName, _a) {
+         '.#rc.ts',
+         '.#rc.js',
+         '.#rc.cjs',
++        '.#rc.cts',
+         '.#rc.json',
+         '.#rc.yml',
+         '.#rc.yaml',
+@@ -58,6 +60,7 @@ function prepareCosmiconfig(moduleName, _a) {
+     return {
+         searchPlaces: searchPlaces.map(function (place) { return place.replace('#', moduleName); }),
+         loaders: {
++            '.cts': TypeScriptLoader(),
+             '.ts': TypeScriptLoader(),
+             '.js': defaultLoaders['.js'],
+             '.json': loadJson,
