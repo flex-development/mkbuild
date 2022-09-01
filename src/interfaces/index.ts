@@ -5,3 +5,4 @@
 
 export type { default as BuildEntry } from './build-entry'
 export type { default as BuildOptions } from './build-options'
+export type { default as SourceFile } from './source-file'
