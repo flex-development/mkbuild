@@ -3,4 +3,4 @@
  * @module mkbuild
  */
 
-export {}
+export * from './interfaces'
