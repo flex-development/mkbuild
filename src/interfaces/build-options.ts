@@ -48,7 +48,7 @@ interface BuildOptions {
    *
    * @default {}
    */
-  esbuild?: Omit<TransformOptions, 'loader' | 'sourcefile'>
+  esbuild?: Omit<TransformOptions, 'format' | 'loader' | 'sourcefile'>
 
   /**
    * Output directory.
