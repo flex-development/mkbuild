@@ -11,6 +11,7 @@
       [
         "cjs",
         "cli",
+        "config",
         "deps",
         "deps-dev",
         "deps-opt",
