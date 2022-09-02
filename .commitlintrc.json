@@ -23,6 +23,7 @@
         "interfaces",
         "node",
         "options",
+        "patches",
         "pkg",
         "release",
         "scripts",
