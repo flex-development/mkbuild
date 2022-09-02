@@ -50,6 +50,10 @@
   description: options
   color: 74cefc
 
+- name: scope:patches
+  description: patches
+  color: 74cefc
+
 - name: scope:release
   description: package release
   color: 74cefc
