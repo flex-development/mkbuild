@@ -5,6 +5,7 @@
 
 import type { OneOrMany } from '@flex-development/tutils'
 import type { TransformOptions } from 'esbuild'
+import type { Options as GlobbyOptions } from 'globby'
 import type BuildEntry from './build-entry'
 
 /**
@@ -49,6 +50,16 @@ interface BuildOptions {
    * @default {}
    */
   esbuild?: Omit<TransformOptions, 'format' | 'loader' | 'sourcefile'>
+
+  /**
+   * Custom implementations of `fs` methods.
+   *
+   * @see https://github.com/mrmlnc/fast-glob#fs
+   * @see https://github.com/jprichardson/node-fs-extra
+   *
+   * @default fse
+   */
+  fs?: GlobbyOptions['fs']
 
   /**
    * Output directory.
