@@ -29,6 +29,7 @@
         "scripts",
         "tests",
         "ts",
+        "utils",
         "vscode",
         "workflows",
         "yarn"
