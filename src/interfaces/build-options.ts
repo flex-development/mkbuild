@@ -62,6 +62,18 @@ interface BuildOptions {
   fs?: GlobbyOptions['fs']
 
   /**
+   * An array of glob patterns to exclude matches in {@link pattern}.
+   *
+   * **Note**: This is an alternative way to use negative patterns. Patterns
+   * will be merged with those specified in {@link pattern}.
+   *
+   * @see https://github.com/mrmlnc/fast-glob#ignore
+   *
+   * @default ['**\/.DS_Store', '**\/.npmignore', '**\/.yarnignore']
+   */
+  ignore?: GlobbyOptions['ignore']
+
+  /**
    * Output directory.
    *
    * @default 'dist'
