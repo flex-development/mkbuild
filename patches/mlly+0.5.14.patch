@@ -1,5 +1,5 @@
 diff --git a/dist/index.cjs b/dist/index.cjs
-index 887890308b948028ddde32ae180f3d0ca4519f39..7fc5b3459971de6cf6ada18934f676717badcf24 100644
+index v0.5.14..v0.5.14 100644
 --- a/dist/index.cjs
 +++ b/dist/index.cjs
 @@ -1096,8 +1096,8 @@ function createResolve(defaults) {
@@ -14,7 +14,7 @@ index 887890308b948028ddde32ae180f3d0ca4519f39..7fc5b3459971de6cf6ada18934f67671
  const EXPORT_DEFAULT_RE = /\bexport\s+default\s+/g;
  function findStaticImports(code) {
 diff --git a/dist/index.mjs b/dist/index.mjs
-index 2114bf00092fc74642243b3ded5a718183a01039..e9409fc1187a9579eeb5129113f226625798b95c 100644
+index v0.5.14..v0.5.14 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
 @@ -1086,8 +1086,8 @@ function createResolve(defaults) {

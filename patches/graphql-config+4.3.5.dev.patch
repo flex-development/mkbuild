@@ -1,5 +1,5 @@
 diff --git a/cjs/helpers/cosmiconfig.js b/cjs/helpers/cosmiconfig.js
-index bb8b01763792e325e214b90af229da718cc2de07..ffe11ce0d2a05488805499be029a50ce4af8d773 100644
+index v4.3.5..v4.3.5 100644
 --- a/cjs/helpers/cosmiconfig.js
 +++ b/cjs/helpers/cosmiconfig.js
 @@ -42,6 +42,7 @@ function prepareCosmiconfig(moduleName, _a) {
@@ -27,7 +27,7 @@ index bb8b01763792e325e214b90af229da718cc2de07..ffe11ce0d2a05488805499be029a50ce
              '.js': cosmiconfig_1.defaultLoaders['.js'],
              '.json': loadJson,
 diff --git a/esm/helpers/cosmiconfig.js b/esm/helpers/cosmiconfig.js
-index a656d4c5f8ecccada2f53f5b87c47cd9551e0ac6..7dff32dcc653d58fa20ad88da78ff12a0d608b70 100644
+index v4.3.5..v4.3.5 100644
 --- a/esm/helpers/cosmiconfig.js
 +++ b/esm/helpers/cosmiconfig.js
 @@ -36,6 +36,7 @@ function prepareCosmiconfig(moduleName, _a) {

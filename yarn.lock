@@ -4594,7 +4594,7 @@ __metadata:
 
 "globby@patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
   version: 13.1.2
-  resolution: "globby@patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch::version=13.1.2&hash=2ca3e5&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  resolution: "globby@patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch::version=13.1.2&hash=8b5f6b&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     dir-glob: "npm:^3.0.1"
     fast-glob: "npm:^3.2.11"
@@ -4651,7 +4651,7 @@ __metadata:
 
 "graphql-config@patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
   version: 4.3.5
-  resolution: "graphql-config@patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch::version=4.3.5&hash=52aeb2&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  resolution: "graphql-config@patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch::version=4.3.5&hash=54a636&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     "@graphql-tools/graphql-file-loader": "npm:^7.3.7"
     "@graphql-tools/json-file-loader": "npm:^7.3.7"
@@ -5911,7 +5911,7 @@ __metadata:
 
 "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
   version: 0.5.14
-  resolution: "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::version=0.5.14&hash=cd6b3c&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  resolution: "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::version=0.5.14&hash=f418f8&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     acorn: "npm:^8.8.0"
     pathe: "npm:^0.3.5"
