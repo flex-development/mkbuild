@@ -93,6 +93,7 @@
     "globby": "13.1.2",
     "mlly": "0.5.14",
     "patch-package": "6.4.7",
+    "pathe": "0.3.5",
     "postinstall-postinstall": "2.1.0"
   },
   "devDependencies": {
@@ -161,9 +162,17 @@
     "vitest-github-actions-reporter": "0.8.1",
     "yaml-eslint-parser": "1.1.0"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "tsconfig-paths": ">=4.1.0",
     "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "tsconfig-paths": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
   },
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",

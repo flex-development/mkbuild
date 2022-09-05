@@ -31,6 +31,9 @@
     "noUnusedParameters": false,
     "outDir": "dist",
     "paths": {
+      "@flex-development/tutils/*": [
+        "node_modules/@flex-development/tutils/dist/*"
+      ],
       "fixtures/*": ["__fixtures__/*"],
       "src": ["src/index"],
       "src/*": ["src/*"],

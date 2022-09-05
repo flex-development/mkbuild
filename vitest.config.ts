@@ -39,7 +39,12 @@ const config = async (): Promise<UserConfig> => {
       coverage: {
         all: true,
         clean: true,
-        exclude: ['**/__mocks__/**', '**/__tests__/**', '**/index.ts'],
+        exclude: [
+          '**/__mocks__/**',
+          '**/__tests__/**',
+          '**/index.ts',
+          'src/interfaces'
+        ],
         extension: ['.ts'],
         include: ['src'],
         reporter: ['json-summary', 'lcov', 'text'],

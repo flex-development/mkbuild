@@ -850,6 +850,7 @@ __metadata:
     mlly: "npm:0.5.14"
     node-notifier: "npm:10.0.1"
     patch-package: "npm:6.4.7"
+    pathe: "npm:0.3.5"
     postinstall-postinstall: "npm:2.1.0"
     prettier: "npm:2.7.1"
     prettier-plugin-sh: "npm:0.12.8"
@@ -866,7 +867,10 @@ __metadata:
     vitest: "npm:0.22.1"
     vitest-github-actions-reporter: "npm:0.8.1"
     yaml-eslint-parser: "npm:1.1.0"
-  dependenciesMeta:
+  peerDependencies:
+    tsconfig-paths: ">=4.1.0"
+    typescript: "*"
+  peerDependenciesMeta:
     tsconfig-paths:
       optional: true
     typescript:
@@ -6541,7 +6545,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:^0.3.5":
+"pathe@npm:0.3.5, pathe@npm:^0.3.5":
   version: 0.3.5
   resolution: "pathe@npm:0.3.5"
   checksum: 2726188a624c6ff0db3e9d8a50286cb273973eedc8b4b444d884ed57b7c9d8ba3d0bebdb71165b0fddb7e46928f8246cb008354d2d089c7b29dee38a6be60090
