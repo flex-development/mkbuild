@@ -92,7 +92,6 @@
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
     "mlly": "0.5.14",
-    "patch-package": "6.4.7",
     "pathe": "0.3.5",
     "postinstall-postinstall": "2.1.0"
   },
@@ -176,7 +175,9 @@
   },
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
-    "graphql-config": "patch:graphql-config@4.3.5#patches/graphql-config+4.3.5.dev.patch"
+    "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
+    "graphql-config": "patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch",
+    "mlly": "patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch"
   },
   "engines": {
     "yarn": "4.0.0-rc.14"

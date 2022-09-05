@@ -1,0 +1,13 @@
+diff --git a/index.js b/index.js
+index ce5a65639d49b3fc665b35d4b0d162e092c9d612..445bbadf62a85b4aab4728c3aafa34fd30c3caf9 100644
+--- a/index.js
++++ b/index.js
+@@ -29,7 +29,7 @@ const checkCwdOption = options => {
+
+ 	let stat;
+ 	try {
+-		stat = fs.statSync(options.cwd);
++		stat = (options?.fs ?? fs).statSync(options.cwd);
+ 	} catch {
+ 		return;
+ 	}

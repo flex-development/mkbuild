@@ -31,7 +31,11 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[shellscript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.rulers": [100],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 100,
+    "rewrap.wrappingColumn": 100
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

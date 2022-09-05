@@ -1,0 +1,30 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 887890308b948028ddde32ae180f3d0ca4519f39..7fc5b3459971de6cf6ada18934f676717badcf24 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -1096,8 +1096,8 @@ function createResolve(defaults) {
+
+ const ESM_STATIC_IMPORT_RE = /(?<=\s|^|;)import\s*(["'\s]*(?<imports>[\w*${}\n\r\t, /]+)from\s*)?["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][\s;]*/gm;
+ const DYNAMIC_IMPORT_RE = /import\s*\((?<expression>(?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gm;
+-const EXPORT_DECAL_RE = /\bexport\s+(?<declaration>(async function|function|let|const enum|const|enum|var|class))\s+(?<name>[\w$_]+)/g;
+-const EXPORT_NAMED_RE = /\bexport\s+{(?<exports>[^}]+?)(?:[,\s]*)}(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
++const EXPORT_DECAL_RE = /\bexport\s+(?<declaration>(async function|function|let|const enum|const|enum|var|class|type))\s+(?<name>[\w$_]+)/g;
++const EXPORT_NAMED_RE = /\bexport( type)?\s+{(?<exports>[^}]+?)(?:[,\s]*)}(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
+ const EXPORT_STAR_RE = /\bexport\s*(\*)(\s*as\s+(?<name>[\w$_]+)\s+)?\s*(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
+ const EXPORT_DEFAULT_RE = /\bexport\s+default\s+/g;
+ function findStaticImports(code) {
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 2114bf00092fc74642243b3ded5a718183a01039..e9409fc1187a9579eeb5129113f226625798b95c 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1086,8 +1086,8 @@ function createResolve(defaults) {
+
+ const ESM_STATIC_IMPORT_RE = /(?<=\s|^|;)import\s*(["'\s]*(?<imports>[\w*${}\n\r\t, /]+)from\s*)?["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][\s;]*/gm;
+ const DYNAMIC_IMPORT_RE = /import\s*\((?<expression>(?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gm;
+-const EXPORT_DECAL_RE = /\bexport\s+(?<declaration>(async function|function|let|const enum|const|enum|var|class))\s+(?<name>[\w$_]+)/g;
+-const EXPORT_NAMED_RE = /\bexport\s+{(?<exports>[^}]+?)(?:[,\s]*)}(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
++const EXPORT_DECAL_RE = /\bexport\s+(?<declaration>(async function|function|let|const enum|const|enum|var|class|type))\s+(?<name>[\w$_]+)/g;
++const EXPORT_NAMED_RE = /\bexport( type)?\s+{(?<exports>[^}]+?)(?:[,\s]*)}(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
+ const EXPORT_STAR_RE = /\bexport\s*(\*)(\s*as\s+(?<name>[\w$_]+)\s+)?\s*(\s*from\s*["']\s*(?<specifier>(?<="\s*)[^"]*[^"\s](?=\s*")|(?<='\s*)[^']*[^'\s](?=\s*'))\s*["'][^\n;]*)?/g;
+ const EXPORT_DEFAULT_RE = /\bexport\s+default\s+/g;
+ function findStaticImports(code) {
