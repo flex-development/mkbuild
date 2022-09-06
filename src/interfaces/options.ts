@@ -1,6 +1,6 @@
 /**
- * @file Interfaces - BuildOptions
- * @module mkbuild/interfaces/BuildOptions
+ * @file Interfaces - Options
+ * @module mkbuild/interfaces/Options
  */
 
 import type { OneOrMany } from '@flex-development/tutils'
@@ -11,7 +11,7 @@ import type BuildEntry from './build-entry'
 /**
  * Build options.
  */
-interface BuildOptions {
+interface Options {
   /**
    * Remove output directory before starting build.
    *
@@ -97,4 +97,4 @@ interface BuildOptions {
   sourcedir?: string
 }
 
-export type { BuildOptions as default }
+export type { Options as default }

@@ -3,7 +3,7 @@
  * @module mkbuild/utils/resolveAliases
  */
 
-import type { BuildOptions, OutputFile, Statement } from 'src/interfaces'
+import type { Options, OutputFile, Statement } from 'src/interfaces'
 import type { ConfigLoaderResult, MatchPath } from 'tsconfig-paths'
 import resolveAlias from './resolve-alias'
 
@@ -19,13 +19,13 @@ import resolveAlias from './resolve-alias'
  * @param {string} output.src - Full path to source file
  * @param {Pick<Statement, 'code' | 'specifier'>[]} [statements=[]] - `import`,
  * `require`, and `export` statements in `output.contents`
- * @param {BuildOptions['cwd']} [cwd=process.cwd()] - Root project directory
+ * @param {Options['cwd']} [cwd=process.cwd()] - Root project directory
  * @return {Promise<void>} Nothing when complete
  */
 const resolveAliases = async (
   output: Pick<OutputFile, 'contents' | 'src'>,
   statements: Pick<Statement, 'code' | 'specifier'>[] = [],
-  cwd: BuildOptions['cwd'] = process.cwd()
+  cwd: Options['cwd'] = process.cwd()
 ): Promise<void> => {
   if (!output.contents || statements.length === 0) return
 
