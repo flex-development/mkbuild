@@ -25,7 +25,7 @@ interface Statement {
   specifier: string | undefined
 
   /**
-   * Starting index of statement in source content.
+   * Starting index of {@link code} in source content.
    */
   start: number
 
