@@ -32,7 +32,7 @@ interface Statement {
   /**
    * Statement type.
    */
-  type: ESMExport['type'] | ESMImport['type'] | 'require'
+  type: ESMExport['type'] | ESMImport['type'] | 'require.resolve' | 'require'
 }
 
 export type { Statement as default }

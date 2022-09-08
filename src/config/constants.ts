@@ -4,6 +4,22 @@
  */
 
 /**
+ * Default ignore patterns.
+ *
+ * @see https://github.com/mrmlnc/fast-glob#ignore
+ *
+ * @const {string[]} IGNORE_PATTERNS
+ */
+export const IGNORE_PATTERNS: string[] = [
+  '**/.DS_Store',
+  '**/.npmignore',
+  '**/.yarnignore',
+  '**/**.mdx',
+  '**/**.stories.{j,t}sx',
+  '**/{__mocks__,__snapshots__,__tests__}/**'
+]
+
+/**
  * Module extensions checked when attempting to resolve path aliases and module
  * specifiers.
  *
@@ -21,3 +37,13 @@ export const MODULE_EXTENSIONS: string[] = [
   '.ts',
   '.tsx'
 ]
+
+/**
+ * `require` and `require.resolve` statement regex.
+ *
+ * @todo prevent matching non-statements (e.g. comments, arbitrary strings)
+ *
+ * @const {RegExp} REQUIRE_REGEX
+ */
+export const REQUIRE_REGEX: RegExp =
+  /(?:require\(|require\.resolve\()["']([^"']*)["']\)/g
