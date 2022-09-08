@@ -15,7 +15,7 @@ interface Statement {
   code: string
 
   /**
-   * Ending index of statement in source content.
+   * Ending index of {@link code} in source content.
    */
   end: number
 
