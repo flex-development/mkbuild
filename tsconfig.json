@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": false,
     "lib": ["es2021"],
-    "module": "esnext",
+    "module": "node16",
     "moduleResolution": "node",
     "newLine": "lf",
     "noEmit": true,
@@ -34,10 +34,7 @@
       "#fixtures/*": ["__fixtures__/*"],
       "#src": ["src/index"],
       "#src/*": ["src/*"],
-      "#tests/*": ["__tests__/*"],
-      "@flex-development/tutils/*": [
-        "node_modules/@flex-development/tutils/dist/*"
-      ]
+      "#tests/*": ["__tests__/*"]
     },
     "preserveConstEnums": true,
     "preserveSymlinks": true,
