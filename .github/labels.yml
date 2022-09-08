@@ -54,6 +54,10 @@
   description: patches
   color: 74cefc
 
+- name: scope:plugins
+  description: custom esbuild plugins
+  color: 74cefc
+
 - name: scope:release
   description: package release
   color: 74cefc
