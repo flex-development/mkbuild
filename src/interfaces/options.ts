@@ -5,6 +5,7 @@
 
 import type { OneOrMany } from '@flex-development/tutils'
 import type { TransformOptions } from 'esbuild'
+import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
 
@@ -59,7 +60,10 @@ interface Options {
    *
    * @default fse
    */
-  fs?: GlobbyOptions['fs']
+  fs?: GlobbyOptions['fs'] & {
+    mkdirp: typeof fse['mkdirp']
+    writeFile: typeof fse['writeFile']
+  }
 
   /**
    * An array of glob patterns to exclude matches in {@link pattern}.

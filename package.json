@@ -144,6 +144,7 @@
     "is-ci": "3.0.1",
     "jsonc-eslint-parser": "2.1.0",
     "lint-staged": "13.0.3",
+    "memfs": "3.4.7",
     "node-notifier": "10.0.1",
     "prettier": "2.7.1",
     "prettier-plugin-sh": "0.12.8",
