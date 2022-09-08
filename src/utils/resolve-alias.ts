@@ -3,8 +3,8 @@
  * @module mkbuild/utils/resolveAlias
  */
 
+import type { Statement } from '#src/interfaces'
 import * as pathe from 'pathe'
-import type { Statement } from 'src/interfaces'
 
 /**
  * Resolves a path alias in `statement.code` and `statement.specifier`.

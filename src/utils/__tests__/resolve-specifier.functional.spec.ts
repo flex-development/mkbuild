@@ -3,10 +3,10 @@
  * @module mkbuild/utils/tests/functional/resolveSpecifier
  */
 
+import type { Statement } from '#src/interfaces'
 import { resolvePath } from 'mlly'
 import path from 'node:path'
 import * as pathe from 'pathe'
-import type { Statement } from 'src/interfaces'
 import testSubject from '../resolve-specifier'
 
 vi.mock('mlly', async () => {

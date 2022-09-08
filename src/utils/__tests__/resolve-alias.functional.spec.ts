@@ -3,9 +3,9 @@
  * @module mkbuild/utils/tests/functional/resolveAlias
  */
 
+import type { Statement } from '#src/interfaces'
 import path from 'node:path'
 import * as pathe from 'pathe'
-import type { Statement } from 'src/interfaces'
 import testSubject from '../resolve-alias'
 
 vi.mock('pathe')

@@ -3,6 +3,6 @@
  * @module fixtures/BUILD_ENTRY_CJS
  */
 
-import type { BuildEntry } from 'src/interfaces'
+import type { BuildEntry } from '#src/interfaces'
 
 export default { ext: '.cjs', format: 'cjs' } as BuildEntry

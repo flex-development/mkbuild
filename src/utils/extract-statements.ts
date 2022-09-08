@@ -3,10 +3,10 @@
  * @module mkbuild/utils/extractStatements
  */
 
+import { REQUIRE_REGEX } from '#src/config/constants'
+import type { Statement } from '#src/interfaces'
 import type { Format } from 'esbuild'
 import { findDynamicImports, findExports, findStaticImports } from 'mlly'
-import { REQUIRE_REGEX } from 'src/config/constants'
-import type { Statement } from 'src/interfaces'
 
 /**
  * Returns an array containing `export`, `import`, and/or `require` statements

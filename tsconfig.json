@@ -31,13 +31,13 @@
     "noUnusedParameters": false,
     "outDir": "dist",
     "paths": {
+      "#fixtures/*": ["__fixtures__/*"],
+      "#src": ["src/index"],
+      "#src/*": ["src/*"],
+      "#tests/*": ["__tests__/*"],
       "@flex-development/tutils/*": [
         "node_modules/@flex-development/tutils/dist/*"
-      ],
-      "fixtures/*": ["__fixtures__/*"],
-      "src": ["src/index"],
-      "src/*": ["src/*"],
-      "tests/*": ["__tests__/*"]
+      ]
     },
     "preserveConstEnums": true,
     "preserveSymlinks": true,

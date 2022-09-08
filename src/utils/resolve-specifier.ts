@@ -3,10 +3,10 @@
  * @module mkbuild/utils/resolveSpecifier
  */
 
+import { MODULE_EXTENSIONS } from '#src/config/constants'
+import type { BuildEntry, Statement } from '#src/interfaces'
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
-import { MODULE_EXTENSIONS } from 'src/config/constants'
-import type { BuildEntry, Statement } from 'src/interfaces'
 
 /**
  * Resolves a relative specifier in `statement.code` and `statement.specifier`.
