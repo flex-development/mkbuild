@@ -6,7 +6,7 @@
 import type { OneOrMany } from '@flex-development/tutils'
 import type { TransformOptions } from 'esbuild'
 import type { Options as GlobbyOptions } from 'globby'
-import type BuildEntry from './build-entry'
+import type Entry from './entry'
 
 /**
  * Build options.
@@ -40,7 +40,7 @@ interface Options {
    *
    * @default []
    */
-  entries?: BuildEntry[]
+  entries?: Entry[]
 
   /**
    * [esbuild transform API][1] options.

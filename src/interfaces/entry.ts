@@ -1,6 +1,6 @@
 /**
- * @file Interfaces - BuildEntry
- * @module mkbuild/interfaces/BuildEntry
+ * @file Interfaces - Entry
+ * @module mkbuild/interfaces/Entry
  */
 
 import type { Format } from 'esbuild'
@@ -8,7 +8,7 @@ import type { Format } from 'esbuild'
 /**
  * Build entry object schema.
  */
-interface BuildEntry {
+interface Entry {
   /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    *
@@ -33,4 +33,4 @@ interface BuildEntry {
   format?: Format
 }
 
-export type { BuildEntry as default }
+export type { Entry as default }

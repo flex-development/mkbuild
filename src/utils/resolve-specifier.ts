@@ -4,7 +4,7 @@
  */
 
 import { MODULE_EXTENSIONS } from '#src/config/constants'
-import type { BuildEntry, Statement } from '#src/interfaces'
+import type { Entry, Statement } from '#src/interfaces'
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
 
@@ -23,16 +23,16 @@ import * as pathe from 'pathe'
  *
  * @param {Omit<Statement, 'type'>} statement - Statement object
  * @param {string} source - Full path to source file
- * @param {BuildEntry['format']} [format='esm'] - Output format
- * @param {BuildEntry['ext']} [ext] - Output extension
+ * @param {Entry['format']} [format='esm'] - Output format
+ * @param {Entry['ext']} [ext] - Output extension
  * @param {string[]} [extensions=MODULE_EXTENSIONS] - Resolvable extensions
  * @return {Promise<void>} Nothing when complete
  */
 const resolveSpecifier = async (
   statement: Omit<Statement, 'type'>,
   source: string,
-  format: BuildEntry['format'] = 'esm',
-  ext: BuildEntry['ext'] = format === 'esm' ? '.mjs' : '.js',
+  format: Entry['format'] = 'esm',
+  ext: Entry['ext'] = format === 'esm' ? '.mjs' : '.js',
   extensions: string[] = MODULE_EXTENSIONS
 ): Promise<void> => {
   /**
