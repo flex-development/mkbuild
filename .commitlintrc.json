@@ -25,6 +25,7 @@
         "options",
         "patches",
         "pkg",
+        "plugins",
         "release",
         "scripts",
         "tests",
