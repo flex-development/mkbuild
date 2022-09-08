@@ -118,7 +118,7 @@
       "icon": "graphql"
     },
     {
-      "extensions": ["tsnode.json"],
+      "extensions": ["build.json", "tsnode.json"],
       "format": "svg",
       "icon": "tsconfig"
     },
