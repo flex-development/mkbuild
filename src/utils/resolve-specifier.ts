@@ -6,7 +6,7 @@
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
 import { MODULE_EXTENSIONS } from 'src/config/constants'
-import type { BuildEntry, OutputFile, Statement } from 'src/interfaces'
+import type { BuildEntry, Statement } from 'src/interfaces'
 
 /**
  * Resolves a relative specifier in `statement.code` and `statement.specifier`.
@@ -21,17 +21,19 @@ import type { BuildEntry, OutputFile, Statement } from 'src/interfaces'
  *
  * @async
  *
- * @param {Pick<Statement, 'code' | 'specifier'>} statement - Statement object
- * @param {Pick<BuildEntry, 'ext' | 'format'>} entry - Build entry
- * @param {BuildEntry['ext']} [entry.ext] - Build entry extension
- * @param {BuildEntry['format']} [entry.format] - Build entry format
- * @param {OutputFile['src']} src - Full path to output source file
+ * @param {Omit<Statement, 'type'>} statement - Statement object
+ * @param {string} source - Full path to source file
+ * @param {BuildEntry['format']} [format='esm'] - Output format
+ * @param {BuildEntry['ext']} [ext] - Output extension
+ * @param {string[]} [extensions=MODULE_EXTENSIONS] - Resolvable extensions
  * @return {Promise<void>} Nothing when complete
  */
 const resolveSpecifier = async (
-  statement: Pick<Statement, 'code' | 'specifier'>,
-  entry: Pick<BuildEntry, 'ext' | 'format'>,
-  src: OutputFile['src']
+  statement: Omit<Statement, 'type'>,
+  source: string,
+  format: BuildEntry['format'] = 'esm',
+  ext: BuildEntry['ext'] = format === 'esm' ? '.mjs' : '.js',
+  extensions: string[] = MODULE_EXTENSIONS
 ): Promise<void> => {
   /**
    * {@link statement} specifier before module path resolution.
@@ -40,8 +42,8 @@ const resolveSpecifier = async (
    */
   const specifier: string | undefined = statement.specifier
 
-  // do nothing if missing entry extension, entry format, or module specifier
-  if (!entry.ext || !entry.format || !specifier) return
+  // do nothing if missing module specifier
+  if (!specifier) return
 
   // do nothing if specifier is not relative or already has extension
   if (!specifier.startsWith('.') || pathe.extname(specifier)) return
@@ -54,9 +56,9 @@ const resolveSpecifier = async (
    * @const {string} resolved
    */
   const resolved: string = await resolvePath(specifier, {
-    conditions: [entry.format === 'esm' ? 'import' : 'require'],
-    extensions: MODULE_EXTENSIONS,
-    url: src
+    conditions: [format === 'esm' ? 'import' : 'require'],
+    extensions,
+    url: source
   })
 
   const { name } = pathe.parse(specifier)
@@ -65,11 +67,12 @@ const resolveSpecifier = async (
   // specifier resolved to a directory
   if (name !== resolved_name) statement.specifier += '/' + resolved_name
 
-  // add build entry extension to specifier
-  statement.specifier += entry.ext
+  // add build output extension to specifier
+  statement.specifier += ext
 
-  // reset statement code
+  // reset statement code and end index of code
   statement.code = statement.code.replace(specifier, statement.specifier!)
+  statement.end = statement.start + statement.code.length
 
   return void statement
 }

@@ -3,12 +3,10 @@
  * @module mkbuild/utils/tests/functional/resolveSpecifier
  */
 
-import BUILD_ENTRY_CJS from 'fixtures/build-entry-cjs'
-import BUILD_ENTRY_ESM from 'fixtures/build-entry-esm'
 import { resolvePath } from 'mlly'
 import path from 'node:path'
 import * as pathe from 'pathe'
-import type { BuildEntry, Statement } from 'src/interfaces'
+import type { Statement } from 'src/interfaces'
 import testSubject from '../resolve-specifier'
 
 vi.mock('mlly', async () => {
@@ -23,55 +21,12 @@ vi.mock('mlly', async () => {
 vi.mock('pathe')
 
 describe('functional:utils/resolveSpecifier', () => {
-  const src: string = path.resolve('src/utils/resolve-specifier.ts')
-  const specifier: string = '../config/constants'
-  const code: string = `import { MODULE_EXTENSIONS } from '${specifier}'`
-
   describe('noop', () => {
-    const statement: Pick<Statement, 'code' | 'specifier'> = {
-      code,
-      specifier
-    }
-
-    it('should do nothing if entry.ext is undefined', async () => {
-      // Arrange
-      const entry: Pick<BuildEntry, 'ext' | 'format'> = {
-        ext: undefined,
-        format: BUILD_ENTRY_ESM.format
-      }
-
-      // Act
-      await testSubject(statement, entry, src)
-
-      // Expect
-      expect(resolvePath).toHaveBeenCalledTimes(0)
-      expect(pathe.parse).toHaveBeenCalledTimes(0)
-    })
-
-    it('should do nothing if entry.format is undefined', async () => {
-      // Arrange
-      const entry: Pick<BuildEntry, 'ext' | 'format'> = {
-        ext: BUILD_ENTRY_ESM.ext,
-        format: undefined
-      }
-
-      // Act
-      await testSubject(statement, entry, src)
-
-      // Expect
-      expect(resolvePath).toHaveBeenCalledTimes(0)
-      expect(pathe.parse).toHaveBeenCalledTimes(0)
-    })
+    const source: string = faker.system.filePath()
 
     it('should do nothing if statement.specifier is empty string', async () => {
-      // Arrange
-      const statement: Pick<Statement, 'code' | 'specifier'> = {
-        code,
-        specifier: ''
-      }
-
       // Act
-      await testSubject(statement, BUILD_ENTRY_ESM, src)
+      await testSubject({ specifier: '' } as Omit<Statement, 'type'>, source)
 
       // Expect
       expect(resolvePath).toHaveBeenCalledTimes(0)
@@ -80,13 +35,16 @@ describe('functional:utils/resolveSpecifier', () => {
 
     it('should do nothing if statement.specifier is undefined', async () => {
       // Arrange
-      const statement: Pick<Statement, 'code' | 'specifier'> = {
-        code,
-        specifier: undefined
+      const statement: Statement = {
+        code: 'export const foo',
+        end: 16,
+        specifier: undefined,
+        start: 0,
+        type: 'declaration'
       }
 
       // Act
-      await testSubject(statement, BUILD_ENTRY_ESM, src)
+      await testSubject(statement, source)
 
       // Expect
       expect(resolvePath).toHaveBeenCalledTimes(0)
@@ -95,14 +53,16 @@ describe('functional:utils/resolveSpecifier', () => {
 
     it('should do nothing if statement.specifier is not relative', async () => {
       // Arrange
-      const specifier: string = '@flex-development/tutils/dist/enums/node-env'
-      const statement: Pick<Statement, 'code' | 'specifier'> = {
-        code: `import NodeEnv from '${specifier}'`,
-        specifier
+      const statement: Statement = {
+        code: "export * from '#src'",
+        end: 20,
+        specifier: '#src',
+        start: 0,
+        type: 'star'
       }
 
       // Act
-      await testSubject(statement, BUILD_ENTRY_ESM, src)
+      await testSubject(statement, source)
 
       // Expect
       expect(resolvePath).toHaveBeenCalledTimes(0)
@@ -111,14 +71,16 @@ describe('functional:utils/resolveSpecifier', () => {
 
     it('should do nothing if statement.specifier includes ext', async () => {
       // Arrange
-      const specifier: string = './interfaces/index.mjs'
-      const statement: Pick<Statement, 'code' | 'specifier'> = {
-        code: `import type { OutputFile, Statement } from '${specifier}'`,
-        specifier
+      const statement: Statement = {
+        code: "import('./bar.mjs')",
+        end: 31,
+        specifier: "'bar'",
+        start: 18,
+        type: 'dynamic'
       }
 
       // Act
-      await testSubject(statement, BUILD_ENTRY_ESM, src)
+      await testSubject(statement, source)
 
       // Expect
       expect(resolvePath).toHaveBeenCalledTimes(0)
@@ -130,40 +92,52 @@ describe('functional:utils/resolveSpecifier', () => {
     describe('relative', () => {
       it('should resolve relative path to directory', async () => {
         // Arrange
-        const src: string = path.resolve('src/index.ts')
+        const source: string = path.resolve('src/index.ts')
         const specifier: string = './interfaces'
-        const statement: Pick<Statement, 'code' | 'specifier'> = {
-          code: `export * from '${specifier}'`,
-          specifier
+        const code: string = `export * from '${specifier}'`
+        const expected: string = './interfaces/index.mjs'
+        const statement: Omit<Statement, 'type'> = {
+          code,
+          end: code.length,
+          specifier,
+          start: 0
         }
 
         // Act
-        await testSubject(statement, BUILD_ENTRY_ESM, src)
+        await testSubject(statement, source)
 
         // Expect
         expect(resolvePath).toHaveBeenCalledTimes(1)
         expect(pathe.parse).toHaveBeenCalledTimes(2)
         expect(statement.specifier).not.to.equal(specifier)
-        expect(statement.specifier).to.equal('./interfaces/index.mjs')
-        expect(statement.code).to.contain(statement.specifier)
+        expect(statement.specifier).to.equal(expected)
+        expect(statement.code).not.to.equal(code)
+        expect(statement.code).to.contain(expected)
       })
 
-      it('should resolve relative path to module', async () => {
+      it('should resolve relative path to file', async () => {
         // Arrange
-        const statement: Pick<Statement, 'code' | 'specifier'> = {
-          code: `const { MODULE_EXTENSIONS } = require('${specifier}')`,
-          specifier
+        const source: string = path.resolve('src/utils/resolve-specifier.ts')
+        const specifier: string = '../config/constants'
+        const code: string = `const { REQUIRE_REGEX } = require('${specifier}')`
+        const expected: string = '../config/constants.cjs'
+        const statement: Omit<Statement, 'type'> = {
+          code,
+          end: code.length,
+          specifier,
+          start: 0
         }
 
         // Act
-        await testSubject(statement, BUILD_ENTRY_CJS, src)
+        await testSubject(statement, source, 'cjs', '.cjs')
 
         // Expect
         expect(resolvePath).toHaveBeenCalledTimes(1)
         expect(pathe.parse).toHaveBeenCalledTimes(2)
         expect(statement.specifier).not.to.equal(specifier)
-        expect(statement.specifier).to.equal('../config/constants.cjs')
-        expect(statement.code).to.contain(statement.specifier)
+        expect(statement.specifier).to.equal(expected)
+        expect(statement.code).not.to.equal(code)
+        expect(statement.code).to.contain(expected)
       })
     })
   })
