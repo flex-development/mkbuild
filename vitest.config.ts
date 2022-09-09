@@ -43,7 +43,8 @@ const config = async (): Promise<UserConfig> => {
           '**/__mocks__/**',
           '**/__tests__/**',
           '**/index.ts',
-          'src/interfaces'
+          'src/interfaces',
+          'src/plugins/**/options.ts'
         ],
         extension: ['.ts'],
         include: ['src'],

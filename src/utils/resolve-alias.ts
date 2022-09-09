@@ -11,7 +11,7 @@ import * as pathe from 'pathe'
  *
  * @param {Omit<Statement, 'type'>} statement - Statement object
  * @param {string} match - Possible path match
- * @param {string} source - Full path to source file
+ * @param {string} source - Absolute path to source file
  * @return {void} Nothing when complete
  */
 const resolveAlias = (
