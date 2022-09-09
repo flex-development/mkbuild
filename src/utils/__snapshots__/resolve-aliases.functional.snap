@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`functional:utils/resolveAliases > resolve > should resolve path aliases in output file content 1`] = `
+exports[`functional:utils/resolveAliases > resolve > should resolve path aliases 1`] = `
 "import { MODULE_EXTENSIONS } from '../config/constants'
 import extractStatements from './extract-statements'
 import resolveAlias from './resolve-alias'

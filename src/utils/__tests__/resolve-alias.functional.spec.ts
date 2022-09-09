@@ -15,7 +15,7 @@ describe('functional:utils/resolveAlias', () => {
     const match: string = faker.system.filePath()
     const source: string = faker.system.filePath()
 
-    it('should do nothing if statement.specifier is empty string', () => {
+    it('should do nothing if specifier is empty string', () => {
       // Act
       testSubject({ specifier: '' } as Omit<Statement, 'type'>, match, source)
 
@@ -24,7 +24,7 @@ describe('functional:utils/resolveAlias', () => {
       expect(pathe.relative).toHaveBeenCalledTimes(0)
     })
 
-    it('should do nothing if statement.specifier is undefined', () => {
+    it('should do nothing if specifier is undefined', () => {
       // Arrange
       const statement: Statement = {
         code: 'export declare const foo',

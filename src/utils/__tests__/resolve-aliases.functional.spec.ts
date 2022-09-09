@@ -157,7 +157,7 @@ describe('functional:utils/resolveAliases', () => {
       )
     )
 
-    it('should resolve path aliases in output file content', () => {
+    it('should resolve path aliases', () => {
       // Arrange
       const entryPoint: string = 'src/utils/resolve-aliases.ts'
       const outfile: string = 'dist/utils/resolve-alias.mjs'
