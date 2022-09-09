@@ -88,7 +88,7 @@
   },
   "dependencies": {
     "@flex-development/tutils": "5.0.0",
-    "esbuild": "0.15.6",
+    "esbuild": "0.15.7",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
     "mlly": "0.5.14",
