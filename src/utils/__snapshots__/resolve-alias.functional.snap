@@ -1,0 +1,28 @@
+// Vitest Snapshot v1
+
+exports[`functional:utils/resolveAlias > resolve > node_modules > should resolve alias to module in node_modules directory 1`] = `
+{
+  "code": "import NodeEnv from '@flex-development/tutils/dist/enums/node-env'",
+  "end": 66,
+  "specifier": "@flex-development/tutils/dist/enums/node-env",
+  "start": 0,
+}
+`;
+
+exports[`functional:utils/resolveAlias > resolve > relative > should resolve alias to module in current directory 1`] = `
+{
+  "code": "import { foo } from './foobar'",
+  "end": 30,
+  "specifier": "./foobar",
+  "start": 0,
+}
+`;
+
+exports[`functional:utils/resolveAlias > resolve > relative > should resolve alias to module in different directory 1`] = `
+{
+  "code": "import type { Statement } from '../interfaces'",
+  "end": 46,
+  "specifier": "../interfaces",
+  "start": 0,
+}
+`;
