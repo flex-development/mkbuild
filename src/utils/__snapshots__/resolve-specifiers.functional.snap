@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`functional:utils/resolveSpecifiers > resolve > should add file extensions to relative specifiers 1`] = `
+"import type { Metafile, OutputFile } from 'esbuild'
+import * as pathe from 'pathe'
+import { MODULE_EXTENSIONS } from '../config/constants.mjs'
+import type { Entry } from '../interfaces/index.mjs'
+import extractStatements from './extract-statements.mjs'
+import resolveSpecifier from './resolve-specifier.mjs'"
+`;
