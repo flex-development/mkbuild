@@ -9,22 +9,24 @@ import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
 
 /**
- * Resolves a relative specifier in `statement.code` and `statement.specifier`.
+ * Adds a file extension to a relative specifier.
  *
  * A relative specifier, like `'./startup.js'` or `'../config.mjs'`, refers to a
  * path relative to the location of the importing file.
  *
- * Unless `NODE_OPTIONS` is being used to control specifier resolution, the file
- * extension is always necessary when using esm.
+ * Unless [`--experimental-specifier-resolution=node`][1] is used to customize
+ * the ESM specifier resolution algorithm, file extensions are required.
+ *
+ * [1]: https://nodejs.org/docs/latest-v16.x/api/esm.html#customizing-esm-specifier-resolution-algorithm
  *
  * @see https://nodejs.org/docs/latest-v16.x/api/esm.html#terminology
  *
  * @async
  *
  * @param {Omit<Statement, 'type'>} statement - Statement object
- * @param {string} source - Full path to source file
- * @param {Entry['format']} [format='esm'] - Output format
- * @param {Entry['ext']} [ext] - Output extension
+ * @param {string} source - Absolute path to source file
+ * @param {Entry['format']} [format='esm'] - Output file format
+ * @param {Entry['ext']} [ext] - Output file extension
  * @param {string[]} [extensions=MODULE_EXTENSIONS] - Resolvable extensions
  * @return {Promise<void>} Nothing when complete
  */
