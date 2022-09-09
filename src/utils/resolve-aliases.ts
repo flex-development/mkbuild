@@ -4,32 +4,33 @@
  */
 
 import { MODULE_EXTENSIONS } from '#src/config/constants'
-import type { BuildResult, Format, Metafile, OutputFile } from 'esbuild'
+import type { Entry } from '#src/interfaces'
+import type { Metafile, OutputFile } from 'esbuild'
 import type { MatchPath } from 'tsconfig-paths'
 import type { ReadJsonSync } from 'tsconfig-paths/lib/filesystem'
 import extractStatements from './extract-statements'
 import resolveAlias from './resolve-alias'
 
 /**
- * Resolves path aliases in output file content.
+ * Resolves path aliases in `output` file content.
  *
  * @param {OutputFile} output - Output file object
  * @param {Uint8Array} output.contents - Output file content
  * @param {string} output.path - Absolute path to output file
  * @param {string} output.text - `output.contents` as string
  * @param {Pick<Metafile, 'outputs'>} metadata - Build metadata
- * @param {Format} format - Output file format
+ * @param {Entry['format']} format - Output file format
  * @param {MatchPath} matcher - Path matching function
  * @param {string} [cwd=process.cwd()] - Current working directory
  * @param {string[]} [extensions=MODULE_EXTENSIONS] - Extensions to probe for
  * @param {(path: string) => boolean} [fileExists] - File existence checker
  * @param {ReadJsonSync} [readJson] - Reads `JSON` data from a file
- * @return {BuildResult} `result` with path aliases in output content resolved
+ * @return {OutputFile} `output` with path aliases in file content resolved
  */
 const resolveAliases = (
   output: OutputFile,
   metadata: Pick<Metafile, 'outputs'>,
-  format: Format,
+  format: Entry['format'],
   matcher: MatchPath,
   cwd: string = process.cwd(),
   extensions: string[] = MODULE_EXTENSIONS,
