@@ -9,15 +9,7 @@ import path from 'node:path'
 import * as pathe from 'pathe'
 import testSubject from '../resolve-specifier'
 
-vi.mock('mlly', async () => {
-  type Actual = typeof import('mlly')
-  const path: string = 'mlly'
-
-  const { resolvePath } = await vi.importActual<Actual>(path)
-
-  return { resolvePath: vi.fn(resolvePath) }
-})
-
+vi.mock('mlly')
 vi.mock('pathe')
 
 describe('functional:utils/resolveSpecifier', () => {
