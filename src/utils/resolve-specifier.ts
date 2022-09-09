@@ -47,7 +47,7 @@ const resolveSpecifier = async (
   // do nothing if missing module specifier
   if (!specifier) return
 
-  // do nothing if specifier is not relative or already has extension
+  // do nothing if specifier is not relative or already includes file extension
   if (!specifier.startsWith('.') || pathe.extname(specifier)) return
 
   /**
@@ -69,10 +69,10 @@ const resolveSpecifier = async (
   // specifier resolved to a directory
   if (name !== resolved_name) statement.specifier += '/' + resolved_name
 
-  // add build output extension to specifier
+  // add output file extension to specifier
   statement.specifier += ext
 
-  // reset statement code and end index of code
+  // reset statement code and endpoint
   statement.code = statement.code.replace(specifier, statement.specifier!)
   statement.end = statement.start + statement.code.length
 

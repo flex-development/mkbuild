@@ -1,0 +1,19 @@
+// Vitest Snapshot v1
+
+exports[`functional:utils/resolveSpecifier > resolve > relative > should resolve relative path to directory 1`] = `
+{
+  "code": "export * from './interfaces/index.mjs'",
+  "end": 38,
+  "specifier": "./interfaces/index.mjs",
+  "start": 0,
+}
+`;
+
+exports[`functional:utils/resolveSpecifier > resolve > relative > should resolve relative path to file 1`] = `
+{
+  "code": "const { REQUIRE_REGEX } = require('../config/constants.cjs')",
+  "end": 60,
+  "specifier": "../config/constants.cjs",
+  "start": 0,
+}
+`;
