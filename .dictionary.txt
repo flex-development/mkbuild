@@ -10,6 +10,7 @@ chbfeat
 chbfix
 chbhotfix
 chbrelease
+colorette
 commitlintrc
 dawidd
 dedupe
