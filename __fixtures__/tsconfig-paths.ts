@@ -1,0 +1,16 @@
+/**
+ * @file Fixtures - tsconfig-paths
+ * @module fixtures/tsconfig-paths
+ */
+
+import '#src/config/constants'
+import '#src/utils/extract-statements'
+import '#src/utils/resolve-alias'
+import 'esbuild'
+import 'pathe'
+import 'tsconfig-paths'
+import 'tsconfig-paths/lib/tsconfig-loader'
+
+export const foo: string = 'foo'
+
+export * from '#src/interfaces'

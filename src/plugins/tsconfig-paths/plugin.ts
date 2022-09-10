@@ -1,11 +1,11 @@
 /**
  * @file Plugins - tsconfig-paths
  * @module mkbuild/plugins/tsconfig-paths/plugin
- * @see https://github.com/dividab/tsconfig-paths
  */
 
 import { MODULE_EXTENSIONS } from '#src/config/constants'
-import resolveAliases from '#src/utils/resolve-aliases'
+import extractStatements from '#src/utils/extract-statements'
+import resolveAlias from '#src/utils/resolve-alias'
 import type {
   BuildOptions,
   BuildResult,
@@ -19,7 +19,6 @@ import {
   tsConfigLoader,
   type TsConfigLoaderResult
 } from 'tsconfig-paths/lib/tsconfig-loader'
-
 import type Options from './options'
 
 /**
@@ -61,11 +60,25 @@ const plugin = ({
       absWorkingDir = process.cwd(),
       bundle,
       format = 'esm',
+      metafile,
       tsconfig
     } = initialOptions
 
     // esbuild handles path aliases when bundling
     if (bundle) return
+
+    // metafile required to get output metadata
+    if (!metafile) {
+      return void onStart(() => ({
+        errors: [
+          {
+            detail: 'https://esbuild.github.io/api/#metafile',
+            pluginName: PLUGIN_NAME,
+            text: 'metafile required'
+          }
+        ]
+      }))
+    }
 
     /**
      * Tsconfig loader result.
@@ -90,7 +103,6 @@ const plugin = ({
     // tsconfig couldn't be found
     if (!result.tsConfigPath) {
       return void onStart(() => ({
-        /* c8 ignore next 2 */
         errors: [{ pluginName: PLUGIN_NAME, text: 'tsconfig not found' }]
       }))
     }
@@ -101,6 +113,7 @@ const plugin = ({
      * @const {MatchPath} matcher
      */
     const matcher: MatchPath = createMatchPath(
+      /* c8 ignore next 2 */
       pathe.resolve(pathe.dirname(result.tsConfigPath), result.baseUrl ?? ''),
       result.paths ?? {},
       mainFields,
@@ -108,18 +121,61 @@ const plugin = ({
     )
 
     return void onEnd((result: BuildResult): void => {
-      /* c8 ignore next 13 */
       result.outputFiles = result.outputFiles!.map((output: OutputFile) => {
-        return resolveAliases(
-          output,
-          result.metafile!,
-          format,
-          matcher,
-          absWorkingDir,
-          extensions,
-          fileExists,
-          readJson
-        )
+        /**
+         * Relative path to output file.
+         *
+         * **Note**: Relative to {@link absWorkingDir}.
+         *
+         * @const {string} outfile
+         */
+        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+
+        /**
+         * {@link output.text} copy.
+         *
+         * @var {string} text
+         */
+        let text: string = output.text
+
+        for (const statement of extractStatements(output.text, format)) {
+          // do nothing if missing module specifier
+          if (!statement.specifier) continue
+
+          /**
+           * Possible path match for {@link statement.specifier}.
+           *
+           * @const {string | undefined} match
+           */
+          const match: string | undefined = matcher(
+            statement.specifier,
+            readJson,
+            fileExists,
+            extensions
+          )
+
+          // do nothing if path match was not found
+          if (!match) continue
+
+          /**
+           * {@link statement.code} before path alias replacement.
+           *
+           * @const {string} code
+           */
+          const code: string = statement.code
+
+          // resolve path alias in statement
+          resolveAlias(
+            statement,
+            match,
+            result.metafile!.outputs[outfile]!.entryPoint!
+          )
+
+          // replace code in text
+          text = text.replace(code, statement.code)
+        }
+
+        return { ...output, contents: new Uint8Array(Buffer.from(text)), text }
       })
     })
   }

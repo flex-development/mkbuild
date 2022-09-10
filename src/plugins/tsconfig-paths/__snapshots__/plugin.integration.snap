@@ -1,0 +1,43 @@
+// Vitest Snapshot v1
+
+exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases 1`] = `
+"import \\"../src/config/constants\\";
+import \\"../src/utils/extract-statements\\";
+import \\"../src/utils/resolve-alias\\";
+import \\"esbuild\\";
+import \\"pathe\\";
+import \\"tsconfig-paths\\";
+import \\"tsconfig-paths/lib/tsconfig-loader\\";
+const foo = \\"foo\\";
+export * from \\"../src/interfaces\\";
+export {
+  foo
+};
+"
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > should send error message if metafile is not enabled 1`] = `
+[
+  {
+    "detail": "https://esbuild.github.io/api/#metafile",
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "tsconfig-paths",
+    "text": "metafile required",
+  },
+]
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > should send error message if tsconfig is not found 1`] = `
+[
+  {
+    "detail": undefined,
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "tsconfig-paths",
+    "text": "tsconfig not found",
+  },
+]
+`;
