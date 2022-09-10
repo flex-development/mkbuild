@@ -4,9 +4,7 @@
  */
 
 import { MODULE_EXTENSIONS } from '#src/config/constants'
-import type { Entry } from '#src/interfaces'
 import extractStatements from '#src/utils/extract-statements'
-import resolveSpecifier from '#src/utils/resolve-specifier'
 import type {
   BuildOptions,
   BuildResult,
@@ -14,6 +12,7 @@ import type {
   Plugin,
   PluginBuild
 } from 'esbuild'
+import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
 import type Options from './options'
 
@@ -27,6 +26,16 @@ const PLUGIN_NAME: string = 'fully-specified'
 /**
  * Returns a specifier resolver plugin.
  *
+ * The resolver adds file extensions to relative specifiers in output content.
+ *
+ * A relative specifier, like `'./startup.js'` or `'../config.mjs'`, refers to
+ * a path relative to the location of the importing file.
+ *
+ * Unless [`--experimental-specifier-resolution=node`][1] is used to customize
+ * the ESM specifier resolution algorithm, file extensions are required.
+ *
+ * [1]: https://nodejs.org/docs/latest-v16.x/api/esm.html#customizing-esm-specifier-resolution-algorithm
+ *
  * @param {Options} [options={}] - Plugin options
  * @return {Plugin} Specifier resolver plugin
  */
@@ -36,8 +45,6 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
    *
    * [1]: https://esbuild.github.io/plugins
    * [2]: https://esbuild.github.io/api/#build-api
-   *
-   * @see {@link resolveSpecifier}
    *
    * @param {PluginBuild} build - [esbuild plugin api][1]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][2] options
@@ -85,15 +92,6 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
         const outfile: string = output.path.replace(absWorkingDir + '/', '')
 
         /**
-         * Relative path to source file.
-         *
-         * **Note**: Relative to {@link absWorkingDir}.
-         *
-         * @const {string} source
-         */
-        const source: string = result.metafile!.outputs[outfile]!.entryPoint!
-
-        /**
          * {@link output.text} copy.
          *
          * @var {string} text
@@ -101,27 +99,52 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
         let text: string = output.text
 
         for (const statement of extractStatements(output.text, format)) {
+          /**
+           * {@link statement.specifier} before specifier resolution.
+           *
+           * @var {string | undefined} specifier
+           */
+          let specifier: string | undefined = statement.specifier
+
           // do nothing if missing module specifier
-          if (!statement.specifier) continue
+          if (!specifier) continue
+
+          // do nothing if specifier is not relative
+          if (!specifier.startsWith('.')) continue
+
+          // do nothing if specifier already includes file extension
+          if (pathe.extname(specifier)) continue
 
           /**
-           * {@link statement.code} before specifier resolution.
+           * {@link specifier} resolved.
            *
-           * @const {string} code
+           * @see https://github.com/unjs/mlly#resolvepath
+           *
+           * @const {string} resolved
            */
-          const code: string = statement.code
+          const resolved: string = await resolvePath(specifier, {
+            conditions: [format === 'esm' ? 'import' : 'require'],
+            extensions,
+            url: pathe.resolve(
+              absWorkingDir,
+              result.metafile!.outputs[outfile]!.entryPoint!
+            )
+          })
 
-          // add extension to module specifier
-          await resolveSpecifier(
-            statement,
-            pathe.resolve(absWorkingDir, source),
-            format,
-            ext as Entry['ext'],
-            extensions
+          const { name } = pathe.parse(specifier)
+          const { name: resolved_name } = pathe.parse(resolved)
+
+          // specifier resolved to a directory
+          if (name !== resolved_name) specifier += '/' + resolved_name
+
+          // add output file extension to specifier
+          specifier += ext
+
+          // replace specifier
+          text = text.replace(
+            statement.code,
+            statement.code.replace(statement.specifier!, specifier)
           )
-
-          // replace code in text
-          text = text.replace(code, statement.code)
         }
 
         outputFiles.push({

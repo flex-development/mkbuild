@@ -44,8 +44,24 @@ describe('integration:plugins/fully-specified', () => {
       expect(failure!.errors).toMatchSnapshot()
     })
 
-    it('should add file extensions to relative specifiers', async () => {
-      expect((await build(options)).outputFiles![0]!.text).toMatchSnapshot()
+    describe('cjs', () => {
+      it('should add file extensions to relative specifiers', async () => {
+        // Arrange
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/relative-specifiers.cts'],
+          format: 'cjs',
+          outExtension: { '.js': '.cjs' }
+        })
+
+        expect(outputFiles![0]!.text).toMatchSnapshot()
+      })
+    })
+
+    describe('esm', () => {
+      it('should add file extensions to relative specifiers', async () => {
+        expect((await build(options)).outputFiles![0]!.text).toMatchSnapshot()
+      })
     })
   })
 })
