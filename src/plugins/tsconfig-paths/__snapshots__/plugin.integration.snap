@@ -3,7 +3,7 @@
 exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases 1`] = `
 "import \\"../src/config/constants\\";
 import \\"../src/utils/extract-statements\\";
-import \\"../src/utils/resolve-alias\\";
+import \\"emoji-regex/es2015\\";
 import \\"esbuild\\";
 import \\"pathe\\";
 import \\"tsconfig-paths\\";

@@ -34,7 +34,8 @@
       "#fixtures/*": ["__fixtures__/*"],
       "#src": ["src/index"],
       "#src/*": ["src/*"],
-      "#tests/*": ["__tests__/*"]
+      "#tests/*": ["__tests__/*"],
+      "emoji-regex": ["node_modules/emoji-regex/es2015/*"]
     },
     "preserveConstEnums": true,
     "preserveSymlinks": true,

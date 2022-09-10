@@ -5,7 +5,7 @@
 
 import '#src/config/constants'
 import '#src/utils/extract-statements'
-import '#src/utils/resolve-alias'
+import 'emoji-regex'
 import 'esbuild'
 import 'pathe'
 import 'tsconfig-paths'

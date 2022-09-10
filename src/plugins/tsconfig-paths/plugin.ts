@@ -5,7 +5,6 @@
 
 import { MODULE_EXTENSIONS } from '#src/config/constants'
 import extractStatements from '#src/utils/extract-statements'
-import resolveAlias from '#src/utils/resolve-alias'
 import type {
   BuildOptions,
   BuildResult,
@@ -132,6 +131,15 @@ const plugin = ({
         const outfile: string = output.path.replace(absWorkingDir + '/', '')
 
         /**
+         * Relative path to source file.
+         *
+         * **Note**: Relative to {@link absWorkingDir}.
+         *
+         * @const {string} source
+         */
+        const source: string = result.metafile!.outputs[outfile]!.entryPoint!
+
+        /**
          * {@link output.text} copy.
          *
          * @var {string} text
@@ -145,9 +153,9 @@ const plugin = ({
           /**
            * Possible path match for {@link statement.specifier}.
            *
-           * @const {string | undefined} match
+           * @var {string | undefined} match
            */
-          const match: string | undefined = matcher(
+          let match: string | undefined = matcher(
             statement.specifier,
             readJson,
             fileExists,
@@ -157,22 +165,18 @@ const plugin = ({
           // do nothing if path match was not found
           if (!match) continue
 
-          /**
-           * {@link statement.code} before path alias replacement.
-           *
-           * @const {string} code
-           */
-          const code: string = statement.code
+          // remove node_modules reference or set match relative to source dir
+          match = /\/node_modules\//.test(match)
+            ? match.replace(/.+\/node_modules\//, '')
+            : pathe
+                .relative(pathe.dirname(source), match)
+                .replace(/^(\w)/, './$1')
 
-          // resolve path alias in statement
-          resolveAlias(
-            statement,
-            match,
-            result.metafile!.outputs[outfile]!.entryPoint!
+          // replace path alias
+          text = text.replace(
+            statement.code,
+            statement.code.replace(statement.specifier, match)
           )
-
-          // replace code in text
-          text = text.replace(code, statement.code)
         }
 
         return { ...output, contents: new Uint8Array(Buffer.from(text)), text }
