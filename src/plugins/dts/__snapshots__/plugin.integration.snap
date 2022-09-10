@@ -1,0 +1,71 @@
+// Vitest Snapshot v1
+
+exports[`integration:plugins/dts > esbuild > should add .d.cts output to output files 1`] = `
+{
+  "path": "plugin.d.cts",
+  "text": "/**
+ * @file Plugins - dts
+ * @module mkbuild/plugins/dts
+ */
+import type { Plugin } from 'esbuild';
+/**
+ * Returns a TypeScript declaration plugin.
+ *
+ * @return {Plugin} TypeScript declaration plugin
+ */
+declare const plugin: () => Plugin;
+export default plugin;
+",
+}
+`;
+
+exports[`integration:plugins/dts > esbuild > should add .d.mts output to output files 1`] = `
+{
+  "path": "plugin.d.mts",
+  "text": "/**
+ * @file Plugins - dts
+ * @module mkbuild/plugins/dts
+ */
+import type { Plugin } from 'esbuild';
+/**
+ * Returns a TypeScript declaration plugin.
+ *
+ * @return {Plugin} TypeScript declaration plugin
+ */
+declare const plugin: () => Plugin;
+export default plugin;
+",
+}
+`;
+
+exports[`integration:plugins/dts > esbuild > should add .d.ts output to output files 1`] = `
+{
+  "path": "plugin.d.ts",
+  "text": "/**
+ * @file Plugins - dts
+ * @module mkbuild/plugins/dts
+ */
+import type { Plugin } from 'esbuild';
+/**
+ * Returns a TypeScript declaration plugin.
+ *
+ * @return {Plugin} TypeScript declaration plugin
+ */
+declare const plugin: () => Plugin;
+export default plugin;
+",
+}
+`;
+
+exports[`integration:plugins/dts > esbuild > should send error message if metafile is not enabled 1`] = `
+[
+  {
+    "detail": "https://esbuild.github.io/api/#metafile",
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "dts",
+    "text": "metafile required",
+  },
+]
+`;

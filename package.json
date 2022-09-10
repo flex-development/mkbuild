@@ -150,6 +150,7 @@
     "prettier": "2.7.1",
     "prettier-plugin-sh": "0.12.8",
     "pretty-format": "29.0.1",
+    "radash": "7.1.0",
     "trash-cli": "5.0.0",
     "ts-dedent": "2.2.0",
     "ts-node": "10.9.1",
