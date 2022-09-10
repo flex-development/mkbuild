@@ -1,0 +1,30 @@
+// Vitest Snapshot v1
+
+exports[`integration:plugins/fully-specified > esbuild > should add file extensions to relative specifiers 1`] = `
+"import \\"esbuild\\";
+import \\"pathe\\";
+import \\"tsconfig-paths\\";
+import \\"tsconfig-paths/lib/tsconfig-loader\\";
+import \\"../src/config/constants.mjs\\";
+import \\"../src/utils/extract-statements.mjs\\";
+import \\"../src/utils/resolve-alias.mjs\\";
+const fizz = \\"buzz\\";
+export * from \\"../src/interfaces/index.mjs\\";
+export {
+  fizz
+};
+"
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > should send error message if metafile is not enabled 1`] = `
+[
+  {
+    "detail": "https://esbuild.github.io/api/#metafile",
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "fully-specified",
+    "text": "metafile required",
+  },
+]
+`;
