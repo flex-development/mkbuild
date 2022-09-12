@@ -46,6 +46,14 @@
       "import": "./dist/config/*.mjs",
       "require": "./dist/config/*.cjs"
     },
+    "./enums": {
+      "import": "./dist/enums/index.mjs",
+      "require": "./dist/enums/index.cjs"
+    },
+    "./enums/*": {
+      "import": "./dist/enums/*.mjs",
+      "require": "./dist/enums/*.cjs"
+    },
     "./interfaces": {
       "import": "./dist/interfaces/index.mjs",
       "require": "./dist/interfaces/index.cjs"
