@@ -3,7 +3,7 @@
  * @module mkbuild/utils/write
  */
 
-import type { Options } from '#src/interfaces'
+import type { Config } from '#src/interfaces'
 import type { OutputFile } from 'esbuild'
 import fse from 'fs-extra'
 import * as pathe from 'pathe'
@@ -18,12 +18,12 @@ import * as pathe from 'pathe'
  * @async
  *
  * @param {R} result - Build result object
- * @param {Options['fs']} [fs=fse] - Custom file system methods
+ * @param {Config['fs']} [fs=fse] - Custom file system methods
  * @return {Promise<R>} Written build result
  */
 async function write<R extends OutputFile = OutputFile>(
   result: R,
-  fs: Options['fs'] = fse
+  fs: Config['fs'] = fse
 ): Promise<R> {
   // create subdirectories in outdir
   await fs.mkdirp(pathe.dirname(result.path))

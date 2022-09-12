@@ -1,6 +1,6 @@
 /**
- * @file Interfaces - Options
- * @module mkbuild/interfaces/Options
+ * @file Interfaces - Config
+ * @module mkbuild/interfaces/Config
  */
 
 import type { OneOrMany } from '@flex-development/tutils'
@@ -10,9 +10,9 @@ import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
 
 /**
- * Build options.
+ * Build configuration options.
  */
-interface Options {
+interface Config {
   /**
    * Remove output directory before starting build.
    *
@@ -101,4 +101,4 @@ interface Options {
   sourcedir?: string
 }
 
-export type { Options as default }
+export type { Config as default }

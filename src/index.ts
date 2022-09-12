@@ -3,4 +3,4 @@
  * @module mkbuild
  */
 
-export * from './interfaces'
+export type { Config, Result } from './interfaces'
