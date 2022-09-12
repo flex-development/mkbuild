@@ -54,7 +54,15 @@
       "import": "./dist/interfaces/*.mjs",
       "require": "./dist/interfaces/*.cjs"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./types": {
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.cjs"
+    },
+    "./types/*": {
+      "import": "./dist/types/*.mjs",
+      "require": "./dist/types/*.cjs"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
