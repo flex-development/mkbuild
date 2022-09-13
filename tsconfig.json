@@ -53,14 +53,14 @@
   },
   "exclude": ["./coverage", "./dist", "./node_modules"],
   "include": [
-    "**/**/*.cjs",
-    "**/**/*.cts",
-    "**/**/*.mjs",
-    "**/**/*.mts",
-    "**/**/*.ts",
-    "**/**/.*.cjs",
-    "**/**/.*.cts",
-    "**/**/.*.ts"
+    "**/**.cjs",
+    "**/**.cts",
+    "**/**.mjs",
+    "**/**.mts",
+    "**/**.ts",
+    "**/.*.cjs",
+    "**/.*.cts",
+    "**/.*.ts"
   ],
   // SEE: https://typestrong.org/ts-node/docs/configuration
   "ts-node": {

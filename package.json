@@ -79,7 +79,7 @@
     "build": "echo todo: yarn build",
     "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn test && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
     "check:format": "prettier --check .",
-    "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,jsonc,md,mjs,ts,yml --max-warnings 0 .",
+    "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
     "check:spelling": "cspell lint --color --no-progress --relative $@ \"**\"",
     "check:types": "NODE_OPTIONS='' tsc -p tsconfig.json",
     "check:upgrades": "yarn upgrade-interactive",

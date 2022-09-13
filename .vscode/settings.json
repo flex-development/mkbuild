@@ -65,6 +65,7 @@
       "jsonc",
       "md",
       "mjs",
+      "mts",
       "ts",
       "yml"
     ],
