@@ -58,7 +58,6 @@ const plugin = ({
     const {
       absWorkingDir = process.cwd(),
       bundle,
-      format = 'esm',
       metafile,
       tsconfig
     } = initialOptions
@@ -146,7 +145,7 @@ const plugin = ({
          */
         let text: string = output.text
 
-        for (const statement of extractStatements(output.text, format)) {
+        for (const statement of extractStatements(output.text)) {
           // do nothing if missing module specifier
           if (!statement.specifier) continue
 

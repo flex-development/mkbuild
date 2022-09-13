@@ -15,10 +15,6 @@ describe('unit:utils/extractStatements', () => {
       expect(testSubject("export const foo = 'bar'")).toMatchSnapshot()
     })
 
-    it('should return declare export statement array', () => {
-      expect(testSubject('export declare const foo: string')).toMatchSnapshot()
-    })
-
     it('should return default export statement array', () => {
       expect(testSubject('export default something')).toMatchSnapshot()
     })
@@ -56,11 +52,11 @@ describe('unit:utils/extractStatements', () => {
 
   describe('require', () => {
     it('should return require statement array', () => {
-      expect(testSubject("require('bar')", 'cjs')).toMatchSnapshot()
+      expect(testSubject("require('bar')")).toMatchSnapshot()
     })
 
     it('should return require.resolve statement array', () => {
-      expect(testSubject("require.resolve('baz')", 'cjs')).toMatchSnapshot()
+      expect(testSubject("require.resolve('baz')")).toMatchSnapshot()
     })
   })
 })

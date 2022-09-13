@@ -98,7 +98,7 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
          */
         let text: string = output.text
 
-        for (const statement of extractStatements(output.text, format)) {
+        for (const statement of extractStatements(output.text)) {
           /**
            * {@link statement.specifier} before specifier resolution.
            *

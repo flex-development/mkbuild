@@ -4,6 +4,16 @@
  */
 
 /**
+ * `require` and `require.resolve` statement regex.
+ *
+ * @todo prevent matching non-statements (e.g. comments, arbitrary strings)
+ *
+ * @const {RegExp} EVAL_CJS_REGEX
+ */
+export const EVAL_CJS_REGEX: RegExp =
+  /(?:require\(|require\.resolve\()["']([^"']*)["']\)/g
+
+/**
  * Default ignore patterns.
  *
  * @see https://github.com/mrmlnc/fast-glob#ignore
@@ -37,13 +47,3 @@ export const MODULE_EXTENSIONS: string[] = [
   '.ts',
   '.tsx'
 ]
-
-/**
- * `require` and `require.resolve` statement regex.
- *
- * @todo prevent matching non-statements (e.g. comments, arbitrary strings)
- *
- * @const {RegExp} REQUIRE_REGEX
- */
-export const REQUIRE_REGEX: RegExp =
-  /(?:require\(|require\.resolve\()["']([^"']*)["']\)/g

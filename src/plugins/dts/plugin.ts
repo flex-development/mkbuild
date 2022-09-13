@@ -11,7 +11,6 @@ import type {
   PluginBuild
 } from 'esbuild'
 import fse from 'fs-extra'
-import { findExportNames } from 'mlly'
 import * as pathe from 'pathe'
 import type {
   CompilerHost,
@@ -244,8 +243,7 @@ const plugin = (): Plugin => {
         // update metafile
         result.metafile!.outputs[outfile.replace(extregex, `.d.${cm}ts`)] = {
           ...result.metafile!.outputs[outfile]!,
-          bytes: dts.contents.byteLength,
-          exports: findExportNames(declarations)
+          bytes: Buffer.byteLength(dts.contents)
         }
 
         return [output, dts]

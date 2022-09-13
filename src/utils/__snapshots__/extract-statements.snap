@@ -12,18 +12,6 @@ exports[`unit:utils/extractStatements > export > should return declaration expor
 ]
 `;
 
-exports[`unit:utils/extractStatements > export > should return declare export statement array 1`] = `
-[
-  {
-    "code": "export declare const foo",
-    "end": 24,
-    "specifier": undefined,
-    "start": 0,
-    "type": "declaration",
-  },
-]
-`;
-
 exports[`unit:utils/extractStatements > export > should return default export statement array 1`] = `
 [
   {

@@ -5930,13 +5930,13 @@ __metadata:
 
 "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
   version: 0.5.14
-  resolution: "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::version=0.5.14&hash=3a8572&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  resolution: "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::version=0.5.14&hash=bdad18&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     acorn: "npm:^8.8.0"
     pathe: "npm:^0.3.5"
     pkg-types: "npm:^0.3.4"
     ufo: "npm:^0.8.5"
-  checksum: 7044e0f049dd84c6aef3fd420fd730a349cb2f51166ff37b419da811c720a4a7cfc16e00a5e5547769ce45b123d3aea6f49bd8d274e694ca8798659d0ca004d1
+  checksum: e106a0f8638debce5253425964569c1daff174c6e29aac9082cbc6d47aa35c712e3ae1b0bc38f70078d9828b385151143cdba704056b84ae59e83b4e7ecf3465
   languageName: node
   linkType: hard
 
