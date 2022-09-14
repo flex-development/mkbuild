@@ -1,6 +1,88 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/fully-specified > esbuild > cjs > should add file extensions to relative specifiers 1`] = `
+exports[`integration:plugins/fully-specified > esbuild > messages > should send error message if metafile is not enabled 1`] = `
+[
+  {
+    "detail": "https://esbuild.github.io/api/#metafile",
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "fully-specified",
+    "text": "metafile required",
+  },
+]
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > noop > should skip files that are not javascript 1`] = `
+"[
+  {
+    \\"date\\": \\"2007-04-24T07:00:00.000Z\\",
+    \\"close\\": 93.24
+  },
+  {
+    \\"date\\": \\"2007-04-25T07:00:00.000Z\\",
+    \\"close\\": 95.35
+  },
+  {
+    \\"date\\": \\"2007-06-08T07:00:00.000Z\\",
+    \\"close\\": 124.49
+  },
+  {
+    \\"date\\": \\"2007-06-11T07:00:00.000Z\\",
+    \\"close\\": 120.19
+  },
+  {
+    \\"date\\": \\"2007-06-12T07:00:00.000Z\\",
+    \\"close\\": 120.38
+  }
+]
+"
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > noop > should skip files that are not typescript 1`] = `
+"{
+  currency: 'USD',
+  prices: [
+    { price: '2486.69', time: '2017-07-03T00:00:00Z' },
+    { price: '2457.05', time: '2017-07-02T00:00:00Z' },
+    { price: '2486.09', time: '2017-07-01T00:00:00Z' },
+    { price: '2535.85', time: '2017-06-30T00:00:00Z' },
+    { price: '2546.06', time: '2017-06-29T00:00:00Z' }
+  ]
+}
+"
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in copied files 1`] = `
+"/**
+ * @file Fixtures - my-atoi.d.mts
+ * @module fixtures/my-atoi.d.mts
+ */
+
+/**
+ * Converts a string, \`s\`, to a 32-bit signed integer (similar to C/C++'s \`atoi\`
+ * function).
+ *
+ * @example myAtoi('') // 0
+ * @example myAtoi('42') // 42
+ * @example myAtoi('   -42') // -42
+ * @example myAtoi('4193 with words') // 4193
+ * @example myAtoi('words and 987') // 0
+ * @example myAtoi('+-12') // 0
+ *
+ * @param {string} s - String to convert
+ * @return {number} 32-bit signed integer
+ */
+declare function myAtoi(s: string): number
+
+export default myAtoi
+
+export { default as MAX_VALUE } from './max-value.mjs'
+export { default as MIN_VALUE } from './min-value.mjs'
+"
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled cjs files 1`] = `
 "require(\\"esbuild\\");
 require(\\"pathe\\");
 require(\\"tsconfig-paths\\");
@@ -10,7 +92,7 @@ require(\\"../src/utils/extract-statements.cjs\\");
 "
 `;
 
-exports[`integration:plugins/fully-specified > esbuild > esm > should add file extensions to relative specifiers 1`] = `
+exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled esm files 1`] = `
 "import \\"esbuild\\";
 import \\"pathe\\";
 import \\"tsconfig-paths\\";
@@ -23,17 +105,4 @@ export {
   fizz
 };
 "
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > should send error message if metafile is not enabled 1`] = `
-[
-  {
-    "detail": "https://esbuild.github.io/api/#metafile",
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "fully-specified",
-    "text": "metafile required",
-  },
-]
 `;

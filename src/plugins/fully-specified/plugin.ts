@@ -3,7 +3,12 @@
  * @module mkbuild/plugins/fully-specified
  */
 
-import { MODULE_EXTENSIONS } from '#src/config/constants'
+import {
+  EXT_JS_REGEX,
+  EXT_TS_REGEX,
+  RESOLVE_EXTENSIONS
+} from '#src/config/constants'
+import type { OutputMetadata } from '#src/types'
 import extractStatements from '#src/utils/extract-statements'
 import type {
   BuildOptions,
@@ -39,9 +44,11 @@ const PLUGIN_NAME: string = 'fully-specified'
  * @param {Options} [options={}] - Plugin options
  * @return {Plugin} Specifier resolver plugin
  */
-const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
+const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
   /**
    * Adds file extensions to relative specifiers in output file content.
+   *
+   * @todo check specifiers in files interpreted with copy or file loader
    *
    * [1]: https://esbuild.github.io/plugins
    * [2]: https://esbuild.github.io/api/#build-api
@@ -55,10 +62,14 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
   const setup = ({ initialOptions, onEnd, onStart }: PluginBuild): void => {
     const {
       absWorkingDir = process.cwd(),
+      bundle,
       format = 'esm',
       metafile,
       outExtension: { '.js': ext = '.js' } = {}
     } = initialOptions
+
+    // bundle output shouldn't contain relative specifiers
+    if (bundle) return
 
     // metafile required to get output metadata
     if (!metafile) {
@@ -83,6 +94,19 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
 
       for (const output of result.outputFiles!) {
         /**
+         * Output file extension.
+         *
+         * @const {string} output_ext
+         */
+        const output_ext: string = pathe.extname(output.path)
+
+        // do nothing if output file isn't javascript or typescript
+        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
+          outputFiles.push(output)
+          continue
+        }
+
+        /**
          * Relative path to output file.
          *
          * **Note**: Relative to {@link absWorkingDir}.
@@ -92,12 +116,26 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
         const outfile: string = output.path.replace(absWorkingDir + '/', '')
 
         /**
+         * {@link output} metadata.
+         *
+         * @const {OutputMetadata} metadata
+         */
+        const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
+
+        // because this plugin doesn't handle bundles, the entry point can be
+        // reset to the first (and only!) key in metadata.inputs
+        if (!metadata.entryPoint) {
+          metadata.entryPoint = Object.keys(metadata.inputs)[0]!
+        }
+
+        /**
          * {@link output.text} copy.
          *
          * @var {string} text
          */
         let text: string = output.text
 
+        // replace specifiers
         for (const statement of extractStatements(output.text)) {
           /**
            * {@link statement.specifier} before specifier resolution.
@@ -125,10 +163,7 @@ const plugin = ({ extensions = MODULE_EXTENSIONS }: Options = {}): Plugin => {
           const resolved: string = await resolvePath(specifier, {
             conditions: [format === 'esm' ? 'import' : 'require'],
             extensions,
-            url: pathe.resolve(
-              absWorkingDir,
-              result.metafile!.outputs[outfile]!.entryPoint!
-            )
+            url: pathe.resolve(absWorkingDir, metadata.entryPoint)
           })
 
           const { name } = pathe.parse(specifier)

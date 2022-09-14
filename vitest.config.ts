@@ -122,7 +122,7 @@ const config = async (): Promise<UserConfig> => {
         min: false,
         printFunctionName: true
       },
-      testTimeout: 10 * 1000
+      testTimeout: 15 * 1000
     }
   }
 }

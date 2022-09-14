@@ -1,6 +1,6 @@
 /**
  * @file Fixtures - tsconfig-paths
- * @module fixtures/tsconfig-paths
+ * @module fixtures/tsconfig-paths.mts
  */
 
 import '#src/config/constants'

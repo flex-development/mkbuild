@@ -7,7 +7,7 @@ import type { Config } from '#src/interfaces'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import { build } from 'esbuild'
 import { evalModule, resolveImports } from 'mlly'
-import { MODULE_EXTENSIONS } from './constants'
+import { RESOLVE_EXTENSIONS } from './constants'
 
 /**
  * Loads a `*.mjs` or TypeScript (`*.cts`, `*.mts`, `*.ts`) build config file.
@@ -35,14 +35,14 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
 
   // resolve imports in content to evaluate module
   content = await resolveImports(output!.text, {
-    extensions: MODULE_EXTENSIONS,
+    extensions: RESOLVE_EXTENSIONS,
     url: path
   })
 
   // get default export from content
   const { default: config }: { default: Config } = await evalModule(content, {
     conditions: ['import'],
-    extensions: MODULE_EXTENSIONS,
+    extensions: RESOLVE_EXTENSIONS,
     url: path
   })
 

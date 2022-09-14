@@ -841,7 +841,7 @@ const config = {
       }
     },
     {
-      files: ['*.json', '*.jsonc'],
+      files: ['*.json', '*.json5', '*.jsonc'],
       extends: ['plugin:jsonc/prettier'],
       parser: 'jsonc-eslint-parser',
       plugins: ['jsonc'],
@@ -917,7 +917,7 @@ const config = {
       }
     },
     {
-      files: ['*.jsonc'],
+      files: ['*.json5', '*.jsonc'],
       rules: {
         'jsonc/no-comments': 0
       }

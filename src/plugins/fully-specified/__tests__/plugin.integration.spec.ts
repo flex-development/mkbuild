@@ -4,13 +4,22 @@
  */
 
 import ESBUILD_OPTIONS from '#fixtures/esbuild-options'
+import extractStatements from '#src/utils/extract-statements'
 import {
   build,
   type BuildFailure,
   type BuildOptions,
   type Plugin
 } from 'esbuild'
+import Module from 'node:module'
 import testSubject from '../plugin'
+
+vi.mock('../../../utils/extract-statements', async () => {
+  type Actual = { default: typeof extractStatements }
+  const path: string = '#src/utils/extract-statements'
+
+  return { default: vi.fn((await vi.importActual<Actual>(path)).default) }
+})
 
 describe('integration:plugins/fully-specified', () => {
   let options: BuildOptions
@@ -18,49 +27,114 @@ describe('integration:plugins/fully-specified', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = {
-      ...ESBUILD_OPTIONS,
-      entryPoints: ['__fixtures__/relative-specifiers.ts'],
-      format: 'esm',
-      outExtension: { '.js': '.mjs' },
-      plugins: [subject]
-    }
+    options = { ...ESBUILD_OPTIONS, plugins: [subject] }
   })
 
   describe('esbuild', () => {
-    it('should send error message if metafile is not enabled', async () => {
-      // Arrange
-      let failure: BuildFailure
+    describe('messages', () => {
+      it('should send error message if metafile is not enabled', async () => {
+        // Arrange
+        let failure: BuildFailure
 
-      // Act
-      try {
-        await build({ ...options, metafile: false })
-      } catch (e: unknown) {
-        failure = e as BuildFailure
-      }
+        // Act
+        try {
+          await build({ ...options, metafile: false })
+        } catch (e: unknown) {
+          failure = e as BuildFailure
+        }
 
-      // Expect
-      expect(failure!).to.have.keys(['errors', 'warnings'])
-      expect(failure!.errors).toMatchSnapshot()
+        // Expect
+        expect(failure!).to.have.keys(['errors', 'warnings'])
+        expect(failure!.errors).toMatchSnapshot()
+      })
     })
 
-    describe('cjs', () => {
-      it('should add file extensions to relative specifiers', async () => {
-        // Arrange
-        const { outputFiles } = await build({
+    describe('noop', () => {
+      it('should do nothing if bundling', async () => {
+        // Act
+        await build({
           ...options,
-          entryPoints: ['__fixtures__/relative-specifiers.cts'],
-          format: 'cjs',
-          outExtension: { '.js': '.cjs' }
+          bundle: true,
+          entryPoints: ['__fixtures__/reverse.mts'],
+          external: Module.builtinModules.flatMap(m => [m, 'node:' + m]),
+          format: 'esm',
+          loader: { '.mts': 'ts' },
+          outExtension: { '.js': '.mjs' }
         })
 
+        // Expect
+        expect(extractStatements).toHaveBeenCalledTimes(0)
+      })
+
+      it('should skip files that are not javascript', async () => {
+        // Act
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/apple-stock.jsonc'],
+          loader: { '.jsonc': 'copy' }
+        })
+
+        // Expect
+        expect(outputFiles).to.be.an('array').of.length(1)
+        expect(outputFiles![0]!.text).toMatchSnapshot()
+      })
+
+      it('should skip files that are not typescript', async () => {
+        // Act
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/bitcoin-price.json5'],
+          loader: { '.json5': 'copy' }
+        })
+
+        // Expect
+        expect(outputFiles).to.be.an('array').of.length(1)
         expect(outputFiles![0]!.text).toMatchSnapshot()
       })
     })
 
-    describe('esm', () => {
-      it('should add file extensions to relative specifiers', async () => {
-        expect((await build(options)).outputFiles![0]!.text).toMatchSnapshot()
+    describe('specifiers', () => {
+      it('should fill specifiers in copied files', async () => {
+        // Act
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/my-atoi.d.mts'],
+          format: 'esm',
+          loader: { '.d.mts': 'copy' },
+          outExtension: { '.js': '.mjs' }
+        })
+
+        // Expect
+        expect(outputFiles).to.be.an('array').of.length(1)
+        expect(outputFiles![0]!.text).toMatchSnapshot()
+      })
+
+      it('should fill specifiers in transpiled cjs files', async () => {
+        // Act
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/relative-specifiers.cts'],
+          format: 'cjs',
+          loader: { '.cts': 'ts' },
+          outExtension: { '.js': '.cjs' }
+        })
+
+        // Expect
+        expect(outputFiles![0]!.text).toMatchSnapshot()
+      })
+
+      it('should fill specifiers in transpiled esm files', async () => {
+        // Act
+        const { outputFiles } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/relative-specifiers.mts'],
+          format: 'esm',
+          loader: { '.mts': 'ts' },
+          outExtension: { '.js': '.mjs' }
+        })
+
+        // Expect
+        expect(outputFiles![0]!.text).toMatchSnapshot()
       })
     })
   })

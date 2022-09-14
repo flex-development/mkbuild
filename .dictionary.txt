@@ -1,4 +1,5 @@
 ardatan
+atoi
 autocrlf
 autosetuprebase
 bdel
@@ -18,6 +19,7 @@ dessant
 dohm
 esbenp
 esbuild
+esbuilder
 fbca
 fpnv
 globby
@@ -25,6 +27,7 @@ gpgsign
 graphqlrc
 hmarr
 iife
+jsxdev
 keyid
 larsgw
 lcov

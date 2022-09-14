@@ -3,7 +3,12 @@
  * @module mkbuild/plugins/tsconfig-paths/plugin
  */
 
-import { MODULE_EXTENSIONS } from '#src/config/constants'
+import {
+  EXT_JS_REGEX,
+  EXT_TS_REGEX,
+  RESOLVE_EXTENSIONS
+} from '#src/config/constants'
+import type { OutputMetadata } from '#src/types'
 import extractStatements from '#src/utils/extract-statements'
 import type {
   BuildOptions,
@@ -36,7 +41,7 @@ const PLUGIN_NAME: string = 'tsconfig-paths'
  * @return {Plugin} `tsconfig-paths` plugin
  */
 const plugin = ({
-  extensions = MODULE_EXTENSIONS,
+  extensions = RESOLVE_EXTENSIONS,
   fileExists,
   mainFields = ['main', 'module'],
   readJson
@@ -111,7 +116,6 @@ const plugin = ({
      * @const {MatchPath} matcher
      */
     const matcher: MatchPath = createMatchPath(
-      /* c8 ignore next 2 */
       pathe.resolve(pathe.dirname(result.tsConfigPath), result.baseUrl ?? ''),
       result.paths ?? {},
       mainFields,
@@ -120,6 +124,18 @@ const plugin = ({
 
     return void onEnd((result: BuildResult): void => {
       result.outputFiles = result.outputFiles!.map((output: OutputFile) => {
+        /**
+         * Output file extension.
+         *
+         * @const {string} output_ext
+         */
+        const output_ext: string = pathe.extname(output.path)
+
+        // skip output files that are not javascript or typescript
+        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
+          return output
+        }
+
         /**
          * Relative path to output file.
          *
@@ -130,13 +146,24 @@ const plugin = ({
         const outfile: string = output.path.replace(absWorkingDir + '/', '')
 
         /**
-         * Relative path to source file.
+         * {@link output} metadata.
          *
-         * **Note**: Relative to {@link absWorkingDir}.
+         * @const {OutputMetadata} metadata
+         */
+        const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
+
+        // because this plugin doesn't handle bundles, the entry point can be
+        // reset to the first (and only!) key in metadata.inputs
+        if (!metadata.entryPoint) {
+          metadata.entryPoint = Object.keys(metadata.inputs)[0]!
+        }
+
+        /**
+         * Absolute path to source file.
          *
          * @const {string} source
          */
-        const source: string = result.metafile!.outputs[outfile]!.entryPoint!
+        const source: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
 
         /**
          * {@link output.text} copy.
@@ -145,6 +172,7 @@ const plugin = ({
          */
         let text: string = output.text
 
+        // replace path aliases
         for (const statement of extractStatements(output.text)) {
           // do nothing if missing module specifier
           if (!statement.specifier) continue
@@ -170,6 +198,7 @@ const plugin = ({
             : pathe
                 .relative(pathe.dirname(source), match)
                 .replace(/^(\w)/, './$1')
+                .replace(/(\/index)$/, '')
 
           // replace path alias
           text = text.replace(

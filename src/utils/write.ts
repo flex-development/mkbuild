@@ -11,7 +11,8 @@ import * as pathe from 'pathe'
 /**
  * Writes a build result to the file system.
  *
- * @todo handle writing chunks
+ * @todo support chunks (code splitting)
+ * @todo support sourcemaps
  *
  * @template R - Build result object type
  *

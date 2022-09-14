@@ -14,7 +14,7 @@ interface TsconfigPathsPluginOptions {
   /**
    * Module extensions to probe for.
    *
-   * @default MODULE_EXTENSIONS
+   * @default RESOLVE_EXTENSIONS
    */
   extensions?: string[]
 

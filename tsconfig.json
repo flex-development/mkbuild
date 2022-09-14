@@ -15,7 +15,8 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": false,
-    "lib": ["es2021"],
+    "jsx": "react-jsxdev",
+    "lib": ["dom", "es2021"],
     "module": "node16",
     "moduleResolution": "node",
     "newLine": "lf",
@@ -60,7 +61,10 @@
     "**/**.ts",
     "**/.*.cjs",
     "**/.*.cts",
-    "**/.*.ts"
+    "**/.*.ts",
+    "__fixtures__/*.js",
+    "__fixtures__/*.jsx",
+    "__fixtures__/*.tsx"
   ],
   // SEE: https://typestrong.org/ts-node/docs/configuration
   "ts-node": {

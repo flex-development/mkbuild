@@ -3,6 +3,8 @@
  * @module mkbuild/plugins/dts
  */
 
+import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
+import type { OutputMetadata } from '#src/types'
 import type {
   BuildOptions,
   BuildResult,
@@ -52,8 +54,8 @@ const plugin = (): Plugin => {
   }: PluginBuild): Promise<void> => {
     const {
       absWorkingDir = process.cwd(),
-      metafile,
-      outExtension: { '.js': ext = '.js' } = {}
+      entryPoints = [],
+      metafile
     } = initialOptions
 
     // metafile required to get output metadata
@@ -68,6 +70,55 @@ const plugin = (): Plugin => {
         ]
       }))
     }
+
+    /**
+     * Declaration file extension regex.
+     *
+     * @const {RegExp} REGEX_EXT_DTS
+     */
+    const REGEX_EXT_DTS: RegExp = /(\.d\.(c|m)ts)$/
+
+    /**
+     * Source file paths.
+     *
+     * @var {string[]} sourcefiles
+     */
+    let sourcefiles: string[] = Array.isArray(entryPoints)
+      ? entryPoints
+      : Object.values(entryPoints).map(ep => pathe.resolve(absWorkingDir, ep))
+
+    // filter out files that aren't javascript or typescript
+    // if typescript, filter out declaration files
+    sourcefiles = sourcefiles.filter(sourcefile => {
+      return (
+        (EXT_JS_REGEX.test(sourcefile) || EXT_TS_REGEX.test(sourcefile)) &&
+        !REGEX_EXT_DTS.test(sourcefile)
+      )
+    })
+
+    // send warning message if no source files are found
+    if (sourcefiles.length === 0) {
+      return void onStart(() => ({
+        warnings: [{ pluginName: PLUGIN_NAME, text: 'no source files found' }]
+      }))
+    }
+
+    /**
+     * Source file paths and content.
+     *
+     * @const {[string, string][]} sources
+     */
+    const sources: [string, string][] = sourcefiles.map(sourcefile => [
+      pathe.resolve(absWorkingDir, sourcefile),
+      fse.readFileSync(sourcefile, 'utf8')
+    ])
+
+    /**
+     * Virtual file system.
+     *
+     * @const {Map<string, string>} vfs
+     */
+    const vfs: Map<string, string> = new Map(sources)
 
     /**
      * TypeScript module.
@@ -103,84 +154,48 @@ const plugin = (): Plugin => {
      */
     const _readFile: CompilerHost['readFile'] = host.readFile.bind(host)
 
-    // generate declarations
-    return void onEnd(async (result: BuildResult): Promise<void> => {
-      /**
-       * Source file paths and content.
-       *
-       * @const {[string, string][]} sources
-       */
-      const sources: [string, string][] = []
+    /**
+     * Reads a file from {@link vfs}.
+     *
+     * Fallbacks to reading from the filesystem if `filename` isn't found.
+     *
+     * @param {string} filename - Name of file to write
+     * @return {string | undefined} File content
+     */
+    const readFile = (filename: string): string | undefined => {
+      return vfs.get(filename) ?? _readFile(filename)
+    }
 
-      // get sources
-      for (const output of result.outputFiles!) {
-        /**
-         * Relative path to output file.
-         *
-         * **Note**: Relative to {@link absWorkingDir}.
-         *
-         * @const {string} outfile
-         */
-        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+    /**
+     * Writes a file to {@link vfs}.
+     *
+     * @param {string} filename - Name of file to write
+     * @param {string} contents - Content to write
+     * @return {void} Nothing when complete
+     */
+    const writeFile: WriteFileCallback = (
+      filename: string,
+      contents: string
+    ): void => void vfs.set(filename, contents)
 
-        /**
-         * Relative path to source file.
-         *
-         * **Note**: Relative to {@link absWorkingDir}.
-         *
-         * @const {string} source
-         */
-        const source: string = result.metafile!.outputs[outfile]!.entryPoint!
+    // override read and write file functions
+    host.readFile = readFile
+    host.writeFile = writeFile
 
-        /**
-         * Absolute path to source file.
-         *
-         * @const {string} sourcefile
-         */
-        const sourcefile: string = pathe.resolve(absWorkingDir, source)
+    // emit declarations to virtual file system
+    ts.createProgram([...vfs.keys()], compilerOptions, host).emit()
 
-        // add source
-        sources.push([sourcefile, await fse.readFile(sourcefile, 'utf8')])
-      }
-
-      /**
-       * Virtual file system.
-       *
-       * @const {Map<string, string>} vfs
-       */
-      const vfs: Map<string, string> = new Map(sources)
-
-      /**
-       * Reads a file from {@link vfs}.
-       *
-       * @param {string} filename - Name of file to write
-       * @return {string | undefined} File content
-       */
-      const readFile = (filename: string): string | undefined => {
-        return vfs.get(filename) ?? _readFile(filename)
-      }
-
-      /**
-       * Writes a file to {@link vfs}.
-       *
-       * @param {string} filename - Name of file to write
-       * @param {string} contents - Content to write
-       * @return {void} Nothing when complete
-       */
-      const writeFile: WriteFileCallback = (
-        filename: string,
-        contents: string
-      ): void => void vfs.set(filename, contents)
-
-      host.readFile = readFile
-      host.writeFile = writeFile
-
-      // emit declarations to virtual file system
-      ts.createProgram([...vfs.keys()], compilerOptions, host).emit()
-
-      // remap output files to insert declaration file outputs
+    // remap output files to insert declaration file outputs
+    return void onEnd((result: BuildResult): void => {
       return void (result.outputFiles = result.outputFiles!.flatMap(output => {
         /**
+         * Output file extension.
+         *
+         * @const {string} output_ext
+         */
+        const output_ext: string = pathe.extname(output.path)
+
+        /**
          * Relative path to output file.
          *
          * **Note**: Relative to {@link absWorkingDir}.
@@ -190,27 +205,36 @@ const plugin = (): Plugin => {
         const outfile: string = output.path.replace(absWorkingDir + '/', '')
 
         /**
+         * {@link output} metadata.
+         *
+         * @const {OutputMetadata} metadata
+         */
+        const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
+
+        /**
          * Relative path to source file.
          *
          * **Note**: Relative to {@link absWorkingDir}.
          *
-         * @const {string} source
+         * @const {string | undefined} entryPoint
          */
-        const source: string = result.metafile!.outputs[outfile]!.entryPoint!
+        const entryPoint: string | undefined =
+          // because this is a custom plugin for this project, the use cases for
+          // this plugin can be narrowed down so that only a single entry point
+          // is ever passed to entryPoints (and possibly sourcefiles)
+          metadata.entryPoint ?? sourcefiles[0]!
 
-        /**
-         * Absolute path to source file.
-         *
-         * @const {string} sourcefile
-         */
-        const sourcefile: string = pathe.resolve(absWorkingDir, source)
-
+        // no entry point => source file was not js or ts, or was a dts file
+        /* c8 ignore next */ if (!entryPoint) return [output]
+        /* c8 ignore next 6 */
         /**
          * Declaration filename.
          *
          * @const {string} dtsfile
          */
-        const dtsfile: string = sourcefile.replace(/\.(c|m)?(j|t)s$/, '.d.$1ts')
+        const dtsfile: string = pathe
+          .resolve(absWorkingDir, entryPoint)
+          .replace(/\.(c|m)?(j|t)s$/, '.d.$1ts')
 
         /**
          * Declaration file content.
@@ -220,17 +244,17 @@ const plugin = (): Plugin => {
         const declarations: string = vfs.get(dtsfile)!
 
         // first letter before "js" in output file extension
-        const [cm = ''] = /(?<=^\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
+        const [cm = ''] = /(?<=^\.)(c|m)(?=[jt]s$)/.exec(output_ext) ?? []
 
         /**
          * Output extension regex.
          *
          * @const {RegExp} extregex
          */
-        const extregex: RegExp = new RegExp('\\' + ext + '$')
+        const extregex: RegExp = new RegExp('\\' + output_ext + '$')
 
         /**
-         * Declaration file output object.
+         * Declaration file output.
          *
          * @const {OutputFile} dts
          */
@@ -242,7 +266,7 @@ const plugin = (): Plugin => {
 
         // update metafile
         result.metafile!.outputs[outfile.replace(extregex, `.d.${cm}ts`)] = {
-          ...result.metafile!.outputs[outfile]!,
+          ...metadata,
           bytes: Buffer.byteLength(dts.contents)
         }
 

@@ -20,14 +20,14 @@ interface SourceFile {
   ext: string
 
   /**
-   * Absolute path to source file.
+   * Relative path to source file.
+   *
+   * **Note**: Relative to `entry.source`.
    */
   file: string
 
   /**
-   * Relative path to source file.
-   *
-   * **Note**: Relative to `options.sourcedir`.
+   * Absolute path to source file.
    */
   path: string
 }

@@ -4,7 +4,7 @@
  */
 
 import type { OneOrMany } from '@flex-development/tutils'
-import type { TransformOptions } from 'esbuild'
+import type { BuildOptions } from 'esbuild'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -41,16 +41,31 @@ interface Config {
    *
    * @default []
    */
-  entries?: Entry[]
+  entries?: Partial<Entry>[]
 
   /**
-   * [esbuild transform API][1] options.
+   * [esbuild build API][1] options.
    *
-   * [1]: https://esbuild.github.io/api/#transform-api
+   * [1]: https://esbuild.github.io/api/#build-api
    *
    * @default {}
    */
-  esbuild?: Omit<TransformOptions, 'format' | 'loader' | 'sourcefile'>
+  esbuild?: Omit<
+    BuildOptions,
+    | 'absWorkingDir'
+    | 'entryNames'
+    | 'entryPoints'
+    | 'format'
+    | 'incremental'
+    | 'loader'
+    | 'metafile'
+    | 'outdir'
+    | 'outfile'
+    | 'publicPath'
+    | 'stdin'
+    | 'watch'
+    | 'write'
+  >
 
   /**
    * Custom implementations of `fs` methods.
@@ -85,20 +100,13 @@ interface Config {
   outdir?: string
 
   /**
-   * Glob patterns matching {@link source} files to exclude or include.
+   * Glob patterns matching source files.
    *
    * @see https://github.com/sindresorhus/globby
    *
    * @default ['**','!**\/{__mocks__,__snapshots__,__tests__}\/**']
    */
   pattern?: OneOrMany<string>
-
-  /**
-   * Name of directory containing source files.
-   *
-   * @default 'src'
-   */
-  sourcedir?: string
 }
 
 export type { Config as default }

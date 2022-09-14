@@ -1,6 +1,6 @@
 /**
  * @file Fixtures - relative-specifiers
- * @module fixtures/relative-specifiers
+ * @module fixtures/relative-specifiers.mts
  */
 
 import 'esbuild'

@@ -1,6 +1,6 @@
 /**
- * @file Fixtures - relative-specifiers-cjs
- * @module fixtures/relative-specifiers-cjs
+ * @file Fixtures - relative-specifiers
+ * @module fixtures/relative-specifiers.cts
  */
 
 require('esbuild')

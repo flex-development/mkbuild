@@ -13,10 +13,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jest-snapshot]": {
-    "editor.rulers": [120],
+    "editor.rulers": [130],
     "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 120,
-    "rewrap.wrappingColumn": 120
+    "editor.wordWrapColumn": 130,
+    "rewrap.wrappingColumn": 130
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -62,6 +62,7 @@
       "cts",
       "gql",
       "json",
+      "json5",
       "jsonc",
       "md",
       "mjs",

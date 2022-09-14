@@ -20,66 +20,163 @@ describe('integration:plugins/dts', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = {
-      ...ESBUILD_OPTIONS,
-      entryPoints: ['src/plugins/dts/plugin.ts'],
-      plugins: [subject]
-    }
+    options = { ...ESBUILD_OPTIONS, plugins: [subject] }
   })
 
   describe('esbuild', () => {
-    it('should send error message if metafile is not enabled', async () => {
-      // Arrange
-      let failure: BuildFailure
+    describe('messages', () => {
+      it('should send error if metafile is not enabled', async () => {
+        // Arrange
+        let failure: BuildFailure
 
-      // Act
-      try {
-        await build({ ...options, metafile: false })
-      } catch (e: unknown) {
-        failure = e as BuildFailure
-      }
+        // Act
+        try {
+          await build({ ...options, metafile: false })
+        } catch (e: unknown) {
+          failure = e as BuildFailure
+        }
 
-      // Expect
-      expect(failure!).to.have.keys(['errors', 'warnings'])
-      expect(failure!.errors).toMatchSnapshot()
-    })
-
-    it('should add .d.cts output to output files', async () => {
-      // Act
-      const { outputFiles = [] } = await build({
-        ...options,
-        format: 'cjs',
-        outExtension: { '.js': '.cjs' }
+        // Expect
+        expect(failure!.errors).toMatchSnapshot()
       })
-      outputFiles[1]!.path = path.basename(outputFiles[1]!.path)
 
-      // Expect
-      expect(outputFiles).to.be.an('array').of.length(2)
-      expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
-    })
+      it('should send warning if no source files are found', async () => {
+        // Act
+        const { warnings } = await build({
+          ...options,
+          entryPoints: { 'apple-stock': '__fixtures__/apple-stock.jsonc' },
+          loader: { '.jsonc': 'copy' }
+        })
 
-    it('should add .d.mts output to output files', async () => {
-      // Act
-      const { outputFiles = [] } = await build({
-        ...options,
-        format: 'esm',
-        outExtension: { '.js': '.mjs' }
+        // Expect
+        expect(warnings).toMatchSnapshot()
       })
-      outputFiles[1]!.path = path.basename(outputFiles[1]!.path)
-
-      // Expect
-      expect(outputFiles).to.be.an('array').of.length(2)
-      expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
     })
 
-    it('should add .d.ts output to output files', async () => {
-      // Act
-      const { outputFiles = [] } = await build(options)
-      outputFiles[1]!.path = path.basename(outputFiles[1]!.path)
+    describe('typescript declarations', () => {
+      it('should add .d.cts output', async () => {
+        // Act
+        const {
+          errors,
+          outputFiles = [],
+          warnings
+        } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/my-atoi.cts'],
+          format: 'cjs',
+          loader: { '.cts': 'ts' },
+          outExtension: { '.js': '.cjs' }
+        })
+        outputFiles[1]!.path = path.format({
+          dir: ESBUILD_OPTIONS.outdir,
+          name: path.basename(outputFiles[1]!.path)
+        })
 
-      // Expect
-      expect(outputFiles).to.be.an('array').of.length(2)
-      expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+        // Expect
+        expect(errors).to.be.an('array').of.length(0)
+        expect(warnings).to.be.an('array').of.length(0)
+        expect(outputFiles).to.be.an('array').of.length(2)
+        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+      })
+
+      it('should add .d.cts output for copied file', async () => {
+        // Act
+        const {
+          errors,
+          outputFiles = [],
+          warnings
+        } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/sum-of-intervals.cjs'],
+          format: 'cjs',
+          loader: { '.cjs': 'copy' },
+          outExtension: { '.js': '.cjs' }
+        })
+        outputFiles[1]!.path = path.format({
+          dir: ESBUILD_OPTIONS.outdir,
+          name: path.basename(outputFiles[1]!.path)
+        })
+
+        // Expect
+        expect(errors).to.be.an('array').of.length(0)
+        expect(warnings).to.be.an('array').of.length(0)
+        expect(outputFiles).to.be.an('array').of.length(2)
+        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+      })
+
+      it('should add .d.mts output', async () => {
+        // Act
+        const {
+          errors,
+          outputFiles = [],
+          warnings
+        } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/reverse.mts'],
+          format: 'esm',
+          loader: { '.mts': 'ts' },
+          outExtension: { '.js': '.mjs' }
+        })
+        outputFiles[1]!.path = path.format({
+          dir: ESBUILD_OPTIONS.outdir,
+          name: path.basename(outputFiles[1]!.path)
+        })
+
+        // Expect
+        expect(errors).to.be.an('array').of.length(0)
+        expect(warnings).to.be.an('array').of.length(0)
+        expect(outputFiles).to.be.an('array').of.length(2)
+        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+      })
+
+      it('should add .d.mts output for copied file', async () => {
+        // Act
+        const {
+          errors,
+          outputFiles = [],
+          warnings
+        } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/sum-of-intervals.mjs'],
+          format: 'esm',
+          loader: { '.mjs': 'copy' },
+          outExtension: { '.js': '.mjs' }
+        })
+        outputFiles[1]!.path = path.format({
+          dir: ESBUILD_OPTIONS.outdir,
+          name: path.basename(outputFiles[1]!.path)
+        })
+
+        // Expect
+        expect(errors).to.be.an('array').of.length(0)
+        expect(warnings).to.be.an('array').of.length(0)
+        expect(outputFiles).to.be.an('array').of.length(2)
+        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+      })
+
+      it('should add .d.ts output', async () => {
+        // Act
+        const {
+          errors,
+          outputFiles = [],
+          warnings
+        } = await build({
+          ...options,
+          entryPoints: ['__fixtures__/dbl-linear.ts'],
+          format: 'esm',
+          loader: { '.ts': 'ts' }
+        })
+        outputFiles[1]!.path = path.format({
+          dir: ESBUILD_OPTIONS.outdir,
+          name: path.basename(outputFiles[1]!.path)
+        })
+
+        // Expect
+        expect(errors).to.be.an('array').of.length(0)
+        expect(warnings).to.be.an('array').of.length(0)
+        expect(outputFiles).to.be.an('array').of.length(2)
+        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+      })
     })
   })
 })

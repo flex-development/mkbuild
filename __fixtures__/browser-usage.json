@@ -1,0 +1,57 @@
+[
+  {
+    "date": "2015 jun 15",
+    "firefox": "18.82",
+    "google chrome": "48.09",
+    "internet explorer": "24.14",
+    "microsoft edge": "0.03",
+    "mozilla": "0.12",
+    "opera": "1.32",
+    "other/unknown": "0.01",
+    "safari": "7.46"
+  },
+  {
+    "date": "2015 jun 16",
+    "firefox": "18.96",
+    "google chrome": "48",
+    "internet explorer": "24.19",
+    "microsoft edge": "0.03",
+    "mozilla": "0.12",
+    "opera": "1.32",
+    "other/unknown": "0.01",
+    "safari": "7.36"
+  },
+  {
+    "date": "2015 jun 17",
+    "firefox": "18.91",
+    "google chrome": "47.87",
+    "internet explorer": "24.44",
+    "microsoft edge": "0.03",
+    "mozilla": "0.12",
+    "opera": "1.36",
+    "other/unknown": "0.01",
+    "safari": "7.27"
+  },
+  {
+    "date": "2015 jun 18",
+    "firefox": "19.16",
+    "google chrome": "48.22",
+    "internet explorer": "23.83",
+    "microsoft edge": "0.04",
+    "mozilla": "0.12",
+    "opera": "1.39",
+    "other/unknown": "0.01",
+    "safari": "7.24"
+  },
+  {
+    "date": "2015 jun 19",
+    "firefox": "19.35",
+    "google chrome": "47.91",
+    "internet explorer": "23.86",
+    "microsoft edge": "0.04",
+    "mozilla": "0.12",
+    "opera": "1.41",
+    "other/unknown": "0.01",
+    "safari": "7.31"
+  }
+]

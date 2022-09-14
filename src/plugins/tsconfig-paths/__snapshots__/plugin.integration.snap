@@ -1,6 +1,91 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases 1`] = `
+exports[`integration:plugins/tsconfig-paths > esbuild > messages > should send error message if metafile is not enabled 1`] = `
+[
+  {
+    "detail": "https://esbuild.github.io/api/#metafile",
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "tsconfig-paths",
+    "text": "metafile required",
+  },
+]
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > messages > should send error message if tsconfig is not found 1`] = `
+[
+  {
+    "detail": undefined,
+    "id": "",
+    "location": null,
+    "notes": [],
+    "pluginName": "tsconfig-paths",
+    "text": "tsconfig not found",
+  },
+]
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > noop > should skip files that are not javascript 1`] = `
+"[
+  {
+    \\"date\\": \\"2007-04-24T07:00:00.000Z\\",
+    \\"close\\": 93.24
+  },
+  {
+    \\"date\\": \\"2007-04-25T07:00:00.000Z\\",
+    \\"close\\": 95.35
+  },
+  {
+    \\"date\\": \\"2007-06-08T07:00:00.000Z\\",
+    \\"close\\": 124.49
+  },
+  {
+    \\"date\\": \\"2007-06-11T07:00:00.000Z\\",
+    \\"close\\": 120.19
+  },
+  {
+    \\"date\\": \\"2007-06-12T07:00:00.000Z\\",
+    \\"close\\": 120.38
+  }
+]
+"
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > noop > should skip files that are not typescript 1`] = `
+"{
+  currency: 'USD',
+  prices: [
+    { price: '2486.69', time: '2017-07-03T00:00:00Z' },
+    { price: '2457.05', time: '2017-07-02T00:00:00Z' },
+    { price: '2486.09', time: '2017-07-01T00:00:00Z' },
+    { price: '2535.85', time: '2017-06-30T00:00:00Z' },
+    { price: '2546.06', time: '2017-06-29T00:00:00Z' }
+  ]
+}
+"
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > path aliases > should resolve aliases in copied files 1`] = `
+"declare module '__fixtures__/values' {
+  export { default as MAX_VALUE } from './max-value'
+  export { default as MIN_VALUE } from './min-value'
+}
+"
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > path aliases > should resolve aliases in transpiled cjs files 1`] = `
+"require(\\"../src/config/constants\\");
+require(\\"../src/utils/extract-statements\\");
+require(\\"emoji-regex/es2015\\");
+require(\\"esbuild\\");
+require(\\"pathe\\");
+require(\\"tsconfig-paths\\");
+require(\\"tsconfig-paths/lib/tsconfig-loader\\");
+"
+`;
+
+exports[`integration:plugins/tsconfig-paths > esbuild > path aliases > should resolve aliases in transpiled esm files 1`] = `
 "import \\"../src/config/constants\\";
 import \\"../src/utils/extract-statements\\";
 import \\"emoji-regex/es2015\\";
@@ -14,30 +99,4 @@ export {
   foo
 };
 "
-`;
-
-exports[`integration:plugins/tsconfig-paths > esbuild > should send error message if metafile is not enabled 1`] = `
-[
-  {
-    "detail": "https://esbuild.github.io/api/#metafile",
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "tsconfig-paths",
-    "text": "metafile required",
-  },
-]
-`;
-
-exports[`integration:plugins/tsconfig-paths > esbuild > should send error message if tsconfig is not found 1`] = `
-[
-  {
-    "detail": undefined,
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "tsconfig-paths",
-    "text": "tsconfig not found",
-  },
-]
 `;
