@@ -63,6 +63,10 @@
       "require": "./dist/interfaces/*.cjs"
     },
     "./package.json": "./package.json",
+    "./plugins/*": {
+      "import": "./dist/plugins/*.mjs",
+      "require": "./dist/plugins/*.cjs"
+    },
     "./types": {
       "import": "./dist/types/index.mjs",
       "require": "./dist/types/index.cjs"
