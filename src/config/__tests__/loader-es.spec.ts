@@ -8,7 +8,7 @@ import path from 'node:path'
 import testSubject from '../loader-es'
 
 describe('unit:config/esLoader', () => {
-  const cases: string[] = ['cts', 'mjs', 'mts', 'ts']
+  const cases: string[] = ['cts', 'js', 'mjs', 'mts', 'ts']
 
   cases.forEach(ext => {
     it(`should return config from .${ext} file`, async () => {

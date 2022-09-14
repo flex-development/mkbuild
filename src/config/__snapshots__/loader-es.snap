@@ -12,6 +12,17 @@ exports[`unit:config/esLoader > should return config from .cts file 1`] = `
 }
 `;
 
+exports[`unit:config/esLoader > should return config from .js file 1`] = `
+{
+  "cwd": "__fixtures__/configs/js",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
 exports[`unit:config/esLoader > should return config from .mjs file 1`] = `
 {
   "cwd": "__fixtures__/configs/mjs",

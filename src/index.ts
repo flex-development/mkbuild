@@ -5,4 +5,5 @@
 
 export * from './config/constants'
 export { default as defineBuildConfig } from './config/define'
+export { default as loadBuildConfig } from './config/load'
 export type { Config, Result } from './interfaces'

@@ -872,6 +872,7 @@ __metadata:
     colorette: "npm:2.0.19"
     conventional-changelog-cli: "npm:2.2.2"
     conventional-recommended-bump: "npm:6.1.0"
+    cosmiconfig: "npm:7.0.1"
     cspell: "npm:6.8.0"
     dotenv: "npm:16.0.1"
     dotenv-expand: "npm:8.0.3"
@@ -926,8 +927,6 @@ __metadata:
   peerDependencies:
     typescript: "*"
   peerDependenciesMeta:
-    tsconfig-paths:
-      optional: true
     typescript:
       optional: true
   bin:

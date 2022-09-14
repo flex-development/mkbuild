@@ -64,7 +64,8 @@
     "**/.*.ts",
     "__fixtures__/*.js",
     "__fixtures__/*.jsx",
-    "__fixtures__/*.tsx"
+    "__fixtures__/*.tsx",
+    "__fixtures__/configs/js/build.config.js"
   ],
   // SEE: https://typestrong.org/ts-node/docs/configuration
   "ts-node": {

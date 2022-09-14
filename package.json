@@ -105,6 +105,7 @@
   "dependencies": {
     "@flex-development/tutils": "5.0.0",
     "colorette": "2.0.19",
+    "cosmiconfig": "7.0.1",
     "esbuild": "0.15.7",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
@@ -190,9 +191,6 @@
     "typescript": "*"
   },
   "peerDependenciesMeta": {
-    "tsconfig-paths": {
-      "optional": true
-    },
     "typescript": {
       "optional": true
     }

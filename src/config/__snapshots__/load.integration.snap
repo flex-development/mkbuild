@@ -1,0 +1,85 @@
+// Vitest Snapshot v1
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.cjs 1`] = `
+{
+  "cwd": "__fixtures__/configs/cjs",
+  "entries": [
+    {
+      "ext": ".cjs",
+      "format": "cjs",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.cts 1`] = `
+{
+  "cwd": "__fixtures__/configs/cts",
+  "entries": [
+    {
+      "ext": ".cjs",
+      "format": "cjs",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.js 1`] = `
+{
+  "cwd": "__fixtures__/configs/js",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.json 1`] = `
+{
+  "cwd": "__fixtures__/configs/json",
+  "entries": [
+    {
+      "ext": ".js",
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.mjs 1`] = `
+{
+  "cwd": "__fixtures__/configs/mjs",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.mts 1`] = `
+{
+  "cwd": "__fixtures__/configs/mts",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.ts 1`] = `
+{
+  "cwd": "__fixtures__/configs/ts",
+  "entries": [
+    {
+      "format": "esm",
+    },
+    {
+      "ext": ".cjs",
+      "format": "cjs",
+    },
+  ],
+}
+`;

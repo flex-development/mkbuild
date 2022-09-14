@@ -10,7 +10,10 @@ import { evalModule, resolveImports } from 'mlly'
 import { RESOLVE_EXTENSIONS } from './constants'
 
 /**
- * Loads a `*.mjs` or TypeScript (`*.cts`, `*.mts`, `*.ts`) build config file.
+ * Loads an [ESM][1] (`*.js`, `*.mjs`) or TypeScript (`*.cts`, `*.mts`, `*.ts`)
+ * build config file.
+ *
+ * [1]: https://nodejs.org/api/esm.html
  *
  * @see https://github.com/davidtheclark/cosmiconfig#loaders
  *
@@ -26,7 +29,13 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
   } = await build({
     entryPoints: [path],
     format: 'esm',
-    loader: { '.cts': 'ts', '.mjs': 'js', '.mts': 'ts', '.ts': 'ts' },
+    loader: {
+      '.cts': 'ts',
+      '.js': 'js',
+      '.mjs': 'js',
+      '.mts': 'ts',
+      '.ts': 'ts'
+    },
     metafile: true,
     outdir: '<stdout>',
     plugins: [tsconfigPaths()],
