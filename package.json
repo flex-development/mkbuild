@@ -74,6 +74,10 @@
     "./types/*": {
       "import": "./dist/types/*.mjs",
       "require": "./dist/types/*.cjs"
+    },
+    "./utils/*": {
+      "import": "./dist/utils/*.mjs",
+      "require": "./dist/utils/*.cjs"
     }
   },
   "main": "./dist/index.cjs",
