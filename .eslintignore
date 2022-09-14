@@ -6,7 +6,6 @@
 **/.DS_Store
 .eslintcache
 .yarn/*
-__fixtures__/configs/build.config.mjs
 __tests__/report.json
 coverage/*
 dist/*

@@ -3,4 +3,4 @@
  * @module fixtures/configs/build.config.mjs
  */
 
-export default { entries: [{ format: 'esm' }] }
+export default { cwd: '__fixtures__/configs/mjs', entries: [{ format: 'esm' }] }

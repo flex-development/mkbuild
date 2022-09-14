@@ -5,4 +5,7 @@
 
 import type { Config } from '#src'
 
-export default { entries: [{ format: 'esm' }] } as Config
+export default {
+  cwd: '__fixtures__/configs/cts',
+  entries: [{ ext: '.cjs', format: 'cjs' }]
+} as Config
