@@ -3,7 +3,6 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { OneOrMany } from '@flex-development/tutils'
 import type { BuildOptions } from 'esbuild'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
@@ -21,11 +20,9 @@ interface Config {
   clean?: boolean
 
   /**
-   * Root project directory.
+   * Current working directory.
    *
-   * **Note**: Expected to contain a `package.json` file.
-   *
-   * @default process.cwd()
+   * @default '.'
    */
   cwd?: string
 
@@ -76,7 +73,10 @@ interface Config {
    * @default fse
    */
   fs?: GlobbyOptions['fs'] & {
+    emptyDir: typeof fse['emptyDir']
     mkdirp: typeof fse['mkdirp']
+    readJson: typeof fse['readJson']
+    unlink: typeof fse['unlink']
     writeFile: typeof fse['writeFile']
   }
 
@@ -88,7 +88,7 @@ interface Config {
    *
    * @see https://github.com/mrmlnc/fast-glob#ignore
    *
-   * @default ['**\/.DS_Store', '**\/.npmignore', '**\/.yarnignore']
+   * @default IGNORE_PATTERNS
    */
   ignore?: GlobbyOptions['ignore']
 
@@ -104,9 +104,9 @@ interface Config {
    *
    * @see https://github.com/sindresorhus/globby
    *
-   * @default ['**','!**\/{__mocks__,__snapshots__,__tests__}\/**']
+   * @default '**'
    */
-  pattern?: OneOrMany<string>
+  pattern?: string[] | string
 }
 
 export type { Config as default }

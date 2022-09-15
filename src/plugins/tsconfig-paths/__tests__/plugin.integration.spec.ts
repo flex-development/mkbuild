@@ -29,7 +29,7 @@ describe('integration:plugins/tsconfig-paths', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, plugins: [subject] }
+    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
   })
 
   describe('esbuild', () => {

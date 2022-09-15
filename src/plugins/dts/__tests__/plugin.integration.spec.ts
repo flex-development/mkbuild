@@ -20,7 +20,7 @@ describe('integration:plugins/dts', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, plugins: [subject] }
+    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
   })
 
   describe('esbuild', () => {

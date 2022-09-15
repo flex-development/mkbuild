@@ -4,7 +4,15 @@
  * @see https://github.com/unjs/pathe
  */
 
-import path from 'node:path'
+import path, { type FormatInputPathObject } from 'node:path'
+
+/**
+ * Return the last portion of `p`.
+ *
+ * @param {string} p - Path to evaluate
+ * @return {string} File name
+ */
+export const basename = vi.fn((p: string): string => path.basename(p))
 
 /**
  * Returns the directory name of `p`.
@@ -25,6 +33,14 @@ export const dirname = vi.fn((p: string): string => path.dirname(p))
  * @return {string} Extension of `p`
  */
 export const extname = vi.fn((p: string) => path.extname(p))
+
+/**
+ * Returns a path string from an object - the opposite of {@link parse}.
+ *
+ * @param {FormatInputPathObject} p - Path object to evaluate
+ * @return {path.ParsedPath} Object representing `p` parsed
+ */
+export const format = vi.fn((p: FormatInputPathObject) => path.format(p))
 
 /**
  * Parses `p`.

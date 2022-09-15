@@ -1,6 +1,6 @@
 {
   "name": "@flex-development/mkbuild",
-  "description": "File-to-file transformer and bundler",
+  "description": "An esbuild based file-to-file transformer and bundler",
   "version": "0.0.0",
   "keywords": [
     "bundle",
@@ -63,6 +63,10 @@
       "require": "./dist/interfaces/*.cjs"
     },
     "./package.json": "./package.json",
+    "./make": {
+      "import": "./dist/make.mjs",
+      "require": "./dist/make.cjs"
+    },
     "./plugins/*": {
       "import": "./dist/plugins/*.mjs",
       "require": "./dist/plugins/*.cjs"
@@ -84,7 +88,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "echo todo: yarn build",
+    "build": "node --loader=./loader.mjs --input-type=module --eval \"(await import('./src/make')).default()\"",
     "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn test && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
     "check:format": "prettier --check .",
     "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
@@ -111,12 +115,14 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@flex-development/tutils": "5.0.0",
     "colorette": "2.0.19",
+    "consola": "2.15.3",
     "cosmiconfig": "7.0.1",
+    "defu": "6.1.0",
     "esbuild": "0.15.7",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
+    "junk": "4.0.0",
     "mlly": "0.5.14",
     "pathe": "0.3.5",
     "pkg-types": "0.3.5",
@@ -129,6 +135,7 @@
     "@commitlint/config-conventional": "17.1.0",
     "@commitlint/types": "17.0.0",
     "@faker-js/faker": "7.4.0",
+    "@flex-development/tutils": "5.0.0",
     "@graphql-eslint/eslint-plugin": "3.10.7",
     "@types/chai": "4.3.3",
     "@types/conventional-changelog": "3.1.1",

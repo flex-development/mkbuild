@@ -31,7 +31,6 @@ const loadBuildConfig = async (location: string): Promise<Config> => {
   // get search function
   const { search } = cosmiconfig(name, {
     loaders: { '.cts': es, '.js': es, '.mjs': es, '.mts': es, '.ts': es },
-    packageProp: [name, 'mkbuild'],
     searchPlaces: [
       '#.config.cjs',
       '#.config.cts',

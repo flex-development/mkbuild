@@ -3,7 +3,11 @@
  * @module mkbuild/plugins/dts
  */
 
-import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
+import {
+  EXT_DTS_REGEX,
+  EXT_JS_REGEX,
+  EXT_TS_REGEX
+} from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
 import type {
   BuildOptions,
@@ -72,27 +76,20 @@ const plugin = (): Plugin => {
     }
 
     /**
-     * Declaration file extension regex.
-     *
-     * @const {RegExp} REGEX_EXT_DTS
-     */
-    const REGEX_EXT_DTS: RegExp = /(\.d\.(c|m)ts)$/
-
-    /**
      * Source file paths.
      *
      * @var {string[]} sourcefiles
      */
     let sourcefiles: string[] = Array.isArray(entryPoints)
       ? entryPoints
-      : Object.values(entryPoints).map(ep => pathe.resolve(absWorkingDir, ep))
+      : Object.values(entryPoints)
 
     // filter out files that aren't javascript or typescript
     // if typescript, filter out declaration files
     sourcefiles = sourcefiles.filter(sourcefile => {
       return (
         (EXT_JS_REGEX.test(sourcefile) || EXT_TS_REGEX.test(sourcefile)) &&
-        !REGEX_EXT_DTS.test(sourcefile)
+        !EXT_DTS_REGEX.test(sourcefile)
       )
     })
 

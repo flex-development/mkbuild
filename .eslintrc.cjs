@@ -51,9 +51,9 @@ const config = {
       }
     },
     {
-      files: ['src/index.ts'],
+      files: ['src/make.ts'],
       rules: {
-        'unicorn/prefer-export-from': 0
+        'unicorn/no-array-callback-reference': 0
       }
     }
   ]

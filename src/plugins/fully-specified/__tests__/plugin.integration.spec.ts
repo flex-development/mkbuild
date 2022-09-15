@@ -14,12 +14,7 @@ import {
 import Module from 'node:module'
 import testSubject from '../plugin'
 
-vi.mock('../../../utils/extract-statements', async () => {
-  type Actual = { default: typeof extractStatements }
-  const path: string = '#src/utils/extract-statements'
-
-  return { default: vi.fn((await vi.importActual<Actual>(path)).default) }
-})
+vi.mock('../../../utils/extract-statements')
 
 describe('integration:plugins/fully-specified', () => {
   let options: BuildOptions
@@ -27,7 +22,7 @@ describe('integration:plugins/fully-specified', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, plugins: [subject] }
+    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
   })
 
   describe('esbuild', () => {

@@ -8,13 +8,6 @@
  */
 interface SourceFile {
   /**
-   * File content getter.
-   *
-   * @return {Promise<string>} Source file content
-   */
-  contents(): Promise<string>
-
-  /**
    * Source file extension.
    */
   ext: string

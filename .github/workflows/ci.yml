@@ -79,3 +79,4 @@ jobs:
           NODE_ENV: production
           NODE_NO_WARNINGS: 1
           NODE_OPTIONS: --es-module-specifier-resolution=node
+          TS_NODE_PROJECT: ./tsconfig.tsnode.json

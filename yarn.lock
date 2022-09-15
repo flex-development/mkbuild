@@ -870,10 +870,12 @@ __metadata:
     "@vitest/ui": "npm:0.23.1"
     chai: "npm:4.3.6"
     colorette: "npm:2.0.19"
+    consola: "npm:2.15.3"
     conventional-changelog-cli: "npm:2.2.2"
     conventional-recommended-bump: "npm:6.1.0"
     cosmiconfig: "npm:7.0.1"
     cspell: "npm:6.8.0"
+    defu: "npm:6.1.0"
     dotenv: "npm:16.0.1"
     dotenv-expand: "npm:8.0.3"
     esbuild: "npm:0.15.7"
@@ -899,6 +901,7 @@ __metadata:
     husky: "npm:8.0.1"
     is-ci: "npm:3.0.1"
     jsonc-eslint-parser: "npm:2.1.0"
+    junk: "npm:4.0.0"
     lint-staged: "npm:13.0.3"
     memfs: "npm:3.4.7"
     mlly: "npm:0.5.14"
@@ -2754,6 +2757,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"consola@npm:2.15.3":
+  version: 2.15.3
+  resolution: "consola@npm:2.15.3"
+  checksum: 3367f6bd137f1bc82d4585a93ca3c80c0cb4c8c9092a13ca5408401e78250d2bcc6c787e98e007d630d6d1ab0aa7447fb7ef8c5502898bbc36d6e3917d0d8a49
+  languageName: node
+  linkType: hard
+
 "console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -3278,6 +3288,13 @@ __metadata:
     has-property-descriptors: "npm:^1.0.0"
     object-keys: "npm:^1.1.1"
   checksum: 94a6a24f787300c11c53b76e207e53908c86fd508f0dacf0bab49afff62b20439513e14318cebdb3223eef7a49d572eaf7f069a21af80e3ca3f898bbf22c9c8e
+  languageName: node
+  linkType: hard
+
+"defu@npm:6.1.0":
+  version: 6.1.0
+  resolution: "defu@npm:6.1.0"
+  checksum: 76a5d40771c53371acecb562d7ffbaa068c5dc97bab3421d659227fe9e14ac40ef4343efbc91b77a9efa6ab3fa943a9bd150d8b3738c92b758201961112a31df
   languageName: node
   linkType: hard
 
@@ -5837,6 +5854,13 @@ __metadata:
     array-includes: "npm:^3.1.5"
     object.assign: "npm:^4.1.3"
   checksum: cb1820fa7f27b2d58a39a236ed5935b5456cc63cd55d134157977e852c50025a13aeaca8a35d1658200bdaf5b1424fc65eaaba5d1aae0f4aa11abf2be7b9dce5
+  languageName: node
+  linkType: hard
+
+"junk@npm:4.0.0":
+  version: 4.0.0
+  resolution: "junk@npm:4.0.0"
+  checksum: ef6def8cc4f0ba0a25222a83d9fccd3ea3b9abea72dad106914be9e2856c8f79d0033aca40a42aac1b06ce24deb0dd0233af7313cf970eeb672dcfe7243a9a86
   languageName: node
   linkType: hard
 

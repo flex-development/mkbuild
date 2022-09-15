@@ -15,6 +15,7 @@ colorette
 commitlintrc
 dawidd
 dedupe
+defu
 dessant
 dohm
 esbenp
@@ -40,6 +41,7 @@ npmrc
 nums
 nvmrc
 ohmyzsh
+outdirs
 pathe
 pkgs
 preid
