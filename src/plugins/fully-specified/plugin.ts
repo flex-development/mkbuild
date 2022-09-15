@@ -4,6 +4,7 @@
  */
 
 import {
+  BUILTIN_MODULES,
   EXT_JS_REGEX,
   EXT_TS_REGEX,
   RESOLVE_EXTENSIONS
@@ -19,7 +20,11 @@ import type {
 } from 'esbuild'
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
-import type Options from './options'
+import {
+  readPackageJSON,
+  resolvePackageJSON,
+  type PackageJson
+} from 'pkg-types'
 
 /**
  * Plugin name.
@@ -29,26 +34,36 @@ import type Options from './options'
 const PLUGIN_NAME: string = 'fully-specified'
 
 /**
- * Returns a specifier resolver plugin.
+ * Returns a specifier resolver plugin. There are three types of specifiers:
  *
- * The resolver adds file extensions to relative specifiers in output content.
+ * > - *Relative specifiers* like `'./startup.js'` or `'../config.mjs'`. They
+ * >   refer to a path relative to the location of the importing file. The file
+ * >   extension is always necessary for these.
+ * > - *Bare specifiers* like `'some-package'` or `'some-package/shuffle'`. They
+ * >   can refer to the main entry point of a package by the package name, or a
+ * >   specific feature module within a package prefixed by the package name as
+ * >   per the examples respectively. Including the file extension is only
+ * >   necessary for packages without an ["exports"][1] field.
+ * > - *Absolute specifiers* like `'file:///opt/nodejs/config.js'`. They refer
+ * >   directly and explicitly to a full path.
  *
- * A relative specifier, like `'./startup.js'` or `'../config.mjs'`, refers to
- * a path relative to the location of the importing file.
+ * The resolver adds file extensions to **bare** and **relative** specifiers in
+ * output content.
  *
- * Unless [`--experimental-specifier-resolution=node`][1] is used to customize
- * the ESM specifier resolution algorithm, file extensions are required.
+ * **Note**: [`--experimental-specifier-resolution=node`][2] can be used to
+ * customize the ESM specifier resolution algorithm so that file extensions are
+ * not required.
  *
- * [1]: https://nodejs.org/docs/latest-v16.x/api/esm.html#customizing-esm-specifier-resolution-algorithm
+ * [1]: https://nodejs.org/docs/latest-v16.x/api/packages.html#exports
+ * [2]: https://nodejs.org/docs/latest-v16.x/api/esm.html#customizing-esm-specifier-resolution-algorithm
  *
- * @param {Options} [options={}] - Plugin options
+ * @see https://nodejs.org/docs/latest-v16.x/api/esm.html#terminology
+ *
  * @return {Plugin} Specifier resolver plugin
  */
-const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
+const plugin = (): Plugin => {
   /**
    * Adds file extensions to relative specifiers in output file content.
-   *
-   * @todo check specifiers in files interpreted with copy or file loader
    *
    * [1]: https://esbuild.github.io/plugins
    * [2]: https://esbuild.github.io/api/#build-api
@@ -65,7 +80,8 @@ const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
       bundle,
       format = 'esm',
       metafile,
-      outExtension: { '.js': ext = '.js' } = {}
+      outExtension: { '.js': ext = '.js' } = {},
+      resolveExtensions: extensions = RESOLVE_EXTENSIONS
     } = initialOptions
 
     // bundle output shouldn't contain relative specifiers
@@ -129,6 +145,13 @@ const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
         }
 
         /**
+         * Absolute path to source file.
+         *
+         * @const {string} source
+         */
+        const source: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
+
+        /**
          * {@link output.text} copy.
          *
          * @var {string} text
@@ -138,7 +161,7 @@ const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
         // replace specifiers
         for (const statement of extractStatements(output.text)) {
           /**
-           * {@link statement.specifier} before specifier resolution.
+           * {@link statement.specifier} before file extension is added.
            *
            * @var {string | undefined} specifier
            */
@@ -147,8 +170,11 @@ const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
           // do nothing if missing module specifier
           if (!specifier) continue
 
-          // do nothing if specifier is not relative
-          if (!specifier.startsWith('.')) continue
+          // do nothing if specifier references built-in module
+          if (BUILTIN_MODULES.has(specifier)) continue
+
+          // do nothing if specifier is absolute
+          if (/^(\/|(data|file|https?):)/.test(specifier)) continue
 
           // do nothing if specifier already includes file extension
           if (pathe.extname(specifier)) continue
@@ -163,17 +189,57 @@ const plugin = ({ extensions = RESOLVE_EXTENSIONS }: Options = {}): Plugin => {
           const resolved: string = await resolvePath(specifier, {
             conditions: [format === 'esm' ? 'import' : 'require'],
             extensions,
-            url: pathe.resolve(absWorkingDir, metadata.entryPoint)
+            url: specifier.startsWith('.') ? source : pathe.dirname(source)
           })
 
-          const { name } = pathe.parse(specifier)
-          const { name: resolved_name } = pathe.parse(resolved)
+          // add extension to bare or relative specifier
+          // bare specifier => resolved contains '/node_modules/'
+          // relative specifier => resolved does not contain '/node_modules/'
+          if (/\/node_modules\//.test(resolved)) {
+            /**
+             * Path to `package.json` of package {@link resolved} references.
+             *
+             * @const {string} pkgfile
+             */
+            const pkgfile: string = await resolvePackageJSON(resolved, {
+              startingFrom: pathe.dirname(resolved)
+            })
 
-          // specifier resolved to a directory
-          if (name !== resolved_name) specifier += '/' + resolved_name
+            /**
+             * `package.json` of package {@link resolved} references.
+             *
+             * @const {PackageJson} pkg
+             */
+            const pkg: PackageJson = await readPackageJSON(pkgfile)
 
-          // add output file extension to specifier
-          specifier += ext
+            /**
+             * {@link pkg} entry point resolved.
+             *
+             * @const {string} main
+             */
+            const main: string = pathe.resolve(
+              absWorkingDir,
+              'node_modules',
+              pkg.name!,
+              pkg.main!
+            )
+
+            // update specifier if pkg does not have exports field
+            // and resolved is not pkg entry point
+            if (pkg.exports === undefined && resolved !== main) {
+              specifier = resolved.replace(/.+(node_modules\/)/, '')
+            }
+          } else {
+            // get basename of specifier and resolved
+            const { name } = pathe.parse(specifier)
+            const { name: resolved_name } = pathe.parse(resolved)
+
+            // specifier resolved to a directory
+            if (name !== resolved_name) specifier += '/' + resolved_name
+
+            // add output file extension to specifier
+            specifier += ext
+          }
 
           // replace specifier
           text = text.replace(

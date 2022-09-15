@@ -40,7 +40,10 @@ const extractStatements = (code: string = ''): Statement[] => {
   ].map(obj => ({
     code: obj.code,
     end: obj.end,
-    specifier: obj.type === 'dynamic' ? obj.expression : obj.specifier,
+    specifier:
+      obj.type === 'dynamic'
+        ? obj.expression.replace(/["']/g, '')
+        : obj.specifier,
     start: obj.start,
     type: obj.type
   }))

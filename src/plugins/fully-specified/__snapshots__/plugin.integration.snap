@@ -84,21 +84,26 @@ export { default as MIN_VALUE } from './min-value.mjs'
 
 exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled cjs files 1`] = `
 "require(\\"esbuild\\");
+require(\\"node:util\\");
 require(\\"pathe\\");
 require(\\"tsconfig-paths\\");
-require(\\"tsconfig-paths/lib/tsconfig-loader\\");
+require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
 require(\\"../src/config/constants.js\\");
 require(\\"../src/utils/extract-statements.cjs\\");
+require(\\"/tmp\\");
 "
 `;
 
 exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled esm files 1`] = `
 "import \\"esbuild\\";
+import \\"node:util\\";
 import \\"pathe\\";
 import \\"tsconfig-paths\\";
-import \\"tsconfig-paths/lib/tsconfig-loader\\";
+import \\"tsconfig-paths/lib/tsconfig-loader.js\\";
 import \\"../src/config/constants.js\\";
 import \\"../src/utils/extract-statements.mjs\\";
+import \\"/tmp\\";
+await import(\\"globby\\");
 const fizz = \\"buzz\\";
 export * from \\"../src/interfaces/index.mjs\\";
 export {

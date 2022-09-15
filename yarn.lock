@@ -904,6 +904,7 @@ __metadata:
     mlly: "npm:0.5.14"
     node-notifier: "npm:10.0.1"
     pathe: "npm:0.3.5"
+    pkg-types: "npm:0.3.5"
     postinstall-postinstall: "npm:2.1.0"
     prettier: "npm:2.7.1"
     prettier-plugin-sh: "npm:0.12.8"
@@ -5802,7 +5803,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.1.0":
+"jsonc-parser@npm:^3.2.0":
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
   checksum: dffa53dd8b8aa897575bcd31b767f1a5c90a0229902e4fcf7aaae73d11a2a343eee6f852d432f7f9328b14520f487805014c2284fbe358e904c41f004964b54a
@@ -7022,10 +7023,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:0.3.5, pathe@npm:^0.3.5":
+"pathe@npm:0.3.5":
   version: 0.3.5
   resolution: "pathe@npm:0.3.5"
   checksum: 2726188a624c6ff0db3e9d8a50286cb273973eedc8b4b444d884ed57b7c9d8ba3d0bebdb71165b0fddb7e46928f8246cb008354d2d089c7b29dee38a6be60090
+  languageName: node
+  linkType: hard
+
+"pathe@npm:^0.3.5, pathe@npm:^0.3.7":
+  version: 0.3.7
+  resolution: "pathe@npm:0.3.7"
+  checksum: 4469dc73fb6c8786bdb03822e96db4c8613d14de32b3447c0f2af328abe43e2abec7713f0867d9f483b309a431d8d806f9bc790ae3fd4ed4ee5d36f4b44ef772
   languageName: node
   linkType: hard
 
@@ -7089,14 +7097,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "pkg-types@npm:0.3.4"
+"pkg-types@npm:0.3.5, pkg-types@npm:^0.3.4":
+  version: 0.3.5
+  resolution: "pkg-types@npm:0.3.5"
   dependencies:
-    jsonc-parser: "npm:^3.1.0"
-    mlly: "npm:^0.5.13"
-    pathe: "npm:^0.3.5"
-  checksum: f8bbe1921199922ce531f7b040a42b8a1798e2b551e4da3c738ce808ece5d60107bd3b83cad762f8eb78ea9fefe79ca08abf72dd84c2f59f867e89c18f623696
+    jsonc-parser: "npm:^3.2.0"
+    mlly: "npm:^0.5.14"
+    pathe: "npm:^0.3.7"
+  checksum: 7f530744962e894b092a639a7ad8275b3d66eb6392c27cdd2f3b69f998d9c3f28eefe5ba66d9f6e1902928889106b956889f1cfb1f7d9983a3f0ed16eaea0977
   languageName: node
   linkType: hard
 

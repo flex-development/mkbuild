@@ -65,7 +65,7 @@ exports[`unit:utils/extractStatements > import > dynamic > should return dynamic
   {
     "code": "import('bar')",
     "end": 31,
-    "specifier": "'bar'",
+    "specifier": "bar",
     "start": 18,
     "type": "dynamic",
   },

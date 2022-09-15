@@ -10,5 +10,6 @@ export default {
   logLevel: 'silent',
   metafile: true,
   outdir: 'dist',
+  target: 'esnext',
   write: false
 } as BuildOptions

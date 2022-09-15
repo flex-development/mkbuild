@@ -3,6 +3,17 @@
  * @module mkbuild/config/constants
  */
 
+import { builtinModules } from 'node:module'
+
+/**
+ * Built-in modules.
+ *
+ * @const {Set<string>} BUILTIN_MODULES
+ */
+export const BUILTIN_MODULES: Set<string> = new Set<string>(
+  builtinModules.flatMap(m => [m, 'node:' + m])
+)
+
 /**
  * Regex pattern used to determine if [esbuild][1] should be used to build or
  * copy a source file.
