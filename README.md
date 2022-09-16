@@ -2,7 +2,7 @@
 
 [![conventional commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![module type: cjs+esm](https://img.shields.io/badge/module%20type-cjs%2besm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
+[![module type: esm](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
 [![npm](https://img.shields.io/npm/v/@flex-development/mkbuild.svg)](https://npmjs.com/package/@flex-development/mkbuild)
 [![license](https://img.shields.io/github/license/flex-development/mkbuild.svg)](LICENSE.md)
 [![typescript](https://badgen.net/badge/-/typescript?color=2a72bc&icon=typescript&label)](https://typescriptlang.org)

@@ -11,7 +11,8 @@ import { defineBuildConfig, type Config } from '#src'
  * @const {Config} config
  */
 const config: Config = defineBuildConfig({
-  entries: [{ format: 'esm' }, { ext: '.cjs', format: 'cjs' }]
+  entries: [{ format: 'esm' }],
+  esbuild: { treeShaking: true, tsconfig: 'tsconfig.build.json' }
 })
 
 export default config
