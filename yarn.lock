@@ -911,7 +911,7 @@ __metadata:
     postinstall-postinstall: "npm:2.1.0"
     prettier: "npm:2.7.1"
     prettier-plugin-sh: "npm:0.12.8"
-    pretty-bytes: "npm:5.6.0"
+    pretty-bytes: "npm:6.0.0"
     pretty-format: "npm:29.0.1"
     radash: "npm:7.1.0"
     react: "npm:18.2.0"
@@ -7209,10 +7209,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-bytes@npm:5.6.0":
-  version: 5.6.0
-  resolution: "pretty-bytes@npm:5.6.0"
-  checksum: daaf20c7847618fd7935051ffa3b6a6583048d09f0b49a31db66fdb792a77d23f5ae554d10ff1136c9f0bc76c9a4a110647955a16139be3d3ad57072dc9274b6
+"pretty-bytes@npm:6.0.0":
+  version: 6.0.0
+  resolution: "pretty-bytes@npm:6.0.0"
+  checksum: 9033b687324fe83d1a74b2c69637e4eb26693da76010a3446bb24bdec1508106ed930fcfe61a7661a227c32ea2e499b1aa0493fe370c844dfb329e4c7c3ff0ff
   languageName: node
   linkType: hard
 

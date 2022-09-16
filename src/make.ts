@@ -8,6 +8,8 @@ import * as color from 'colorette'
 import consola from 'consola'
 import { defu } from 'defu'
 import fse from 'fs-extra'
+import { globby } from 'globby'
+import { isNotJunk } from 'junk'
 import * as pathe from 'pathe'
 import type { PackageJson } from 'pkg-types'
 import pb from 'pretty-bytes'
@@ -48,9 +50,6 @@ async function make({ cwd, ...config }: Config = {}): Promise<Result[]> {
   const written: [string, Result[]][] = []
 
   try {
-    const { globby } = await import('globby')
-    const { isNotJunk } = await import('junk')
-
     // determine current working directory
     cwd = pathe.resolve(process.cwd(), cwd ?? '.')
 
