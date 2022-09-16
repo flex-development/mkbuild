@@ -14,7 +14,7 @@ import * as color from 'colorette'
 import consola from 'consola'
 import fse from 'fs-extra'
 import { globby } from 'globby'
-import fs from 'node:fs/promises'
+import fs from 'node:fs'
 import path from 'node:path'
 import * as pathe from 'pathe'
 import type { PackageJson } from 'pkg-types'
@@ -28,95 +28,119 @@ vi.mock('../utils/esbuilder')
 vi.mock('../utils/write')
 
 describe('functional:make', () => {
-  const pattern: Config['pattern'] = '*'
-  const pkg: PackageJson = { name: 'test' }
-  const source: string = '__fixtures__'
-  const sourcefiles: string[] = []
-  const entries: Config['entries'] = [
-    { source },
-    { declaration: false, ext: '.cjs', format: 'cjs' },
-    { format: 'iife' }
-  ]
-
-  let results: Result[]
-
-  beforeAll(async () => {
-    const dir: string = path.resolve(source)
-
-    for (const file of await globby(pattern, { cwd: dir })) {
-      const content: string = await fs.readFile(path.resolve(dir, file), 'utf8')
-      const sourcefile: string = path.resolve(dir, file)
-
-      vfs.mkdirpSync(path.dirname(sourcefile))
-      vfs.writeFileSync(sourcefile, content)
-
-      sourcefiles.push(file)
-    }
-
-    vfs.writeFileSync('package.json', JSON.stringify(pkg))
-  })
-
-  beforeEach(async () => {
-    ;(loadBuildConfig as unknown as Spy).mockResolvedValue({ entries, pattern })
+  beforeEach(() => {
     consola.mockTypes(() => vi.fn())
-    results = await testSubject()
   })
 
-  afterAll(() => {
-    vfs.reset()
+  describe('error handling', () => {
+    it('should print build error', async () => {
+      // Act
+      await testSubject()
+
+      // Expect
+      expect(consola.error).toHaveBeenCalledOnce()
+    })
   })
 
-  it('should determine current working directory', () => {
-    expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), '.')
-  })
+  describe('success', () => {
+    const pattern: Config['pattern'] = '*'
+    const pkg: PackageJson = { name: 'test' }
+    const source: string = '__fixtures__'
+    const sourcefiles: string[] = []
+    const entries: Config['entries'] = [
+      { source },
+      { declaration: false, ext: '.cjs', format: 'cjs' },
+      { format: 'iife' }
+    ]
 
-  it('should load build config from current working directory', () => {
-    expect(loadBuildConfig).toHaveBeenCalledTimes(1)
-    expect(loadBuildConfig).toHaveBeenCalledWith(process.cwd())
-  })
+    let results: Result[]
 
-  it('should load package.json from current working directory', () => {
-    expect(fse.readJson).toHaveBeenCalledTimes(1)
-    expect(fse.readJson).toHaveBeenCalledWith(path.resolve('package.json'))
-  })
+    beforeAll(async () => {
+      const dir: string = path.resolve(source)
 
-  it('should print build start info', () => {
-    // Arrange
-    const message: string = `Building ${pkg.name}`
+      for (const file of await globby(pattern, { cwd: dir })) {
+        const content: string = fs.readFileSync(path.resolve(dir, file), 'utf8')
+        const sourcefile: string = path.resolve(dir, file)
 
-    // Expect
-    expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
-  })
+        vfs.mkdirpSync(path.dirname(sourcefile))
+        vfs.writeFileSync(sourcefile, content)
 
-  it('should clean output directories', () => {
-    expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), 'dist')
-    expect(fse.unlink).toHaveBeenCalledTimes(1)
-    expect(fse.emptyDir).toHaveBeenCalledTimes(1)
-    expect(fse.mkdirp).toHaveBeenNthCalledWith(1, path.resolve('dist'))
-  })
+        sourcefiles.push(file)
+      }
 
-  it('should build source files', () => {
-    expect(esbuilder).toHaveBeenCalledTimes(sourcefiles.length)
-  })
+      vfs.writeFileSync('package.json', JSON.stringify(pkg))
+    })
 
-  it('should write build results', () => {
-    expect(write).toHaveBeenCalledTimes(sourcefiles.length)
-  })
+    beforeEach(async () => {
+      ;(loadBuildConfig as unknown as Spy).mockResolvedValue({
+        entries,
+        pattern
+      })
 
-  it('should print build done info', () => {
-    // Arrange
-    const message: string = `Build succeeded for ${pkg.name}`
+      results = await testSubject()
+    })
 
-    // Expect
-    expect(consola.success).toHaveBeenCalledWith(color.green(message))
-  })
+    afterAll(() => {
+      vfs.reset()
+    })
 
-  it('should print build analysis', () => {
-    expect(analyzeResults).toHaveBeenCalledTimes(entries.length)
-    expect(consola.log).toHaveBeenCalledWith(analyzeResults('dist', results))
-  })
+    it('should determine current working directory', () => {
+      expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), '.')
+    })
 
-  it('should print total build size', () => {
-    expect(consola.log).lastCalledWith('Σ Total build size:', color.cyan('0 B'))
+    it('should load build config from current working directory', () => {
+      expect(loadBuildConfig).toHaveBeenCalledTimes(1)
+      expect(loadBuildConfig).toHaveBeenCalledWith(process.cwd())
+    })
+
+    it('should load package.json from current working directory', () => {
+      expect(fse.readJson).toHaveBeenCalledTimes(1)
+      expect(fse.readJson).toHaveBeenCalledWith(path.resolve('package.json'))
+    })
+
+    it('should print build start info', () => {
+      // Arrange
+      const message: string = `Building ${pkg.name}`
+
+      // Expect
+      expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
+    })
+
+    it('should clean output directories', () => {
+      expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), 'dist')
+      expect(fse.unlink).toHaveBeenCalledTimes(1)
+      expect(fse.emptyDir).toHaveBeenCalledTimes(1)
+      expect(fse.mkdirp).toHaveBeenNthCalledWith(1, path.resolve('dist'))
+    })
+
+    it('should build source files', () => {
+      expect(esbuilder).toHaveBeenCalledTimes(sourcefiles.length)
+    })
+
+    it('should write build results', () => {
+      expect(write).toHaveBeenCalledTimes(sourcefiles.length)
+    })
+
+    it('should print build done info', () => {
+      // Arrange
+      const message: string = `Build succeeded for ${pkg.name}`
+
+      // Expect
+      expect(consola.success).toHaveBeenCalledWith(color.green(message))
+    })
+
+    it('should print build analysis', () => {
+      expect(analyzeResults).toHaveBeenCalledTimes(entries.length)
+      expect(consola.log).toHaveBeenCalledWith(analyzeResults('dist', results))
+    })
+
+    it('should print total build size', () => {
+      // Arrange
+      const bytes: string = color.cyan('0 B')
+
+      // Expect
+
+      expect(consola.log).lastCalledWith('Σ Total build size:', bytes)
+    })
   })
 })

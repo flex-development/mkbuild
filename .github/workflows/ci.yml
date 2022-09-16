@@ -69,7 +69,6 @@ jobs:
         env:
           NODE_ENV: test
           NODE_NO_WARNINGS: 1
-          NODE_OPTIONS: --es-module-specifier-resolution=node
           TS_NODE_PROJECT: ./tsconfig.tsnode.json
           VITEST_SEGFAULT_RETRY: 3
       - id: pack
@@ -78,5 +77,4 @@ jobs:
         env:
           NODE_ENV: production
           NODE_NO_WARNINGS: 1
-          NODE_OPTIONS: --es-module-specifier-resolution=node
           TS_NODE_PROJECT: ./tsconfig.tsnode.json

@@ -33,10 +33,7 @@
     "scripts/postinstall.sh",
     "src"
   ],
-  "bin": {
-    "mkbuild": "./dist/cli.cjs",
-    "mkbuild-esm": "./dist/cli.mjs"
-  },
+  "bin": "./dist/cli.mjs",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -88,7 +85,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "node --loader=./loader.mjs --input-type=module --eval \"(await import('./src/make')).default()\"",
+    "build": "node --loader=./loader.mjs ./src/cli",
     "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn test && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
     "check:format": "prettier --check .",
     "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
@@ -128,6 +125,7 @@
     "pkg-types": "0.3.5",
     "postinstall-postinstall": "2.1.0",
     "pretty-bytes": "5.6.0",
+    "sade": "1.8.1",
     "tsconfig-paths": "4.1.0"
   },
   "devDependencies": {
@@ -218,6 +216,7 @@
     "mlly": "patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch"
   },
   "engines": {
+    "node": ">=14",
     "yarn": "4.0.0-rc.14"
   },
   "packageManager": "yarn@4.0.0-rc.14",
