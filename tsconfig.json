@@ -17,7 +17,7 @@
     "isolatedModules": false,
     "jsx": "react-jsxdev",
     "lib": ["dom", "es2021"],
-    "module": "node16",
+    "module": "NodeNext",
     "moduleResolution": "node",
     "newLine": "lf",
     "noEmit": true,

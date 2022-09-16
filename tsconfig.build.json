@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
-    "module": "node16",
-    "moduleResolution": "node16",
+    "moduleResolution": "NodeNext",
     "rootDir": "./src"
   },
   "exclude": ["**/__mocks__/**", "**/__snapshots__/**", "**/__tests__/**"],
