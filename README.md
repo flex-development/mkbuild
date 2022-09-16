@@ -6,7 +6,7 @@
 [![license](https://img.shields.io/github/license/flex-development/mkbuild.svg)](LICENSE.md)
 [![typescript](https://badgen.net/badge/-/typescript?color=2a72bc&icon=typescript&label)](https://typescriptlang.org)
 
-> **TODO**: Update project description.
+> An [esbuild][1] based file-to-file transformer and bundler.
 
 ## Install
 
@@ -19,7 +19,7 @@ yarn add @flex-development/mkbuild
 To install from the GitHub Package Registry, setup a `.npmrc` or `.yarnrc.yml`
 file to authenticate with the registry.
 
-A [Personal Access Token with the `read:packages` scope][1] is required.
+A [Personal Access Token with the `read:packages` scope][2] is required.
 
 #### `.npmrc`
 
@@ -43,7 +43,7 @@ npmScopes:
 
 ### Git
 
-See [npm-install][2] or [Git - Protocols | Yarn][3] for details on requesting a
+See [npm-install][3] or [Git - Protocols | Yarn][4] for details on requesting a
 specific branch, commit, or tag.
 
 #### NPM
@@ -66,7 +66,8 @@ yarn add @flex-development/mkbuild@flex-development/mkbuild
 
 **TODO**: Update documentation.
 
-[1]:
+[1]: https://esbuild.github.io
+[2]:
     https://docs.github.com/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries
-[2]: https://docs.npmjs.com/cli/v8/commands/npm-install#description
-[3]: https://yarnpkg.com/features/protocols#git
+[3]: https://docs.npmjs.com/cli/v8/commands/npm-install#description
+[4]: https://yarnpkg.com/features/protocols#git
