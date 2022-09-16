@@ -1,6 +1,6 @@
 {
   "name": "@flex-development/mkbuild",
-  "description": "File-to-file transformer and bundler",
+  "description": "An esbuild based file-to-file transformer and bundler",
   "version": "0.0.0",
   "keywords": [
     "bundle",
@@ -29,6 +29,8 @@
   "type": "module",
   "files": [
     "dist",
+    "patches",
+    "scripts/postinstall.sh",
     "src"
   ],
   "bin": {
@@ -44,6 +46,14 @@
       "import": "./dist/config/*.mjs",
       "require": "./dist/config/*.cjs"
     },
+    "./enums": {
+      "import": "./dist/enums/index.mjs",
+      "require": "./dist/enums/index.cjs"
+    },
+    "./enums/*": {
+      "import": "./dist/enums/*.mjs",
+      "require": "./dist/enums/*.cjs"
+    },
     "./interfaces": {
       "import": "./dist/interfaces/index.mjs",
       "require": "./dist/interfaces/index.cjs"
@@ -52,16 +62,36 @@
       "import": "./dist/interfaces/*.mjs",
       "require": "./dist/interfaces/*.cjs"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./make": {
+      "import": "./dist/make.mjs",
+      "require": "./dist/make.cjs"
+    },
+    "./plugins/*": {
+      "import": "./dist/plugins/*.mjs",
+      "require": "./dist/plugins/*.cjs"
+    },
+    "./types": {
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.cjs"
+    },
+    "./types/*": {
+      "import": "./dist/types/*.mjs",
+      "require": "./dist/types/*.cjs"
+    },
+    "./utils/*": {
+      "import": "./dist/utils/*.mjs",
+      "require": "./dist/utils/*.cjs"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "echo todo: yarn build",
+    "build": "node --loader=./loader.mjs --input-type=module --eval \"(await import('./src/make')).default()\"",
     "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn test && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
     "check:format": "prettier --check .",
-    "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,jsonc,md,mjs,ts,yml --max-warnings 0 .",
+    "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
     "check:spelling": "cspell lint --color --no-progress --relative $@ \"**\"",
     "check:types": "NODE_OPTIONS='' tsc -p tsconfig.json",
     "check:upgrades": "yarn upgrade-interactive",
@@ -74,10 +104,9 @@
     "fix:dedupe": "yarn dedupe --strategy=highest",
     "fix:format": "prettier --cache --write .",
     "fix:lint": "yarn check:lint --cache --fix",
-    "postinstall": "chmod +x .husky/* && husky install",
-    "postpack": "toggle-scripts +postinstall",
+    "postinstall": "bash ./scripts/postinstall.sh",
     "postpublish": "toggle-scripts +prepack",
-    "prepack": "toggle-scripts -postinstall && yarn build",
+    "prepack": "yarn build",
     "prepublishOnly": "toggle-scripts -prepack",
     "recommended-bump": "conventional-recommended-bump --preset=conventionalcommits --tag-prefix=$(jq .tagPrefix package.json -r) --verbose",
     "release": "bash ./scripts/release.sh",
@@ -86,17 +115,27 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@flex-development/tutils": "5.0.0",
-    "esbuild": "0.15.6",
+    "colorette": "2.0.19",
+    "consola": "2.15.3",
+    "cosmiconfig": "7.0.1",
+    "defu": "6.1.0",
+    "esbuild": "0.15.7",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
-    "mlly": "0.5.14"
+    "junk": "4.0.0",
+    "mlly": "0.5.14",
+    "pathe": "0.3.5",
+    "pkg-types": "0.3.5",
+    "postinstall-postinstall": "2.1.0",
+    "pretty-bytes": "5.6.0",
+    "tsconfig-paths": "4.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "17.1.1",
     "@commitlint/config-conventional": "17.1.0",
     "@commitlint/types": "17.0.0",
     "@faker-js/faker": "7.4.0",
+    "@flex-development/tutils": "5.0.0",
     "@graphql-eslint/eslint-plugin": "3.10.7",
     "@types/chai": "4.3.3",
     "@types/conventional-changelog": "3.1.1",
@@ -110,11 +149,13 @@
     "@types/is-ci": "3.0.0",
     "@types/node-notifier": "8.0.2",
     "@types/prettier": "2.7.0",
+    "@types/react": "18.0.20",
+    "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.35.1",
     "@typescript-eslint/parser": "5.35.1",
     "@vates/toggle-scripts": "1.0.0",
-    "@vitest/coverage-c8": "0.22.1",
-    "@vitest/ui": "0.22.1",
+    "@vitest/coverage-c8": "0.23.1",
+    "@vitest/ui": "0.23.1",
     "chai": "4.3.6",
     "conventional-changelog-cli": "2.2.2",
     "conventional-recommended-bump": "6.1.0",
@@ -132,6 +173,7 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.0.1",
+    "eslint-plugin-react": "7.31.8",
     "eslint-plugin-unicorn": "43.0.2",
     "eslint-plugin-yml": "1.1.0",
     "graphql": "16.6.0",
@@ -141,30 +183,39 @@
     "is-ci": "3.0.1",
     "jsonc-eslint-parser": "2.1.0",
     "lint-staged": "13.0.3",
+    "memfs": "3.4.7",
     "node-notifier": "10.0.1",
     "prettier": "2.7.1",
     "prettier-plugin-sh": "0.12.8",
     "pretty-format": "29.0.1",
+    "radash": "7.1.0",
+    "react": "18.2.0",
+    "styled-components": "5.3.5",
     "trash-cli": "5.0.0",
     "ts-dedent": "2.2.0",
     "ts-node": "10.9.1",
     "tsconfig": "7.0.0",
-    "tsconfig-paths": "4.1.0",
     "typescript": "4.8.2",
     "version-bump-prompt": "6.1.0",
     "vite": "3.0.9",
     "vite-tsconfig-paths": "3.5.0",
-    "vitest": "0.22.1",
+    "vitest": "0.23.1",
     "vitest-github-actions-reporter": "0.8.1",
     "yaml-eslint-parser": "1.1.0"
   },
-  "optionalDependencies": {
-    "tsconfig-paths": ">=4.1.0",
+  "peerDependencies": {
     "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
-    "graphql-config": "patch:graphql-config@npm%3A4.3.5#~/.yarn/patches/graphql-config-npm-4.3.5-8989a92a82.patch"
+    "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
+    "graphql-config": "patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch",
+    "mlly": "patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch"
   },
   "engines": {
     "yarn": "4.0.0-rc.14"

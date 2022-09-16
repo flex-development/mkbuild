@@ -191,7 +191,7 @@ const config = {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-extra-non-null-assertion': 2,
     '@typescript-eslint/no-extra-parens': 0,
-    '@typescript-eslint/no-extra-semi': 2,
+    '@typescript-eslint/no-extra-semi': 0,
     '@typescript-eslint/no-extraneous-class': [
       2,
       {
@@ -530,7 +530,6 @@ const config = {
     'unicorn/better-regex': [2, { sortCharacterClasses: true }],
     'unicorn/catch-error-name': [2, { name: 'e' }],
     'unicorn/consistent-destructuring': 2,
-    'unicorn/consistent-function-scoping': 2,
     'unicorn/custom-error-definition': 2,
     'unicorn/empty-brace-spaces': 2,
     'unicorn/error-message': 2,
@@ -842,7 +841,7 @@ const config = {
       }
     },
     {
-      files: ['*.json', '*.jsonc'],
+      files: ['*.json', '*.json5', '*.jsonc'],
       extends: ['plugin:jsonc/prettier'],
       parser: 'jsonc-eslint-parser',
       plugins: ['jsonc'],
@@ -918,7 +917,7 @@ const config = {
       }
     },
     {
-      files: ['*.jsonc'],
+      files: ['*.json5', '*.jsonc'],
       rules: {
         'jsonc/no-comments': 0
       }
@@ -1027,7 +1026,6 @@ const config = {
         'promise/prefer-await-to-callbacks': 0,
         'promise/valid-params': 0,
         'unicorn/consistent-destructuring': 0,
-        'unicorn/consistent-function-scoping': 0,
         'unicorn/explicit-length-check': 0,
         'unicorn/no-array-for-each': 0,
         'unicorn/prefer-at': 0,

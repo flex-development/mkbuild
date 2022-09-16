@@ -38,6 +38,10 @@
   description: dependency updates
   color: 74cefc
 
+- name: scope:esbuild
+  description: esbuild integration
+  color: 74cefc
+
 - name: scope:esm
   description: es modules
   color: 74cefc
@@ -48,6 +52,14 @@
 
 - name: scope:options
   description: options
+  color: 74cefc
+
+- name: scope:patches
+  description: patches
+  color: 74cefc
+
+- name: scope:plugins
+  description: custom esbuild plugins
   color: 74cefc
 
 - name: scope:release

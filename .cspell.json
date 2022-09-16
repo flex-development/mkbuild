@@ -24,6 +24,7 @@
     "LICENSE.md",
     "__tests__/report.json",
     "dist/",
+    "patches/",
     "yarn.lock"
   ],
   "ignoreRegExpList": [],

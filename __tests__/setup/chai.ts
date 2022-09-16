@@ -6,6 +6,6 @@
 
 import chai from 'chai'
 
-// Configure chai
+// configure chai
 chai.config.includeStack = true
 chai.config.truncateThreshold = 0

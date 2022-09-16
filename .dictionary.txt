@@ -1,4 +1,5 @@
 ardatan
+atoi
 autocrlf
 autosetuprebase
 bdel
@@ -10,13 +11,16 @@ chbfeat
 chbfix
 chbhotfix
 chbrelease
+colorette
 commitlintrc
 dawidd
 dedupe
+defu
 dessant
 dohm
 esbenp
 esbuild
+esbuilder
 fbca
 fpnv
 globby
@@ -24,9 +28,11 @@ gpgsign
 graphqlrc
 hmarr
 iife
+jsxdev
 keyid
 larsgw
 lcov
+memfs
 micnncim
 mkbuild
 mlly
@@ -35,6 +41,8 @@ npmrc
 nums
 nvmrc
 ohmyzsh
+outdirs
+pathe
 pkgs
 preid
 safecrlf

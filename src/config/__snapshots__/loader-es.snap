@@ -1,0 +1,61 @@
+// Vitest Snapshot v1
+
+exports[`unit:config/esLoader > should return config from .cts file 1`] = `
+{
+  "cwd": "__fixtures__/configs/cts",
+  "entries": [
+    {
+      "ext": ".cjs",
+      "format": "cjs",
+    },
+  ],
+}
+`;
+
+exports[`unit:config/esLoader > should return config from .js file 1`] = `
+{
+  "cwd": "__fixtures__/configs/js",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`unit:config/esLoader > should return config from .mjs file 1`] = `
+{
+  "cwd": "__fixtures__/configs/mjs",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`unit:config/esLoader > should return config from .mts file 1`] = `
+{
+  "cwd": "__fixtures__/configs/mts",
+  "entries": [
+    {
+      "format": "esm",
+    },
+  ],
+}
+`;
+
+exports[`unit:config/esLoader > should return config from .ts file 1`] = `
+{
+  "cwd": "__fixtures__/configs/ts",
+  "entries": [
+    {
+      "format": "esm",
+    },
+    {
+      "ext": ".cjs",
+      "format": "cjs",
+    },
+  ],
+}
+`;

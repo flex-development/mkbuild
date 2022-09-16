@@ -13,10 +13,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jest-snapshot]": {
-    "editor.rulers": [120],
+    "editor.rulers": [130],
     "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 120,
-    "rewrap.wrappingColumn": 120
+    "editor.wordWrapColumn": 130,
+    "rewrap.wrappingColumn": 130
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -31,7 +31,11 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[shellscript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.rulers": [100],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 100,
+    "rewrap.wrappingColumn": 100
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -58,9 +62,11 @@
       "cts",
       "gql",
       "json",
+      "json5",
       "jsonc",
       "md",
       "mjs",
+      "mts",
       "ts",
       "yml"
     ],
@@ -114,7 +120,7 @@
       "icon": "graphql"
     },
     {
-      "extensions": ["tsnode.json"],
+      "extensions": ["build.json", "tsnode.json"],
       "format": "svg",
       "icon": "tsconfig"
     },
@@ -139,6 +145,11 @@
       "extensions": ["__snapshots__"],
       "format": "svg",
       "icon": "temp"
+    },
+    {
+      "extensions": ["patches"],
+      "format": "svg",
+      "icon": "include"
     },
     {
       "extensions": ["setup"],

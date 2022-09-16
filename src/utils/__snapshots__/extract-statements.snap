@@ -1,0 +1,121 @@
+// Vitest Snapshot v1
+
+exports[`unit:utils/extractStatements > export > should return declaration export statement array 1`] = `
+[
+  {
+    "code": "export const foo",
+    "end": 16,
+    "specifier": undefined,
+    "start": 0,
+    "type": "declaration",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > export > should return default export statement array 1`] = `
+[
+  {
+    "code": "export default ",
+    "end": 15,
+    "specifier": undefined,
+    "start": 0,
+    "type": "default",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > export > should return named export statement array 1`] = `
+[
+  {
+    "code": "export { bar, baz }",
+    "end": 19,
+    "specifier": undefined,
+    "start": 0,
+    "type": "named",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > export > should return star export statement array 1`] = `
+[
+  {
+    "code": "export * from '#src'",
+    "end": 20,
+    "specifier": "#src",
+    "start": 0,
+    "type": "star",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > export > should return type export statement array 1`] = `
+[
+  {
+    "code": "export type OrNull",
+    "end": 18,
+    "specifier": undefined,
+    "start": 0,
+    "type": "declaration",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > import > dynamic > should return dynamic import statement array 1`] = `
+[
+  {
+    "code": "import('bar')",
+    "end": 31,
+    "specifier": "bar",
+    "start": 18,
+    "type": "dynamic",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > import > static > should return default import statement array 1`] = `
+[
+  {
+    "code": "import foo from 'baz'",
+    "end": 21,
+    "specifier": "baz",
+    "start": 0,
+    "type": "static",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > import > static > should return named import statement array 1`] = `
+[
+  {
+    "code": "import { bar } from 'baz'",
+    "end": 25,
+    "specifier": "baz",
+    "start": 0,
+    "type": "static",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > require > should return require statement array 1`] = `
+[
+  {
+    "code": "require('bar')",
+    "end": 14,
+    "specifier": "bar",
+    "start": 0,
+    "type": "require",
+  },
+]
+`;
+
+exports[`unit:utils/extractStatements > require > should return require.resolve statement array 1`] = `
+[
+  {
+    "code": "require.resolve('baz')",
+    "end": 22,
+    "specifier": "baz",
+    "start": 0,
+    "type": "require.resolve",
+  },
+]
+`;

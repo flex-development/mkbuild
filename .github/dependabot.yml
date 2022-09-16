@@ -27,6 +27,8 @@ updates:
       prefix: build
       include: scope
     ignore:
+      - dependency-name: junk
+      - dependency-name: pretty-bytes
       - dependency-name: typescript
     labels:
       - scope:dependencies
