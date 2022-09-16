@@ -915,6 +915,7 @@ __metadata:
     pretty-format: "npm:29.0.1"
     radash: "npm:7.1.0"
     react: "npm:18.2.0"
+    sade: "npm:1.8.1"
     styled-components: "npm:5.3.5"
     trash-cli: "npm:5.0.0"
     ts-dedent: "npm:2.2.0"
@@ -934,8 +935,7 @@ __metadata:
     typescript:
       optional: true
   bin:
-    mkbuild: ./dist/cli.cjs
-    mkbuild-esm: ./dist/cli.mjs
+    mkbuild: ./dist/cli.mjs
   languageName: unknown
   linkType: soft
 
@@ -6483,6 +6483,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mri@npm:^1.1.0":
+  version: 1.2.0
+  resolution: "mri@npm:1.2.0"
+  checksum: f459cd82edbe77b6296cc59a5005c351cd52f6a6d733539ae91f6dbc61a23c6e558bf9dea2703212b2caf1b0803852f357325612ba848795686577432740bd49
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^1.0.0":
   version: 1.0.1
   resolution: "mrmime@npm:1.0.1"
@@ -7688,6 +7695,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.1.0"
   checksum: f16db58531d9fdc9e7cce0e33676cf791128db889304247249ba434885d35b1d173eed68ac255fca770da4c0277f97727c5fbbdc659b0b1f04d10fe42ed0dc67
+  languageName: node
+  linkType: hard
+
+"sade@npm:1.8.1":
+  version: 1.8.1
+  resolution: "sade@npm:1.8.1"
+  dependencies:
+    mri: "npm:^1.1.0"
+  checksum: da67f42ec984b58d0eac48d160e4da6d966416bafb88c37556f41f8a52c1ff897ca065984da3d62557ed8622c9999493f133ed6af63e4ea5191342029f37455c
   languageName: node
   linkType: hard
 
