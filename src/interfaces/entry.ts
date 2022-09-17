@@ -34,6 +34,11 @@ interface Entry {
   format: Format
 
   /**
+   * Bundle output file name.
+   */
+  name?: string
+
+  /**
    * Output directory name.
    */
   outdir: string
