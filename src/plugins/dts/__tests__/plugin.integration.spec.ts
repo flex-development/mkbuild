@@ -20,7 +20,12 @@ describe('integration:plugins/dts', () => {
 
   beforeEach(() => {
     subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
+    options = {
+      ...ESBUILD_OPTIONS,
+      logLevel: 'silent',
+      plugins: [subject],
+      sourcemap: true
+    }
   })
 
   describe('esbuild', () => {
@@ -67,16 +72,16 @@ describe('integration:plugins/dts', () => {
           loader: { '.cts': 'ts' },
           outExtension: { '.js': '.cjs' }
         })
-        outputFiles[1]!.path = path.format({
+        outputFiles[2]!.path = path.format({
           dir: ESBUILD_OPTIONS.outdir,
-          name: path.basename(outputFiles[1]!.path)
+          name: path.basename(outputFiles[2]!.path)
         })
 
         // Expect
         expect(errors).to.be.an('array').of.length(0)
         expect(warnings).to.be.an('array').of.length(0)
-        expect(outputFiles).to.be.an('array').of.length(2)
-        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+        expect(outputFiles).to.be.an('array').of.length(3)
+        expect(pick(outputFiles[2]!, ['path', 'text'])).toMatchSnapshot()
       })
 
       it('should add .d.cts output for copied file', async () => {
@@ -117,16 +122,16 @@ describe('integration:plugins/dts', () => {
           loader: { '.mts': 'ts' },
           outExtension: { '.js': '.mjs' }
         })
-        outputFiles[1]!.path = path.format({
+        outputFiles[2]!.path = path.format({
           dir: ESBUILD_OPTIONS.outdir,
-          name: path.basename(outputFiles[1]!.path)
+          name: path.basename(outputFiles[2]!.path)
         })
 
         // Expect
         expect(errors).to.be.an('array').of.length(0)
         expect(warnings).to.be.an('array').of.length(0)
-        expect(outputFiles).to.be.an('array').of.length(2)
-        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+        expect(outputFiles).to.be.an('array').of.length(3)
+        expect(pick(outputFiles[2]!, ['path', 'text'])).toMatchSnapshot()
       })
 
       it('should add .d.mts output for copied file', async () => {
@@ -166,16 +171,16 @@ describe('integration:plugins/dts', () => {
           format: 'esm',
           loader: { '.ts': 'ts' }
         })
-        outputFiles[1]!.path = path.format({
+        outputFiles[2]!.path = path.format({
           dir: ESBUILD_OPTIONS.outdir,
-          name: path.basename(outputFiles[1]!.path)
+          name: path.basename(outputFiles[2]!.path)
         })
 
         // Expect
         expect(errors).to.be.an('array').of.length(0)
         expect(warnings).to.be.an('array').of.length(0)
-        expect(outputFiles).to.be.an('array').of.length(2)
-        expect(pick(outputFiles[1]!, ['path', 'text'])).toMatchSnapshot()
+        expect(outputFiles).to.be.an('array').of.length(3)
+        expect(pick(outputFiles[2]!, ['path', 'text'])).toMatchSnapshot()
       })
     })
   })
