@@ -12,7 +12,12 @@ import { defineBuildConfig, type Config } from '#src'
  */
 const config: Config = defineBuildConfig({
   entries: [{ format: 'esm' }],
-  esbuild: { treeShaking: true, tsconfig: 'tsconfig.build.json' }
+  esbuild: {
+    sourcemap: 'external',
+    sourcesContent: false,
+    treeShaking: true,
+    tsconfig: 'tsconfig.build.json'
+  }
 })
 
 export default config
