@@ -4,6 +4,5 @@
  */
 
 import './chai'
-import './console'
 import './faker'
 import './pf'

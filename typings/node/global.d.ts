@@ -1,5 +1,3 @@
-declare global {
-  declare var restoreConsole: () => void
-}
+declare global {}
 
 export {}
