@@ -12,7 +12,7 @@ interface Entry {
   /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    */
-  declaration: boolean
+  declaration?: boolean
 
   /**
    * Output file extension.
