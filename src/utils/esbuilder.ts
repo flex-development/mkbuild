@@ -24,7 +24,6 @@ import * as pathe from 'pathe'
  *
  * @todo support bundling
  * @todo support code splitting
- * @todo support sourcemaps
  *
  * @async
  *
@@ -55,9 +54,6 @@ const esbuilder = async (
   delete options.bundle
   delete options.chunkNames
   delete options.external
-  delete options.sourceRoot
-  delete options.sourcemap
-  delete options.sourcesContent
   delete options.splitting
 
   // normalize options

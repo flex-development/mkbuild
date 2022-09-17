@@ -192,6 +192,11 @@ const plugin = (): Plugin => {
          */
         const output_ext: string = pathe.extname(output.path)
 
+        // do nothing if output file isn't javascript or typescript
+        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
+          return [output]
+        }
+
         /**
          * Relative path to output file.
          *
