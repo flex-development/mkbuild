@@ -15,17 +15,6 @@ export const BUILTIN_MODULES: Set<string> = new Set<string>(
 )
 
 /**
- * Regex pattern used to determine if [esbuild][1] should be used to build or
- * copy a source file.
- *
- * [1]: https://esbuild.github.io/api/#build-api
- *
- * @const {RegExp} ESBUILDER_REGEX
- */
-export const ESBUILDER_REGEX: RegExp =
-  /\.(c(j|t)s|d\.(c|m)?ts|json(5|c)?|jsx?|m(j|t)s|tsx?)$/
-
-/**
  * `require` and `require.resolve` statement regex.
  *
  * @todo prevent matching non-statements (e.g. comments, arbitrary strings)

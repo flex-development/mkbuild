@@ -4,7 +4,6 @@
  */
 
 import {
-  ESBUILDER_REGEX,
   EXT_JS_REGEX,
   EXT_TS_REGEX,
   RESOLVE_EXTENSIONS
@@ -14,7 +13,7 @@ import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import type { OutputMetadata } from '#src/types'
-import { build, type BuildOptions } from 'esbuild'
+import { build, type BuildOptions, type Loader } from 'esbuild'
 import * as pathe from 'pathe'
 
 /**
@@ -37,9 +36,6 @@ const esbuilder = async (
   entry: Entry,
   options: BuildOptions = {}
 ): Promise<Result[]> => {
-  // skip build
-  if (!ESBUILDER_REGEX.test(source.ext)) return []
-
   // remove forbidden options
   delete options.entryNames
   delete options.incremental
@@ -78,27 +74,48 @@ const esbuilder = async (
     }
   }
 
+  /**
+   * [Loader][1] configuration.
+   *
+   * [1]: https://esbuild.github.io/api/#loader
+   *
+   * @const {Record<string, Loader>} loader
+   */
+  const loader: Record<string, Loader> = {
+    '.cjs': entry.format === 'cjs' && !entry.bundle ? 'copy' : 'js',
+    '.css': entry.bundle ? 'css' : 'copy',
+    '.cts': 'ts',
+    '.d.cts': 'copy',
+    '.d.mts': 'copy',
+    '.d.ts': 'copy',
+    '.data': entry.bundle ? 'binary' : 'copy',
+    '.eot': 'copy',
+    '.gif': 'copy',
+    '.jpeg': 'copy',
+    '.jpg': 'copy',
+    '.js': 'js',
+    '.json': entry.bundle ? 'json' : 'copy',
+    '.json5': entry.bundle ? 'json' : 'copy',
+    '.jsonc': entry.bundle ? 'json' : 'copy',
+    '.jsx': 'jsx',
+    '.mjs': entry.format === 'esm' && !entry.bundle ? 'copy' : 'js',
+    '.mts': 'ts',
+    '.otf': 'copy',
+    '.png': 'copy',
+    '.svg': 'copy',
+    '.ts': 'ts',
+    '.tsx': 'tsx',
+    '.txt': entry.bundle ? 'text' : 'copy',
+    '.woff': 'copy',
+    '.woff2': 'copy'
+  }
+
   // build source
   const { errors, metafile, outputFiles, warnings } = await build({
     ...options,
     entryPoints: [`${entry.source}/${source.file}`],
     format: entry.format,
-    loader: {
-      '.cjs': entry.format === 'cjs' ? 'copy' : 'js',
-      '.cts': 'ts',
-      '.d.cts': 'copy',
-      '.d.mts': 'copy',
-      '.d.ts': 'copy',
-      '.js': 'js',
-      '.json': 'copy',
-      '.json5': 'copy',
-      '.jsonc': 'copy',
-      '.jsx': 'jsx',
-      '.mjs': entry.format === 'esm' ? 'copy' : 'js',
-      '.mts': 'ts',
-      '.ts': 'ts',
-      '.tsx': 'tsx'
-    },
+    loader: loader[source.ext] ? loader : { [source.ext]: 'copy' },
     metafile: true,
     outExtension: { ...options.outExtension, '.js': entry.ext },
     outfile: pathe.format({
