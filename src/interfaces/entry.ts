@@ -10,6 +10,13 @@ import type { Format } from 'esbuild'
  */
 interface Entry {
   /**
+   * Bundle files.
+   *
+   * @see https://esbuild.github.io/api/#bundle
+   */
+  bundle?: boolean
+
+  /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    */
   declaration?: boolean
@@ -32,7 +39,7 @@ interface Entry {
   outdir: string
 
   /**
-   * Name of directory containing source files.
+   * Name of directory containing source files or relative path to bundle input.
    */
   source: string
 }

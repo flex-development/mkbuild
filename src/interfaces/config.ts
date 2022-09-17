@@ -50,6 +50,7 @@ interface Config {
   esbuild?: Omit<
     BuildOptions,
     | 'absWorkingDir'
+    | 'bundle'
     | 'entryNames'
     | 'entryPoints'
     | 'format'
