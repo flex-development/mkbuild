@@ -55,7 +55,6 @@ interface Config {
     | 'entryPoints'
     | 'format'
     | 'incremental'
-    | 'loader'
     | 'metafile'
     | 'outdir'
     | 'outfile'
