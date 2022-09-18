@@ -58,7 +58,6 @@ interface Config {
     | 'metafile'
     | 'outdir'
     | 'outfile'
-    | 'publicPath'
     | 'stdin'
     | 'watch'
     | 'write'
