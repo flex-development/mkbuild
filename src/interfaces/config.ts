@@ -3,7 +3,7 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { BuildOptions } from 'esbuild'
+import type { EsbuildOptions } from '#src/types'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -47,21 +47,7 @@ interface Config {
    *
    * @default {}
    */
-  esbuild?: Omit<
-    BuildOptions,
-    | 'absWorkingDir'
-    | 'bundle'
-    | 'entryNames'
-    | 'entryPoints'
-    | 'format'
-    | 'incremental'
-    | 'metafile'
-    | 'outdir'
-    | 'outfile'
-    | 'stdin'
-    | 'watch'
-    | 'write'
-  >
+  esbuild?: EsbuildOptions
 
   /**
    * Custom implementations of `fs` methods.
