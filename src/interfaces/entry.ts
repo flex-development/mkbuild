@@ -3,6 +3,7 @@
  * @module mkbuild/interfaces/Entry
  */
 
+import type { OutputExtension } from '#src/types'
 import type { Format } from 'esbuild'
 
 /**
@@ -24,7 +25,7 @@ interface Entry {
   /**
    * Output file extension.
    */
-  ext: '.cjs' | '.js' | '.mjs'
+  ext: OutputExtension
 
   /**
    * Output file format.
