@@ -171,7 +171,7 @@ const plugin = (): Plugin => {
           if (!specifier) continue
 
           // do nothing if specifier references built-in module
-          if (BUILTIN_MODULES.has(specifier)) continue
+          if (BUILTIN_MODULES.includes(specifier)) continue
 
           // do nothing if specifier is absolute
           if (/^(\/|(data|file|https?):)/.test(specifier)) continue

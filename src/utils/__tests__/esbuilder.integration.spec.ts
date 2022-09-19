@@ -3,7 +3,7 @@
  * @module mkbuild/utils/tests/integration/esbuilder
  */
 
-import { BUILTIN_MODULES } from '#src/config/constants'
+import { BUILTIN_MODULES as BUILTINS } from '#src/config/constants'
 import type { Entry, SourceFile } from '#src/interfaces'
 import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
@@ -46,11 +46,7 @@ describe('integration:utils/esbuilder', () => {
         })
 
         it('should mark built-in modules as external', () => {
-          // Arrange
-          const builtins = [...BUILTIN_MODULES]
-
-          // Expect
-          expect(build.mock.lastCall![0]!.external).to.have.members(builtins)
+          expect(build.mock.lastCall![0]!.external).to.have.members(BUILTINS)
         })
       })
 

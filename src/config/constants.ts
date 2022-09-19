@@ -8,11 +8,11 @@ import { builtinModules } from 'node:module'
 /**
  * Built-in modules.
  *
- * @const {Set<string>} BUILTIN_MODULES
+ * @const {string[]} BUILTIN_MODULES
  */
-export const BUILTIN_MODULES: Set<string> = new Set<string>(
-  builtinModules.flatMap(m => [m, 'node:' + m])
-)
+export const BUILTIN_MODULES: string[] = builtinModules.flatMap(m => {
+  return [m, 'node:' + m]
+})
 
 /**
  * `require` and `require.resolve` statement regex.
