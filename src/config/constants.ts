@@ -29,7 +29,7 @@ export const EVAL_CJS_REGEX: RegExp =
  *
  * @const {RegExp} EXT_DTS_REGEX
  */
-export const EXT_DTS_REGEX: RegExp = /(\.d\.(c|m)?ts)$/
+export const EXT_DTS_REGEX: RegExp = /\.d\.(c|m)?ts$/
 
 /**
  * JavaScript file extension regex.

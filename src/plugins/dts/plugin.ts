@@ -16,7 +16,6 @@ import type {
   Plugin,
   PluginBuild
 } from 'esbuild'
-import fse from 'fs-extra'
 import * as pathe from 'pathe'
 import type {
   CompilerHost,
@@ -40,6 +39,8 @@ const plugin = (): Plugin => {
   /**
    * Generates TypeScript declarations.
    *
+   * @todo bundle declarations
+   *
    * [1]: https://esbuild.github.io/plugins
    * [2]: https://esbuild.github.io/api/#build-api
    *
@@ -59,7 +60,9 @@ const plugin = (): Plugin => {
     const {
       absWorkingDir = process.cwd(),
       entryPoints = [],
-      metafile
+      metafile,
+      outExtension: { '.js': ext = '.js' } = {},
+      outdir = '.'
     } = initialOptions
 
     // metafile required to get output metadata
@@ -100,22 +103,25 @@ const plugin = (): Plugin => {
       }))
     }
 
-    /**
-     * Source file paths and content.
-     *
-     * @const {[string, string][]} sources
-     */
-    const sources: [string, string][] = sourcefiles.map(sourcefile => [
-      pathe.resolve(absWorkingDir, sourcefile),
-      fse.readFileSync(sourcefile, 'utf8')
-    ])
+    // resolve source files
+    sourcefiles = sourcefiles.map(file => pathe.resolve(absWorkingDir, file))
+
+    // first letter before "js" in output file extension
+    const [cm = ''] = /(?<=^(\.min)?\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
 
     /**
-     * Virtual file system.
+     * Regex pattern matching output file extensions.
+     *
+     * @const {RegExp} OUTPUT_EXT_REGEX
+     */
+    const OUTPUT_EXT_REGEX: RegExp = /\.(c|m)?(j|t)s$/
+
+    /**
+     * Virtual file system for declaration files.
      *
      * @const {Map<string, string>} vfs
      */
-    const vfs: Map<string, string> = new Map(sources)
+    const vfs: Map<string, string> = new Map()
 
     /**
      * TypeScript module.
@@ -133,7 +139,11 @@ const plugin = (): Plugin => {
       allowJs: true,
       declaration: true,
       emitDeclarationOnly: true,
+      forceConsistentCasingInFileNames: true,
       incremental: true,
+      module: ts.ModuleKind.ESNext,
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+      outDir: pathe.resolve(absWorkingDir, outdir),
       skipLibCheck: true
     }
 
@@ -145,26 +155,7 @@ const plugin = (): Plugin => {
     const host: CompilerHost = ts.createCompilerHost(compilerOptions)
 
     /**
-     * Original `host.readFile` function.
-     *
-     * @const {CompilerHost['readFile']} _readFile
-     */
-    const _readFile: CompilerHost['readFile'] = host.readFile.bind(host)
-
-    /**
-     * Reads a file from {@link vfs}.
-     *
-     * Fallbacks to reading from the filesystem if `filename` isn't found.
-     *
-     * @param {string} filename - Name of file to write
-     * @return {string | undefined} File content
-     */
-    const readFile = (filename: string): string | undefined => {
-      return vfs.get(filename) ?? _readFile(filename)
-    }
-
-    /**
-     * Writes a file to {@link vfs}.
+     * Writes a declaration file to {@link vfs}.
      *
      * @param {string} filename - Name of file to write
      * @param {string} contents - Content to write
@@ -173,29 +164,31 @@ const plugin = (): Plugin => {
     const writeFile: WriteFileCallback = (
       filename: string,
       contents: string
-    ): void => void vfs.set(filename, contents)
+    ): void => {
+      return void vfs.set(
+        filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`),
+        contents
+      )
+    }
 
-    // override read and write file functions
-    host.readFile = readFile
+    // override write file function
     host.writeFile = writeFile
 
     // emit declarations to virtual file system
-    ts.createProgram([...vfs.keys()], compilerOptions, host).emit()
+    ts.createProgram(sourcefiles, compilerOptions, host).emit()
 
     // remap output files to insert declaration file outputs
     return void onEnd((result: BuildResult): void => {
       return void (result.outputFiles = result.outputFiles!.flatMap(output => {
         /**
-         * Output file extension.
+         * Absolute path to declaration file for {@link output}.
          *
-         * @const {string} output_ext
+         * @const {string} dtspath
          */
-        const output_ext: string = pathe.extname(output.path)
+        const dtspath: string = output.path.replace(OUTPUT_EXT_REGEX, '.d.$1ts')
 
-        // do nothing if output file isn't javascript or typescript
-        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
-          return [output]
-        }
+        // do nothing if missing declaration file
+        if (!vfs.has(dtspath)) return [output]
 
         /**
          * Relative path to output file.
@@ -214,46 +207,11 @@ const plugin = (): Plugin => {
         const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
 
         /**
-         * Relative path to source file.
-         *
-         * **Note**: Relative to {@link absWorkingDir}.
-         *
-         * @const {string | undefined} entryPoint
-         */
-        const entryPoint: string | undefined =
-          // because this is a custom plugin for this project, the use cases for
-          // this plugin can be narrowed down so that only a single entry point
-          // is ever passed to entryPoints (and possibly sourcefiles)
-          metadata.entryPoint ?? sourcefiles[0]!
-
-        // no entry point => source file was not js or ts, or was a dts file
-        /* c8 ignore next */ if (!entryPoint) return [output]
-        /* c8 ignore next 6 */
-        /**
-         * Declaration filename.
-         *
-         * @const {string} dtsfile
-         */
-        const dtsfile: string = pathe
-          .resolve(absWorkingDir, entryPoint)
-          .replace(/\.(c|m)?(j|t)s$/, '.d.$1ts')
-
-        /**
          * Declaration file content.
          *
          * @const {string} declarations
          */
-        const declarations: string = vfs.get(dtsfile)!
-
-        // first letter before "js" in output file extension
-        const [cm = ''] = /(?<=^\.)(c|m)(?=[jt]s$)/.exec(output_ext) ?? []
-
-        /**
-         * Output extension regex.
-         *
-         * @const {RegExp} extregex
-         */
-        const extregex: RegExp = new RegExp('\\' + output_ext + '$')
+        const declarations: string = vfs.get(dtspath)!
 
         /**
          * Declaration file output.
@@ -262,12 +220,12 @@ const plugin = (): Plugin => {
          */
         const dts: OutputFile = {
           contents: new Uint8Array(Buffer.from(declarations)),
-          path: output.path.replace(extregex, `.d.${cm}ts`),
+          path: dtspath,
           text: declarations
         }
 
         // update metafile
-        result.metafile!.outputs[outfile.replace(extregex, `.d.${cm}ts`)] = {
+        result.metafile!.outputs[dtspath.replace(absWorkingDir + '/', '')] = {
           ...metadata,
           bytes: Buffer.byteLength(dts.contents)
         }
