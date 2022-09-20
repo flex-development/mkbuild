@@ -118,6 +118,13 @@ interface Config {
    * @default '**'
    */
   pattern?: string[] | string
+
+  /**
+   * Name of directory containing source files or relative path to bundle input.
+   *
+   * @default 'src'
+   */
+  source?: string
 }
 
 export type { Config as default }
