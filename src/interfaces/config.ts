@@ -13,6 +13,15 @@ import type Entry from './entry'
  */
 interface Config {
   /**
+   * Bundle files.
+   *
+   * @see https://esbuild.github.io/api/#bundle
+   *
+   * @default false
+   */
+  bundle?: boolean
+
+  /**
    * Remove output directory before starting build.
    *
    * @default true
