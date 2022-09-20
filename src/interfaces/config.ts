@@ -3,7 +3,7 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { EsbuildOptions } from '#src/types'
+import type { EsbuildOptions, OutputExtension } from '#src/types'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -57,6 +57,13 @@ interface Config {
    * @default {}
    */
   esbuild?: EsbuildOptions
+
+  /**
+   * Output file extension.
+   *
+   * @default '.mjs'
+   */
+  ext?: OutputExtension
 
   /**
    * Custom implementations of `fs` methods.
