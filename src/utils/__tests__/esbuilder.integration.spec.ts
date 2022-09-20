@@ -37,7 +37,7 @@ describe('integration:utils/esbuilder', () => {
       }
 
       beforeEach(async () => {
-        await testSubject(src, entry, { splitting: true })
+        await testSubject(src, { ...entry, splitting: true })
       })
 
       describe('options', () => {

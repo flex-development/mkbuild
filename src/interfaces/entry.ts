@@ -3,13 +3,15 @@
  * @module mkbuild/interfaces/Entry
  */
 
-import type { OutputExtension } from '#src/types'
+import type { EsbuildOptions, OutputExtension } from '#src/types'
 import type { Format } from 'esbuild'
 
 /**
  * Build entry object schema.
+ *
+ * @extends {EsbuildOptions}
  */
-interface Entry {
+interface Entry extends EsbuildOptions {
   /**
    * Bundle files.
    *

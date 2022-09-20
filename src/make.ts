@@ -3,19 +3,24 @@
  * @module mkbuild/make
  */
 
-import { EXT_DTS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
 import * as color from 'colorette'
 import consola from 'consola'
 import { defu } from 'defu'
+import type { Format } from 'esbuild'
 import fse from 'fs-extra'
 import { globby } from 'globby'
 import { isNotJunk } from 'junk'
 import * as pathe from 'pathe'
 import type { PackageJson } from 'pkg-types'
 import pb from 'pretty-bytes'
-import { IGNORE_PATTERNS } from './config/constants'
+import {
+  EXT_DTS_REGEX,
+  EXT_TS_REGEX,
+  IGNORE_PATTERNS
+} from './config/constants'
 import loadBuildConfig from './config/load'
 import type { Config, Entry, Result, SourceFile } from './interfaces'
+import type { EsbuildOptions, OutputExtension } from './types'
 import analyzeResults from './utils/analyze-results'
 import esbuilder from './utils/esbuilder'
 import write from './utils/write'
@@ -49,52 +54,73 @@ async function make({ cwd, ...config }: Config = {}): Promise<Result[]> {
    */
   const written: [string, Result[]][] = []
 
-  try {
-    // determine current working directory
-    cwd = pathe.resolve(process.cwd(), cwd ?? '.')
+  // determine current working directory
+  cwd = pathe.resolve(process.cwd(), cwd ?? '.')
 
-    // build options
+  try {
     const {
+      bundle,
       clean,
       declaration,
       entries,
       esbuild,
+      format,
       fs,
       ignore,
       outdir,
       pattern
     }: Required<Config> = defu(await loadBuildConfig(cwd), config, {
+      bundle: false,
       clean: true,
       cwd,
       declaration: true,
       entries: [],
-      esbuild: {},
+      esbuild: {} as EsbuildOptions,
+      ext: '.mjs' as OutputExtension,
+      format: 'esm' as Format,
       fs: fse,
       ignore: IGNORE_PATTERNS,
       outdir: 'dist',
-      pattern: '**'
+      pattern: '**',
+      source: 'src'
     })
 
-    // normalize build entry options
-    for (const entry of entries) {
-      entry.outdir = entry.outdir ?? outdir
-      entry.source = entry.source ?? 'src'
-
-      entry.format = entry.format ?? 'esm'
-      entry.ext = entry.ext ?? (entry.format === 'esm' ? '.mjs' : '.js')
-
-      entry.declaration =
-        (entry.declaration ?? declaration) && entry.format !== 'iife'
-    }
+    /**
+     * Absolute path to `package.json`.
+     *
+     * @const {string} pkgfile
+     */
+    const pkgfile: string = pathe.resolve(cwd, 'package.json')
 
     /**
      * `package.json` data.
      *
      * @const {PackageJson} pkg
      */
-    const pkg: PackageJson = await fs.readJson(
-      pathe.resolve(cwd, 'package.json')
-    )
+    const pkg: PackageJson = await fs.readJson(pkgfile)
+
+    // normalize build entry options
+    for (const entry of entries) {
+      /**
+       * Fully configured build entry.
+       *
+       * @const {Entry} ent
+       */
+      const ent: Entry = defu(entry, esbuild, {
+        bundle,
+        declaration: declaration && format !== 'iife',
+        ext: (format === 'esm' ? '.mjs' : '.js') as OutputExtension,
+        external: Object.keys(pkg.peerDependencies ?? {}),
+        format,
+        name: undefined,
+        outdir,
+        source: bundle ? 'src/index' : 'src'
+      })
+
+      // reassign entry properties
+      for (const [key, value] of Object.entries(ent)) entry[key] = value
+      entry.absWorkingDir = cwd
+    }
 
     // print build start info
     consola.info(color.cyan(`Building ${pkg.name}`))
@@ -119,7 +145,7 @@ async function make({ cwd, ...config }: Config = {}): Promise<Result[]> {
     }
 
     // process build entries
-    for (const entry of entries as Required<Entry>[]) {
+    for (const entry of entries as Entry[]) {
       /**
        * Build results for {@link entry}.
        *
@@ -174,10 +200,7 @@ async function make({ cwd, ...config }: Config = {}): Promise<Result[]> {
          *
          * @const {Result[]} outputs
          */
-        const outputs: Result[] = await esbuilder(source, entry, {
-          ...esbuild,
-          absWorkingDir: cwd
-        })
+        const outputs: Result[] = await esbuilder(source, entry)
 
         // write build results
         for (const result of outputs) results.push(await write(result, fs))
