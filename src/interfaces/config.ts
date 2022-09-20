@@ -4,6 +4,7 @@
  */
 
 import type { EsbuildOptions, OutputExtension } from '#src/types'
+import type { Format } from 'esbuild'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -64,6 +65,15 @@ interface Config {
    * @default '.mjs'
    */
   ext?: OutputExtension
+
+  /**
+   * Output file format.
+   *
+   * @see https://esbuild.github.io/api/#format
+   *
+   * @default 'esm'
+   */
+  format?: Format
 
   /**
    * Custom implementations of `fs` methods.
