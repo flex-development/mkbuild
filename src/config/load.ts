@@ -17,10 +17,10 @@ import es from './loader-es'
  *
  * @async
  *
- * @param {string} [location] - Directory to search
+ * @param {string} [location='.'] - Directory to search
  * @return {Config} Build configuration options
  */
-const loadBuildConfig = async (location: string): Promise<Config> => {
+const loadBuildConfig = async (location: string = '.'): Promise<Config> => {
   /**
    * Module name.
    *
