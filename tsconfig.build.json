@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
-    "moduleResolution": "NodeNext",
-    "rootDir": "./src"
+    "skipLibCheck": false
   },
   "exclude": ["**/__mocks__/**", "**/__snapshots__/**", "**/__tests__/**"],
   "extends": "./tsconfig.json",
-  "include": ["./src/**"]
+  "include": ["./src"]
 }
