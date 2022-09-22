@@ -850,6 +850,7 @@ __metadata:
     "@flex-development/tutils": "npm:5.0.0"
     "@graphql-eslint/eslint-plugin": "npm:3.10.7"
     "@types/chai": "npm:4.3.3"
+    "@types/chai-string": "npm:1.4.2"
     "@types/conventional-changelog": "npm:3.1.1"
     "@types/conventional-changelog-config-spec": "npm:2.1.1"
     "@types/conventional-changelog-writer": "npm:4.0.1"
@@ -869,7 +870,9 @@ __metadata:
     "@vitest/coverage-c8": "npm:0.23.1"
     "@vitest/ui": "npm:0.23.1"
     chai: "npm:4.3.6"
+    chai-each: "npm:0.0.1"
     chai-quantifiers: "npm:1.0.17"
+    chai-string: "npm:1.5.0"
     colorette: "npm:2.0.19"
     consola: "npm:2.15.3"
     conventional-changelog-cli: "npm:2.2.2"
@@ -1490,6 +1493,15 @@ __metadata:
   version: 1.0.3
   resolution: "@tsconfig/node16@npm:1.0.3"
   checksum: 4280081089783dfeab00e5bc18ff55e11e8e4577d4626f34730a062c99ec4136fe6c2036e6f20ebe50b1c3e01bc29db6e2cfa9541a7b6dc99825ccbe8f7f8395
+  languageName: node
+  linkType: hard
+
+"@types/chai-string@npm:1.4.2":
+  version: 1.4.2
+  resolution: "@types/chai-string@npm:1.4.2"
+  dependencies:
+    "@types/chai": "npm:*"
+  checksum: c272b47a9ee36ec43b337ac4995f4b0d6f942b4042c464a9211efae8cebeaa07212e06ff6196d397e44c7c3996f79ba67a0d3733c2989eb55ee71c0bb2f2ca26
   languageName: node
   linkType: hard
 
@@ -2461,12 +2473,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai-each@npm:0.0.1":
+  version: 0.0.1
+  resolution: "chai-each@npm:0.0.1"
+  checksum: 545be493fb9eace3aea28ef9556a0433dd1467bd0bf96d1bb50212c0f12b833ae033fd50b56b6ca739a58868fab060ef794bca14da3b36347f4f8574d66fc2a8
+  languageName: node
+  linkType: hard
+
 "chai-quantifiers@npm:1.0.17":
   version: 1.0.17
   resolution: "chai-quantifiers@npm:1.0.17"
   peerDependencies:
     chai: ^4.x.x
   checksum: 9e1c4af526998af9a862917c426ac0ff48560f1ab03ff97ef67ed65b88b2dad0d2af8a2f9315a55fbc434d77b1f82ecf5aa16b15453fa33dcad7f4a5266cb3ca
+  languageName: node
+  linkType: hard
+
+"chai-string@npm:1.5.0":
+  version: 1.5.0
+  resolution: "chai-string@npm:1.5.0"
+  peerDependencies:
+    chai: ^4.1.2
+  checksum: d39e07eb8311f99130c3fd404ef86bc09b4b4b4da153d61ec80875da48d06ead90fafd13692eaf3197b672679212603cd4e9dd3b9f30313d6f6fa56d40ac7517
   languageName: node
   linkType: hard
 
