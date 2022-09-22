@@ -490,7 +490,7 @@ const config = {
     'node/no-new-require': 2,
     'node/no-path-concat': 2,
     'node/no-process-env': 0,
-    'node/no-process-exit': 2,
+    'node/no-process-exit': 0,
     'node/no-unpublished-bin': 0,
     'node/no-unpublished-import': 0,
     'node/no-unpublished-require': 0,
