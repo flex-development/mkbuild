@@ -8,7 +8,7 @@ import * as color from 'colorette'
 import pb from 'pretty-bytes'
 
 /**
- * Pretty prints `results`.
+ * Returns a pretty printed version of `results`.
  *
  * @param {string} outdir - Output directory name
  * @param {Pick<Result, 'bytes' | 'outfile'>[]} [results=[]] - Build results
