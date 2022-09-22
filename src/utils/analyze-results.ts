@@ -10,9 +10,6 @@ import pb from 'pretty-bytes'
 /**
  * Pretty prints `results`.
  *
- * @todo support chunks (code splitting)
- * @todo support sourcemaps
- *
  * @param {string} outdir - Output directory name
  * @param {Pick<Result, 'bytes' | 'outfile'>[]} [results=[]] - Build results
  * @param {number} [pad=2] - Number of spaces before new lines
