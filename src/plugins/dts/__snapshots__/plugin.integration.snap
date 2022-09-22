@@ -1,32 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/dts > esbuild > messages > should send error if metafile is not enabled 1`] = `
-[
-  {
-    "detail": "https://esbuild.github.io/api/#metafile",
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "dts",
-    "text": "metafile required",
-  },
-]
-`;
-
-exports[`integration:plugins/dts > esbuild > messages > should send warning if no source files are found 1`] = `
-[
-  {
-    "detail": undefined,
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "dts",
-    "text": "no source files found",
-  },
-]
-`;
-
-exports[`integration:plugins/dts > esbuild > typescript declarations > should add .d.cts output 1`] = `
+exports[`integration:plugins/dts > esbuild > should add .d.cts output 1`] = `
 {
   "path": "dist/my-atoi.d.cts",
   "text": "/**
@@ -54,7 +28,7 @@ export default myAtoi;
 }
 `;
 
-exports[`integration:plugins/dts > esbuild > typescript declarations > should add .d.cts output for copied file 1`] = `
+exports[`integration:plugins/dts > esbuild > should add .d.cts output for copied file 1`] = `
 {
   "path": "dist/sum-of-intervals.d.cts",
   "text": "export = sumOfIntervals;
@@ -82,7 +56,7 @@ declare function sumOfIntervals(intervals: [number, number][]): number;
 }
 `;
 
-exports[`integration:plugins/dts > esbuild > typescript declarations > should add .d.mts output 1`] = `
+exports[`integration:plugins/dts > esbuild > should add .d.mts output 1`] = `
 {
   "path": "dist/reverse.d.mts",
   "text": "/**
@@ -111,7 +85,7 @@ export default reverse;
 }
 `;
 
-exports[`integration:plugins/dts > esbuild > typescript declarations > should add .d.mts output for copied file 1`] = `
+exports[`integration:plugins/dts > esbuild > should add .d.mts output for copied file 1`] = `
 {
   "path": "dist/sum-of-intervals.d.mts",
   "text": "export default sumOfIntervals;
@@ -139,7 +113,7 @@ declare function sumOfIntervals(intervals: [number, number][]): number;
 }
 `;
 
-exports[`integration:plugins/dts > esbuild > typescript declarations > should add .d.ts output 1`] = `
+exports[`integration:plugins/dts > esbuild > should add .d.ts output 1`] = `
 {
   "path": "dist/dbl-linear.d.ts",
   "text": "/**
@@ -172,4 +146,24 @@ declare const dblLinear: (n: number) => number;
 export default dblLinear;
 ",
 }
+`;
+
+exports[`integration:plugins/dts > esbuild > should warn if no source files are found 1`] = `
+[
+  {
+    "detail": undefined,
+    "id": "",
+    "location": {
+      "column": 45,
+      "file": "src/plugins/dts/plugin.ts",
+      "length": 0,
+      "line": 26,
+      "namespace": "file",
+      "suggestion": "",
+    },
+    "notes": [],
+    "pluginName": "dts",
+    "text": "no source files found",
+  },
+]
 `;

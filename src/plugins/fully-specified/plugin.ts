@@ -71,10 +71,10 @@ const plugin = (): Plugin => {
    * @param {PluginBuild} build - [esbuild plugin api][1]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][2] options
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
-   * @param {PluginBuild['onStart']} build.onStart - Build start callback
    * @return {void} Nothing when complete
+   * @throws {Error}
    */
-  const setup = ({ initialOptions, onEnd, onStart }: PluginBuild): void => {
+  const setup = ({ initialOptions, onEnd }: PluginBuild): void => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
@@ -88,17 +88,7 @@ const plugin = (): Plugin => {
     if (bundle) return
 
     // metafile required to get output metadata
-    if (!metafile) {
-      return void onStart(() => ({
-        errors: [
-          {
-            detail: 'https://esbuild.github.io/api/#metafile',
-            pluginName: PLUGIN_NAME,
-            text: 'metafile required'
-          }
-        ]
-      }))
-    }
+    if (!metafile) throw new Error('metafile required')
 
     return void onEnd(async (result: BuildResult): Promise<void> => {
       /**

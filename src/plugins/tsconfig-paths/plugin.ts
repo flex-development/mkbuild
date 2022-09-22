@@ -56,10 +56,10 @@ const plugin = ({
    * @param {PluginBuild} build - [esbuild plugin api][2]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][3] options
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
-   * @param {PluginBuild['onStart']} build.onStart - Build start callback
    * @return {void} Nothing when complete
+   * @throws {Error}
    */
-  const setup = ({ initialOptions, onEnd, onStart }: PluginBuild): void => {
+  const setup = ({ initialOptions, onEnd }: PluginBuild): void => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
@@ -71,24 +71,14 @@ const plugin = ({
     if (bundle) return
 
     // metafile required to get output metadata
-    if (!metafile) {
-      return void onStart(() => ({
-        errors: [
-          {
-            detail: 'https://esbuild.github.io/api/#metafile',
-            pluginName: PLUGIN_NAME,
-            text: 'metafile required'
-          }
-        ]
-      }))
-    }
+    if (!metafile) throw new Error('metafile required')
 
     /**
      * Tsconfig loader result.
      *
      * @const {TsConfigLoaderResult} result
      */
-    const result: TsConfigLoaderResult = tsConfigLoader({
+    const tsconfig_result: TsConfigLoaderResult = tsConfigLoader({
       cwd: absWorkingDir,
       /**
        * Returns the value of `key`.
@@ -104,11 +94,10 @@ const plugin = ({
     })
 
     // tsconfig couldn't be found
-    if (!result.tsConfigPath) {
-      return void onStart(() => ({
-        errors: [{ pluginName: PLUGIN_NAME, text: 'tsconfig not found' }]
-      }))
-    }
+    if (!tsconfig_result.tsConfigPath) throw new Error('tsconfig not found')
+
+    // tsconfig data
+    const { baseUrl = '', paths = {}, tsConfigPath } = tsconfig_result
 
     /**
      * Path matching function.
@@ -116,10 +105,10 @@ const plugin = ({
      * @const {MatchPath} matcher
      */
     const matcher: MatchPath = createMatchPath(
-      pathe.resolve(pathe.dirname(result.tsConfigPath), result.baseUrl ?? ''),
-      result.paths ?? {},
+      pathe.resolve(pathe.dirname(tsConfigPath), baseUrl),
+      paths,
       mainFields,
-      result.baseUrl !== undefined
+      baseUrl.length > 0
     )
 
     return void onEnd((result: BuildResult): void => {

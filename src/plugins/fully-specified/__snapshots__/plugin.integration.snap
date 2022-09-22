@@ -1,59 +1,18 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/fully-specified > esbuild > messages > should send error message if metafile is not enabled 1`] = `
-[
-  {
-    "detail": "https://esbuild.github.io/api/#metafile",
-    "id": "",
-    "location": null,
-    "notes": [],
-    "pluginName": "fully-specified",
-    "text": "metafile required",
-  },
-]
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > noop > should skip files that are not javascript 1`] = `
-"[
-  {
-    \\"date\\": \\"2007-04-24T07:00:00.000Z\\",
-    \\"close\\": 93.24
-  },
-  {
-    \\"date\\": \\"2007-04-25T07:00:00.000Z\\",
-    \\"close\\": 95.35
-  },
-  {
-    \\"date\\": \\"2007-06-08T07:00:00.000Z\\",
-    \\"close\\": 124.49
-  },
-  {
-    \\"date\\": \\"2007-06-11T07:00:00.000Z\\",
-    \\"close\\": 120.19
-  },
-  {
-    \\"date\\": \\"2007-06-12T07:00:00.000Z\\",
-    \\"close\\": 120.38
-  }
-]
+exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in cjs output files 1`] = `
+"require(\\"esbuild\\");
+require(\\"node:util\\");
+require(\\"pathe\\");
+require(\\"tsconfig-paths\\");
+require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
+require(\\"../src/config/constants.js\\");
+require(\\"../src/utils/extract-statements.cjs\\");
+require(\\"/tmp\\");
 "
 `;
 
-exports[`integration:plugins/fully-specified > esbuild > noop > should skip files that are not typescript 1`] = `
-"{
-  currency: 'USD',
-  prices: [
-    { price: '2486.69', time: '2017-07-03T00:00:00Z' },
-    { price: '2457.05', time: '2017-07-02T00:00:00Z' },
-    { price: '2486.09', time: '2017-07-01T00:00:00Z' },
-    { price: '2535.85', time: '2017-06-30T00:00:00Z' },
-    { price: '2546.06', time: '2017-06-29T00:00:00Z' }
-  ]
-}
-"
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in copied files 1`] = `
+exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in copied output files 1`] = `
 "/**
  * @file Fixtures - my-atoi.d.mts
  * @module fixtures/my-atoi.d.mts
@@ -82,19 +41,7 @@ export { default as MIN_VALUE } from './min-value.mjs'
 "
 `;
 
-exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled cjs files 1`] = `
-"require(\\"esbuild\\");
-require(\\"node:util\\");
-require(\\"pathe\\");
-require(\\"tsconfig-paths\\");
-require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
-require(\\"../src/config/constants.js\\");
-require(\\"../src/utils/extract-statements.cjs\\");
-require(\\"/tmp\\");
-"
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > specifiers > should fill specifiers in transpiled esm files 1`] = `
+exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in esm output files 1`] = `
 "import \\"esbuild\\";
 import \\"node:util\\";
 import \\"pathe\\";
@@ -109,5 +56,19 @@ export * from \\"../src/interfaces/index.mjs\\";
 export {
   fizz
 };
+"
+`;
+
+exports[`integration:plugins/fully-specified > esbuild > should skip files that are not javascript or typescript 1`] = `
+"{
+  currency: 'USD',
+  prices: [
+    { price: '2486.69', time: '2017-07-03T00:00:00Z' },
+    { price: '2457.05', time: '2017-07-02T00:00:00Z' },
+    { price: '2486.09', time: '2017-07-01T00:00:00Z' },
+    { price: '2535.85', time: '2017-06-30T00:00:00Z' },
+    { price: '2546.06', time: '2017-06-29T00:00:00Z' }
+  ]
+}
 "
 `;

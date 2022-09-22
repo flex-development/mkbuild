@@ -51,6 +51,7 @@ const plugin = (): Plugin => {
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
    * @param {PluginBuild['onStart']} build.onStart - Build start callback
    * @return {Promise<void>} Nothing when complete
+   * @throws {Error}
    */
   const setup = async ({
     initialOptions,
@@ -66,17 +67,7 @@ const plugin = (): Plugin => {
     } = initialOptions
 
     // metafile required to get output metadata
-    if (!metafile) {
-      return void onStart(() => ({
-        errors: [
-          {
-            detail: 'https://esbuild.github.io/api/#metafile',
-            pluginName: PLUGIN_NAME,
-            text: 'metafile required'
-          }
-        ]
-      }))
-    }
+    if (!metafile) throw new Error('metafile required')
 
     /**
      * Source file paths.
@@ -98,8 +89,22 @@ const plugin = (): Plugin => {
 
     // send warning message if no source files are found
     if (sourcefiles.length === 0) {
+      const { message: text, stack = '' } = new Error('no source files found')
+      const [, line, column] = /:(\d+):(\d+)/.exec(stack)!
+
       return void onStart(() => ({
-        warnings: [{ pluginName: PLUGIN_NAME, text: 'no source files found' }]
+        warnings: [
+          {
+            location: {
+              column: +column!,
+              file: import.meta.url.replace('file://', ''),
+              line: +line!,
+              lineText: stack.split(`${text}\n`)[1]
+            },
+            pluginName: PLUGIN_NAME,
+            text
+          }
+        ]
       }))
     }
 
