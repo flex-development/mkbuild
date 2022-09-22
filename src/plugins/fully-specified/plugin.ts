@@ -20,11 +20,7 @@ import type {
 } from 'esbuild'
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
-import {
-  readPackageJSON,
-  resolvePackageJSON,
-  type PackageJson
-} from 'pkg-types'
+import { readPackageJSON, resolvePackageJSON } from 'pkg-types'
 
 /**
  * Plugin name.
@@ -195,29 +191,20 @@ const plugin = (): Plugin => {
               startingFrom: pathe.dirname(resolved)
             })
 
-            /**
-             * `package.json` of package {@link resolved} references.
-             *
-             * @const {PackageJson} pkg
-             */
-            const pkg: PackageJson = await readPackageJSON(pkgfile)
+            // package.json data
+            const { exports, name, ...rest } = await readPackageJSON(pkgfile)
 
-            /**
-             * {@link pkg} entry point resolved.
-             *
-             * @const {string} main
-             */
-            const main: string = pathe.resolve(
-              absWorkingDir,
-              'node_modules',
-              pkg.name!,
-              pkg.main!
-            )
+            // attempt to update specifier if pkg does not have exports field
+            if (exports === undefined) {
+              let { main = '' } = rest
 
-            // update specifier if pkg does not have exports field
-            // and resolved is not pkg entry point
-            if (pkg.exports === undefined && resolved !== main) {
-              specifier = resolved.replace(/.+(node_modules\/)/, '')
+              // resolve main entry point
+              main = pathe.resolve(absWorkingDir, 'node_modules', name!, main)
+
+              // update specifier if not pkg entry point
+              if (resolved !== main) {
+                specifier = resolved.replace(/.+(node_modules\/)/, '')
+              }
             }
           } else {
             // get basename of specifier and resolved

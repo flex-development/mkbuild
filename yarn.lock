@@ -869,6 +869,7 @@ __metadata:
     "@vitest/coverage-c8": "npm:0.23.1"
     "@vitest/ui": "npm:0.23.1"
     chai: "npm:4.3.6"
+    chai-quantifiers: "npm:1.0.17"
     colorette: "npm:2.0.19"
     consola: "npm:2.15.3"
     conventional-changelog-cli: "npm:2.2.2"
@@ -2457,6 +2458,15 @@ __metadata:
   version: 1.0.0
   resolution: "camelize@npm:1.0.0"
   checksum: a13eb1b24d4b02909eb6f64525c1f924cad9ddbfcc0fee5b0d378e22b6aaf223eb98352c32cc53e6ee9fba28d469432d0aef7f0ecc01931d26aa811828568fd2
+  languageName: node
+  linkType: hard
+
+"chai-quantifiers@npm:1.0.17":
+  version: 1.0.17
+  resolution: "chai-quantifiers@npm:1.0.17"
+  peerDependencies:
+    chai: ^4.x.x
+  checksum: 9e1c4af526998af9a862917c426ac0ff48560f1ab03ff97ef67ed65b88b2dad0d2af8a2f9315a55fbc434d77b1f82ecf5aa16b15453fa33dcad7f4a5266cb3ca
   languageName: node
   linkType: hard
 
