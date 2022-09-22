@@ -15,7 +15,8 @@ interface SourceFile {
   /**
    * Relative path to source file.
    *
-   * **Note**: Relative to `entry.source`.
+   * **Note**: Relative to `entry.source` if bundling is disabled; equal to
+   * `entry.source` otherwise.
    */
   file: string
 

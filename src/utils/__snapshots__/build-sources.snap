@@ -4,7 +4,7 @@ exports[`unit:utils/buildSources > should return build sources for bundle 1`] = 
 [
   {
     "ext": ".ts",
-    "file": "cli.ts",
+    "file": "src/cli.ts",
   },
 ]
 `;

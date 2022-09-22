@@ -9,6 +9,7 @@ import {
   IGNORE_PATTERNS
 } from '#src/config/constants'
 import type { Entry, SourceFile } from '#src/interfaces'
+import regexp from 'escape-string-regexp'
 import fse from 'fs-extra'
 import { globby, type Options as GlobbyOptions } from 'globby'
 import * as pathe from 'pathe'
@@ -30,27 +31,24 @@ const buildSources = async (
   ignore: string[] = IGNORE_PATTERNS,
   fs: GlobbyOptions['fs'] = fse
 ): Promise<SourceFile[]> => {
+  const { absWorkingDir = process.cwd(), bundle, source } = entry
+
   /**
    * Relative paths to source files.
    *
    * **Note**: Files are relative to `entry.source` when bundling is disbaled.
-   * When enabled, files are relative to `pathe.parse(entry.source).root`.
+   * When enabled, files are relative to `${entry.absWorkingDir}/`.
    *
-   * @var {string[]} files
+   * @const {string[]} files
    */
-  let files: string[] = []
-
-  if (entry.bundle) {
-    const { root } = pathe.parse(entry.source)
-    files = [entry.source.replace(root + '/', '')]
-  } else {
-    files = await globby(pattern, {
-      cwd: pathe.resolve(entry.absWorkingDir ?? process.cwd(), entry.source),
-      dot: true,
-      fs,
-      ignore
-    })
-  }
+  const files: string[] = bundle
+    ? [source.replace(new RegExp('^' + regexp(`${absWorkingDir}/`)), '')]
+    : await globby(pattern, {
+        cwd: pathe.resolve(absWorkingDir, source),
+        dot: true,
+        fs,
+        ignore
+      })
 
   return files.map(file => {
     /**
@@ -58,7 +56,7 @@ const buildSources = async (
      *
      * @const {string} path
      */
-    const path: string = pathe.resolve(entry.source, entry.bundle ? '' : file)
+    const path: string = pathe.resolve(source, bundle ? '' : file)
 
     /**
      * {@link file} extension.

@@ -120,9 +120,10 @@ const config = {
       {
         allowArgumentsExplicitlyTypedAsAny: true,
         allowDirectConstAssertionInArrowFunctions: true,
-        allowHigherOrderFunctions: true,
+        allowHigherOrderFunctions: false,
         allowTypedFunctionExpressions: true,
-        allowedNames: []
+        allowedNames: [],
+        shouldTrackReferences: true
       }
     ],
     '@typescript-eslint/init-declarations': 0,

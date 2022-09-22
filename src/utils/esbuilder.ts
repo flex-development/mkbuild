@@ -3,18 +3,15 @@
  * @module mkbuild/utils/esbuilder
  */
 
-import {
-  BUILTIN_MODULES,
-  EXT_JS_REGEX,
-  EXT_TS_REGEX,
-  RESOLVE_EXTENSIONS
-} from '#src/config/constants'
+import { BUILTIN_MODULES, RESOLVE_EXTENSIONS } from '#src/config/constants'
 import type { Entry, Result, SourceFile } from '#src/interfaces'
 import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import type { OutputMetadata } from '#src/types'
 import { build } from 'esbuild'
+import regexp from 'escape-string-regexp'
+import { findExportNames } from 'mlly'
 import * as pathe from 'pathe'
 import loaders from './loaders'
 
@@ -75,6 +72,7 @@ const esbuilder = async (
     name = pathe.basename(src.file, src.ext),
     nodePaths,
     outExtension = {},
+    outbase = '',
     outdir,
     platform,
     plugins = [],
@@ -95,21 +93,13 @@ const esbuilder = async (
   } = entry
 
   // add fully-specified plugin
-  if ((format === 'esm' || ext === '.cjs') && !bundle) {
-    plugins.unshift(fullySpecified())
-  }
+  if (format === 'esm' || ext === '.cjs') plugins.unshift(fullySpecified())
 
   // add tsconfig-paths plugin
-  if ((tsconfig || process.env.TS_NODE_PROJECT) && !bundle) {
-    plugins.unshift(tsconfigPaths())
-  }
+  if (tsconfig || process.env.TS_NODE_PROJECT) plugins.unshift(tsconfigPaths())
 
   // add dts plugin
-  if (declaration && !src.ext.startsWith('.d')) {
-    if (EXT_JS_REGEX.test(src.ext) || EXT_TS_REGEX.test(src.ext)) {
-      plugins.unshift(dts())
-    }
-  }
+  declaration && plugins.unshift(dts())
 
   // build source
   const { errors, metafile, outputFiles, warnings } = await build({
@@ -153,7 +143,13 @@ const esbuilder = async (
     minifyWhitespace,
     nodePaths,
     outExtension: { ...outExtension, '.js': ext },
-    outdir: `${outdir}/${pathe.dirname(src.file)}`.replace(/\/\./, ''),
+    outbase,
+    outdir: `${outdir}/${pathe.dirname(
+      // support outbase (normally can only be used with multiple entries)
+      // https://esbuild.github.io/api/#outbase
+      // note: also removes leading slashes when outbase === ''
+      src.file.replace(new RegExp('^' + regexp(`${outbase}/`)), '')
+    )}`.replace(/\/\./, ''),
     platform,
     plugins,
     preserveSymlinks,
@@ -193,7 +189,7 @@ const esbuilder = async (
       contents,
       entryPoint: metadata.entryPoint,
       errors,
-      exports: metadata.exports,
+      exports: [...new Set([...metadata.exports, ...findExportNames(text)])],
       imports: metadata.imports,
       inputs: metafile!.inputs,
       outfile,

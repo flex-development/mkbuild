@@ -15,6 +15,7 @@ vi.mock('globby')
 describe('unit:utils/buildSources', () => {
   it('should return build sources for bundle', async () => {
     // Arrange
+    const sourcefile: string = 'src/cli.ts'
     const entry: Entry = {
       bundle: true,
       declaration: false,
@@ -22,7 +23,7 @@ describe('unit:utils/buildSources', () => {
       format: 'esm',
       minify: true,
       outdir: 'dist',
-      source: 'src/cli.ts'
+      source: path.resolve(sourcefile)
     }
 
     // Act
@@ -31,8 +32,8 @@ describe('unit:utils/buildSources', () => {
     // Expect
     expect(results).to.be.an('array').of.length(1)
     expect(results[0]!.ext).to.equal('.ts')
-    expect(results[0]!.file).to.equal(entry.source.replace('src/', ''))
-    expect(results[0]!.path).to.equal(path.resolve(entry.source))
+    expect(results[0]!.file).to.equal(sourcefile)
+    expect(results[0]!.path).to.equal(entry.source)
     expect(results.map(result => omit(result, ['path']))).toMatchSnapshot()
   })
 

@@ -49,12 +49,6 @@ const config = {
       rules: {
         'promise/avoid-new': 0
       }
-    },
-    {
-      files: ['src/make.ts'],
-      rules: {
-        'unicorn/no-array-callback-reference': 0
-      }
     }
   ]
 }

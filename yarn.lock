@@ -883,6 +883,7 @@ __metadata:
     dotenv: "npm:16.0.1"
     dotenv-expand: "npm:8.0.3"
     esbuild: "npm:0.15.7"
+    escape-string-regexp: "npm:5.0.0"
     eslint: "npm:8.23.0"
     eslint-config-prettier: "npm:8.5.0"
     eslint-plugin-chai-expect: "npm:3.0.0"
@@ -905,7 +906,6 @@ __metadata:
     husky: "npm:8.0.1"
     is-ci: "npm:3.0.1"
     jsonc-eslint-parser: "npm:2.1.0"
-    junk: "npm:4.0.0"
     lint-staged: "npm:13.0.3"
     memfs: "npm:3.4.7"
     mlly: "npm:0.5.14"
@@ -5892,13 +5892,6 @@ __metadata:
     array-includes: "npm:^3.1.5"
     object.assign: "npm:^4.1.3"
   checksum: cb1820fa7f27b2d58a39a236ed5935b5456cc63cd55d134157977e852c50025a13aeaca8a35d1658200bdaf5b1424fc65eaaba5d1aae0f4aa11abf2be7b9dce5
-  languageName: node
-  linkType: hard
-
-"junk@npm:4.0.0":
-  version: 4.0.0
-  resolution: "junk@npm:4.0.0"
-  checksum: ef6def8cc4f0ba0a25222a83d9fccd3ea3b9abea72dad106914be9e2856c8f79d0033aca40a42aac1b06ce24deb0dd0233af7313cf970eeb672dcfe7243a9a86
   languageName: node
   linkType: hard
 

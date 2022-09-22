@@ -18,7 +18,6 @@ type EsbuildOptions = Omit<
   | 'format'
   | 'incremental'
   | 'metafile'
-  | 'outbase'
   | 'outdir'
   | 'outfile'
   | 'stdin'
