@@ -147,23 +147,3 @@ export default dblLinear;
 ",
 }
 `;
-
-exports[`integration:plugins/dts > esbuild > should warn if no source files are found 1`] = `
-[
-  {
-    "detail": undefined,
-    "id": "",
-    "location": {
-      "column": 45,
-      "file": "src/plugins/dts/plugin.ts",
-      "length": 0,
-      "line": 26,
-      "namespace": "file",
-      "suggestion": "",
-    },
-    "notes": [],
-    "pluginName": "dts",
-    "text": "no source files found",
-  },
-]
-`;

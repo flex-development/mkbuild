@@ -8,7 +8,6 @@ import { IGNORE_PATTERNS as IGNORE } from '#src/config/constants'
 import loadBuildConfig from '#src/config/load'
 import type { Config, Result } from '#src/interfaces'
 import analyzeResults from '#src/utils/analyze-results'
-import buildSources from '#src/utils/build-sources'
 import esbuilder from '#src/utils/esbuilder'
 import write from '#src/utils/write'
 import type { Spy } from '#tests/interfaces'
@@ -23,33 +22,24 @@ import * as pathe from 'pathe'
 import pkg from '../../package.json' assert { type: 'json' }
 import testSubject from '../make'
 
-vi.mock('#src/plugins/dts/plugin')
 vi.mock('fs-extra')
 vi.mock('pathe')
 vi.mock('../config/load')
 vi.mock('../utils/analyze-results')
-vi.mock('../utils/build-sources')
 vi.mock('../utils/esbuilder')
 vi.mock('../utils/write')
 
 describe('unit:make', () => {
   const config: Config = {
     declaration: false,
-    entries: [
-      {},
-      { format: 'cjs' },
-      { bundle: true, ext: '.min.mjs', minify: true, outbase: 'src' }
-    ]
+    entries: [{}, { format: 'cjs' }, { bundle: true, minify: true }]
   }
-
-  let sourcefiles: number = 0
 
   beforeAll(async () => {
     for (let file of await globby('**', { cwd: 'src', ignore: IGNORE })) {
       file = path.resolve('src', file)
       vfs.mkdirpSync(path.dirname(file))
       vfs.writeFileSync(file, fs.readFileSync(file, 'utf8'))
-      sourcefiles++
     }
 
     vfs.writeFileSync('package.json', JSON.stringify(pkg))
@@ -65,7 +55,7 @@ describe('unit:make', () => {
     let results: Result[]
 
     beforeEach(async () => {
-      ;(loadBuildConfig as unknown as Spy).mockResolvedValue(config)
+      ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
       results = await testSubject()
     })
 
@@ -99,12 +89,11 @@ describe('unit:make', () => {
     })
 
     it('should build source files', () => {
-      expect(buildSources).toHaveBeenCalledTimes(config.entries!.length)
-      expect(esbuilder).toHaveBeenCalledTimes(sourcefiles * 2 + 1)
+      expect(esbuilder).toHaveBeenCalledTimes(config.entries!.length)
     })
 
     it('should write build results', () => {
-      expect(write).toHaveBeenCalledTimes(results.length)
+      expect(write).toHaveBeenCalled()
     })
 
     it('should print build done info', () => {

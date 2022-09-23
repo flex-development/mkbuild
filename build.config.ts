@@ -12,13 +12,12 @@ import { defineBuildConfig, type Config } from '#src'
  */
 const config: Config = defineBuildConfig({
   entries: [
-    { format: 'esm' },
+    { format: 'esm', ignore: ['cli.ts'] },
     {
       bundle: true,
       declaration: false,
       format: 'esm',
       minify: true,
-      outbase: 'src',
       source: 'src/cli.ts'
     }
   ],

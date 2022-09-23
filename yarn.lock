@@ -850,6 +850,7 @@ __metadata:
     "@flex-development/tutils": "npm:5.0.0"
     "@graphql-eslint/eslint-plugin": "npm:3.10.7"
     "@types/chai": "npm:4.3.3"
+    "@types/chai-fs": "npm:2.0.2"
     "@types/chai-string": "npm:1.4.2"
     "@types/conventional-changelog": "npm:3.1.1"
     "@types/conventional-changelog-config-spec": "npm:2.1.1"
@@ -871,6 +872,7 @@ __metadata:
     "@vitest/ui": "npm:0.23.1"
     chai: "npm:4.3.6"
     chai-each: "npm:0.0.1"
+    chai-fs: "npm:2.0.0"
     chai-quantifiers: "npm:1.0.17"
     chai-string: "npm:1.5.0"
     colorette: "npm:2.0.19"
@@ -1493,6 +1495,16 @@ __metadata:
   version: 1.0.3
   resolution: "@tsconfig/node16@npm:1.0.3"
   checksum: 4280081089783dfeab00e5bc18ff55e11e8e4577d4626f34730a062c99ec4136fe6c2036e6f20ebe50b1c3e01bc29db6e2cfa9541a7b6dc99825ccbe8f7f8395
+  languageName: node
+  linkType: hard
+
+"@types/chai-fs@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@types/chai-fs@npm:2.0.2"
+  dependencies:
+    "@types/chai": "npm:*"
+    "@types/node": "npm:*"
+  checksum: e3de59f7b540f923e417cb1dad7df1accb1a4122325d864b7c5ed66f44e3839ce1e199eedddf87aa63eaedcb7a759200bb38bbca3f3ce5efdfa167953a09604c
   languageName: node
   linkType: hard
 
@@ -2166,6 +2178,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"array-events@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "array-events@npm:0.2.0"
+  dependencies:
+    async-arrays: "npm:*"
+    extended-emitter: "npm:*"
+  checksum: b3ace3757ed04021e9ea061476f44a424af79a4f5a7ddbce4194247e0c0a37f97f4ac809afdb6dc7d523cd86a5c3d2f58007b5256768ae1669b7245624950ff1
+  languageName: node
+  linkType: hard
+
 "array-ify@npm:^1.0.0":
   version: 1.0.0
   resolution: "array-ify@npm:1.0.0"
@@ -2260,6 +2282,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async-arrays@npm:*":
+  version: 1.0.1
+  resolution: "async-arrays@npm:1.0.1"
+  dependencies:
+    sift: "npm:*"
+  checksum: bc75375c8d27ba6cb1300f8f8a246645112deb9e7905361fe2e954bcd3ca51268715cc44832107b00f0cf4fe1b0d495033ee944c11244a77c1bf76e8abaec85e
+  languageName: node
+  linkType: hard
+
 "babel-plugin-styled-components@npm:>= 1.12.0":
   version: 2.0.7
   resolution: "babel-plugin-styled-components@npm:2.0.7"
@@ -2293,6 +2324,15 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: fbd7996978cfe0dd378103fa8999e4acee99b8840d49f452457fa8cb418bad4c20ec9ef6b196a0dc63591f0416a4b8c8d220607292cdaf3998b88685bc0f6c14
+  languageName: node
+  linkType: hard
+
+"bit-mask@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "bit-mask@npm:1.0.2"
+  dependencies:
+    array-events: "npm:^0.2.0"
+  checksum: a28958b3c4cab9a8f69f404ef186334d1b0a67518ee0d29c7ff319fd790831e051172ef41cd8f5bb77c68b39d8d4fe6e1544f8c699b1db75e11cc65e6d1be113
   languageName: node
   linkType: hard
 
@@ -2477,6 +2517,18 @@ __metadata:
   version: 0.0.1
   resolution: "chai-each@npm:0.0.1"
   checksum: 545be493fb9eace3aea28ef9556a0433dd1467bd0bf96d1bb50212c0f12b833ae033fd50b56b6ca739a58868fab060ef794bca14da3b36347f4f8574d66fc2a8
+  languageName: node
+  linkType: hard
+
+"chai-fs@npm:2.0.0":
+  version: 2.0.0
+  resolution: "chai-fs@npm:2.0.0"
+  dependencies:
+    bit-mask: "npm:^1.0.1"
+    readdir-enhanced: "npm:^1.4.0"
+  peerDependencies:
+    chai: ">= 1.6.1 < 5"
+  checksum: ce97276a950eaf8779d0e2a1ca5b02fabf52f13e276c7542e7a24926b59594c81809c6bfcc1cb22558cff46de3bd602286e077b983939946eb70a16fd3bc6b50
   languageName: node
   linkType: hard
 
@@ -3557,6 +3609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es6-promise@npm:^4.1.0":
+  version: 4.2.8
+  resolution: "es6-promise@npm:4.2.8"
+  checksum: cb971def97ec9d06624208e72786179acc570a42b547b17757ebdcb59ef243924c409c9afa7ddbef86649d7257181a725863c65d624ca609029e16b2776df36b
+  languageName: node
+  linkType: hard
+
 "esbuild-android-64@npm:0.14.54":
   version: 0.14.54
   resolution: "esbuild-android-64@npm:0.14.54"
@@ -4443,6 +4502,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"extended-emitter@npm:*":
+  version: 1.1.0
+  resolution: "extended-emitter@npm:1.1.0"
+  dependencies:
+    sift: "npm:*"
+    wolfy87-eventemitter: "npm:*"
+  checksum: 378a45a0a5340af3bf6b274da4a11abf8a294c2a70310d12b93194df9ae6e9b1f4375db1e24927b58b831816e5e5f2fd4fb5b84dd2e41d96a091ae4949b87c53
+  languageName: node
+  linkType: hard
+
 "external-editor@npm:^3.0.3":
   version: 3.1.0
   resolution: "external-editor@npm:3.1.0"
@@ -4876,6 +4945,13 @@ __metadata:
   version: 0.3.2
   resolution: "glob-regex@npm:0.3.2"
   checksum: c76c405ea21a61d88a6a0d9a6eef3495393547ad179eed390cfb770678049c51f5165cbabf85e4e2ab818ea3feb639dab744e7e3d5a2caedd8268d78be4ded38
+  languageName: node
+  linkType: hard
+
+"glob-to-regexp@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "glob-to-regexp@npm:0.3.0"
+  checksum: ec0d1a74819df29b9a587d38cceefe14b25a6220dbd3787ca11835696fa539323c7011d9062a6dadcde937ab703a1f1910bfce083718948c33fff017fa427dbe
   languageName: node
   linkType: hard
 
@@ -7477,6 +7553,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readdir-enhanced@npm:^1.4.0":
+  version: 1.5.2
+  resolution: "readdir-enhanced@npm:1.5.2"
+  dependencies:
+    call-me-maybe: "npm:^1.0.1"
+    es6-promise: "npm:^4.1.0"
+    glob-to-regexp: "npm:^0.3.0"
+  checksum: 0e3821798220434275f84e86b6f2581578e4948989028e236270748999517bcc53b2d5f08073057c45366d3c5e0e1d91dbdc5ff92d7e6822b8cd52fd167697f8
+  languageName: node
+  linkType: hard
+
 "recrawl-sync@npm:^2.0.3":
   version: 2.2.2
   resolution: "recrawl-sync@npm:2.2.2"
@@ -7851,6 +7938,13 @@ __metadata:
     get-intrinsic: "npm:^1.0.2"
     object-inspect: "npm:^1.9.0"
   checksum: d712a4e682471c1a1c7bf9294a8bb0f066566e016de11fdb01ae0c0ebf8102c97cc2b2d3b0264ca377eb2d3444bf4c06909392c518a162f047b7444608e0e9a2
+  languageName: node
+  linkType: hard
+
+"sift@npm:*":
+  version: 16.0.0
+  resolution: "sift@npm:16.0.0"
+  checksum: 028c4ff51146966ee58f295b882d8541bc7aa68d0ed5d9644ca218556ae72e5a33071f6766f0f478273b7d0d767f5b69000533aa6a044f99eb410b6108fbfdc7
   languageName: node
   linkType: hard
 
@@ -9025,6 +9119,13 @@ __metadata:
   dependencies:
     string-width: "npm:^1.0.2 || 2 || 3 || 4"
   checksum: 39915f81cdc6cee1f54bfd7672619cc6d0bd558089f968ea7831324cd4b5ed00e78e710a64f05e5d75ed7880e45eef97295907f68d5aabb9d2899436c917b275
+  languageName: node
+  linkType: hard
+
+"wolfy87-eventemitter@npm:*":
+  version: 5.2.9
+  resolution: "wolfy87-eventemitter@npm:5.2.9"
+  checksum: fa094e29327df4ffd8a5773fd9231b500a14bd295be9e49badc71496d9bfee7feef6402a0b9ec05a51d6db974a31f759c87b69502ee823a98991ac2bdf5bd8d9
   languageName: node
   linkType: hard
 

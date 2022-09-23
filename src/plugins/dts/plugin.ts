@@ -3,20 +3,21 @@
  * @module mkbuild/plugins/dts
  */
 
-import {
-  EXT_DTS_REGEX,
-  EXT_JS_REGEX,
-  EXT_TS_REGEX
-} from '#src/config/constants'
+import { EXT_DTS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
 import type {
   BuildOptions,
   BuildResult,
+  OnResolveArgs,
   OutputFile,
   Plugin,
   PluginBuild
 } from 'esbuild'
 import * as pathe from 'pathe'
+import {
+  tsConfigLoader,
+  type TsConfigLoaderResult
+} from 'tsconfig-paths/lib/tsconfig-loader'
 import type {
   CompilerHost,
   CompilerOptions,
@@ -48,85 +49,31 @@ const plugin = (): Plugin => {
    *
    * @param {PluginBuild} build - [esbuild plugin api][1]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][2] options
-   * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
-   * @param {PluginBuild['onStart']} build.onStart - Build start callback
+   * @param {PluginBuild['onEnd']} build.onEnd - Build end cb
+   * @param {PluginBuild['onResolve']} build.onResolve - Path resolution cb
    * @return {Promise<void>} Nothing when complete
    * @throws {Error}
    */
   const setup = async ({
     initialOptions,
     onEnd,
-    onStart
+    onResolve
   }: PluginBuild): Promise<void> => {
     const {
       absWorkingDir = process.cwd(),
-      entryPoints = [],
+      bundle,
       metafile,
       outExtension: { '.js': ext = '.js' } = {},
-      outdir = '.'
+      outdir = '.',
+      outbase = '',
+      tsconfig = 'tsconfig.json'
     } = initialOptions
+
+    // not bundling declarations yet
+    if (bundle) return
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
-
-    /**
-     * Source file paths.
-     *
-     * @var {string[]} sourcefiles
-     */
-    let sourcefiles: string[] = Array.isArray(entryPoints)
-      ? entryPoints
-      : Object.values(entryPoints)
-
-    // filter out files that aren't javascript or typescript
-    // if typescript, filter out declaration files
-    sourcefiles = sourcefiles.filter(sourcefile => {
-      return (
-        (EXT_JS_REGEX.test(sourcefile) || EXT_TS_REGEX.test(sourcefile)) &&
-        !EXT_DTS_REGEX.test(sourcefile)
-      )
-    })
-
-    // send warning message if no source files are found
-    if (sourcefiles.length === 0) {
-      const { message: text, stack = '' } = new Error('no source files found')
-      const [, line, column] = /:(\d+):(\d+)/.exec(stack)!
-
-      return void onStart(() => ({
-        warnings: [
-          {
-            location: {
-              column: +column!,
-              file: import.meta.url.replace('file://', ''),
-              line: +line!,
-              lineText: stack.split(`${text}\n`)[1]
-            },
-            pluginName: PLUGIN_NAME,
-            text
-          }
-        ]
-      }))
-    }
-
-    // resolve source files
-    sourcefiles = sourcefiles.map(file => pathe.resolve(absWorkingDir, file))
-
-    // first letter before "js" in output file extension
-    const [cm = ''] = /(?<=^(\.min)?\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
-
-    /**
-     * Regex pattern matching output file extensions.
-     *
-     * @const {RegExp} OUTPUT_EXT_REGEX
-     */
-    const OUTPUT_EXT_REGEX: RegExp = /\.(c|m)?(j|t)s$/
-
-    /**
-     * Virtual file system for declaration files.
-     *
-     * @const {Map<string, string>} vfs
-     */
-    const vfs: Map<string, string> = new Map()
 
     /**
      * TypeScript module.
@@ -136,55 +83,117 @@ const plugin = (): Plugin => {
     const ts: typeof import('typescript') = (await import('typescript')).default
 
     /**
-     * TypeScript compiler options.
+     * Tsconfig loader result.
      *
-     * @const {CompilerOptions} compilerOptions
+     * @const {TsConfigLoaderResult} result
      */
-    const compilerOptions: CompilerOptions = {
-      allowJs: true,
-      declaration: true,
-      emitDeclarationOnly: true,
-      forceConsistentCasingInFileNames: true,
-      incremental: true,
-      module: ts.ModuleKind.ESNext,
-      moduleResolution: ts.ModuleResolutionKind.NodeJs,
-      outDir: pathe.resolve(absWorkingDir, outdir),
-      skipLibCheck: true
-    }
+    const tsconfig_result: TsConfigLoaderResult = tsConfigLoader({
+      cwd: absWorkingDir,
+      /**
+       * Returns the value of `key`.
+       *
+       * @param {string} key - Environment variable key
+       * @return {string | undefined} Value of `key`
+       */
+      getEnv(key: string): string | undefined {
+        return key === 'TS_NODE_PROJECT' ? tsconfig : process.env[key]
+      }
+    })
 
     /**
-     * TypeScript compiler host.
+     * Source file paths.
      *
-     * @const {CompilerHost} host
+     * @const {string[]} sourcefiles
      */
-    const host: CompilerHost = ts.createCompilerHost(compilerOptions)
+    const sourcefiles: string[] = []
 
-    /**
-     * Writes a declaration file to {@link vfs}.
-     *
-     * @param {string} filename - Name of file to write
-     * @param {string} contents - Content to write
-     * @return {void} Nothing when complete
-     */
-    const writeFile: WriteFileCallback = (
-      filename: string,
-      contents: string
-    ): void => {
-      return void vfs.set(
-        filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`),
-        contents
-      )
-    }
+    // get source files
+    onResolve({ filter: /.*[^.d](\.(c|m)?(j|t)s)$/ }, (args: OnResolveArgs) => {
+      return void sourcefiles.push(pathe.resolve(args.resolveDir, args.path))
+    })
 
-    // override write file function
-    host.writeFile = writeFile
-
-    // emit declarations to virtual file system
-    ts.createProgram(sourcefiles, compilerOptions, host).emit()
-
-    // remap output files to insert declaration file outputs
     return void onEnd((result: BuildResult): void => {
+      // tsconfig data
+      const { baseUrl = '.', paths = {} } = tsconfig_result
+
+      /**
+       * TypeScript compiler options.
+       *
+       * @const {CompilerOptions} compilerOptions
+       */
+      const compilerOptions: CompilerOptions = {
+        allowJs: true,
+        baseUrl,
+        declaration: true,
+        declarationMap: false,
+        emitDeclarationOnly: true,
+        esModuleInterop: true,
+        forceConsistentCasingInFileNames: true,
+        isolatedModules: true,
+        module: ts.ModuleKind.ESNext,
+        moduleResolution: ts.ModuleResolutionKind.NodeJs,
+        noEmit: false,
+        noEmitOnError: false,
+        noErrorTruncation: true,
+        outDir: pathe.resolve(absWorkingDir, outdir),
+        paths,
+        preserveConstEnums: true,
+        preserveSymlinks: false,
+        resolveJsonModule: true,
+        rootDir: pathe.resolve(absWorkingDir, outbase),
+        skipLibCheck: true,
+        target: ts.ScriptTarget.ESNext
+      }
+
+      /**
+       * TypeScript compiler host.
+       *
+       * @const {CompilerHost} host
+       */
+      const host: CompilerHost = ts.createCompilerHost(compilerOptions)
+
+      /**
+       * Virtual file system for declaration files.
+       *
+       * @const {Map<string, string>} vfs
+       */
+      const vfs: Map<string, string> = new Map()
+
+      // first letter before "js" in output file extension
+      const [cm = ''] = /(?<=^(\.min)?\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
+
+      /**
+       * Writes a declaration file to {@link vfs}.
+       *
+       * @param {string} filename - Name of file to write
+       * @param {string} contents - Content to write
+       * @return {void} Nothing when complete
+       */
+      const writeFile: WriteFileCallback = (
+        filename: string,
+        contents: string
+      ): void => {
+        return void vfs.set(
+          filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`),
+          contents
+        )
+      }
+
+      // override write file function
+      host.writeFile = writeFile
+
+      // emit declarations to virtual file system
+      ts.createProgram(sourcefiles, compilerOptions, host).emit()
+
+      // remap output files to insert declaration file outputs
       return void (result.outputFiles = result.outputFiles!.flatMap(output => {
+        /**
+         * Regex pattern matching output file extensions.
+         *
+         * @const {RegExp} OUTPUT_EXT_REGEX
+         */
+        const OUTPUT_EXT_REGEX: RegExp = /\.(c|m)?(j|t)s$/
+
         /**
          * Absolute path to declaration file for {@link output}.
          *

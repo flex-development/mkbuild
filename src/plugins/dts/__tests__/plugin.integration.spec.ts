@@ -18,6 +18,7 @@ describe('integration:plugins/dts', () => {
     options = {
       ...ESBUILD_OPTIONS,
       logLevel: 'silent',
+      outbase: '__fixtures__',
       plugins: [subject],
       sourcemap: true
     }
@@ -146,19 +147,6 @@ describe('integration:plugins/dts', () => {
       expect(warnings).to.be.an('array').of.length(0)
       expect(outputFiles).to.be.an('array').of.length(3)
       expect(pick(outputFiles[2]!, ['path', 'text'])).toMatchSnapshot()
-    })
-
-    it('should warn if no source files are found', async () => {
-      // Act
-      const { warnings } = await build({
-        ...options,
-        entryPoints: { 'apple-stock': '__fixtures__/apple-stock.jsonc' },
-        loader: { '.jsonc': 'copy' }
-      })
-      Reflect.deleteProperty(warnings[0]!.location!, 'lineText')
-
-      // Expect
-      expect(warnings).toMatchSnapshot()
     })
   })
 })

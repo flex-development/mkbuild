@@ -16,7 +16,6 @@ import loadBuildConfig from './config/load'
 import type { Config, Entry, Result } from './interfaces'
 import type { EsbuildOptions, OutputExtension } from './types'
 import analyzeResults from './utils/analyze-results'
-import buildSources from './utils/build-sources'
 import esbuilder from './utils/esbuilder'
 import write from './utils/write'
 
@@ -93,6 +92,8 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     const { peerDependencies = {} } = pkg
 
     $.absWorkingDir = cwd
+    $.bundle = $.bundle ?? bundle
+    $.source = $.source ?? ($.bundle ? 'src/index' : 'src')
 
     /**
      * Normalized build entry.
@@ -100,15 +101,17 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
      * @const {Entry} entry
      */
     const entry: Entry = defu($, esbuild, {
-      bundle,
+      bundle: $.bundle,
       declaration,
       ext: (($.format ?? format) === 'esm' ? '.mjs' : '.js') as OutputExtension,
       external: Object.keys(peerDependencies),
       format,
+      ignore,
       name: undefined,
-      outbase: 'src',
+      outbase: $.bundle ? pathe.parse($.source).root : $.source,
       outdir,
-      source: $.bundle ?? bundle ? 'src/index' : 'src'
+      pattern,
+      source: $.source
     })
 
     // reassign entry properties
@@ -149,39 +152,29 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     /**
      * Build results for {@link entry}.
      *
-     * @const {Result[]} built
+     * @var {Result[]} results
      */
-    const built: Result[] = []
+    let results: Result[] = []
 
-    // build source files and write results
-    for (const source of await buildSources(entry, pattern, ignore, fs)) {
-      /**
-       * Build results for {@link source}.
-       *
-       * @var {Result[]} results
-       */
-      let results: Result[] = []
+    // attempt to build source files
+    try {
+      results = await esbuilder(entry, fs)
+    } catch {
+      return []
+    }
 
-      // attempt to build source file
+    // write build results
+    for (const result of results) {
       try {
-        results = await esbuilder(source, entry)
-      } catch {
+        await write(result, fs)
+      } catch (e: unknown) {
+        consola.error((e as Error).message)
         return []
-      }
-
-      // write build results
-      for (const result of results) {
-        try {
-          built.push(await write(result, fs))
-        } catch (e: unknown) {
-          consola.error((e as Error).message)
-          return []
-        }
       }
     }
 
     // push written build results
-    written.push([entry.outdir, built])
+    written.push([entry.outdir, results])
   }
 
   /**

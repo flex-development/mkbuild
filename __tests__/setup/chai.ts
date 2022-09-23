@@ -6,6 +6,7 @@
 
 import chai from 'chai'
 import chaiEach from 'chai-each'
+import chaiFs from 'chai-fs'
 import chaiQuantifiers from 'chai-quantifiers'
 import chaiString from 'chai-string'
 
@@ -17,9 +18,11 @@ chai.config.truncateThreshold = 0
  * initialize chai plugins.
  *
  * @see https://github.com/jamesthomasonjr/chai-each
+ * @see https://github.com/chaijs/chai-fs
  * @see https://github.com/funny-bytes/chai-quantifiers
  * @see https://github.com/onechiporenko/chai-string
  */
 chai.use(chaiEach)
+chai.use(chaiFs)
 chai.use(chaiQuantifiers)
 chai.use(chaiString)
