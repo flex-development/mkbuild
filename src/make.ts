@@ -9,7 +9,7 @@ import { defu } from 'defu'
 import type { Format } from 'esbuild'
 import fse from 'fs-extra'
 import * as pathe from 'pathe'
-import { type PackageJson } from 'pkg-types'
+import type { PackageJson } from 'pkg-types'
 import pb from 'pretty-bytes'
 import { IGNORE_PATTERNS } from './config/constants'
 import loadBuildConfig from './config/load'
@@ -46,13 +46,13 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     clean,
     cwd: root,
     declaration,
-    entries,
     esbuild,
     format,
     fs,
     ignore,
     outdir,
-    pattern
+    pattern,
+    ...options
   }: Required<Config> = defu(await loadBuildConfig(cwd), config, {
     bundle: false,
     clean: true,
@@ -87,36 +87,33 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     return []
   }
 
-  // normalize build entries
-  for (const $ of entries) {
+  /**
+   * Normalized build entries.
+   *
+   * @const {Entry[]} entries
+   */
+  const entries: Entry[] = options.entries.map(entry => {
     const { peerDependencies = {} } = pkg
 
-    $.absWorkingDir = cwd
-    $.bundle = $.bundle ?? bundle
-    $.source = $.source ?? ($.bundle ? 'src/index' : 'src')
+    entry.absWorkingDir = cwd
+    entry.bundle = entry.bundle ?? bundle
+    entry.format = entry.format ?? format
+    entry.source = entry.source ?? (entry.bundle ? 'src/index' : 'src')
 
-    /**
-     * Normalized build entry.
-     *
-     * @const {Entry} entry
-     */
-    const entry: Entry = defu($, esbuild, {
-      bundle: $.bundle,
+    return defu(entry, esbuild, {
+      bundle: entry.bundle,
       declaration,
-      ext: (($.format ?? format) === 'esm' ? '.mjs' : '.js') as OutputExtension,
+      ext: (entry.format === 'esm' ? '.mjs' : '.js') as Entry['ext'],
       external: Object.keys(peerDependencies),
       format,
       ignore,
       name: undefined,
-      outbase: $.bundle ? pathe.parse($.source).root : $.source,
+      outbase: entry.bundle ? pathe.parse(entry.source).root : entry.source,
       outdir,
       pattern,
-      source: $.source
+      source: entry.source
     })
-
-    // reassign entry properties
-    for (const [key, value] of Object.entries(entry)) $[key] = value
-  }
+  })
 
   // print build start info
   consola.info(color.cyan(`Building ${pkg.name}`))
@@ -129,7 +126,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
      * @const {string[]} outdirs
      */
     const outdirs: string[] = entries.map(entry => {
-      return pathe.resolve(cwd, entry.outdir!)
+      return pathe.resolve(cwd, entry.outdir)
     })
 
     // remove and recreate output directories
@@ -148,7 +145,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   const written: [string, Result[]][] = []
 
   // process build entries
-  for (const entry of entries as Entry[]) {
+  for (const entry of entries) {
     /**
      * Build results for {@link entry}.
      *
