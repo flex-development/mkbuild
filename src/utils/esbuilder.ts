@@ -84,7 +84,8 @@ const esbuilder = async (
     name,
     nodePaths,
     outExtension = {},
-    outbase = '',
+    // eslint-disable-next-line unicorn/consistent-destructuring
+    outbase = bundle ? pathe.parse(entry.source).root : entry.source,
     outdir,
     pattern = '**',
     platform,
@@ -212,7 +213,7 @@ const esbuilder = async (
     minifyWhitespace,
     nodePaths,
     outExtension: { ...outExtension, '.js': ext },
-    outbase: outbase || (bundle ? undefined : source),
+    outbase,
     outdir,
     platform,
     plugins,

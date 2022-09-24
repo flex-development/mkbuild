@@ -108,7 +108,6 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       format,
       ignore,
       name: undefined,
-      outbase: entry.bundle ? pathe.parse(entry.source).root : entry.source,
       outdir,
       pattern,
       source: entry.source
