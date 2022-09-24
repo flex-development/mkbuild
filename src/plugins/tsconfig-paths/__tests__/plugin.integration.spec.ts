@@ -19,7 +19,7 @@ describe('integration:plugins/tsconfig-paths', () => {
   describe('esbuild', () => {
     it('should resolve path aliases in cjs output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/tsconfig-paths.cts'],
         format: 'cjs',
@@ -28,12 +28,15 @@ describe('integration:plugins/tsconfig-paths', () => {
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should resolve path aliases in copied output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/values.d.ts'],
         format: 'esm',
@@ -41,12 +44,15 @@ describe('integration:plugins/tsconfig-paths', () => {
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should resolve path aliases esm output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/tsconfig-paths.mts'],
         format: 'esm',
@@ -55,19 +61,25 @@ describe('integration:plugins/tsconfig-paths', () => {
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should skip files that are not javascript or typescript', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/apple-stock.jsonc'],
         loader: { '.jsonc': 'copy' }
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
   })
 })

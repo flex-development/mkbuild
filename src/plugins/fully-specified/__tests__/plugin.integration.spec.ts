@@ -19,7 +19,7 @@ describe('integration:plugins/fully-specified', () => {
   describe('esbuild', () => {
     it('should fill specifiers in cjs output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/relative-specifiers.cts'],
         format: 'cjs',
@@ -28,12 +28,15 @@ describe('integration:plugins/fully-specified', () => {
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should fill specifiers in copied output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/my-atoi.d.mts'],
         format: 'esm',
@@ -42,13 +45,15 @@ describe('integration:plugins/fully-specified', () => {
       })
 
       // Expect
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
       expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should fill specifiers in esm output files', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/relative-specifiers.mts'],
         format: 'esm',
@@ -57,20 +62,25 @@ describe('integration:plugins/fully-specified', () => {
       })
 
       // Expect
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
 
     it('should skip files that are not javascript or typescript', async () => {
       // Act
-      const { outputFiles = [] } = await build({
+      const { errors, outputFiles, warnings } = await build({
         ...options,
         entryPoints: ['__fixtures__/bitcoin-price.json5'],
         loader: { '.json5': 'copy' }
       })
 
       // Expect
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
       expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles[0]!.text).toMatchSnapshot()
+      expect(outputFiles![0]!.text).toMatchSnapshot()
     })
   })
 })
