@@ -91,8 +91,15 @@ const plugin = (): Plugin => {
      */
     const sourcefiles: string[] = []
 
-    // get source files
-    onResolve({ filter: /.*[^.d](\.(c|m)?(j|t)s)$/ }, (args: OnResolveArgs) => {
+    /**
+     * Source file filter.
+     *
+     * @const {RegExp} filter
+     */
+    const filter: RegExp = /(.*[^.d]\.(([cm]?[jt]s)|([jt]sx)))$/
+
+    // get source files as entry points are resolved
+    onResolve({ filter }, (args: OnResolveArgs): undefined => {
       return void sourcefiles.push(pathe.resolve(args.resolveDir, args.path))
     })
 
