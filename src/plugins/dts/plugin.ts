@@ -5,6 +5,7 @@
 
 import { EXT_DTS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
+import { defu } from 'defu'
 import type {
   BuildOptions,
   BuildResult,
@@ -13,11 +14,10 @@ import type {
   Plugin,
   PluginBuild
 } from 'esbuild'
+import fse from 'fs-extra'
 import * as pathe from 'pathe'
-import {
-  tsConfigLoader,
-  type TsConfigLoaderResult
-} from 'tsconfig-paths/lib/tsconfig-loader'
+import type { TSConfig as Tsconfig } from 'pkg-types'
+import { loadTsconfig } from 'tsconfig-paths/lib/tsconfig-loader'
 import type {
   CompilerHost,
   CompilerOptions,
@@ -40,6 +40,7 @@ const plugin = (): Plugin => {
   /**
    * Generates TypeScript declarations.
    *
+   * @todo handle diagnostics
    * @todo bundle declarations
    *
    * [1]: https://esbuild.github.io/plugins
@@ -62,10 +63,11 @@ const plugin = (): Plugin => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
+      format,
       metafile,
       outExtension: { '.js': ext = '.js' } = {},
-      outdir = '.',
       outbase = '',
+      outdir = '.',
       tsconfig = 'tsconfig.json'
     } = initialOptions
 
@@ -83,24 +85,6 @@ const plugin = (): Plugin => {
     const ts: typeof import('typescript') = (await import('typescript')).default
 
     /**
-     * Tsconfig loader result.
-     *
-     * @const {TsConfigLoaderResult} result
-     */
-    const tsconfig_result: TsConfigLoaderResult = tsConfigLoader({
-      cwd: absWorkingDir,
-      /**
-       * Returns the value of `key`.
-       *
-       * @param {string} key - Environment variable key
-       * @return {string | undefined} Value of `key`
-       */
-      getEnv(key: string): string | undefined {
-        return key === 'TS_NODE_PROJECT' ? tsconfig : process.env[key]
-      }
-    })
-
-    /**
      * Source file paths.
      *
      * @const {string[]} sourcefiles
@@ -113,17 +97,49 @@ const plugin = (): Plugin => {
     })
 
     return void onEnd((result: BuildResult): void => {
-      // tsconfig data
-      const { baseUrl = '.', paths = {} } = tsconfig_result
+      // do nothing if no source files to process
+      if (sourcefiles.length === 0) return
+
+      /**
+       * Tsconfig object.
+       *
+       * @const {Tsconfig | undefined} config
+       */
+      const config: Tsconfig | undefined = loadTsconfig(
+        pathe.resolve(absWorkingDir, tsconfig),
+        (path: string): boolean => fse.existsSync(path),
+        (filename: string): string => fse.readFileSync(filename, 'utf8')
+      )
+
+      // remove forbidden user compiler options
+      delete config?.compilerOptions?.declaration
+      delete config?.compilerOptions?.declarationDir
+      delete config?.compilerOptions?.emitDeclarationOnly
+      delete config?.compilerOptions?.module
+      delete config?.compilerOptions?.moduleResolution
+      delete config?.compilerOptions?.noEmit
+      delete config?.compilerOptions?.noErrorTruncation
+      delete config?.compilerOptions?.out
+      delete config?.compilerOptions?.outDir
+      delete config?.compilerOptions?.outFile
+      delete config?.compilerOptions?.rootDir
+      delete config?.compilerOptions?.rootDirs
+
+      // remove unsupported user compiler options
+      delete config?.compilerOptions?.declarationMap
+      delete config?.compilerOptions?.noEmitOnError
 
       /**
        * TypeScript compiler options.
        *
        * @const {CompilerOptions} compilerOptions
        */
-      const compilerOptions: CompilerOptions = {
+      const compilerOptions: CompilerOptions = defu(config?.compilerOptions, {
         allowJs: true,
-        baseUrl,
+        allowUmdGlobalAccess: format === 'iife',
+        allowUnreachableCode: false,
+        baseUrl: '.',
+        checkJs: false,
         declaration: true,
         declarationMap: false,
         emitDeclarationOnly: true,
@@ -135,15 +151,17 @@ const plugin = (): Plugin => {
         noEmit: false,
         noEmitOnError: false,
         noErrorTruncation: true,
+        noImplicitAny: true,
+        noImplicitOverride: true,
+        noImplicitReturns: true,
         outDir: pathe.resolve(absWorkingDir, outdir),
-        paths,
         preserveConstEnums: true,
-        preserveSymlinks: false,
+        preserveSymlinks: true,
         resolveJsonModule: true,
         rootDir: pathe.resolve(absWorkingDir, outbase),
         skipLibCheck: true,
         target: ts.ScriptTarget.ESNext
-      }
+      })
 
       /**
        * TypeScript compiler host.
@@ -190,16 +208,16 @@ const plugin = (): Plugin => {
         /**
          * Regex pattern matching output file extensions.
          *
-         * @const {RegExp} OUTPUT_EXT_REGEX
+         * @const {RegExp} extregex
          */
-        const OUTPUT_EXT_REGEX: RegExp = /\.(c|m)?(j|t)s$/
+        const extregex: RegExp = /\.(c|m)?(j|t)s$/
 
         /**
          * Absolute path to declaration file for {@link output}.
          *
          * @const {string} dtspath
          */
-        const dtspath: string = output.path.replace(OUTPUT_EXT_REGEX, '.d.$1ts')
+        const dtspath: string = output.path.replace(extregex, '.d.$1ts')
 
         // do nothing if missing declaration file
         if (!vfs.has(dtspath)) return [output]

@@ -43,6 +43,16 @@ export const emptyDir = vi.fn(async (dir: PathLike): Promise<void> => {
 })
 
 /**
+ * Synchronously checks if `path` exists.
+ *
+ * @see https://nodejs.org/docs/latest-v16.x/api/fs.html#fsexistssyncpath
+ *
+ * @param {PathLike} path - Path to evaluate
+ * @return {boolean} `true` if `path` exists, `false` otherwise
+ */
+export const existsSync = vi.fn(volume.existsSync.bind(volume))
+
+/**
  * Returns {@link Stats} for `path`.
  *
  * @see https://nodejs.org/docs/latest-v16.x/api/fs.html#fspromisesstatpath-options
@@ -212,6 +222,7 @@ export const writeFile = vi.fn(
 
 export default {
   emptyDir,
+  existsSync,
   lstat,
   lstatSync,
   mkdirp,

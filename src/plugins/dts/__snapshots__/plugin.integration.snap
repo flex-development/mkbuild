@@ -147,3 +147,29 @@ export default dblLinear;
 ",
 }
 `;
+
+exports[`integration:plugins/dts > esbuild > should skip files that are not javascript or typescript 1`] = `
+"[
+  {
+    \\"date\\": \\"2007-04-24T07:00:00.000Z\\",
+    \\"close\\": 93.24
+  },
+  {
+    \\"date\\": \\"2007-04-25T07:00:00.000Z\\",
+    \\"close\\": 95.35
+  },
+  {
+    \\"date\\": \\"2007-06-08T07:00:00.000Z\\",
+    \\"close\\": 124.49
+  },
+  {
+    \\"date\\": \\"2007-06-11T07:00:00.000Z\\",
+    \\"close\\": 120.19
+  },
+  {
+    \\"date\\": \\"2007-06-12T07:00:00.000Z\\",
+    \\"close\\": 120.38
+  }
+]
+"
+`;

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
+    "noEmitOnError": true,
     "skipLibCheck": false
   },
   "exclude": ["**/__mocks__/**", "**/__snapshots__/**", "**/__tests__/**"],

@@ -5,10 +5,7 @@
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
 import type { BuildOptions, Plugin, PluginBuild } from 'esbuild'
-import { tsConfigLoader } from 'tsconfig-paths/lib/tsconfig-loader'
 import testSubject from '../plugin'
-
-vi.mock('tsconfig-paths/lib/tsconfig-loader')
 
 describe('unit:plugins/dts', () => {
   let subject: Plugin
@@ -26,7 +23,6 @@ describe('unit:plugins/dts', () => {
     await subject.setup(api)
 
     // Expect
-    expect(tsConfigLoader).toHaveBeenCalledTimes(0)
     expect(api.onResolve).toHaveBeenCalledTimes(0)
     expect(api.onEnd).toHaveBeenCalledTimes(0)
   })

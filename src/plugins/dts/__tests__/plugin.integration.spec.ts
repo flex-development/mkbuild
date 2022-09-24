@@ -148,5 +148,20 @@ describe('integration:plugins/dts', () => {
       expect(outputFiles).to.be.an('array').of.length(3)
       expect(pick(outputFiles[2]!, ['path', 'text'])).toMatchSnapshot()
     })
+
+    it('should skip files that are not javascript or typescript', async () => {
+      // Act
+      const { errors, outputFiles, warnings } = await build({
+        ...options,
+        entryPoints: ['__fixtures__/apple-stock.jsonc'],
+        loader: { '.jsonc': 'copy' }
+      })
+
+      // Expect
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles![0]!.text).toMatchSnapshot()
+    })
   })
 })
