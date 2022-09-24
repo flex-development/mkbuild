@@ -109,13 +109,19 @@ const esbuilder = async (
   /**
    * Relative paths to source files.
    *
-   * **Note**: Files are relative to `source` when bundling is disbaled.
-   * When enabled, files are relative to `${absWorkingDir}/`.
+   * **Note**: Files are relative to {@link source} when bundling is disbaled.
+   * When enabled, files are relative to {@link outbase}.
    *
    * @const {string[]} files
    */
   const files: string[] = bundle
-    ? [source.replace(new RegExp('^' + regexp(`${absWorkingDir}/`)), '')]
+    ? [
+        source
+          .replace(new RegExp(`^\\/?${regexp(`${absWorkingDir}/`)}`), '')
+          // adds outbase support for bundles (esbuild only uses outbase for
+          // multiple entry points); @see https://esbuild.github.io/api/#outbase
+          .replace(new RegExp(`^${regexp(`${outbase}/`)}`), '')
+      ]
     : await globby(pattern, {
         cwd: pathe.resolve(absWorkingDir, source),
         dot: true,
@@ -175,15 +181,14 @@ const esbuilder = async (
     entryPoints: sources.reduce<Record<string, string>>((acc, src) => {
       const { ext, file } = src
 
-      if (bundle) {
-        acc[name] = file
-      } else {
-        acc[file.replace(new RegExp(`${regexp(ext)}$`), '')] = pathe.join(
-          source,
-          file
-        )
-      }
+      /**
+       * {@link ext} regex.
+       *
+       * @const {RegExp} extregex
+       */
+      const extregex: RegExp = new RegExp(`${regexp(ext)}$`)
 
+      acc[file.replace(extregex, '')] = pathe.join(source, bundle ? '' : file)
       return acc
     }, {}),
     external: bundle ? [...new Set([...BUILTIN_MODULES, ...external])] : [],
