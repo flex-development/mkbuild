@@ -81,7 +81,7 @@ const esbuilder = async (
     minifyIdentifiers,
     minifySyntax,
     minifyWhitespace,
-    name,
+    name = '[name]',
     nodePaths,
     outExtension = {},
     // eslint-disable-next-line unicorn/consistent-destructuring
@@ -171,11 +171,12 @@ const esbuilder = async (
     conditions,
     define,
     drop,
+    entryNames: `[dir]/${name}`,
     entryPoints: sources.reduce<Record<string, string>>((acc, src) => {
       const { ext, file } = src
 
       if (bundle) {
-        acc[name ?? pathe.basename(file, ext)] = file
+        acc[name] = file
       } else {
         acc[file.replace(new RegExp(`${regexp(ext)}$`), '')] = pathe.join(
           source,
