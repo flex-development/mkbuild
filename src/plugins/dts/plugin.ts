@@ -184,8 +184,8 @@ const plugin = (): Plugin => {
        */
       const vfs: Map<string, string> = new Map()
 
-      // first letter before "js" in output file extension
-      const [cm = ''] = /(?<=^(\.min)?\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
+      // first letter before "js" or "ts" in output file extension
+      const [cm = ''] = /(?!=^\.\w?\.)(c|m)(?=[jt]s$)/.exec(ext) ?? []
 
       /**
        * Writes a declaration file to {@link vfs}.
