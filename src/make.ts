@@ -11,7 +11,7 @@ import fse from 'fs-extra'
 import * as pathe from 'pathe'
 import type { PackageJson } from 'pkg-types'
 import pb from 'pretty-bytes'
-import { IGNORE_PATTERNS } from './config/constants'
+import { EXT_DTS_REGEX, IGNORE_PATTERNS } from './config/constants'
 import loadBuildConfig from './config/load'
 import type { Config, Entry, Result } from './interfaces'
 import type { EsbuildOptions, OutputExtension } from './types'
@@ -57,7 +57,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     bundle: false,
     clean: true,
     cwd,
-    declaration: true,
+    declaration: false,
     entries: [],
     esbuild: {} as EsbuildOptions,
     ext: '.mjs' as OutputExtension,
@@ -157,6 +157,11 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       results = await esbuilder(entry, fs)
     } catch {
       return []
+    }
+
+    // filter results if only declaration files should be written
+    if (entry.declaration === 'only') {
+      results = results.filter(result => EXT_DTS_REGEX.test(result.outfile))
     }
 
     // write build results

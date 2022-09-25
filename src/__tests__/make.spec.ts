@@ -30,16 +30,16 @@ vi.mock('../utils/esbuilder')
 vi.mock('../utils/write')
 
 describe('unit:make', () => {
-  const config: Config = {
-    declaration: false,
-    entries: [{}, { format: 'cjs' }, { bundle: true, minify: true }]
-  }
+  const config: Config = { entries: [{}] }
+
+  let filecount: number = 0
 
   beforeAll(async () => {
     for (let file of await globby('**', { cwd: 'src', ignore: IGNORE })) {
       file = path.resolve('src', file)
       vfs.mkdirpSync(path.dirname(file))
       vfs.writeFileSync(file, fs.readFileSync(file, 'utf8'))
+      filecount++
     }
 
     vfs.writeFileSync('package.json', JSON.stringify(pkg))
@@ -59,11 +59,6 @@ describe('unit:make', () => {
       results = await testSubject()
     })
 
-    it('should load build config', () => {
-      expect(loadBuildConfig).toHaveBeenCalledTimes(1)
-      expect(loadBuildConfig).toHaveBeenCalledWith('.')
-    })
-
     it('should determine current working directory', () => {
       expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), '.')
     })
@@ -81,19 +76,12 @@ describe('unit:make', () => {
       expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
     })
 
-    it('should clean output directories', () => {
-      expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), 'dist')
-      expect(fse.unlink).toHaveBeenCalledTimes(1)
-      expect(fse.emptyDir).toHaveBeenCalledTimes(1)
-      expect(fse.mkdirp).toHaveBeenNthCalledWith(1, path.resolve('dist'))
-    })
-
     it('should build source files', () => {
       expect(esbuilder).toHaveBeenCalledTimes(config.entries!.length)
     })
 
     it('should write build results', () => {
-      expect(write).toHaveBeenCalled()
+      expect(write).toHaveBeenCalledTimes(filecount)
     })
 
     it('should print build done info', () => {

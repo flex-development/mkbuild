@@ -39,9 +39,11 @@ interface Config {
   /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    *
-   * @default true
+   * Pass `'only'` to only write declaration files.
+   *
+   * @default false
    */
-  declaration?: boolean
+  declaration?: boolean | 'only'
 
   /**
    * Build entries.

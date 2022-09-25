@@ -162,7 +162,7 @@ const esbuilder = async (
   if (tsconfig || process.env.TS_NODE_PROJECT) plugins.unshift(tsconfigPaths())
 
   // add dts plugin
-  declaration && plugins.unshift(dts())
+  if (declaration as boolean) plugins.unshift(dts())
 
   // build source files
   const { errors, metafile, outputFiles, warnings } = await build({

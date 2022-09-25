@@ -25,9 +25,9 @@ interface Entry extends EsbuildOptions {
   /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    *
-   * @default true
+   * @default false
    */
-  declaration?: boolean
+  declaration?: boolean | 'only'
 
   /**
    * Output file extension.
