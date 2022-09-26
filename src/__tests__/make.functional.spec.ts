@@ -14,7 +14,6 @@ import { globby } from 'globby'
 import fs from 'node:fs'
 import path from 'node:path'
 import * as pathe from 'pathe'
-import pkg from '../../package.json' assert { type: 'json' }
 import testSubject from '../make'
 
 vi.mock('fs-extra')
@@ -33,7 +32,8 @@ describe('functional:make', () => {
       vfs.writeFileSync(file, fs.readFileSync(file, 'utf8'))
     }
 
-    vfs.writeFileSync('package.json', JSON.stringify(pkg))
+    vfs.writeFileSync('package.json', fs.readFileSync('package.json'))
+    vfs.writeFileSync('tsconfig.json', fs.readFileSync('tsconfig.json'))
   })
 
   afterEach(() => {

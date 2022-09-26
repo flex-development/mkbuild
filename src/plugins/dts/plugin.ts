@@ -5,6 +5,7 @@
 
 import { EXT_DTS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
+import getCompilerOptions from '#src/utils/get-compiler-options'
 import { defu } from 'defu'
 import type {
   BuildOptions,
@@ -14,10 +15,7 @@ import type {
   Plugin,
   PluginBuild
 } from 'esbuild'
-import fse from 'fs-extra'
 import * as pathe from 'pathe'
-import type { TSConfig as Tsconfig } from 'pkg-types'
-import { loadTsconfig } from 'tsconfig-paths/lib/tsconfig-loader'
 import type {
   CompilerHost,
   CompilerOptions,
@@ -108,40 +106,35 @@ const plugin = (): Plugin => {
       if (sourcefiles.length === 0) return
 
       /**
-       * Tsconfig object.
+       * TypeScript compiler options.
        *
-       * @const {Tsconfig | undefined} config
+       * @var {CompilerOptions} compilerOptions
        */
-      const config: Tsconfig | undefined = loadTsconfig(
+      let compilerOptions: CompilerOptions = getCompilerOptions(
         pathe.resolve(absWorkingDir, tsconfig),
-        (path: string): boolean => fse.existsSync(path),
-        (filename: string): string => fse.readFileSync(filename, 'utf8')
+        ts
       )
 
       // remove forbidden user compiler options
-      delete config?.compilerOptions?.declaration
-      delete config?.compilerOptions?.declarationDir
-      delete config?.compilerOptions?.emitDeclarationOnly
-      delete config?.compilerOptions?.module
-      delete config?.compilerOptions?.moduleResolution
-      delete config?.compilerOptions?.noEmit
-      delete config?.compilerOptions?.noErrorTruncation
-      delete config?.compilerOptions?.out
-      delete config?.compilerOptions?.outDir
-      delete config?.compilerOptions?.outFile
-      delete config?.compilerOptions?.rootDir
-      delete config?.compilerOptions?.rootDirs
+      delete compilerOptions.declarationDir
+      delete compilerOptions.out
+      delete compilerOptions.outFile
+      delete compilerOptions.rootDirs
+
+      // remove overridden user compiler options
+      delete compilerOptions.declaration
+      delete compilerOptions.emitDeclarationOnly
+      delete compilerOptions.noEmit
+      delete compilerOptions.noErrorTruncation
+      delete compilerOptions.outDir
+      delete compilerOptions.rootDir
 
       // remove unsupported user compiler options
-      delete config?.compilerOptions?.declarationMap
-      delete config?.compilerOptions?.noEmitOnError
+      delete compilerOptions.declarationMap
+      delete compilerOptions.noEmitOnError
 
-      /**
-       * TypeScript compiler options.
-       *
-       * @const {CompilerOptions} compilerOptions
-       */
-      const compilerOptions: CompilerOptions = defu(config?.compilerOptions, {
+      // merge user compiler options with defaults
+      compilerOptions = defu(compilerOptions, {
         allowJs: true,
         allowUmdGlobalAccess: format === 'iife',
         allowUnreachableCode: false,

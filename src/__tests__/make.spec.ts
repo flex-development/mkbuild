@@ -43,6 +43,7 @@ describe('unit:make', () => {
     }
 
     vfs.writeFileSync('package.json', JSON.stringify(pkg))
+    vfs.writeFileSync('tsconfig.json', fs.readFileSync('tsconfig.json'))
 
     consola.mockTypes(() => vi.fn())
   })
@@ -146,6 +147,7 @@ describe('unit:make', () => {
       const error: Error = new Error('write error')
 
       // Act
+      ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
       ;(write as unknown as Spy).mockRejectedValueOnce(error)
       const results = await testSubject()
 
