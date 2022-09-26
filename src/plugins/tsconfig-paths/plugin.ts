@@ -10,6 +10,7 @@ import {
 } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
 import extractStatements from '#src/utils/extract-statements'
+import getCompilerOptions from '#src/utils/get-compiler-options'
 import type {
   BuildOptions,
   BuildResult,
@@ -19,10 +20,6 @@ import type {
 } from 'esbuild'
 import * as pathe from 'pathe'
 import { createMatchPath, type MatchPath } from 'tsconfig-paths'
-import {
-  tsConfigLoader,
-  type TsConfigLoaderResult
-} from 'tsconfig-paths/lib/tsconfig-loader'
 import type Options from './options'
 
 /**
@@ -64,7 +61,7 @@ const plugin = ({
       absWorkingDir = process.cwd(),
       bundle,
       metafile,
-      tsconfig
+      tsconfig = 'tsconfig.json'
     } = initialOptions
 
     // esbuild handles path aliases when bundling
@@ -74,30 +71,14 @@ const plugin = ({
     if (!metafile) throw new Error('metafile required')
 
     /**
-     * Tsconfig loader result.
+     * Absolute path to tsconfig.
      *
-     * @const {TsConfigLoaderResult} result
+     * @const {string} tsconfigfile
      */
-    const tsconfig_result: TsConfigLoaderResult = tsConfigLoader({
-      cwd: absWorkingDir,
-      /**
-       * Returns the value of `key`.
-       *
-       * @param {string} key - Environment variable key
-       * @return {string | undefined} Value of `key`
-       */
-      getEnv(key: string): string | undefined {
-        return key === 'TS_NODE_PROJECT'
-          ? tsconfig ?? process.env[key]
-          : process.env[key]
-      }
-    })
+    const tsconfigpath: string = pathe.resolve(absWorkingDir, tsconfig)
 
-    // tsconfig couldn't be found
-    if (!tsconfig_result.tsConfigPath) throw new Error('tsconfig not found')
-
-    // tsconfig data
-    const { baseUrl = '', paths = {}, tsConfigPath } = tsconfig_result
+    // user compiler options
+    const { baseUrl = '', paths = {} } = getCompilerOptions(tsconfigpath)
 
     /**
      * Path matching function.
@@ -105,7 +86,7 @@ const plugin = ({
      * @const {MatchPath} matcher
      */
     const matcher: MatchPath = createMatchPath(
-      pathe.resolve(pathe.dirname(tsConfigPath), baseUrl),
+      pathe.resolve(pathe.dirname(tsconfigpath), baseUrl),
       paths,
       mainFields,
       baseUrl.length > 0

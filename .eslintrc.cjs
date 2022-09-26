@@ -49,6 +49,12 @@ const config = {
       rules: {
         'promise/avoid-new': 0
       }
+    },
+    {
+      files: ['src/utils/__tests__/get-compiler-options.spec.ts'],
+      rules: {
+        'unicorn/no-keyword-prefix': 0
+      }
     }
   ]
 }
