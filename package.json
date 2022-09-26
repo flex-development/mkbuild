@@ -67,6 +67,7 @@
     "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
     "check:spelling": "cspell lint --color --no-progress --relative $@ \"**\"",
     "check:types": "NODE_OPTIONS='' tsc -p tsconfig.json",
+    "check:types:build": "NODE_OPTIONS='' tsc -p tsconfig.build.json",
     "check:upgrades": "yarn upgrade-interactive",
     "clean:build": "trash ./{dist,*.tgz}",
     "clean:modules": "trash ./.yarn/{cache,*.gz} ./node_modules",
@@ -93,15 +94,14 @@
     "cosmiconfig": "7.0.1",
     "defu": "6.1.0",
     "esbuild": "0.15.7",
+    "escape-string-regexp": "5.0.0",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
-    "junk": "4.0.0",
     "mlly": "0.5.14",
     "pathe": "0.3.5",
     "pkg-types": "0.3.5",
     "postinstall-postinstall": "2.1.0",
     "pretty-bytes": "6.0.0",
-    "sade": "1.8.1",
     "tsconfig-paths": "4.1.0"
   },
   "devDependencies": {
@@ -112,6 +112,8 @@
     "@flex-development/tutils": "5.0.0",
     "@graphql-eslint/eslint-plugin": "3.10.7",
     "@types/chai": "4.3.3",
+    "@types/chai-fs": "2.0.2",
+    "@types/chai-string": "1.4.2",
     "@types/conventional-changelog": "3.1.1",
     "@types/conventional-changelog-config-spec": "2.1.1",
     "@types/conventional-changelog-writer": "4.0.1",
@@ -131,6 +133,10 @@
     "@vitest/coverage-c8": "0.23.1",
     "@vitest/ui": "0.23.1",
     "chai": "4.3.6",
+    "chai-each": "0.0.1",
+    "chai-fs": "2.0.0",
+    "chai-quantifiers": "1.0.17",
+    "chai-string": "1.5.0",
     "conventional-changelog-cli": "2.2.2",
     "conventional-recommended-bump": "6.1.0",
     "cspell": "6.8.0",
@@ -164,6 +170,7 @@
     "pretty-format": "29.0.1",
     "radash": "7.1.0",
     "react": "18.2.0",
+    "sade": "1.8.1",
     "styled-components": "5.3.5",
     "trash-cli": "5.0.0",
     "ts-dedent": "2.2.0",
@@ -178,7 +185,7 @@
     "yaml-eslint-parser": "1.1.0"
   },
   "peerDependencies": {
-    "typescript": "*"
+    "typescript": ">=3.7.2"
   },
   "peerDependenciesMeta": {
     "typescript": {

@@ -8,15 +8,12 @@ import * as color from 'colorette'
 import pb from 'pretty-bytes'
 
 /**
- * Pretty prints `results`.
- *
- * @todo support chunks (code splitting)
- * @todo support sourcemaps
+ * Returns a pretty printed version of `results`.
  *
  * @param {string} outdir - Output directory name
  * @param {Pick<Result, 'bytes' | 'outfile'>[]} [results=[]] - Build results
  * @param {number} [pad=2] - Number of spaces before new lines
- * @return {string} Log entry for `results`
+ * @return {string} Pretty printed `results`
  */
 const analyzeResults = (
   outdir: string,

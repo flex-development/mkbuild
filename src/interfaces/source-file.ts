@@ -15,7 +15,10 @@ interface SourceFile {
   /**
    * Relative path to source file.
    *
-   * **Note**: Relative to `entry.source`.
+   * **Note**: Relative to `entry.source` if bundling is disabled; relative to
+   * `entry.outbase` (defaults `pathe.parse(file).root`) otherwise.
+   *
+   * @see https://esbuild.github.io/api/#outbase
    */
   file: string
 

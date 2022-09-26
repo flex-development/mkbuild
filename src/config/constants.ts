@@ -8,22 +8,11 @@ import { builtinModules } from 'node:module'
 /**
  * Built-in modules.
  *
- * @const {Set<string>} BUILTIN_MODULES
+ * @const {string[]} BUILTIN_MODULES
  */
-export const BUILTIN_MODULES: Set<string> = new Set<string>(
-  builtinModules.flatMap(m => [m, 'node:' + m])
-)
-
-/**
- * Regex pattern used to determine if [esbuild][1] should be used to build or
- * copy a source file.
- *
- * [1]: https://esbuild.github.io/api/#build-api
- *
- * @const {RegExp} ESBUILDER_REGEX
- */
-export const ESBUILDER_REGEX: RegExp =
-  /\.(c(j|t)s|d\.(c|m)?ts|json(5|c)?|jsx?|m(j|t)s|tsx?)$/
+export const BUILTIN_MODULES: string[] = builtinModules.flatMap(m => {
+  return [m, 'node:' + m]
+})
 
 /**
  * `require` and `require.resolve` statement regex.
@@ -40,7 +29,7 @@ export const EVAL_CJS_REGEX: RegExp =
  *
  * @const {RegExp} EXT_DTS_REGEX
  */
-export const EXT_DTS_REGEX: RegExp = /(\.d\.(c|m)?ts)$/
+export const EXT_DTS_REGEX: RegExp = /\.d\.(c|m)?ts$/
 
 /**
  * JavaScript file extension regex.

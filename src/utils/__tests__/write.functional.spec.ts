@@ -3,31 +3,30 @@
  * @module mkbuild/utils/tests/functional/write
  */
 
-import fse from 'fs-extra'
-import * as pathe from 'pathe'
+import vfs from '#fixtures/volume'
+import path from 'node:path'
 import testSubject from '../write'
 
 vi.mock('fs-extra')
-vi.mock('pathe')
 
 describe('functional:utils/write', () => {
-  const path: string = faker.system.filePath()
+  const outfile: string = 'dist/foo/index.mjs'
   const text: string = "export const foo = 'baz'"
-  const contents: Uint8Array = new Uint8Array(Buffer.from(text))
 
   beforeEach(async () => {
-    await testSubject({ contents, path, text })
+    await testSubject({
+      contents: new Uint8Array(Buffer.from(text)),
+      outfile,
+      path: path.resolve(outfile),
+      text
+    })
   })
 
-  it('should create subdirectories in outdir', () => {
-    expect(pathe.dirname).toHaveBeenCalledOnce()
-    expect(pathe.dirname).toHaveBeenCalledWith(path)
-    expect(fse.mkdirp).toHaveBeenCalledOnce()
-    expect(fse.mkdirp).toHaveBeenCalledWith(pathe.dirname(path))
+  afterEach(() => {
+    vfs.reset()
   })
 
-  it('should write build result', () => {
-    expect(fse.writeFile).toHaveBeenCalledOnce()
-    expect(fse.writeFile).toHaveBeenCalledWith(path, text, 'utf8')
+  it('should write build result to file system', () => {
+    expect(vfs.toJSON()).to.have.property(path.resolve(outfile)).equal(text)
   })
 })

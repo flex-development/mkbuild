@@ -23,4 +23,5 @@ const path: string = 'tsconfig-paths/lib/tsconfig-loader'
  */
 const actual: Actual = await vi.importActual<Actual>(path)
 
+export const loadTsconfig = vi.fn(actual.loadTsconfig)
 export const tsConfigLoader = vi.fn(actual.tsConfigLoader)

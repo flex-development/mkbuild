@@ -10,6 +10,7 @@ import {
 } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
 import extractStatements from '#src/utils/extract-statements'
+import getCompilerOptions from '#src/utils/get-compiler-options'
 import type {
   BuildOptions,
   BuildResult,
@@ -19,10 +20,6 @@ import type {
 } from 'esbuild'
 import * as pathe from 'pathe'
 import { createMatchPath, type MatchPath } from 'tsconfig-paths'
-import {
-  tsConfigLoader,
-  type TsConfigLoaderResult
-} from 'tsconfig-paths/lib/tsconfig-loader'
 import type Options from './options'
 
 /**
@@ -56,59 +53,32 @@ const plugin = ({
    * @param {PluginBuild} build - [esbuild plugin api][2]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][3] options
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
-   * @param {PluginBuild['onStart']} build.onStart - Build start callback
    * @return {void} Nothing when complete
+   * @throws {Error}
    */
-  const setup = ({ initialOptions, onEnd, onStart }: PluginBuild): void => {
+  const setup = ({ initialOptions, onEnd }: PluginBuild): void => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
       metafile,
-      tsconfig
+      tsconfig = 'tsconfig.json'
     } = initialOptions
 
     // esbuild handles path aliases when bundling
     if (bundle) return
 
     // metafile required to get output metadata
-    if (!metafile) {
-      return void onStart(() => ({
-        errors: [
-          {
-            detail: 'https://esbuild.github.io/api/#metafile',
-            pluginName: PLUGIN_NAME,
-            text: 'metafile required'
-          }
-        ]
-      }))
-    }
+    if (!metafile) throw new Error('metafile required')
 
     /**
-     * Tsconfig loader result.
+     * Absolute path to tsconfig.
      *
-     * @const {TsConfigLoaderResult} result
+     * @const {string} tsconfigfile
      */
-    const result: TsConfigLoaderResult = tsConfigLoader({
-      cwd: absWorkingDir,
-      /**
-       * Returns the value of `key`.
-       *
-       * @param {string} key - Environment variable key
-       * @return {string | undefined} Value of `key`
-       */
-      getEnv(key: string): string | undefined {
-        return key === 'TS_NODE_PROJECT'
-          ? tsconfig ?? process.env[key]
-          : process.env[key]
-      }
-    })
+    const tsconfigpath: string = pathe.resolve(absWorkingDir, tsconfig)
 
-    // tsconfig couldn't be found
-    if (!result.tsConfigPath) {
-      return void onStart(() => ({
-        errors: [{ pluginName: PLUGIN_NAME, text: 'tsconfig not found' }]
-      }))
-    }
+    // user compiler options
+    const { baseUrl = '', paths = {} } = getCompilerOptions(tsconfigpath)
 
     /**
      * Path matching function.
@@ -116,10 +86,10 @@ const plugin = ({
      * @const {MatchPath} matcher
      */
     const matcher: MatchPath = createMatchPath(
-      pathe.resolve(pathe.dirname(result.tsConfigPath), result.baseUrl ?? ''),
-      result.paths ?? {},
+      pathe.resolve(pathe.dirname(tsconfigpath), baseUrl),
+      paths,
       mainFields,
-      result.baseUrl !== undefined
+      baseUrl.length > 0
     )
 
     return void onEnd((result: BuildResult): void => {

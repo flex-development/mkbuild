@@ -3,6 +3,8 @@
  * @module mkbuild/utils/mocks/write
  */
 
+vi.mock('fs-extra')
+
 /**
  * `write` module type.
  */

@@ -51,9 +51,9 @@ const config = {
       }
     },
     {
-      files: ['src/make.ts'],
+      files: ['src/utils/__tests__/get-compiler-options.spec.ts'],
       rules: {
-        'unicorn/no-array-callback-reference': 0
+        'unicorn/no-keyword-prefix': 0
       }
     }
   ]

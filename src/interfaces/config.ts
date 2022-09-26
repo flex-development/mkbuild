@@ -3,7 +3,8 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { BuildOptions } from 'esbuild'
+import type { EsbuildOptions, OutputExtension } from '#src/types'
+import type { Format } from 'esbuild'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -12,6 +13,15 @@ import type Entry from './entry'
  * Build configuration options.
  */
 interface Config {
+  /**
+   * Bundle files.
+   *
+   * @see https://esbuild.github.io/api/#bundle
+   *
+   * @default false
+   */
+  bundle?: boolean
+
   /**
    * Remove output directory before starting build.
    *
@@ -29,9 +39,11 @@ interface Config {
   /**
    * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
    *
-   * @default true
+   * Pass `'only'` to only write declaration files.
+   *
+   * @default false
    */
-  declaration?: boolean
+  declaration?: boolean | 'only'
 
   /**
    * Build entries.
@@ -47,22 +59,23 @@ interface Config {
    *
    * @default {}
    */
-  esbuild?: Omit<
-    BuildOptions,
-    | 'absWorkingDir'
-    | 'entryNames'
-    | 'entryPoints'
-    | 'format'
-    | 'incremental'
-    | 'loader'
-    | 'metafile'
-    | 'outdir'
-    | 'outfile'
-    | 'publicPath'
-    | 'stdin'
-    | 'watch'
-    | 'write'
-  >
+  esbuild?: EsbuildOptions
+
+  /**
+   * Output file extension.
+   *
+   * @default '.mjs'
+   */
+  ext?: OutputExtension
+
+  /**
+   * Output file format.
+   *
+   * @see https://esbuild.github.io/api/#format
+   *
+   * @default 'esm'
+   */
+  format?: Format
 
   /**
    * Custom implementations of `fs` methods.
@@ -107,6 +120,13 @@ interface Config {
    * @default '**'
    */
   pattern?: string[] | string
+
+  /**
+   * Name of directory containing source files or relative path to bundle input.
+   *
+   * @default 'src'
+   */
+  source?: string
 }
 
 export type { Config as default }

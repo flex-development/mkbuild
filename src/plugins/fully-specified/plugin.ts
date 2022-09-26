@@ -20,11 +20,7 @@ import type {
 } from 'esbuild'
 import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
-import {
-  readPackageJSON,
-  resolvePackageJSON,
-  type PackageJson
-} from 'pkg-types'
+import { readPackageJSON, resolvePackageJSON } from 'pkg-types'
 
 /**
  * Plugin name.
@@ -71,10 +67,10 @@ const plugin = (): Plugin => {
    * @param {PluginBuild} build - [esbuild plugin api][1]
    * @param {BuildOptions} build.initialOptions - [esbuild build api][2] options
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
-   * @param {PluginBuild['onStart']} build.onStart - Build start callback
    * @return {void} Nothing when complete
+   * @throws {Error}
    */
-  const setup = ({ initialOptions, onEnd, onStart }: PluginBuild): void => {
+  const setup = ({ initialOptions, onEnd }: PluginBuild): void => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
@@ -88,17 +84,7 @@ const plugin = (): Plugin => {
     if (bundle) return
 
     // metafile required to get output metadata
-    if (!metafile) {
-      return void onStart(() => ({
-        errors: [
-          {
-            detail: 'https://esbuild.github.io/api/#metafile',
-            pluginName: PLUGIN_NAME,
-            text: 'metafile required'
-          }
-        ]
-      }))
-    }
+    if (!metafile) throw new Error('metafile required')
 
     return void onEnd(async (result: BuildResult): Promise<void> => {
       /**
@@ -171,7 +157,7 @@ const plugin = (): Plugin => {
           if (!specifier) continue
 
           // do nothing if specifier references built-in module
-          if (BUILTIN_MODULES.has(specifier)) continue
+          if (BUILTIN_MODULES.includes(specifier)) continue
 
           // do nothing if specifier is absolute
           if (/^(\/|(data|file|https?):)/.test(specifier)) continue
@@ -205,29 +191,20 @@ const plugin = (): Plugin => {
               startingFrom: pathe.dirname(resolved)
             })
 
-            /**
-             * `package.json` of package {@link resolved} references.
-             *
-             * @const {PackageJson} pkg
-             */
-            const pkg: PackageJson = await readPackageJSON(pkgfile)
+            // package.json data
+            const { exports, name, ...rest } = await readPackageJSON(pkgfile)
 
-            /**
-             * {@link pkg} entry point resolved.
-             *
-             * @const {string} main
-             */
-            const main: string = pathe.resolve(
-              absWorkingDir,
-              'node_modules',
-              pkg.name!,
-              pkg.main!
-            )
+            // attempt to update specifier if pkg does not have exports field
+            if (exports === undefined) {
+              let { main = '' } = rest
 
-            // update specifier if pkg does not have exports field
-            // and resolved is not pkg entry point
-            if (pkg.exports === undefined && resolved !== main) {
-              specifier = resolved.replace(/.+(node_modules\/)/, '')
+              // resolve main entry point
+              main = pathe.resolve(absWorkingDir, 'node_modules', name!, main)
+
+              // update specifier if not pkg entry point
+              if (resolved !== main) {
+                specifier = resolved.replace(/.+(node_modules\/)/, '')
+              }
             }
           } else {
             // get basename of specifier and resolved

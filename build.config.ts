@@ -11,7 +11,10 @@ import { defineBuildConfig, type Config } from '#src'
  * @const {Config} config
  */
 const config: Config = defineBuildConfig({
-  entries: [{ format: 'esm' }],
+  entries: [
+    { declaration: true, ignore: ['cli.ts'] },
+    { bundle: true, minify: true, source: 'src/cli.ts' }
+  ],
   esbuild: {
     sourcemap: 'external',
     sourcesContent: false,

@@ -120,9 +120,10 @@ const config = {
       {
         allowArgumentsExplicitlyTypedAsAny: true,
         allowDirectConstAssertionInArrowFunctions: true,
-        allowHigherOrderFunctions: true,
+        allowHigherOrderFunctions: false,
         allowTypedFunctionExpressions: true,
-        allowedNames: []
+        allowedNames: [],
+        shouldTrackReferences: true
       }
     ],
     '@typescript-eslint/init-declarations': 0,
@@ -490,7 +491,7 @@ const config = {
     'node/no-new-require': 2,
     'node/no-path-concat': 2,
     'node/no-process-env': 0,
-    'node/no-process-exit': 2,
+    'node/no-process-exit': 0,
     'node/no-unpublished-bin': 0,
     'node/no-unpublished-import': 0,
     'node/no-unpublished-require': 0,
