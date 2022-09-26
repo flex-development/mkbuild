@@ -48,6 +48,10 @@
     "./types/*": "./dist/types/*.mjs",
     "./utils/*": "./dist/utils/*.mjs"
   },
+  "imports": {
+    "#src": "./src/index.ts",
+    "#src/*": "./src/*.ts"
+  },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
