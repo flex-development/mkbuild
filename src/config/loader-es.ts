@@ -6,7 +6,7 @@
 import type { Config } from '#src/interfaces'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import { build } from 'esbuild'
-import { evalModule, resolveImports } from 'mlly'
+import { resolveImports, toDataURL } from 'mlly'
 import { RESOLVE_EXTENSIONS } from './constants'
 
 /**
@@ -48,14 +48,7 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
     url: path
   })
 
-  // get default export from content
-  const { default: config }: { default: Config } = await evalModule(content, {
-    conditions: ['import'],
-    extensions: RESOLVE_EXTENSIONS,
-    url: path
-  })
-
-  return config
+  return ((await import(toDataURL(content))) as { default: Config }).default
 }
 
 export default esLoader
