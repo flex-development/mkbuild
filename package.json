@@ -97,7 +97,6 @@
     "consola": "2.15.3",
     "cosmiconfig": "7.0.1",
     "defu": "6.1.0",
-    "esbuild": "0.15.7",
     "escape-string-regexp": "5.0.0",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
@@ -146,6 +145,7 @@
     "cspell": "6.8.0",
     "dotenv": "16.0.1",
     "dotenv-expand": "8.0.3",
+    "esbuild": "0.15.9",
     "eslint": "8.23.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-chai-expect": "3.0.0",
@@ -189,6 +189,7 @@
     "yaml-eslint-parser": "1.1.0"
   },
   "peerDependencies": {
+    "esbuild": ">=0.15.0",
     "typescript": ">=3.7.2"
   },
   "peerDependenciesMeta": {
