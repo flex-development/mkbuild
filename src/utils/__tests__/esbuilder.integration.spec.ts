@@ -3,7 +3,6 @@
  * @module mkbuild/utils/tests/integration/esbuilder
  */
 
-import { BUILTIN_MODULES as BUILTINS } from '#src/config/constants'
 import type { Entry } from '#src/interfaces'
 import type { Spy } from '#tests/interfaces'
 import * as esbuild from 'esbuild'
@@ -33,10 +32,6 @@ describe('integration:utils/esbuilder', () => {
 
       it('should enable bundling', () => {
         expect(build.mock.lastCall![0]!.bundle).to.be.true
-      })
-
-      it('should mark built-in modules as external', () => {
-        expect(build.mock.lastCall![0]!.external).to.have.members(BUILTINS)
       })
 
       it('should support asset names', () => {

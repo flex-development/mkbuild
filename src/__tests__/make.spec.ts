@@ -30,7 +30,7 @@ vi.mock('../utils/esbuilder')
 vi.mock('../utils/write')
 
 describe('unit:make', () => {
-  const config: Config = { entries: [{}] }
+  const config: Config = { entries: [{}], esbuild: { platform: 'node' } }
 
   let filecount: number = 0
 
