@@ -808,14 +808,19 @@ const config = {
       files: ['*.cjs', '*.cts'],
       rules: {
         '@typescript-eslint/no-require-imports': 0,
-        '@typescript-eslint/no-var-requires': 0,
-        'unicorn/prefer-module': 0
+        '@typescript-eslint/no-var-requires': 0
       }
     },
     {
       files: ['*.cts', '*.d.ts', '*.ts'],
       rules: {
         'no-undef': 0
+      }
+    },
+    {
+      files: ['*.cts'],
+      rules: {
+        'unicorn/prefer-module': 0
       }
     },
     {

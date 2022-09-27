@@ -69,14 +69,14 @@
     "check:format": "prettier --check .",
     "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
     "check:spelling": "cspell lint --color --no-progress --relative $@ \"**\"",
-    "check:types": "NODE_OPTIONS='' tsc -p tsconfig.json",
-    "check:types:build": "NODE_OPTIONS='' tsc -p tsconfig.build.json",
+    "check:types": "tsc -p tsconfig.json",
+    "check:types:build": "tsc -p tsconfig.build.json",
     "check:upgrades": "yarn upgrade-interactive",
     "clean:build": "trash ./{dist,*.tgz}",
     "clean:modules": "trash ./.yarn/{cache,*.gz} ./node_modules",
     "clean:pack": "trash ./*.tgz",
     "clean:test": "trash ./coverage",
-    "conventional-changelog": "ts-node ./node_modules/.bin/conventional-changelog -n ./changelog.config.cts",
+    "conventional-changelog": "node --loader=./loader.mjs ./node_modules/.bin/conventional-changelog -n ./changelog.config.cts",
     "fix:cg": "yarn fix:format && yarn fix:lint",
     "fix:dedupe": "yarn dedupe --strategy=highest",
     "fix:format": "prettier --cache --write .",
@@ -209,5 +209,5 @@
   },
   "packageManager": "yarn@4.0.0-rc.14",
   "readme": "README.md",
-  "tagPrefix": "@"
+  "tagPrefix": ""
 }

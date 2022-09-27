@@ -72,7 +72,6 @@ jobs:
         env:
           NODE_ENV: test
           NODE_NO_WARNINGS: 1
-          TS_NODE_PROJECT: ./tsconfig.tsnode.json
           VITEST_SEGFAULT_RETRY: 3
       - id: pack
         name: Pack project
@@ -80,4 +79,3 @@ jobs:
         env:
           NODE_ENV: production
           NODE_NO_WARNINGS: 1
-          TS_NODE_PROJECT: ./tsconfig.tsnode.json

@@ -3,7 +3,7 @@
     "isolatedModules": true,
     "noEmitOnError": true,
     "skipLibCheck": false,
-    "target": "es2021"
+    "target": "es2020"
   },
   "exclude": ["**/__mocks__/**", "**/__snapshots__/**", "**/__tests__/**"],
   "extends": "./tsconfig.json",

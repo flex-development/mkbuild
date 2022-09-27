@@ -115,12 +115,9 @@ jobs:
         env:
           NODE_ENV: production
           NODE_NO_WARNINGS: 1
-          NODE_OPTIONS: --es-module-specifier-resolution=node
       - id: release-notes
         name: Generate release notes
         run: yarn conventional-changelog -o $NOTES_FILE
-        env:
-          TS_NODE_PROJECT: ./tsconfig.tsnode.json
       - id: tag
         name: Create annotated tag
         run: |
