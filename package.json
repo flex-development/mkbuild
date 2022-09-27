@@ -65,7 +65,7 @@
   },
   "scripts": {
     "build": "node --loader=./loader.mjs ./src/cli",
-    "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn check:types:build && yarn test && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
+    "check:ci": "yarn dedupe --check && yarn check:format && yarn check:lint && yarn check:spelling && yarn check:types && yarn check:types:build && yarn test:cov && NODE_ENV=production yarn pack -o %s-%v.tgz && yarn clean:pack",
     "check:format": "prettier --check .",
     "check:lint": "eslint --exit-on-fatal-error --ext cjs,cts,gql,json,json5,jsonc,md,mjs,mts,ts,yml --max-warnings 0 .",
     "check:spelling": "cspell lint --color --no-progress --relative $@ \"**\"",
