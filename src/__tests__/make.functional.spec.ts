@@ -70,7 +70,7 @@ describe('functional:make', () => {
 
   it('should write all build results', async () => {
     // Arrange
-    const config: Config = { entries: [{ bundle: true, minify: true }] }
+    const config: Config = { entries: [{ bundle: true, platform: 'node' }] }
 
     // Act
     ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)

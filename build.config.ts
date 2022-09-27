@@ -16,8 +16,10 @@ const config: Config = defineBuildConfig({
     { bundle: true, minify: true, source: 'src/cli.ts' }
   ],
   esbuild: {
+    platform: 'node',
     sourcemap: 'external',
     sourcesContent: false,
+    target: ['es2021', 'node14'],
     treeShaking: true,
     tsconfig: 'tsconfig.build.json'
   }

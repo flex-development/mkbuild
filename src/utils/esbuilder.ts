@@ -4,7 +4,6 @@
  */
 
 import {
-  BUILTIN_MODULES,
   EXT_DTS_REGEX,
   EXT_TS_REGEX,
   IGNORE_PATTERNS,
@@ -191,7 +190,7 @@ const esbuilder = async (
       acc[file.replace(extregex, '')] = pathe.join(source, bundle ? '' : file)
       return acc
     }, {}),
-    external: bundle ? [...new Set([...BUILTIN_MODULES, ...external])] : [],
+    external: bundle ? [...new Set(external)] : [],
     footer,
     format,
     globalName,
