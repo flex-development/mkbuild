@@ -4,6 +4,7 @@
  */
 
 import { defineBuildConfig, type Config } from '#src'
+import tsconfig from './tsconfig.build.json' assert { type: 'json' }
 
 /**
  * Build configuration options.
@@ -19,7 +20,7 @@ const config: Config = defineBuildConfig({
     platform: 'node',
     sourcemap: 'external',
     sourcesContent: false,
-    target: ['es2021', 'node14'],
+    target: [tsconfig.compilerOptions.target, 'node14'],
     treeShaking: true,
     tsconfig: 'tsconfig.build.json'
   }

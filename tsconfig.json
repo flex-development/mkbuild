@@ -1,7 +1,4 @@
 {
-  // https://github.com/tsconfig/bases/blob/main/bases/node16.json
-  // https://github.com/tsconfig/bases/blob/main/bases/esm.json
-  // https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
   "compilerOptions": {
     "allowJs": true,
     "allowUnreachableCode": false,
@@ -49,7 +46,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2021",
+    "target": "esnext",
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
   },
@@ -68,7 +65,6 @@
     "__fixtures__/*.tsx",
     "__fixtures__/configs/js/build.config.js"
   ],
-  // SEE: https://typestrong.org/ts-node/docs/configuration
   "ts-node": {
     "compilerOptions": {},
     "esm": true,

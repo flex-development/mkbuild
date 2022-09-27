@@ -37,7 +37,7 @@ const config = async (): Promise<UserConfig> => {
 
   return {
     define: {
-      'import.meta.env.CI': ci,
+      'import.meta.env.CI': JSON.stringify(ci),
       'import.meta.env.NODE_ENV': JSON.stringify(NodeEnv.TEST),
       'process.env.NODE_OPTIONS': JSON.stringify(
         `--experimental-specifier-resolution=node --loader=${NODE_LOADER_PATH}`

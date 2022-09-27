@@ -5,10 +5,10 @@
  */
 
 /**
- * @type {import('tsconfig.json')}
+ * @type {typeof import('./tsconfig.json')}
  * @const tsconfig - Tsconfig object
  */
-const tsconfig = require('tsconfig/dist/tsconfig').loadSync(__dirname).config
+const tsconfig = require('./tsconfig.json')
 
 /**
  * @type {boolean}
@@ -22,7 +22,7 @@ const jsx = Boolean(tsconfig.compilerOptions.jsx)
  */
 const config = {
   env: {
-    [tsconfig.compilerOptions.target]: true,
+    [require('./tsconfig.build.json').compilerOptions.target]: true,
     node: true
   },
   extends: [
