@@ -36,12 +36,10 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./config/*": "./dist/config/*.mjs",
-    "./enums": "./dist/enums/index.mjs",
-    "./enums/*": "./dist/enums/*.mjs",
     "./interfaces": "./dist/interfaces/index.mjs",
     "./interfaces/*": "./dist/interfaces/*.mjs",
-    "./package.json": "./package.json",
     "./make": "./dist/make.mjs",
+    "./package.json": "./package.json",
     "./plugins/*": "./dist/plugins/*.mjs",
     "./types": "./dist/types/index.mjs",
     "./types/*": "./dist/types/*.mjs",
