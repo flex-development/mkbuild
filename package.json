@@ -30,7 +30,6 @@
   "files": [
     "dist",
     "patches",
-    "scripts/postinstall.sh",
     "src"
   ],
   "bin": "./dist/cli.mjs",
@@ -82,9 +81,10 @@
     "fix:dedupe": "yarn dedupe --strategy=highest",
     "fix:format": "prettier --cache --write .",
     "fix:lint": "yarn check:lint --cache --fix",
-    "postinstall": "bash ./scripts/postinstall.sh",
+    "postinstall": "chmod +x .husky/* && husky install",
+    "postpack": "toggle-scripts +postinstall",
     "postpublish": "toggle-scripts +prepack",
-    "prepack": "yarn build",
+    "prepack": "toggle-scripts -postinstall && yarn build",
     "prepublishOnly": "toggle-scripts -prepack",
     "recommended-bump": "conventional-recommended-bump --preset=conventionalcommits --tag-prefix=$(jq .tagPrefix package.json -r) --verbose",
     "release": "bash ./scripts/release.sh",
