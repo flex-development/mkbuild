@@ -41,7 +41,7 @@ const esbuilder = async (
   fs: GlobbyOptions['fs'] = fse
 ): Promise<Result[]> => {
   const {
-    absWorkingDir = process.cwd(),
+    absWorkingDir: cwd = process.cwd(),
     allowOverwrite,
     assetNames,
     banner = {},
@@ -152,13 +152,13 @@ const esbuilder = async (
   const files: string[] = bundle
     ? [
         source
-          .replace(new RegExp(`^\\/?${regexp(`${absWorkingDir}/`)}`), '')
+          .replace(new RegExp(`^\\/?${regexp(`${cwd}/`)}`), '')
           // adds outbase support for bundles (esbuild only uses outbase for
           // multiple entry points); @see https://esbuild.github.io/api/#outbase
           .replace(new RegExp(`^${regexp(`${outbase}/`)}`), '')
       ]
     : await globby(pattern, {
-        cwd: pathe.resolve(absWorkingDir, source),
+        cwd: pathe.resolve(cwd, source),
         dot: true,
         fs,
         ignore
@@ -194,14 +194,16 @@ const esbuilder = async (
   if (format === 'esm' || ext === '.cjs') plugins.unshift(fullySpecified())
 
   // add tsconfig-paths plugin
-  if (tsconfig || process.env.TS_NODE_PROJECT) plugins.unshift(tsconfigPaths())
+  if (tsconfig || fse.existsSync(pathe.resolve(cwd, 'tsconfig.json'))) {
+    plugins.unshift(tsconfigPaths())
+  }
 
   // add dts plugin
   if (declaration as boolean) plugins.unshift(dts())
 
   // build source files
   const { errors, metafile, outputFiles, warnings } = await build({
-    absWorkingDir,
+    absWorkingDir: cwd,
     allowOverwrite,
     assetNames,
     banner,
@@ -278,11 +280,11 @@ const esbuilder = async (
     /**
      * Relative path to output file.
      *
-     * **Note**: Relative to {@link absWorkingDir}.
+     * **Note**: Relative to {@link cwd}.
      *
      * @const {string} outfile
      */
-    const outfile: string = path.replace(absWorkingDir + '/', '')
+    const outfile: string = path.replace(cwd + '/', '')
 
     /**
      * Output metadata.
