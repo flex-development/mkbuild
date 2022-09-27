@@ -30,6 +30,15 @@ interface Config {
   clean?: boolean
 
   /**
+   * Insert `require` function definition when creating ESM bundles.
+   *
+   * @see {@link Entry#createRequire}
+   *
+   * @default false
+   */
+  createRequire?: boolean
+
+  /**
    * Current working directory.
    *
    * @default '.'

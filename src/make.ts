@@ -56,6 +56,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   }: Required<Config> = defu(await loadBuildConfig(cwd), config, {
     bundle: false,
     clean: true,
+    createRequire: false,
     cwd,
     declaration: false,
     entries: [],
@@ -98,10 +99,14 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     entry.absWorkingDir = cwd
     entry.bundle = entry.bundle ?? bundle
     entry.format = entry.format ?? format
+    entry.platform = entry.platform ?? esbuild.platform
     entry.source = entry.source ?? (entry.bundle ? 'src/index' : 'src')
 
     return defu(entry, esbuild, {
-      bundle: entry.bundle,
+      createRequire:
+        entry.bundle && entry.format === 'esm' && entry.platform === 'node'
+          ? true
+          : options.createRequire,
       declaration,
       ext: (entry.format === 'esm' ? '.mjs' : '.js') as Entry['ext'],
       external: Object.keys(peerDependencies),

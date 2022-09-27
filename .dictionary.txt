@@ -21,6 +21,7 @@ dohm
 esbenp
 esbuild
 esbuilder
+evanw
 fbca
 fpnv
 globby

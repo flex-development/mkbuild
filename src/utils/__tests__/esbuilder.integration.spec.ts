@@ -19,6 +19,7 @@ describe('integration:utils/esbuilder', () => {
         assetNames: 'assets/[name]-[hash]',
         bundle: true,
         chunkNames: 'chunks/[name]-[hash]',
+        createRequire: true,
         ext: '.mjs',
         format: 'esm',
         outdir: 'dist/esm',
@@ -41,6 +42,14 @@ describe('integration:utils/esbuilder', () => {
       it('should support code splitting', () => {
         expect(build.mock.lastCall![0]!.chunkNames).to.equal(entry.chunkNames)
         expect(build.mock.lastCall![0]!.splitting).to.equal(entry.splitting)
+      })
+
+      it('should update banner.js to include require definition', () => {
+        expect(build.mock.lastCall![0]!.banner)
+          .to.have.property('js')
+          .that.contains(
+            `import { createRequire as __createRequire } from "node:module";\nconst require = __createRequire(import.meta.url);`
+          )
       })
     })
 
