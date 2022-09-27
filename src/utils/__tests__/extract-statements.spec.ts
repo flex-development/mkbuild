@@ -35,7 +35,11 @@ describe('unit:utils/extractStatements', () => {
   describe('import', () => {
     describe('dynamic', () => {
       it('should return dynamic import statement array', () => {
-        expect(testSubject("const foo = await import('bar')")).toMatchSnapshot()
+        // Arrange
+        const code = "const foo = await import('bar');await import(foo);"
+
+        // Act + Expect
+        expect(testSubject(code)).toMatchSnapshot()
       })
     })
 

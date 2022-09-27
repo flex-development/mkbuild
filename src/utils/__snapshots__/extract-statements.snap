@@ -69,6 +69,13 @@ exports[`unit:utils/extractStatements > import > dynamic > should return dynamic
     "start": 18,
     "type": "dynamic",
   },
+  {
+    "code": "import(foo)",
+    "end": 49,
+    "specifier": undefined,
+    "start": 38,
+    "type": "dynamic",
+  },
 ]
 `;
 

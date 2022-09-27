@@ -42,7 +42,9 @@ const extractStatements = (code: string = ''): Statement[] => {
     end: obj.end,
     specifier:
       obj.type === 'dynamic'
-        ? obj.expression.replace(/["']/g, '')
+        ? /^["']/.test(obj.expression)
+          ? obj.expression.replace(/["']/g, '')
+          : undefined
         : obj.specifier,
     start: obj.start,
     type: obj.type
