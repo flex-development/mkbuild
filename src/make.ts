@@ -94,7 +94,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
    * @const {Entry[]} entries
    */
   const entries: Entry[] = options.entries.map(entry => {
-    const { peerDependencies = {} } = pkg
+    const { dependencies = {}, peerDependencies = {} } = pkg
 
     entry.absWorkingDir = cwd
     entry.bundle = entry.bundle ?? bundle
@@ -104,7 +104,10 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
 
     return defu(entry, esbuild, {
       createRequire:
-        entry.bundle && entry.format === 'esm' && entry.platform === 'node'
+        entry.bundle &&
+        entry.format === 'esm' &&
+        entry.platform === 'node' &&
+        Object.keys(dependencies).length > 0
           ? true
           : options.createRequire,
       declaration,
