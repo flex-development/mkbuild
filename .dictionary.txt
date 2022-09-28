@@ -48,7 +48,6 @@ pkgs
 preid
 safecrlf
 syncer
-tsnode
 vates
 vitest
 vsicons

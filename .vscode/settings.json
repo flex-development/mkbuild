@@ -61,13 +61,16 @@
       "cjs",
       "cts",
       "gql",
+      "js",
       "json",
       "json5",
       "jsonc",
+      "jsx",
       "md",
       "mjs",
       "mts",
       "ts",
+      "tsx",
       "yml"
     ],
     "overrideConfigFile": "./.eslintrc.cjs"
@@ -75,10 +78,13 @@
   "eslint.validate": [
     "graphql",
     "javascript",
+    "javascriptreact",
     "json",
+    "json5",
     "jsonc",
     "markdown",
     "typescript",
+    "typescriptreact",
     "yaml"
   ],
   "files.associations": {
@@ -120,7 +126,7 @@
       "icon": "graphql"
     },
     {
-      "extensions": ["build.json", "tsnode.json"],
+      "extensions": ["build.json"],
       "format": "svg",
       "icon": "tsconfig"
     },
