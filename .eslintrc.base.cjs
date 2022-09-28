@@ -33,7 +33,7 @@ const config = {
   globals: {
     Chai: 'readonly',
     Console: 'readonly',
-    JSX: 'readonly',
+    JSX: jsx ? 'readonly' : false,
     LoadHook: 'readonly',
     LoadHookContext: 'readonly',
     LoadHookResult: 'readonly',
