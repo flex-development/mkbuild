@@ -32,6 +32,11 @@ const config = {
             ignore: []
           }
         ]
+      },
+      settings: {
+        react: {
+          version: 'detect'
+        }
       }
     },
     {

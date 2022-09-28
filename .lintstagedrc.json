@@ -1,5 +1,7 @@
 {
   "*": ["yarn check:format", "yarn check:spelling"],
-  "**/*.{cjs,cts,gql,json,jsonc,md,mjs,ts,yml}": ["yarn check:lint"],
+  "**/*.{cjs,cts,gql,js,json,json5,jsonc,jsx,md,mjs,mts,ts,tsx,yml}": [
+    "yarn check:lint"
+  ],
   "**/yarn.lock": "yarn dedupe --check"
 }
