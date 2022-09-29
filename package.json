@@ -4,9 +4,14 @@
   "version": "0.0.0",
   "keywords": [
     "bundle",
+    "bundler",
+    "dts",
     "esbuild",
     "file-to-file",
-    "transpilation",
+    "jsx",
+    "react",
+    "transpile",
+    "transpiler",
     "typescript"
   ],
   "license": "BSD-3-Clause",
