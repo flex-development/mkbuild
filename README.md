@@ -114,22 +114,17 @@ import { defineBuildConfig } from '@flex-development/mkbuild'
 
 export default defineBuildConfig({
   // esbuild options; see https://esbuild.github.io/api/#build-api
-  esbuild: {
-    sourcemap: 'external',
-    sourcesContent: false,
-    treeShaking: true,
-    tsconfig: 'tsconfig.build.json'
-  }
+  sourcemap: 'external',
+  sourcesContent: false,
+  treeShaking: true,
+  tsconfig: 'tsconfig.build.json'
 })
 ```
 
 See all configuration options [here](src/interfaces/config).
 
-See omitted `esbuild` options [here](src/types/esbuild-options). Note that most
-omitted options are applied via the build config, or via [build
-entries](#configuring-build-entries).
-
-See options common to build configs and entries [here](src/interfaces/options).
+Options common to build configs and [build entries](#configuring-build-entries)
+can be seen [here](src/interfaces/options).
 
 ### Configuring Build Entries
 
@@ -149,14 +144,12 @@ export default defineBuildConfig({
     { dts: 'only', ext: '.js', ignore: ['cli.ts'] }, // dist/**.d.ts
     { bundle: true, minify: true, source: 'src/cli.ts' } // dist/cli.mjs
   ],
-  esbuild: {
-    platform: 'node',
-    sourcemap: 'external',
-    sourcesContent: false,
-    target: [tsconfig.compilerOptions.target, 'node14'],
-    treeShaking: true,
-    tsconfig: 'tsconfig.build.json'
-  }
+  platform: 'node',
+  sourcemap: 'external',
+  sourcesContent: false,
+  target: [tsconfig.compilerOptions.target, 'node14'],
+  treeShaking: true,
+  tsconfig: 'tsconfig.build.json'
 })
 ```
 

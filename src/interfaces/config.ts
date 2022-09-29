@@ -3,7 +3,6 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { EsbuildOptions } from '#src/types'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
@@ -16,34 +15,28 @@ import type Options from './options'
  */
 interface Config extends Options {
   /**
-   * Remove output directory before starting build.
+   * Current working directory.
+   *
+   * @default '.'
+   */
+  absWorkingDir?: Options['absWorkingDir']
+
+  /**
+   * Remove output directories before starting build.
    *
    * @default true
    */
   clean?: boolean
 
   /**
-   * Current working directory.
-   *
-   * @default '.'
-   */
-  cwd?: string
-
-  /**
    * Build entries.
+   *
+   * **Note**: If empty or `undefined`, a single build entry will be inferred
+   * from the remaining set of configuration options.
    *
    * @default []
    */
   entries?: Partial<Entry>[]
-
-  /**
-   * [esbuild build API][1] options.
-   *
-   * [1]: https://esbuild.github.io/api/#build-api
-   *
-   * @default {}
-   */
-  esbuild?: EsbuildOptions
 
   /**
    * Custom implementations of `fs` methods.

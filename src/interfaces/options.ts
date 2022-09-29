@@ -3,14 +3,16 @@
  * @module mkbuild/interfaces/Options
  */
 
-import type { OutputExtension } from '#src/types'
+import type { EsbuildOptions, OutputExtension } from '#src/types'
 import type { Format } from 'esbuild'
 import type { Options as GlobbyOptions } from 'globby'
 
 /**
  * Common build options.
+ *
+ * @extends {EsbuildOptions}
  */
-interface Options {
+interface Options extends EsbuildOptions {
   /**
    * Bundle files.
    *

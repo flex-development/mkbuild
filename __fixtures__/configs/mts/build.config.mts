@@ -6,6 +6,6 @@
 import { defineBuildConfig } from '#src'
 
 export default defineBuildConfig({
-  cwd: '__fixtures__/configs/mts',
+  absWorkingDir: '__fixtures__/configs/mts',
   entries: [{ format: 'esm' }]
 })

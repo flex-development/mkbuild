@@ -12,13 +12,10 @@ import type { BuildOptions } from 'esbuild'
  */
 type EsbuildOptions = Omit<
   BuildOptions,
-  | 'bundle'
   | 'entryNames'
   | 'entryPoints'
-  | 'format'
   | 'incremental'
   | 'metafile'
-  | 'outdir'
   | 'outfile'
   | 'stdin'
   | 'watch'

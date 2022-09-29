@@ -14,7 +14,7 @@ import pb from 'pretty-bytes'
 import { EXT_DTS_REGEX, IGNORE_PATTERNS } from './config/constants'
 import loadBuildConfig from './config/load'
 import type { Config, Entry, Result } from './interfaces'
-import type { EsbuildOptions, OutputExtension } from './types'
+import type { OutputExtension } from './types'
 import analyzeResults from './utils/analyze-results'
 import esbuilder from './utils/esbuilder'
 import write from './utils/write'
@@ -40,28 +40,33 @@ import write from './utils/write'
  * @param {Config} [config={}] - Build configuration options
  * @return {Promise<Result[]>} Build results
  */
-async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
+async function make({
+  absWorkingDir: cwd = '.',
+  ...config
+}: Config = {}): Promise<Result[]> {
   const {
+    absWorkingDir,
     bundle,
     clean,
-    cwd: root,
+    createRequire,
     dts,
-    esbuild,
+    entries: bentries = [],
+    ext,
     format,
     fs,
     ignore,
     name,
     outdir,
     pattern,
-    ...options
+    source,
+    ...esbuild
   } = defu(await loadBuildConfig(cwd), config, {
+    absWorkingDir: cwd,
     bundle: false,
     clean: true,
     createRequire: false,
-    cwd,
     dts: fse.existsSync(pathe.resolve(cwd, 'node_modules/typescript')),
     entries: [] as Partial<Entry>[],
-    esbuild: {} as EsbuildOptions,
     ext: '.mjs' as OutputExtension,
     format: 'esm' as Format,
     fs: fse,
@@ -73,7 +78,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   })
 
   // determine current working directory
-  cwd = pathe.resolve(process.cwd(), root)
+  cwd = pathe.resolve(process.cwd(), absWorkingDir)
 
   /**
    * `package.json` data.
@@ -91,19 +96,20 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   }
 
   // infer entry from config
-  if (options.entries.length === 0) {
-    options.entries.push({
+  if (bentries.length === 0) {
+    bentries.push({
       ...esbuild,
+      absWorkingDir: cwd,
       bundle,
-      createRequire: options.createRequire,
+      createRequire,
       dts,
-      ext: options.ext,
+      ext,
       format,
       ignore,
       name,
       outdir,
       pattern,
-      source: options.source
+      source
     })
   }
 
@@ -112,10 +118,10 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
    *
    * @const {Entry[]} entries
    */
-  const entries: Entry[] = options.entries.map(entry => {
+  const entries: Entry[] = bentries.map(entry => {
     const { peerDependencies = {} } = pkg
 
-    entry.absWorkingDir = cwd
+    entry.absWorkingDir = pathe.resolve(cwd, entry.absWorkingDir ?? cwd)
     entry.bundle = entry.bundle ?? bundle
     entry.format = entry.format ?? format
     entry.platform = entry.platform ?? esbuild.platform
@@ -126,7 +132,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     }
 
     return defu(entry, esbuild, {
-      createRequire: options.createRequire,
+      createRequire,
       dts,
       ext: (entry.format === 'esm' ? '.mjs' : '.js') as Entry['ext'],
       external: Object.keys(peerDependencies),

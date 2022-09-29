@@ -4,6 +4,6 @@
  */
 
 module.exports = {
-  cwd: '__fixtures__/configs/cjs',
+  absWorkingDir: '__fixtures__/configs/cjs',
   entries: [{ ext: '.cjs', format: 'cjs' }]
 }

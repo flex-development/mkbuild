@@ -2,7 +2,7 @@
 
 exports[`unit:config/esLoader > should return config from .cts file 1`] = `
 {
-  "cwd": "__fixtures__/configs/cts",
+  "absWorkingDir": "__fixtures__/configs/cts",
   "entries": [
     {
       "ext": ".cjs",
@@ -14,7 +14,7 @@ exports[`unit:config/esLoader > should return config from .cts file 1`] = `
 
 exports[`unit:config/esLoader > should return config from .js file 1`] = `
 {
-  "cwd": "__fixtures__/configs/js",
+  "absWorkingDir": "__fixtures__/configs/js",
   "entries": [
     {
       "format": "esm",
@@ -25,7 +25,7 @@ exports[`unit:config/esLoader > should return config from .js file 1`] = `
 
 exports[`unit:config/esLoader > should return config from .mjs file 1`] = `
 {
-  "cwd": "__fixtures__/configs/mjs",
+  "absWorkingDir": "__fixtures__/configs/mjs",
   "entries": [
     {
       "format": "esm",
@@ -36,7 +36,7 @@ exports[`unit:config/esLoader > should return config from .mjs file 1`] = `
 
 exports[`unit:config/esLoader > should return config from .mts file 1`] = `
 {
-  "cwd": "__fixtures__/configs/mts",
+  "absWorkingDir": "__fixtures__/configs/mts",
   "entries": [
     {
       "format": "esm",
@@ -47,7 +47,7 @@ exports[`unit:config/esLoader > should return config from .mts file 1`] = `
 
 exports[`unit:config/esLoader > should return config from .ts file 1`] = `
 {
-  "cwd": "__fixtures__/configs/ts",
+  "absWorkingDir": "__fixtures__/configs/ts",
   "entries": [
     {
       "format": "esm",

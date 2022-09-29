@@ -2,7 +2,7 @@
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.cjs 1`] = `
 {
-  "cwd": "__fixtures__/configs/cjs",
+  "absWorkingDir": "__fixtures__/configs/cjs",
   "entries": [
     {
       "ext": ".cjs",
@@ -14,7 +14,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.cts 1`] = `
 {
-  "cwd": "__fixtures__/configs/cts",
+  "absWorkingDir": "__fixtures__/configs/cts",
   "entries": [
     {
       "ext": ".cjs",
@@ -26,7 +26,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.js 1`] = `
 {
-  "cwd": "__fixtures__/configs/js",
+  "absWorkingDir": "__fixtures__/configs/js",
   "entries": [
     {
       "format": "esm",
@@ -37,7 +37,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.json 1`] = `
 {
-  "cwd": "__fixtures__/configs/json",
+  "absWorkingDir": "__fixtures__/configs/json",
   "entries": [
     {
       "ext": ".js",
@@ -49,7 +49,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.mjs 1`] = `
 {
-  "cwd": "__fixtures__/configs/mjs",
+  "absWorkingDir": "__fixtures__/configs/mjs",
   "entries": [
     {
       "format": "esm",
@@ -60,7 +60,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.mts 1`] = `
 {
-  "cwd": "__fixtures__/configs/mts",
+  "absWorkingDir": "__fixtures__/configs/mts",
   "entries": [
     {
       "format": "esm",
@@ -71,7 +71,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should load config f
 
 exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from build.config.ts 1`] = `
 {
-  "cwd": "__fixtures__/configs/ts",
+  "absWorkingDir": "__fixtures__/configs/ts",
   "entries": [
     {
       "format": "esm",

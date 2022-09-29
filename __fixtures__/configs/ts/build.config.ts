@@ -6,6 +6,6 @@
 import { defineBuildConfig } from '#src'
 
 export default defineBuildConfig({
-  cwd: '__fixtures__/configs/ts',
+  absWorkingDir: '__fixtures__/configs/ts',
   entries: [{ format: 'esm' }, { ext: '.cjs', format: 'cjs' }]
 })
