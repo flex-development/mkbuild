@@ -63,10 +63,6 @@ yarn add @flex-development/mkbuild@flex-development/mkbuild
 
 **TODO**: Update documentation.
 
-## Built With
-
-**TODO**: Update documentation.
-
 [1]: https://esbuild.github.io
 [2]:
     https://docs.github.com/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries
