@@ -59,7 +59,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     clean: true,
     createRequire: false,
     cwd,
-    dts: false,
+    dts: fse.existsSync(pathe.resolve(cwd, 'node_modules/typescript')),
     entries: [] as Partial<Entry>[],
     esbuild: {} as EsbuildOptions,
     ext: '.mjs' as OutputExtension,
