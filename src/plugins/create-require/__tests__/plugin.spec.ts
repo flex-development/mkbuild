@@ -42,4 +42,22 @@ describe('unit:plugins/create-require', () => {
     expect(esbuild.transform).toHaveBeenCalledTimes(0)
     expect(api.onEnd).toHaveBeenCalledTimes(0)
   })
+
+  it('should throw if metafile is not available', async () => {
+    // Arrange
+    const initialOptions: BuildOptions = { bundle: true, format: 'esm' }
+    const api: PluginBuild = createPluginAPI({ initialOptions })
+    let error: Error
+
+    // Act
+    try {
+      await subject.setup(api)
+    } catch (e: unknown) {
+      error = e as Error
+    }
+
+    // Expect
+    expect(error!).to.not.be.undefined
+    expect(error!.message).to.equal('metafile required')
+  })
 })

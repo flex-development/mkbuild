@@ -58,9 +58,11 @@ const plugin = (): Plugin => {
     onEnd
   }: PluginBuild): Promise<void> => {
     const {
+      absWorkingDir = process.cwd(),
       banner: { js: banner = '' } = {},
       bundle,
       format,
+      metafile,
       minify,
       minifySyntax,
       minifyWhitespace,
@@ -73,6 +75,9 @@ const plugin = (): Plugin => {
 
     // do nothing if not creating esm bundle
     if (format !== 'esm') return
+
+    // metafile required to get output metadata
+    if (!metafile) throw new Error('metafile required')
 
     /**
      * Code snippet that defines `require` using [`module.createRequire`][1].
@@ -130,7 +135,29 @@ const plugin = (): Plugin => {
         // insert require function definition
         text = `${code}${text}`
 
-        return { ...output, contents: new Uint8Array(Buffer.from(text)), text }
+        // reset output contents
+        output.contents = new Uint8Array(Buffer.from(text))
+
+        /**
+         * Relative path to output file.
+         *
+         * **Note**: Relative to {@link absWorkingDir}.
+         *
+         * @const {string} outfile
+         */
+        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+
+        /**
+         * Output contents size including `require` function definition.
+         *
+         * @const {number} bytes
+         */
+        const bytes: number = Buffer.byteLength(output.contents)
+
+        // reset output file size
+        result.metafile!.outputs[outfile]!.bytes = bytes
+
+        return { ...output, text }
       })
     })
   }
