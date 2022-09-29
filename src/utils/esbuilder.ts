@@ -52,7 +52,7 @@ const esbuilder = async (
     color,
     conditions,
     createRequire: create_require,
-    declaration,
+    dts: declaration,
     define,
     drop,
     ext,

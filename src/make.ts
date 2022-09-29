@@ -45,7 +45,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     bundle,
     clean,
     cwd: root,
-    declaration,
+    dts,
     esbuild,
     format,
     fs,
@@ -59,7 +59,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     clean: true,
     createRequire: false,
     cwd,
-    declaration: false,
+    dts: false,
     entries: [] as Partial<Entry>[],
     esbuild: {} as EsbuildOptions,
     ext: '.mjs' as OutputExtension,
@@ -96,7 +96,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       ...esbuild,
       bundle,
       createRequire: options.createRequire,
-      declaration,
+      dts,
       ext: options.ext,
       format,
       ignore,
@@ -127,7 +127,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
 
     return defu(entry, esbuild, {
       createRequire: options.createRequire,
-      declaration,
+      dts,
       ext: (entry.format === 'esm' ? '.mjs' : '.js') as Entry['ext'],
       external: Object.keys(peerDependencies),
       format,
@@ -184,7 +184,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     }
 
     // filter results if only declaration files should be written
-    if (entry.declaration === 'only') {
+    if (entry.dts === 'only') {
       results = results.filter(result => EXT_DTS_REGEX.test(result.outfile))
     }
 

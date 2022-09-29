@@ -41,7 +41,7 @@ interface Options {
    *
    * @default false
    */
-  declaration?: boolean | 'only'
+  dts?: boolean | 'only'
 
   /**
    * Output file extension.

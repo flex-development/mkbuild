@@ -82,7 +82,7 @@ describe('functional:make', () => {
 
   it('should write dts build results only', async () => {
     // Arrange
-    const config: Config = { declaration: 'only', ext: '.js' }
+    const config: Config = { dts: 'only', ext: '.js' }
 
     // Act
     ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)

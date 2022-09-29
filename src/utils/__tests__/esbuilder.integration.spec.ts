@@ -60,7 +60,7 @@ describe('integration:utils/esbuilder', () => {
       beforeEach(async () => {
         await testSubject({
           createRequire: true,
-          declaration: true,
+          dts: true,
           ext: '.js',
           format: 'esm',
           outdir: 'dist/esm',

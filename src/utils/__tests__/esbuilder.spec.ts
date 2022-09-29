@@ -20,7 +20,7 @@ describe('unit:utils/esbuilder', () => {
     file: 'dbl-linear.ts'
   }
   const entry: Entry = {
-    declaration: true,
+    dts: true,
     ext: '.mjs',
     format: 'esm',
     outdir: 'dist/esm',
