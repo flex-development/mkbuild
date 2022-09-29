@@ -86,6 +86,7 @@
       "figcaption",
       "figure",
       "img",
+      "small",
       "sub",
       "sup"
     ]

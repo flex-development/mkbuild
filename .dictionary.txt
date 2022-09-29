@@ -17,6 +17,7 @@ dawidd
 dedupe
 defu
 dessant
+dists
 dohm
 esbenp
 esbuild
@@ -48,6 +49,7 @@ pkgs
 preid
 safecrlf
 syncer
+toodles
 vates
 vitest
 vsicons

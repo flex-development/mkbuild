@@ -9,6 +9,33 @@
 
 > An [esbuild][1] based file-to-file transformer and bundler.
 
+## :eyes: Features
+
+### :package: optimized bundler and transpiler
+
+fast and minimal builds with [esbuild][1] (integrates with the build api for
+plugin support - say toodles 👋🏾 to transform api hacks! :wink:)
+
+### :file_folder: bundleless dists
+
+create bundleless distributions with file-to-file transpilation and static asset
+copying
+
+### :relieved: esm friendly
+
+create es modules + add file extensions to specifiers in modules **_and_**
+declaration files
+
+### :bookmark_tabs: dts generation <small>(`.d.cts`, `.d.mts`, `.d.ts`)</small>
+
+generate declarations for `.cjs`, `.cts`, `.js`, `.jsx`, `.mjs`, `.mts`, `.ts`,
+and `.tsx` files
+
+### :dna: path alias support
+
+resolve path aliases in `.cjs`, `.cts`, `.d.cts`, `.d.mts`, `.d.ts`, `.js`,
+`.jsx`, `.mjs`, `.mts`, `.ts`, and `.tsx` files
+
 ## Install
 
 ```sh
