@@ -11,13 +11,8 @@
   ],
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/flex-development/mkbuild",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/flex-development/mkbuild.git"
-  },
-  "bugs": {
-    "url": "https://github.com/flex-development/mkbuild/issues"
-  },
+  "repository": "https://github.com/flex-development/mkbuild.git",
+  "bugs": "https://github.com/flex-development/mkbuild/issues",
   "author": {
     "name": "Lexus Drumgold",
     "url": "https://github.com/unicornware"
