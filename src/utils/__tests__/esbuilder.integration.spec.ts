@@ -19,16 +19,19 @@ describe('integration:utils/esbuilder', () => {
         assetNames: 'assets/[name]-[hash]',
         bundle: true,
         chunkNames: 'chunks/[name]-[hash]',
-        createRequire: true,
         ext: '.mjs',
         format: 'esm',
         outdir: 'dist/esm',
+        platform: 'node',
         source: '__fixtures__/reverse.mts',
         splitting: true
       }
 
+      let plugins: esbuild.Plugin[] = []
+
       beforeEach(async () => {
         await testSubject(entry)
+        plugins = build.mock.lastCall![0]!.plugins!
       })
 
       it('should enable bundling', () => {
@@ -44,12 +47,10 @@ describe('integration:utils/esbuilder', () => {
         expect(build.mock.lastCall![0]!.splitting).to.equal(entry.splitting)
       })
 
-      it('should update banner.js to include require definition', () => {
-        expect(build.mock.lastCall![0]!.banner)
-          .to.have.property('js')
-          .that.contains(
-            `import { createRequire as __createRequire } from "node:module";\nconst require = __createRequire(import.meta.url);`
-          )
+      it('should use create-require plugin if esm bundle for node', () => {
+        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
+          return plugin.name === 'create-require'
+        })
       })
     })
 
@@ -58,6 +59,7 @@ describe('integration:utils/esbuilder', () => {
 
       beforeEach(async () => {
         await testSubject({
+          createRequire: true,
           declaration: true,
           ext: '.js',
           format: 'esm',
@@ -70,19 +72,25 @@ describe('integration:utils/esbuilder', () => {
         plugins = build.mock.lastCall![0]!.plugins!
       })
 
-      it('should add dts if declarations are enabled', () => {
+      it('should use create-require if requested', () => {
+        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
+          return plugin.name === 'create-require'
+        })
+      })
+
+      it('should use dts if declarations are enabled', () => {
         expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
           return plugin.name === 'dts'
         })
       })
 
-      it('should add fully-specified if specifers require extensions', () => {
+      it('should use fully-specified if specifers require extensions', () => {
         expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
           return plugin.name === 'fully-specified'
         })
       })
 
-      it('should add tsconfig-paths if tsconfig is detected', () => {
+      it('should use tsconfig-paths if tsconfig is detected', () => {
         expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
           return plugin.name === 'tsconfig-paths'
         })

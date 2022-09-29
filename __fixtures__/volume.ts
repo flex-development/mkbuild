@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @file Test Fixture - volume
  * @module tests/setup/volume

@@ -30,9 +30,11 @@ interface Config {
   clean?: boolean
 
   /**
-   * Insert `require` function definition when creating ESM bundles.
+   * Insert `require` function definition snippet into ESM bundles.
    *
-   * @see {@link Entry#createRequire}
+   * [1]: ../plugins/create-require/plugin.ts
+   *
+   * @see [`mkbuild/plugins/create-require/plugin`][1]
    *
    * @default false
    */

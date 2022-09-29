@@ -10,11 +10,12 @@ import {
   RESOLVE_EXTENSIONS
 } from '#src/config/constants'
 import type { Entry, Result, SourceFile } from '#src/interfaces'
+import createRequire from '#src/plugins/create-require/plugin'
 import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import type { OutputMetadata } from '#src/types'
-import { build, transform } from 'esbuild'
+import { build } from 'esbuild'
 import regexp from 'escape-string-regexp'
 import fse from 'fs-extra'
 import { globby, type Options as GlobbyOptions } from 'globby'
@@ -50,7 +51,7 @@ const esbuilder = async (
     chunkNames,
     color,
     conditions,
-    createRequire,
+    createRequire: create_require,
     declaration,
     define,
     drop,
@@ -105,41 +106,6 @@ const esbuilder = async (
     treeShaking,
     tsconfig
   } = entry
-
-  /**
-   * Fix `Dynamic require of "' + x + '" is not supported` errors by updating
-   * {@link banner.js} so that `require` is defined using [`createRequire`][1].
-   *
-   * [1]: https://nodejs.org/api/module.html#modulecreaterequirefilename
-   *
-   * @see {@link Entry#createRequire}
-   * @see https://github.com/evanw/esbuild/issues/1921
-   */
-  if (bundle && format === 'esm' && createRequire) {
-    /**
-     * Code snippet that defines `require` using [`createRequire`][1].
-     *
-     * [1]: https://nodejs.org/api/module.html#modulecreaterequirefilename
-     *
-     * @const {string} define_require_snippet
-     */
-    const define_require_snippet: string = [
-      "import { createRequire as __createRequire } from 'node:module'",
-      'const require = __createRequire(import.meta.url)'
-    ].join('\n')
-
-    // transform snippet to re-add banner and minify
-    const { code: define_require } = await transform(define_require_snippet, {
-      banner: banner.js,
-      minifySyntax: minifySyntax ?? minify,
-      minifyWhitespace: minifyWhitespace ?? minify,
-      platform,
-      target
-    })
-
-    // reset js banner
-    banner.js = define_require.replace(/\n$/, '')
-  }
 
   /**
    * Relative paths to source files.
@@ -200,6 +166,11 @@ const esbuilder = async (
 
   // add dts plugin
   if (declaration as boolean) plugins.unshift(dts())
+
+  // add create-require plugin
+  if ((bundle && format === 'esm' && platform === 'node') || create_require) {
+    plugins.unshift(createRequire())
+  }
 
   // build source files
   const { errors, metafile, outputFiles, warnings } = await build({

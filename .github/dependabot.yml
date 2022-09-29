@@ -27,6 +27,7 @@ updates:
       prefix: build
       include: scope
     ignore:
+      - dependency-name: memfs
       - dependency-name: typescript
     labels:
       - scope:dependencies
