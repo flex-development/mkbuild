@@ -42,20 +42,20 @@ describe('functional:make', () => {
 
   it('should load build config', async () => {
     // Arrange
-    const config: Config = { entries: [] }
+    const config: Config = {}
 
     // Act
     ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
     await testSubject()
 
     // Expect
-    expect(loadBuildConfig).toHaveBeenCalledTimes(1)
+    expect(loadBuildConfig).toHaveBeenCalledOnce()
     expect(loadBuildConfig).toHaveBeenCalledWith('.')
   })
 
   it('should clean output directories', async () => {
     // Arrange
-    const config: Config = { clean: true, entries: [{ format: 'cjs' }] }
+    const config: Config = { clean: true, format: 'cjs' }
 
     // Act
     ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
@@ -63,8 +63,8 @@ describe('functional:make', () => {
 
     // Expect
     expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), 'dist')
-    expect(fse.unlink).toHaveBeenCalledTimes(1)
-    expect(fse.emptyDir).toHaveBeenCalledTimes(1)
+    expect(fse.unlink).toHaveBeenCalledOnce()
+    expect(fse.emptyDir).toHaveBeenCalledOnce()
     expect(fse.mkdirp).toHaveBeenNthCalledWith(1, path.resolve('dist'))
   })
 
@@ -82,7 +82,7 @@ describe('functional:make', () => {
 
   it('should write dts build results only', async () => {
     // Arrange
-    const config: Config = { entries: [{ declaration: 'only', ext: '.js' }] }
+    const config: Config = { declaration: 'only', ext: '.js' }
 
     // Act
     ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)

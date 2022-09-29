@@ -3,25 +3,18 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type { EsbuildOptions, OutputExtension } from '#src/types'
-import type { Format } from 'esbuild'
+import type { EsbuildOptions } from '#src/types'
 import type fse from 'fs-extra'
 import type { Options as GlobbyOptions } from 'globby'
 import type Entry from './entry'
+import type Options from './options'
 
 /**
  * Build configuration options.
+ *
+ * @extends {Options}
  */
-interface Config {
-  /**
-   * Bundle files.
-   *
-   * @see https://esbuild.github.io/api/#bundle
-   *
-   * @default false
-   */
-  bundle?: boolean
-
+interface Config extends Options {
   /**
    * Remove output directory before starting build.
    *
@@ -30,31 +23,11 @@ interface Config {
   clean?: boolean
 
   /**
-   * Insert `require` function definition snippet into ESM bundles.
-   *
-   * [1]: ../plugins/create-require/plugin.ts
-   *
-   * @see [`mkbuild/plugins/create-require/plugin`][1]
-   *
-   * @default false
-   */
-  createRequire?: boolean
-
-  /**
    * Current working directory.
    *
    * @default '.'
    */
   cwd?: string
-
-  /**
-   * Generate TypeScript declaration (`*.d.cts`, `*.d.mts`, or `*.d.ts`) files.
-   *
-   * Pass `'only'` to only write declaration files.
-   *
-   * @default false
-   */
-  declaration?: boolean | 'only'
 
   /**
    * Build entries.
@@ -73,22 +46,6 @@ interface Config {
   esbuild?: EsbuildOptions
 
   /**
-   * Output file extension.
-   *
-   * @default '.mjs'
-   */
-  ext?: OutputExtension
-
-  /**
-   * Output file format.
-   *
-   * @see https://esbuild.github.io/api/#format
-   *
-   * @default 'esm'
-   */
-  format?: Format
-
-  /**
    * Custom implementations of `fs` methods.
    *
    * @see https://github.com/mrmlnc/fast-glob#fs
@@ -103,41 +60,6 @@ interface Config {
     unlink: typeof fse['unlink']
     writeFile: typeof fse['writeFile']
   }
-
-  /**
-   * An array of glob patterns to exclude matches in {@link pattern}.
-   *
-   * **Note**: This is an alternative way to use negative patterns. Patterns
-   * will be merged with those specified in {@link pattern}.
-   *
-   * @see https://github.com/mrmlnc/fast-glob#ignore
-   *
-   * @default IGNORE_PATTERNS
-   */
-  ignore?: GlobbyOptions['ignore']
-
-  /**
-   * Output directory.
-   *
-   * @default 'dist'
-   */
-  outdir?: string
-
-  /**
-   * Glob patterns matching source files.
-   *
-   * @see https://github.com/sindresorhus/globby
-   *
-   * @default '**'
-   */
-  pattern?: string[] | string
-
-  /**
-   * Name of directory containing source files or relative path to bundle input.
-   *
-   * @default 'src'
-   */
-  source?: string
 }
 
 export type { Config as default }

@@ -30,7 +30,7 @@ vi.mock('../utils/esbuilder')
 vi.mock('../utils/write')
 
 describe('unit:make', () => {
-  const config: Config = { entries: [{}], esbuild: { platform: 'node' } }
+  const config: Config = { esbuild: { platform: 'node' } }
 
   let filecount: number = 0
 
@@ -78,7 +78,7 @@ describe('unit:make', () => {
     })
 
     it('should build source files', () => {
-      expect(esbuilder).toHaveBeenCalledTimes(config.entries!.length)
+      expect(esbuilder).toHaveBeenCalledOnce()
     })
 
     it('should write build results', () => {
@@ -94,7 +94,7 @@ describe('unit:make', () => {
     })
 
     it('should print build analysis', () => {
-      expect(analyzeResults).toHaveBeenCalledTimes(config.entries!.length)
+      expect(analyzeResults).toHaveBeenCalledOnce()
     })
 
     it('should print total build size', () => {

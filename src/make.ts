@@ -50,21 +50,23 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     format,
     fs,
     ignore,
+    name,
     outdir,
     pattern,
     ...options
-  }: Required<Config> = defu(await loadBuildConfig(cwd), config, {
+  } = defu(await loadBuildConfig(cwd), config, {
     bundle: false,
     clean: true,
     createRequire: false,
     cwd,
     declaration: false,
-    entries: [],
+    entries: [] as Partial<Entry>[],
     esbuild: {} as EsbuildOptions,
     ext: '.mjs' as OutputExtension,
     format: 'esm' as Format,
     fs: fse,
     ignore: IGNORE_PATTERNS,
+    name: undefined,
     outdir: 'dist',
     pattern: '**',
     source: 'src'
@@ -86,6 +88,23 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   } catch {
     consola.error('package.json not found')
     return []
+  }
+
+  // infer entry from config
+  if (options.entries.length === 0) {
+    options.entries.push({
+      ...esbuild,
+      bundle,
+      createRequire: options.createRequire,
+      declaration,
+      ext: options.ext,
+      format,
+      ignore,
+      name,
+      outdir,
+      pattern,
+      source: options.source
+    })
   }
 
   /**
@@ -113,11 +132,10 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       external: Object.keys(peerDependencies),
       format,
       ignore,
-      name: undefined,
+      name,
       outdir,
-      pattern,
-      source: entry.source
-    })
+      pattern
+    }) as Entry
   })
 
   // print build start info
