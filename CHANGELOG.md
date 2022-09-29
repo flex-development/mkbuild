@@ -1,3 +1,10 @@
+## [1.0.0-alpha.2](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.1...1.0.0-alpha.2) (2022-09-29)
+
+
+### :zap: Refactors
+
+* **options:** merge esbuild options into common build options ([0b40f2d](https://github.com/flex-development/mkbuild/commit/0b40f2d9a7cb774eda82d01ab8b176744797af84))
+
 ## 1.0.0-alpha.1 (2022-09-29)
 
 
