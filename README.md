@@ -39,7 +39,7 @@ resolve path aliases in `.cjs`, `.cts`, `.d.cts`, `.d.mts`, `.d.ts`, `.js`,
 ## Install
 
 ```sh
-yarn add @flex-development/mkbuild
+yarn add -D @flex-development/mkbuild esbuild typescript
 ```
 
 ### GitHub Package Registry
@@ -77,21 +77,95 @@ specific branch, commit, or tag.
 #### NPM
 
 ```sh
-npm i flex-development/mkbuild
+npm i -D flex-development/mkbuild
 ```
 
 #### Yarn
 
 ```sh
-yarn add @flex-development/mkbuild@flex-development/mkbuild
+yarn add -D @flex-development/mkbuild@flex-development/mkbuild esbuild typescript
 ```
 
 ## Usage
 
-**TODO**: Update documentation.
+```shell
+mkbuild
+```
+
+Running the command above without a [build configuration](#configuration) file
+will create a bundleless [esm][5] build with [declarations][6].
+
+Files within the `src` directory will be transpiled or copied and output to
+`dist/**.{d.mts,mjs}`. Declaration files, `dist/**.d.mts`, will be generated if
+`typescript` is installed. The original folder structure and extensions of
+copied files will remain in tact.
+
+### Configuration
+
+Create `build.config.{cjs,cts,js,json,mjs,mts,ts}`:
+
+```typescript
+/**
+ * @file Build Config
+ * @module config/build
+ */
+
+import { defineBuildConfig } from '@flex-development/mkbuild'
+
+export default defineBuildConfig({
+  // esbuild options; see https://esbuild.github.io/api/#build-api
+  esbuild: {
+    sourcemap: 'external',
+    sourcesContent: false,
+    treeShaking: true,
+    tsconfig: 'tsconfig.build.json'
+  }
+})
+```
+
+See all configuration options [here](src/interfaces/config).
+
+See omitted `esbuild` options [here](src/types/esbuild-options). Note that most
+omitted options are applied via the build config, or via [build
+entries](#configuring-build-entries).
+
+See options common to build configs and entries [here](src/interfaces/options).
+
+### Configuring Build Entries
+
+```typescript
+/**
+ * @file Build Config
+ * @module config/build
+ */
+
+import { defineBuildConfig } from '@flex-development/mkbuild'
+import tsconfig from './tsconfig.build.json' assert { type: 'json' }
+
+export default defineBuildConfig({
+  entries: [
+    { dts: true, ignore: ['cli.ts'] }, // dist/**.{d.mts,mjs}
+    { dts: true, ext: '.cjs', format: 'cjs', ignore: ['cli.ts'] }, // dist/**.{cjs,d.cts}
+    { dts: 'only', ext: '.js', ignore: ['cli.ts'] }, // dist/**.d.ts
+    { bundle: true, minify: true, source: 'src/cli.ts' } // dist/cli.mjs
+  ],
+  esbuild: {
+    platform: 'node',
+    sourcemap: 'external',
+    sourcesContent: false,
+    target: [tsconfig.compilerOptions.target, 'node14'],
+    treeShaking: true,
+    tsconfig: 'tsconfig.build.json'
+  }
+})
+```
+
+See all build entry options [here](src/interfaces/entry).
 
 [1]: https://esbuild.github.io
 [2]:
     https://docs.github.com/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries
 [3]: https://docs.npmjs.com/cli/v8/commands/npm-install#description
 [4]: https://yarnpkg.com/features/protocols#git
+[5]: https://nodejs.org/api/esm.html
+[6]: https://www.typescriptlang.org/docs/handbook/2/type-declarations.html
