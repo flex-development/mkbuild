@@ -1,3 +1,11 @@
+## [1.0.0-alpha.5](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.4...1.0.0-alpha.5) (2022-09-30)
+
+
+### :package: Build
+
+* **deps-dev:** bump pretty-format from 29.1.0 to 29.1.2 ([bf400b2](https://github.com/flex-development/mkbuild/commit/bf400b24a43a3f5e768ba4090751ee03700166c8))
+* **deps:** bump mlly from 0.5.14 to 0.5.16 ([95bdfc8](https://github.com/flex-development/mkbuild/commit/95bdfc8b07ec3becf5cc586c2423d3e90f3d30e2))
+
 ## [1.0.0-alpha.4](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.3...1.0.0-alpha.4) (2022-09-30)
 
 
