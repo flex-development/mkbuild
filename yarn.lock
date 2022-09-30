@@ -912,7 +912,7 @@ __metadata:
     memfs: "npm:3.4.7"
     mlly: "npm:0.5.14"
     node-notifier: "npm:10.0.1"
-    pathe: "npm:0.3.5"
+    pathe: "npm:0.3.8"
     pkg-types: "npm:0.3.5"
     postinstall-postinstall: "npm:2.1.0"
     prettier: "npm:2.7.1"
@@ -6936,17 +6936,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:0.3.5":
-  version: 0.3.5
-  resolution: "pathe@npm:0.3.5"
-  checksum: 2726188a624c6ff0db3e9d8a50286cb273973eedc8b4b444d884ed57b7c9d8ba3d0bebdb71165b0fddb7e46928f8246cb008354d2d089c7b29dee38a6be60090
-  languageName: node
-  linkType: hard
-
-"pathe@npm:^0.3.5, pathe@npm:^0.3.7":
-  version: 0.3.7
-  resolution: "pathe@npm:0.3.7"
-  checksum: 4469dc73fb6c8786bdb03822e96db4c8613d14de32b3447c0f2af328abe43e2abec7713f0867d9f483b309a431d8d806f9bc790ae3fd4ed4ee5d36f4b44ef772
+"pathe@npm:0.3.8, pathe@npm:^0.3.5, pathe@npm:^0.3.7":
+  version: 0.3.8
+  resolution: "pathe@npm:0.3.8"
+  checksum: d0d37034db7f55bb0729fb484d71816a98061e1caab02e87f2e06582305d4233fb82d2ec9d96c235868b9a8e6abaf2eaf9b63ad81d0845fb7a4124d190f663fe
   languageName: node
   linkType: hard
 
