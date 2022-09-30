@@ -1,3 +1,16 @@
+## [1.0.0-alpha.4](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.3...1.0.0-alpha.4) (2022-09-30)
+
+
+### :bug: Fixes
+
+* **plugins:** [`fully-specified`] `Cannot read properties of undefined (reading 'length')` ([deab2d8](https://github.com/flex-development/mkbuild/commit/deab2d8da9b44aa88120d6f5c240efd0a2d23e7a))
+
+
+### :house_with_garden: Housekeeping
+
+* `.graphqlrc.cts` -> `.graphqlrc.yml` ([24a70c3](https://github.com/flex-development/mkbuild/commit/24a70c3a445f8c192f6bd9c884d88845540fc2d1))
+* **deps-dev:** cleanup + upgrade deps ([50d2562](https://github.com/flex-development/mkbuild/commit/50d2562defe001ad4e55eff280addf7fdbcf7b6a))
+
 ## [1.0.0-alpha.3](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.2...1.0.0-alpha.3) (2022-09-29)
 
 
