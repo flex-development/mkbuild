@@ -97,7 +97,7 @@
     "escape-string-regexp": "5.0.0",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
-    "mlly": "0.5.14",
+    "mlly": "0.5.16",
     "pathe": "0.3.8",
     "pkg-types": "0.3.5",
     "postinstall-postinstall": "2.1.0",
@@ -195,7 +195,9 @@
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
     "esbuild": "0.15.10",
     "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
-    "mlly": "patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch"
+    "mlly": "patch:mlly@npm%3A0.5.16#patches/mlly+0.5.16.patch",
+    "pathe": "0.3.8",
+    "pkg-types": "0.3.5"
   },
   "engines": {
     "node": ">=14",

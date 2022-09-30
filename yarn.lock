@@ -908,7 +908,7 @@ __metadata:
     jsonc-eslint-parser: "npm:2.1.0"
     lint-staged: "npm:13.0.3"
     memfs: "npm:3.4.7"
-    mlly: "npm:0.5.14"
+    mlly: "npm:0.5.16"
     node-notifier: "npm:10.0.1"
     pathe: "npm:0.3.8"
     pkg-types: "npm:0.3.5"
@@ -6289,27 +6289,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mlly@npm:0.5.14":
-  version: 0.5.14
-  resolution: "mlly@npm:0.5.14"
+"mlly@npm:0.5.16":
+  version: 0.5.16
+  resolution: "mlly@npm:0.5.16"
   dependencies:
     acorn: "npm:^8.8.0"
-    pathe: "npm:^0.3.5"
-    pkg-types: "npm:^0.3.4"
+    pathe: "npm:^0.3.8"
+    pkg-types: "npm:^0.3.5"
     ufo: "npm:^0.8.5"
-  checksum: 39b1822f1d442159f26f6766edb04ce40d2f843a978614e069f4789006f50da2ed3e483d104d806fc329b9892ee75131a7d7a0c5dbd1b0f0b1d43cb13ecd335c
+  checksum: 94c260c7f1f84f1264a73fd8e932edbea0a20cf1ddd84fe0864597e30af370ff0b7e4846bd43ff44699b59ccba5e08ba46c23a23a4dd4d2d6c52bc964a4584ea
   languageName: node
   linkType: hard
 
-"mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
-  version: 0.5.14
-  resolution: "mlly@patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch::version=0.5.14&hash=c84bce&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+"mlly@patch:mlly@npm%3A0.5.16#patches/mlly+0.5.16.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
+  version: 0.5.16
+  resolution: "mlly@patch:mlly@npm%3A0.5.16#patches/mlly+0.5.16.patch::version=0.5.16&hash=8bc672&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     acorn: "npm:^8.8.0"
-    pathe: "npm:^0.3.5"
-    pkg-types: "npm:^0.3.4"
+    pathe: "npm:^0.3.8"
+    pkg-types: "npm:^0.3.5"
     ufo: "npm:^0.8.5"
-  checksum: de5f0084b12e14b1698e7fdb7ae95aa258213aeb00824ec146260e2d2948661997da5e962471ef90bc640c87f96a8e81a1d9cd83fdf8201042ba6eb7bc6362ab
+  checksum: a171b2f2d23bc7d116a36f1d82f1442f77e0793b70cd6df49d2cbbec167c8b385903cdfb248bf89503fdff397edae9b1ddc3a59613fbe14f71930da4d3fcf739
   languageName: node
   linkType: hard
 
@@ -6911,7 +6911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:0.3.8, pathe@npm:^0.3.5, pathe@npm:^0.3.7":
+"pathe@npm:0.3.8":
   version: 0.3.8
   resolution: "pathe@npm:0.3.8"
   checksum: d0d37034db7f55bb0729fb484d71816a98061e1caab02e87f2e06582305d4233fb82d2ec9d96c235868b9a8e6abaf2eaf9b63ad81d0845fb7a4124d190f663fe
@@ -6978,7 +6978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:0.3.5, pkg-types@npm:^0.3.4":
+"pkg-types@npm:0.3.5":
   version: 0.3.5
   resolution: "pkg-types@npm:0.3.5"
   dependencies:

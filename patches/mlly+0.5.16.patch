@@ -1,5 +1,5 @@
 diff --git a/dist/index.mjs b/dist/index.mjs
-index v0.5.14..v0.5.14 100644
+index v0.5.16..v0.5.16 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
 @@ -1086,8 +1086,8 @@
