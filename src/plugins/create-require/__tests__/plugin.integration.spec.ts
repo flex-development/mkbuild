@@ -25,7 +25,7 @@ describe('integration:plugins/create-require', () => {
   })
 
   describe('esbuild', () => {
-    it('should insert require function definition', async () => {
+    it('should insert require definition', async () => {
       // Act
       const {
         errors,
@@ -44,6 +44,26 @@ describe('integration:plugins/create-require', () => {
         },
         entryPoints: ['__fixtures__/volume.ts'],
         loader: { '.ts': 'ts' }
+      })
+
+      // Expect
+      expect(errors).to.be.an('array').of.length(0)
+      expect(warnings).to.be.an('array').of.length(0)
+      expect(outputFiles).to.be.an('array').of.length(1)
+      expect(outputFiles[0]!.text.split('var __commonJS')[0]).toMatchSnapshot()
+    })
+
+    it('should insert require definition into minified output', async () => {
+      // Act
+      const {
+        errors,
+        outputFiles = [],
+        warnings
+      } = await build({
+        ...options,
+        entryPoints: ['__fixtures__/volume.ts'],
+        loader: { '.ts': 'ts' },
+        minifyWhitespace: true
       })
 
       // Expect

@@ -100,6 +100,9 @@ const plugin = (): Plugin => {
       target
     })
 
+    // remove new line from end of code snippet if output should be minified
+    if (minify || minifyWhitespace) code = code.replace(/\n$/, '')
+
     return void onEnd((result: BuildResult): void => {
       /**
        * Regex used to deduce if an output file includes the `__require` shim.
