@@ -1,3 +1,10 @@
+## [1.0.0-alpha.3](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.2...1.0.0-alpha.3) (2022-09-29)
+
+
+### :bug: Fixes
+
+* **plugins:** [`create-require`] remove new line from end of snippet if output should be minified ([dc0f0f9](https://github.com/flex-development/mkbuild/commit/dc0f0f93ce7cb9844360f59da605eeaa52164d77))
+
 ## [1.0.0-alpha.2](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.1...1.0.0-alpha.2) (2022-09-29)
 
 
