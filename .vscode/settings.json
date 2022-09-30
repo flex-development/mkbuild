@@ -121,7 +121,7 @@
       "icon": "eslint"
     },
     {
-      "extensions": [".graphqlrc.cts"],
+      "extensions": [".graphqlrc.yml"],
       "format": "svg",
       "icon": "graphql"
     },

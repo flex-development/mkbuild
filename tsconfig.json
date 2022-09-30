@@ -59,8 +59,6 @@
     "**/**.mts",
     "**/**.ts",
     "**/.*.cjs",
-    "**/.*.cts",
-    "**/.*.ts",
     "__fixtures__/*.js",
     "__fixtures__/*.jsx",
     "__fixtures__/*.tsx",

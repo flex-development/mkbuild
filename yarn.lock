@@ -882,8 +882,6 @@ __metadata:
     cosmiconfig: "npm:7.0.1"
     cspell: "npm:6.11.1"
     defu: "npm:6.1.0"
-    dotenv: "npm:16.0.1"
-    dotenv-expand: "npm:8.0.3"
     esbuild: "npm:0.15.10"
     escape-string-regexp: "npm:5.0.0"
     eslint: "npm:8.24.0"
@@ -3468,20 +3466,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:8.0.3":
-  version: 8.0.3
-  resolution: "dotenv-expand@npm:8.0.3"
-  checksum: 8861e588d50a81f155ae67dde4b22caba01eb7b87c20d6eecb5d9d7de0682fddfbc4357de5345e2e1efd94909d978d6af33125f39dec6de609a5dc472f8dbb68
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:16.0.1":
-  version: 16.0.1
-  resolution: "dotenv@npm:16.0.1"
-  checksum: beb53488e342583049efbd1afb4488e97fbcecf2052607e512a3871239a3976fc437a01a8ed9e6fcef6adc316796895c89f95fe0a7faa08c77ba8c22794ea1fc
-  languageName: node
-  linkType: hard
-
 "dset@npm:^3.1.2":
   version: 3.1.2
   resolution: "dset@npm:3.1.2"
@@ -4871,7 +4855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-config@npm:4.3.5":
+"graphql-config@npm:4.3.5, graphql-config@npm:^4.3.0":
   version: 4.3.5
   resolution: "graphql-config@npm:4.3.5"
   dependencies:
@@ -4891,29 +4875,6 @@ __metadata:
   peerDependencies:
     graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
   checksum: 05defd986eda31e9c079ee9627f5c118beafa24dba707056837cd3ea78cf619ce67bf7ef6406375ed8324ba4dbe37697e023aa40a7e3c57359b2baed1abd65cc
-  languageName: node
-  linkType: hard
-
-"graphql-config@patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
-  version: 4.3.5
-  resolution: "graphql-config@patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch::version=4.3.5&hash=54a636&locator=%40flex-development%2Fmkbuild%40workspace%3A."
-  dependencies:
-    "@graphql-tools/graphql-file-loader": "npm:^7.3.7"
-    "@graphql-tools/json-file-loader": "npm:^7.3.7"
-    "@graphql-tools/load": "npm:^7.5.5"
-    "@graphql-tools/merge": "npm:^8.2.6"
-    "@graphql-tools/url-loader": "npm:^7.9.7"
-    "@graphql-tools/utils": "npm:^8.6.5"
-    cosmiconfig: "npm:7.0.1"
-    cosmiconfig-toml-loader: "npm:1.0.0"
-    cosmiconfig-typescript-loader: "npm:^4.0.0"
-    minimatch: "npm:4.2.1"
-    string-env-interpolation: "npm:1.0.1"
-    ts-node: "npm:^10.8.1"
-    tslib: "npm:^2.4.0"
-  peerDependencies:
-    graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: e0d72ec3217043911414142c5f1946cc7c7866e71e1561cb95187cd8f506c97024f0e45b2250e6846a7b505e351e6b52d5263afe796aea677b3eaf740b1af62b
   languageName: node
   linkType: hard
 

@@ -140,8 +140,6 @@
     "conventional-changelog-cli": "2.2.2",
     "conventional-recommended-bump": "6.1.0",
     "cspell": "6.11.1",
-    "dotenv": "16.0.1",
-    "dotenv-expand": "8.0.3",
     "esbuild": "0.15.10",
     "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
@@ -197,7 +195,6 @@
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
     "esbuild": "0.15.10",
     "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
-    "graphql-config": "patch:graphql-config@npm%3A4.3.5#patches/graphql-config+4.3.5.dev.patch",
     "mlly": "patch:mlly@npm%3A0.5.14#patches/mlly+0.5.14.patch"
   },
   "engines": {
