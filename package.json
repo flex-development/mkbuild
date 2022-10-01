@@ -90,6 +90,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@flex-development/tutils": "5.0.1",
     "colorette": "2.0.19",
     "consola": "2.15.3",
     "cosmiconfig": "7.0.1",
@@ -109,7 +110,6 @@
     "@commitlint/config-conventional": "17.1.0",
     "@commitlint/types": "17.0.0",
     "@faker-js/faker": "7.5.0",
-    "@flex-development/tutils": "5.0.1",
     "@graphql-eslint/eslint-plugin": "3.11.2",
     "@types/chai": "4.3.3",
     "@types/chai-fs": "2.0.2",
