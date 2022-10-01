@@ -4,6 +4,7 @@
  */
 
 import type { EsbuildOptions, OutputExtension } from '#src/types'
+import type { OneOrMany } from '@flex-development/tutils'
 import type { Format } from 'esbuild'
 import type { Options as GlobbyOptions } from 'globby'
 
@@ -92,7 +93,7 @@ interface Options extends EsbuildOptions {
    *
    * @default '**'
    */
-  pattern?: string[] | string
+  pattern?: OneOrMany<string>
 
   /**
    * Name of directory containing source files or relative path to bundle input.
