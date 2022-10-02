@@ -8,7 +8,7 @@ import 'node:util'
 import 'pathe'
 import 'tsconfig-paths'
 import 'tsconfig-paths/lib/tsconfig-loader'
-import '../src/config/constants.js'
+import '../src/config/constants.ts'
 import '../src/utils/extract-statements'
 import '/tmp'
 

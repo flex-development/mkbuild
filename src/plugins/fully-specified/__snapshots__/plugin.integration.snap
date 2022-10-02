@@ -6,7 +6,7 @@ require(\\"node:util\\");
 require(\\"pathe\\");
 require(\\"tsconfig-paths\\");
 require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
-require(\\"../src/config/constants.js\\");
+require(\\"../src/config/constants.ts\\");
 require(\\"../src/utils/extract-statements.cjs\\");
 require(\\"/tmp\\");
 "
@@ -47,7 +47,7 @@ import \\"node:util\\";
 import \\"pathe\\";
 import \\"tsconfig-paths\\";
 import \\"tsconfig-paths/lib/tsconfig-loader.js\\";
-import \\"../src/config/constants.js\\";
+import \\"../src/config/constants.ts\\";
 import \\"../src/utils/extract-statements.mjs\\";
 import \\"/tmp\\";
 await import(\\"globby\\");

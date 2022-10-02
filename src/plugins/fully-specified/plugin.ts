@@ -162,9 +162,6 @@ const plugin = (): Plugin => {
           // do nothing if specifier is absolute
           if (/^(\/|(data|file|https?):)/.test(specifier)) continue
 
-          // do nothing if specifier already includes file extension
-          if (pathe.extname(specifier)) continue
-
           /**
            * {@link specifier} resolved.
            *
@@ -177,6 +174,11 @@ const plugin = (): Plugin => {
             extensions,
             url: specifier.startsWith('.') ? source : pathe.dirname(source)
           })
+
+          // do nothing if specifier already includes file extension.
+          // note that this check is post-resolution so that dot case specifiers
+          // (e.g. ./user.controller, ./user.service) are supported
+          if (pathe.extname(specifier) === pathe.extname(resolved)) continue
 
           // add extension to bare or relative specifier
           // bare specifier => resolved contains '/node_modules/'
@@ -207,12 +209,11 @@ const plugin = (): Plugin => {
               }
             }
           } else {
-            // get basename of specifier and resolved
-            const { name } = pathe.parse(specifier)
+            // get resolved basename
             const { name: resolved_name } = pathe.parse(resolved)
 
             // specifier resolved to a directory
-            if (name !== resolved_name) specifier += '/' + resolved_name
+            if (resolved_name === 'index') specifier += '/' + resolved_name
 
             // add output file extension to specifier
             specifier += ext
