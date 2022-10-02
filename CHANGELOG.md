@@ -1,3 +1,16 @@
+## [1.0.0-alpha.6](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.5...1.0.0-alpha.6) (2022-10-02)
+
+
+### :package: Build
+
+* **deps-dev:** bump @flex-development/tutils from 5.0.0 to 5.0.1 ([7cc1c69](https://github.com/flex-development/mkbuild/commit/7cc1c69e11d54fec3125f570d04be83c3f6d472f))
+* **deps:** move @flex-development/tutils to `dependencies` ([eee26a9](https://github.com/flex-development/mkbuild/commit/eee26a95217386f4bd9204b49dec118577b4b94c))
+
+
+### :bug: Fixes
+
+* **plugins:** [`fully-specified`] dot case specifiers support ([b301894](https://github.com/flex-development/mkbuild/commit/b301894aac5f29f9ea36eeb2a21ac737d7732483))
+
 ## [1.0.0-alpha.5](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.4...1.0.0-alpha.5) (2022-09-30)
 
 
