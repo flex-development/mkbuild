@@ -51,6 +51,7 @@
     "rewrap.wrappingColumn": 100
   },
   "cSpell.enabled": true,
+  "debug.showBreakpointsInOverviewRuler": true,
   "editor.autoClosingBrackets": "always",
   "emmet.showExpandedAbbreviation": "always",
   "emmet.triggerExpansionOnTab": true,
