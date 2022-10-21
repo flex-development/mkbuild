@@ -1,3 +1,41 @@
+## [1.0.0-alpha.7](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.6...1.0.0-alpha.7) (2022-10-21)
+
+
+### :package: Build
+
+* cleanup build target settings ([548b846](https://github.com/flex-development/mkbuild/commit/548b846ee64cd39e517a78c161220279a409746b))
+* remove `src` files from distribution ([d0a3302](https://github.com/flex-development/mkbuild/commit/d0a3302df9ffa1dd6ee2d962b6153613261cc7bc))
+* replace `mlly` with `@flex-development/mlly` ([72d3fcf](https://github.com/flex-development/mkbuild/commit/72d3fcf31b5e9105ae9baa8290666ab827a51f27))
+* **deps-dev:** bump deps according to `yarn upgrade-interactive` ([ba92cd0](https://github.com/flex-development/mkbuild/commit/ba92cd0d75b29216348320a55d0e20b9a1de0477))
+* **deps-dev:** bump esbuild from 0.15.10 to 0.15.12 ([3321e1e](https://github.com/flex-development/mkbuild/commit/3321e1ed9e617f6148c3a70a04f7cb0b628467fa))
+* **exports:** export `.`, `./package.json`, and `./plugins/*` only ([825c536](https://github.com/flex-development/mkbuild/commit/825c5367a4f89bb3334a3c466af8f5568dd88b2f))
+* **pkg:** add `"sideEffects": false` ([6bc2cd0](https://github.com/flex-development/mkbuild/commit/6bc2cd0a617d1131315a8e14ae861e9922ebcae9))
+
+
+### :robot: Continuous Integration
+
+* **deps:** bump actions/checkout from 3.0.2 to 3.1.0 ([#22](https://github.com/flex-development/mkbuild/issues/22)) ([0632090](https://github.com/flex-development/mkbuild/commit/0632090da01483d2918a43ea936038cd658526cc))
+* **deps:** bump actions/github-script from 6.3.0 to 6.3.1 ([#20](https://github.com/flex-development/mkbuild/issues/20)) ([ba50c35](https://github.com/flex-development/mkbuild/commit/ba50c35f349c8572110c1e56106d87a9b545af56))
+* **deps:** bump actions/github-script from 6.3.1 to 6.3.2 ([#25](https://github.com/flex-development/mkbuild/issues/25)) ([557bf2e](https://github.com/flex-development/mkbuild/commit/557bf2e7d0753abf6efdcba3f4f8267aa393ec10))
+* **deps:** bump actions/github-script from 6.3.2 to 6.3.3 ([#27](https://github.com/flex-development/mkbuild/issues/27)) ([2943bf8](https://github.com/flex-development/mkbuild/commit/2943bf836bceb179ffbe9104fb804aba788416ca))
+* **deps:** bump crazy-max/ghaction-import-gpg from 5.1.0 to 5.2.0 ([#28](https://github.com/flex-development/mkbuild/issues/28)) ([ab88c54](https://github.com/flex-development/mkbuild/commit/ab88c5457f0dd8313614931fd5d33fb79e41c90e))
+* **deps:** bump hmarr/debug-action from 2.0.1 to 2.1.0 ([#23](https://github.com/flex-development/mkbuild/issues/23)) ([f78e5e8](https://github.com/flex-development/mkbuild/commit/f78e5e80bab643f3c63e8d8f12b3437cc3495d2c))
+
+
+### :pencil: Documentation
+
+* merge zsh docs into contributing guide ([42f50bd](https://github.com/flex-development/mkbuild/commit/42f50bdc3063566be1b2b063b76686f5992ac58c))
+* reorganize gpr install guide ([ca184cb](https://github.com/flex-development/mkbuild/commit/ca184cbd514b964e50e7944b87885162cffdbd5a))
+
+
+### :house_with_garden: Housekeeping
+
+* add "vscode as git editor" setup to sample gitconfig ([b215a09](https://github.com/flex-development/mkbuild/commit/b215a092abe6dc4602a0a28bb176b1d8f43a1cf7))
+* **tests:** reorganize vitest config ([7b690c6](https://github.com/flex-development/mkbuild/commit/7b690c600ee3471ff9af180f3fa35ad26f367d82))
+* **tests:** update `ImportMetaEnv` base ([50842cc](https://github.com/flex-development/mkbuild/commit/50842cc2a2c9ca5be7211d6bf94ad6113b9ead81))
+* **ts:** enforce `import type` for type-only imports ([6fb9272](https://github.com/flex-development/mkbuild/commit/6fb92721b9794e0cba76e4bd71305846d3947fa4))
+* **vscode:** configure debugging ([6c6ea09](https://github.com/flex-development/mkbuild/commit/6c6ea094d4cecafb7e5af1c70148d4ac24065890))
+
 ## [1.0.0-alpha.6](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.5...1.0.0-alpha.6) (2022-10-02)
 
 
