@@ -23,13 +23,6 @@ import type {
 } from 'typescript'
 
 /**
- * Plugin name.
- *
- * @const {string} PLUGIN_NAME
- */
-const PLUGIN_NAME: string = 'dts'
-
-/**
  * Returns a TypeScript declaration plugin.
  *
  * @return {Plugin} TypeScript declaration plugin
@@ -113,7 +106,7 @@ const plugin = (): Plugin => {
       let compilerOptions: CompilerOptions = getCompilerOptions(
         pathe.resolve(absWorkingDir, tsconfig),
         ts
-      )
+      ) as CompilerOptions
 
       // remove forbidden user compiler options
       delete compilerOptions.declarationDir
@@ -267,7 +260,7 @@ const plugin = (): Plugin => {
     })
   }
 
-  return { name: PLUGIN_NAME, setup }
+  return { name: 'dts', setup }
 }
 
 export default plugin

@@ -7,8 +7,7 @@ require(\\"pathe\\");
 require(\\"tsconfig-paths\\");
 require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
 require(\\"../src/config/constants.ts\\");
-require(\\"../src/utils/extract-statements.cjs\\");
-require(\\"/tmp\\");
+require(\\"../src/interfaces/index.cjs\\");
 "
 `;
 
@@ -48,14 +47,7 @@ import \\"pathe\\";
 import \\"tsconfig-paths\\";
 import \\"tsconfig-paths/lib/tsconfig-loader.js\\";
 import \\"../src/config/constants.ts\\";
-import \\"../src/utils/extract-statements.mjs\\";
-import \\"/tmp\\";
-await import(\\"globby\\");
-const fizz = \\"buzz\\";
-export * from \\"../src/interfaces/index.mjs\\";
-export {
-  fizz
-};
+import \\"../src/interfaces/index.mjs\\";
 "
 `;
 

@@ -9,11 +9,4 @@ import 'pathe'
 import 'tsconfig-paths'
 import 'tsconfig-paths/lib/tsconfig-loader'
 import '../src/config/constants.ts'
-import '../src/utils/extract-statements'
-import '/tmp'
-
-await import('globby')
-
-export const fizz: string = 'buzz'
-
-export * from '../src/interfaces'
+import '../src/interfaces'

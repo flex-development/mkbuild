@@ -4,13 +4,9 @@
  */
 
 import '#src/config/constants'
-import '#src/utils/extract-statements'
+import '#src/interfaces'
 import 'emoji-regex'
 import 'esbuild'
 import 'pathe'
 import 'tsconfig-paths'
 import 'tsconfig-paths/lib/tsconfig-loader'
-
-export const foo: string = 'foo'
-
-export * from '#src/interfaces'

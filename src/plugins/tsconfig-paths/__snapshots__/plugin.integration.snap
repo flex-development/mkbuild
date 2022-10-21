@@ -2,23 +2,18 @@
 
 exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases esm output files 1`] = `
 "import \\"../src/config/constants\\";
-import \\"../src/utils/extract-statements\\";
+import \\"../src/interfaces\\";
 import \\"emoji-regex/es2015\\";
 import \\"esbuild\\";
 import \\"pathe\\";
 import \\"tsconfig-paths\\";
 import \\"tsconfig-paths/lib/tsconfig-loader\\";
-const foo = \\"foo\\";
-export * from \\"../src/interfaces\\";
-export {
-  foo
-};
 "
 `;
 
 exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases in cjs output files 1`] = `
 "require(\\"../src/config/constants\\");
-require(\\"../src/utils/extract-statements\\");
+require(\\"../src/interfaces\\");
 require(\\"emoji-regex/es2015\\");
 require(\\"esbuild\\");
 require(\\"pathe\\");

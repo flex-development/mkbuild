@@ -3,6 +3,7 @@
  * @module mkbuild/plugins/utils/getCompilerOptions
  */
 
+import type CompilerOptionsJson from '#src/interfaces/compiler-options-json'
 import fse from 'fs-extra'
 import * as pathe from 'pathe'
 import { loadTsconfig } from 'tsconfig-paths/lib/tsconfig-loader'
@@ -11,18 +12,21 @@ import type { CompilerOptions } from 'typescript'
 /**
  * Retrieves TypeScript compiler options from `path`.
  *
- * Supports [`extends`][1]. Normalizes compiler options if `ts` is passed.
+ * Supports [`extends`][1].
+ *
+ * Normalizes compiler options so that options are suitable for a TypeScript
+ * program if `ts` is passed.
  *
  * [1]: https://typescriptlang.org/tsconfig#extends
  *
  * @param {string} [path=pathe.resolve('tsconfig.json')] - Tsconfig path
  * @param {typeof import('typescript')} [ts] - TypeScript module
- * @return {CompilerOptions} User compiler options
+ * @return {CompilerOptions | CompilerOptionsJson} User compiler options
  */
 const getCompilerOptions = (
   path: string = pathe.resolve('tsconfig.json'),
   ts?: typeof import('typescript')
-): CompilerOptions => {
+): CompilerOptions | CompilerOptionsJson => {
   /**
    * Synchronously checks if `path` exists.
    *
@@ -42,16 +46,16 @@ const getCompilerOptions = (
   /**
    * Tsconfig object.
    *
-   * @const {{ compilerOptions?: CompilerOptions }} conf
+   * @const {{ compilerOptions?: CompilerOptionsJson } | undefined} t
    */
-  const conf: { compilerOptions?: CompilerOptions } | undefined = loadTsconfig(
+  const t: { compilerOptions?: CompilerOptionsJson } | undefined = loadTsconfig(
     path,
     exists,
     read
   )
 
-  // do nothing if missing config or initial options
-  if (!conf?.compilerOptions) return {}
+  // do nothing if missing tsconfig or initial options
+  if (!t?.compilerOptions) return {}
 
   // normalize user compiler options
   if (ts) {
@@ -65,7 +69,8 @@ const getCompilerOptions = (
       ScriptTarget
     } = ts
 
-    const { compilerOptions } = conf
+    // get compiler options
+    const { compilerOptions } = t as { compilerOptions: CompilerOptions }
 
     // typescript program expects lib names to match node_modules exactly
     if (Array.isArray(compilerOptions.lib)) {
@@ -234,10 +239,10 @@ const getCompilerOptions = (
     }
 
     // reset user compiler options
-    conf.compilerOptions = compilerOptions
+    t.compilerOptions = compilerOptions as CompilerOptionsJson
   }
 
-  return conf.compilerOptions
+  return t.compilerOptions as CompilerOptions | CompilerOptionsJson
 }
 
 export default getCompilerOptions

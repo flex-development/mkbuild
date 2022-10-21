@@ -3,7 +3,7 @@
  * @module mkbuild/utils/tests/unit/getCompilerOptions
  */
 
-import { Spy, Testcase } from '#tests/interfaces'
+import type { Spy, Testcase } from '#tests/interfaces'
 import path from 'node:path'
 import * as loader from 'tsconfig-paths/lib/tsconfig-loader'
 import ts from 'typescript'

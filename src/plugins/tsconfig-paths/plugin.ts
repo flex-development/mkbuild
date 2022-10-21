@@ -3,14 +3,10 @@
  * @module mkbuild/plugins/tsconfig-paths/plugin
  */
 
-import {
-  EXT_JS_REGEX,
-  EXT_TS_REGEX,
-  RESOLVE_EXTENSIONS
-} from '#src/config/constants'
+import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
-import extractStatements from '#src/utils/extract-statements'
 import getCompilerOptions from '#src/utils/get-compiler-options'
+import { resolveAliases, RESOLVE_EXTENSIONS } from '@flex-development/mlly'
 import type {
   BuildOptions,
   BuildResult,
@@ -19,15 +15,7 @@ import type {
   PluginBuild
 } from 'esbuild'
 import * as pathe from 'pathe'
-import { createMatchPath, type MatchPath } from 'tsconfig-paths'
 import type Options from './options'
-
-/**
- * Plugin name.
- *
- * @const {string} PLUGIN_NAME
- */
-const PLUGIN_NAME: string = 'tsconfig-paths'
 
 /**
  * Returns a [`tsconfig-paths`][1] plugin.
@@ -41,7 +29,7 @@ const plugin = ({
   extensions = RESOLVE_EXTENSIONS,
   fileExists,
   mainFields = ['main', 'module'],
-  readJson
+  readFile
 }: Options = {}): Plugin => {
   /**
    * Resolves path aliases in output file content.
@@ -79,18 +67,6 @@ const plugin = ({
 
     // user compiler options
     const { baseUrl = '', paths = {} } = getCompilerOptions(tsconfigpath)
-
-    /**
-     * Path matching function.
-     *
-     * @const {MatchPath} matcher
-     */
-    const matcher: MatchPath = createMatchPath(
-      pathe.resolve(pathe.dirname(tsconfigpath), baseUrl),
-      paths,
-      mainFields,
-      baseUrl.length > 0
-    )
 
     return void onEnd((result: BuildResult): void => {
       result.outputFiles = result.outputFiles!.map((output: OutputFile) => {
@@ -131,58 +107,31 @@ const plugin = ({
         /**
          * Absolute path to source file.
          *
-         * @const {string} source
+         * @const {string} parent
          */
-        const source: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
+        const parent: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
 
         /**
-         * {@link output.text} copy.
+         * {@link output.text} with path aliases replaced.
          *
-         * @var {string} text
+         * @const {string} text
          */
-        let text: string = output.text
-
-        // replace path aliases
-        for (const statement of extractStatements(output.text)) {
-          // do nothing if missing module specifier
-          if (!statement.specifier) continue
-
-          /**
-           * Possible path match for {@link statement.specifier}.
-           *
-           * @var {string | undefined} match
-           */
-          let match: string | undefined = matcher(
-            statement.specifier,
-            readJson,
-            fileExists,
-            extensions
-          )
-
-          // do nothing if path match was not found
-          if (!match) continue
-
-          // remove node_modules reference or set match relative to source dir
-          match = /\/node_modules\//.test(match)
-            ? match.replace(/.+\/node_modules\//, '')
-            : pathe
-                .relative(pathe.dirname(source), match)
-                .replace(/^(\w)/, './$1')
-                .replace(/(\/index)$/, '')
-
-          // replace path alias
-          text = text.replace(
-            statement.code,
-            statement.code.replace(statement.specifier, match)
-          )
-        }
+        const text: string = resolveAliases(output.text, {
+          baseUrl,
+          extensions,
+          fileExists,
+          mainFields,
+          parent,
+          paths,
+          readFile
+        })
 
         return { ...output, contents: new Uint8Array(Buffer.from(text)), text }
       })
     })
   }
 
-  return { name: PLUGIN_NAME, setup }
+  return { name: 'tsconfig-paths', setup }
 }
 
 export { plugin as default, type Options }

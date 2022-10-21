@@ -5,9 +5,12 @@
 
 import type { Config } from '#src/interfaces'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
+import {
+  resolveModules,
+  RESOLVE_EXTENSIONS,
+  toDataURL
+} from '@flex-development/mlly'
 import { build } from 'esbuild'
-import { resolveImports, toDataURL } from 'mlly'
-import { RESOLVE_EXTENSIONS } from './constants'
 
 /**
  * Loads an [ESM][1] (`*.js`, `*.mjs`) or TypeScript (`*.cts`, `*.mts`, `*.ts`)
@@ -42,10 +45,11 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
     write: false
   })
 
-  // resolve imports in content to evaluate module
-  content = await resolveImports(output!.text, {
+  // resolve imports
+  content = await resolveModules(output!.text, {
     extensions: RESOLVE_EXTENSIONS,
-    url: path
+    parent: path,
+    type: 'absolute'
   })
 
   return ((await import(toDataURL(content))) as { default: Config }).default

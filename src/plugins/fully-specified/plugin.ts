@@ -3,14 +3,13 @@
  * @module mkbuild/plugins/fully-specified
  */
 
-import {
-  BUILTIN_MODULES,
-  EXT_JS_REGEX,
-  EXT_TS_REGEX,
-  RESOLVE_EXTENSIONS
-} from '#src/config/constants'
+import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
-import extractStatements from '#src/utils/extract-statements'
+import {
+  resolveModules,
+  RESOLVE_EXTENSIONS,
+  type Ext
+} from '@flex-development/mlly'
 import type {
   BuildOptions,
   BuildResult,
@@ -18,16 +17,7 @@ import type {
   Plugin,
   PluginBuild
 } from 'esbuild'
-import { resolvePath } from 'mlly'
 import * as pathe from 'pathe'
-import { readPackageJSON, resolvePackageJSON } from 'pkg-types'
-
-/**
- * Plugin name.
- *
- * @const {string} PLUGIN_NAME
- */
-const PLUGIN_NAME: string = 'fully-specified'
 
 /**
  * Returns a specifier resolver plugin. There are three types of specifiers:
@@ -133,98 +123,35 @@ const plugin = (): Plugin => {
         /**
          * Absolute path to source file.
          *
-         * @const {string} source
+         * @const {string} parent
          */
-        const source: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
+        const parent: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
 
         /**
-         * {@link output.text} copy.
+         * {@link output.text} with fully specified modules.
          *
-         * @var {string} text
+         * @const {string} text
          */
-        let text: string = output.text
-
-        // replace specifiers
-        for (const statement of extractStatements(output.text)) {
+        const text: string = await resolveModules(output.text, {
+          conditions: [format === 'esm' ? 'import' : 'require'],
           /**
-           * {@link statement.specifier} before file extension is added.
+           * Replaces the file extension of `specifier` if specifier does not
+           * already include an extension.
            *
-           * @var {string | undefined} specifier
+           * @param {string} specifier - Module specifier in {@link output.text}
+           * @param {string} resolved - `specifier` as absolute specifier
+           * @return {Ext} New extension for `specifier` or original extension
            */
-          let specifier: string | undefined = statement.specifier
+          ext(specifier: string, resolved: string): Ext {
+            const { ext: s_ext } = pathe.parse(specifier)
 
-          // do nothing if missing module specifier
-          if (!specifier) continue
-
-          // do nothing if specifier references built-in module
-          if (BUILTIN_MODULES.includes(specifier)) continue
-
-          // do nothing if specifier is absolute
-          if (/^(\/|(data|file|https?):)/.test(specifier)) continue
-
-          /**
-           * {@link specifier} resolved.
-           *
-           * @see https://github.com/unjs/mlly#resolvepath
-           *
-           * @const {string} resolved
-           */
-          const resolved: string = await resolvePath(specifier, {
-            conditions: [format === 'esm' ? 'import' : 'require'],
-            extensions,
-            url: specifier.startsWith('.') ? source : pathe.dirname(source)
-          })
-
-          // do nothing if specifier already includes file extension.
-          // note that this check is post-resolution so that dot case specifiers
-          // (e.g. ./user.controller, ./user.service) are supported
-          if (pathe.extname(specifier) === pathe.extname(resolved)) continue
-
-          // add extension to bare or relative specifier
-          // bare specifier => resolved contains '/node_modules/'
-          // relative specifier => resolved does not contain '/node_modules/'
-          if (/\/node_modules\//.test(resolved)) {
-            /**
-             * Path to `package.json` of package {@link resolved} references.
-             *
-             * @const {string} pkgfile
-             */
-            const pkgfile: string = await resolvePackageJSON(resolved, {
-              startingFrom: pathe.dirname(resolved)
-            })
-
-            // package.json data
-            const { exports, name, ...rest } = await readPackageJSON(pkgfile)
-
-            // attempt to update specifier if pkg does not have exports field
-            if (exports === undefined) {
-              let { main = '' } = rest
-
-              // resolve main entry point
-              main = pathe.resolve(absWorkingDir, 'node_modules', name!, main)
-
-              // update specifier if not pkg entry point
-              if (resolved !== main) {
-                specifier = resolved.replace(/.+(node_modules\/)/, '')
-              }
-            }
-          } else {
-            // get resolved basename
-            const { name: resolved_name } = pathe.parse(resolved)
-
-            // specifier resolved to a directory
-            if (resolved_name === 'index') specifier += '/' + resolved_name
-
-            // add output file extension to specifier
-            specifier += ext
-          }
-
-          // replace specifier
-          text = text.replace(
-            statement.code,
-            statement.code.replace(statement.specifier!, specifier)
-          )
-        }
+            // do nothing if specifier already includes file extension
+            // replace file extension otherwise
+            return (s_ext === pathe.extname(resolved) ? s_ext : ext) as Ext
+          },
+          extensions,
+          parent
+        })
 
         outputFiles.push({
           ...output,
@@ -237,7 +164,7 @@ const plugin = (): Plugin => {
     })
   }
 
-  return { name: PLUGIN_NAME, setup }
+  return { name: 'fully-specified', setup }
 }
 
 export default plugin

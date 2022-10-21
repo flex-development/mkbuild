@@ -3,29 +3,8 @@
  * @module mkbuild/config/constants
  */
 
-import { builtinModules } from 'node:module'
-
 /**
- * Built-in modules.
- *
- * @const {string[]} BUILTIN_MODULES
- */
-export const BUILTIN_MODULES: string[] = builtinModules.flatMap(m => {
-  return [m, 'node:' + m]
-})
-
-/**
- * `require` and `require.resolve` statement regex.
- *
- * @todo prevent matching non-statements (e.g. comments, arbitrary strings)
- *
- * @const {RegExp} EVAL_CJS_REGEX
- */
-export const EVAL_CJS_REGEX: RegExp =
-  /(?:require\(|require\.resolve\()["']([^"']*)["']\)/g
-
-/**
- * Declaration file extension regex.
+ * TypeScript declaration file extension regex.
  *
  * @const {RegExp} EXT_DTS_REGEX
  */
@@ -59,24 +38,4 @@ export const IGNORE_PATTERNS: string[] = [
   '**/**.mdx',
   '**/**.stories.{j,t}sx',
   '**/{__mocks__,__snapshots__,__tests__}/**'
-]
-
-/**
- * Resolvable file extensions.
- *
- * @see https://esbuild.github.io/api/#resolve-extensions
- *
- * @const {string[]} RESOLVE_EXTENSIONS
- */
-export const RESOLVE_EXTENSIONS: string[] = [
-  '.cjs',
-  '.css',
-  '.cts',
-  '.js',
-  '.json',
-  '.jsx',
-  '.mjs',
-  '.mts',
-  '.ts',
-  '.tsx'
 ]

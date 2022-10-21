@@ -4,7 +4,7 @@
  */
 
 require('#src/config/constants')
-require('#src/utils/extract-statements')
+require('#src/interfaces')
 require('emoji-regex')
 require('esbuild')
 require('pathe')

@@ -6,8 +6,7 @@
 import {
   EXT_DTS_REGEX,
   EXT_TS_REGEX,
-  IGNORE_PATTERNS,
-  RESOLVE_EXTENSIONS
+  IGNORE_PATTERNS
 } from '#src/config/constants'
 import type { Entry, Result, SourceFile } from '#src/interfaces'
 import createRequire from '#src/plugins/create-require/plugin'
@@ -15,11 +14,11 @@ import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
 import type { OutputMetadata } from '#src/types'
+import { RESOLVE_EXTENSIONS } from '@flex-development/mlly'
 import { build } from 'esbuild'
 import regexp from 'escape-string-regexp'
 import fse from 'fs-extra'
 import { globby, type Options as GlobbyOptions } from 'globby'
-import { findExportNames } from 'mlly'
 import * as pathe from 'pathe'
 import loaders from './loaders'
 
@@ -95,7 +94,7 @@ const esbuilder = async (
     publicPath,
     pure,
     reserveProps,
-    resolveExtensions = RESOLVE_EXTENSIONS,
+    resolveExtensions = RESOLVE_EXTENSIONS as string[],
     source,
     sourceRoot,
     sourcemap,
@@ -269,7 +268,7 @@ const esbuilder = async (
       contents,
       entryPoint: metadata.entryPoint,
       errors,
-      exports: [...new Set([...metadata.exports, ...findExportNames(text)])],
+      exports: [...new Set(metadata.exports)],
       imports: metadata.imports,
       inputs: metafile!.inputs,
       outfile,
