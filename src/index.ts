@@ -3,8 +3,9 @@
  * @module mkbuild
  */
 
-export * from './config/constants'
+export { IGNORE_PATTERNS } from './config/constants'
 export { default as defineBuildConfig } from './config/define'
-export { default as loadBuildConfig } from './config/load'
-export type { Config, Result } from './interfaces'
+export * from './interfaces'
 export { default } from './make'
+export * from './types'
+export { default as loaders } from './utils/loaders'

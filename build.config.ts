@@ -17,7 +17,7 @@ const config: Config = defineBuildConfig({
     { bundle: true, minify: true, source: 'src/cli.ts' }
   ],
   platform: 'node',
-  sourcemap: 'external',
+  sourcemap: true,
   sourcesContent: false,
   target: 'node' + pkg.engines.node.replace(/^\D+/, ''),
   treeShaking: true,

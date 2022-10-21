@@ -34,15 +34,8 @@
   "bin": "./dist/cli.mjs",
   "exports": {
     ".": "./dist/index.mjs",
-    "./config/*": "./dist/config/*.mjs",
-    "./interfaces": "./dist/interfaces/index.mjs",
-    "./interfaces/*": "./dist/interfaces/*.mjs",
-    "./make": "./dist/make.mjs",
     "./package.json": "./package.json",
-    "./plugins/*": "./dist/plugins/*.mjs",
-    "./types": "./dist/types/index.mjs",
-    "./types/*": "./dist/types/*.mjs",
-    "./utils/*": "./dist/utils/*.mjs"
+    "./plugins/*": "./dist/plugins/*.mjs"
   },
   "imports": {
     "#src": "./src/index.ts",
@@ -52,10 +45,8 @@
   "types": "./dist/index.d.mts",
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/*.d.mts",
-        "./dist/*/index.d.mts",
-        "./dist/index.d.mts"
+      "./plugins/*": [
+        "./dist/plugins/*.d.mts"
       ]
     }
   },
