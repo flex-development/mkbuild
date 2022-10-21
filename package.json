@@ -139,7 +139,7 @@
     "conventional-changelog-cli": "2.2.2",
     "conventional-recommended-bump": "6.1.0",
     "cspell": "6.11.1",
-    "esbuild": "0.15.10",
+    "esbuild": "0.15.12",
     "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-chai-expect": "3.0.0",
@@ -192,7 +192,7 @@
   },
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
-    "esbuild": "0.15.10",
+    "esbuild": "0.15.12",
     "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
     "pathe": "0.3.8",
     "pkg-types": "0.3.5"
