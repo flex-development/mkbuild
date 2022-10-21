@@ -4,7 +4,7 @@
  */
 
 import { defineBuildConfig, type Config } from '#src'
-import tsconfig from './tsconfig.build.json' assert { type: 'json' }
+import pkg from './package.json' assert { type: 'json' }
 
 /**
  * Build configuration options.
@@ -19,7 +19,7 @@ const config: Config = defineBuildConfig({
   platform: 'node',
   sourcemap: 'external',
   sourcesContent: false,
-  target: [tsconfig.compilerOptions.target, 'node14'],
+  target: 'node' + pkg.engines.node.replace(/^\D+/, ''),
   treeShaking: true,
   tsconfig: 'tsconfig.build.json'
 })
