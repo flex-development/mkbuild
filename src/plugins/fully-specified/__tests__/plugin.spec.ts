@@ -4,7 +4,7 @@
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
-import { type BuildOptions, type Plugin, type PluginBuild } from 'esbuild'
+import type { BuildOptions, Plugin, PluginBuild } from 'esbuild'
 import testSubject from '../plugin'
 
 describe('unit:plugins/fully-specified', () => {
