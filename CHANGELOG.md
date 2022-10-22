@@ -1,3 +1,10 @@
+## [1.0.0-alpha.8](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.7...1.0.0-alpha.8) (2022-10-22)
+
+
+### :package: Build
+
+* **deps:** use flex-development/mlly@a58ec2055750747743bc537f32f33ad7676fdcf4 ([ca74bfd](https://github.com/flex-development/mkbuild/commit/ca74bfd4c4057fe739ede1b65a2f7459549e33ab))
+
 ## [1.0.0-alpha.7](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.6...1.0.0-alpha.7) (2022-10-21)
 
 
