@@ -1,7 +1,7 @@
 {
   "name": "@flex-development/mkbuild",
   "description": "An esbuild based file-to-file transformer and bundler",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "keywords": [
     "bundle",
     "bundler",
