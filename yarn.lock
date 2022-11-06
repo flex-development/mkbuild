@@ -854,7 +854,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:17.1.0"
     "@commitlint/types": "npm:17.0.0"
     "@faker-js/faker": "npm:7.6.0"
-    "@flex-development/mlly": flex-development/mlly
+    "@flex-development/mlly": "npm:1.0.0-alpha.2"
     "@flex-development/tutils": "npm:5.0.1"
     "@graphql-eslint/eslint-plugin": "npm:3.12.0"
     "@types/chai": "npm:4.3.3"
@@ -949,9 +949,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@flex-development/mlly@flex-development/mlly":
-  version: 0.0.0
-  resolution: "@flex-development/mlly@https://github.com/flex-development/mlly.git#commit=a58ec2055750747743bc537f32f33ad7676fdcf4"
+"@flex-development/mlly@npm:1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@flex-development/mlly@npm:1.0.0-alpha.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fmlly%2F1.0.0-alpha.2%2F5582d4ecf84ae2eb149f24af4783dac3e01948fc"
   dependencies:
     "@flex-development/is-builtin": "npm:1.0.1"
     "@flex-development/tutils": "npm:5.0.1"
@@ -962,10 +962,7 @@ __metadata:
     upath: "npm:2.0.1"
   peerDependencies:
     typescript: "*"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 9aa018cdaddd824af25cf52eb2ba463891dcb78cb2cdc72ff60f248ce81eddb6eecb0db69ed1b29acbb410622b93dddec0da90949e715ed076c03211a284bc94
+  checksum: ec8cca3db4d9602ecb61c72e7a23722e57a9c09920bb7c6decf66f3b545f48dbdc58f32057a8e8c85644761428a0cb5a53382c2103656e6aa20eb1e39deef32e
   languageName: node
   linkType: hard
 

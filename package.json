@@ -80,7 +80,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@flex-development/mlly": "flex-development/mlly",
+    "@flex-development/mlly": "1.0.0-alpha.2",
     "@flex-development/tutils": "5.0.1",
     "colorette": "2.0.19",
     "consola": "2.15.3",
