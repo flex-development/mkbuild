@@ -84,7 +84,8 @@
   },
   "dependencies": {
     "@flex-development/mlly": "1.0.0-alpha.2",
-    "@flex-development/tutils": "5.0.1",
+    "@flex-development/pkg-types": "1.0.0",
+    "@flex-development/tutils": "6.0.0-alpha.7",
     "colorette": "2.0.19",
     "consola": "2.15.3",
     "cosmiconfig": "7.0.1",
@@ -93,7 +94,6 @@
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
     "pathe": "0.3.8",
-    "pkg-types": "0.3.5",
     "pretty-bytes": "6.0.0",
     "tsconfig-paths": "4.1.0"
   },
@@ -187,7 +187,6 @@
     "esbuild": "0.15.17",
     "globby@npm:13.1.2": "patch:globby@npm%3A13.1.2#patches/globby+13.1.2.patch",
     "pathe": "0.3.8",
-    "pkg-types": "0.3.5",
     "radash@npm:9.5.0": "patch:radash@npm%3A9.5.0#patches/radash+9.5.0.dev.patch",
     "vite": "3.2.4",
     "vitest@npm:0.25.3": "patch:vitest@npm%3A0.25.3#patches/vitest+0.25.3.dev.patch"

@@ -3,13 +3,13 @@
  * @module mkbuild/make
  */
 
+import type { PackageJson } from '@flex-development/pkg-types'
 import * as color from 'colorette'
 import consola from 'consola'
 import { defu } from 'defu'
 import type { Format } from 'esbuild'
 import fse from 'fs-extra'
 import * as pathe from 'pathe'
-import type { PackageJson } from 'pkg-types'
 import pb from 'pretty-bytes'
 import { EXT_DTS_REGEX, IGNORE_PATTERNS } from './config/constants'
 import loadBuildConfig from './config/load'
