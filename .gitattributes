@@ -31,6 +31,7 @@
 *.mjs text eol=lf
 *.mts text eol=lf
 *.sh text eol=lf
+*.snap text eol=lf
 *.ts text eol=lf
 *.tsx text eol=lf
 *.txt text eol=lf

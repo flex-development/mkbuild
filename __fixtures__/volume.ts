@@ -38,7 +38,7 @@ const reset: Volume['reset'] = volume.reset.bind(volume)
  */
 volume.reset = function (): void {
   reset()
-  volume.mkdirSync(process.cwd(), { recursive: true })
+  return void volume.mkdirSync(process.cwd(), { recursive: true })
 }
 
 export default volume

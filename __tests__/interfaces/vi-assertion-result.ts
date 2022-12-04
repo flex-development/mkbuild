@@ -3,7 +3,7 @@
  * @module tests/interfaces/AssertionResult
  */
 
-import type { OrNull } from '@flex-development/tutils'
+import type { Nullable } from '@flex-development/tutils'
 
 /**
  * Test assertion summary object produced by the `vitest` [`JsonReporter`][1].
@@ -12,7 +12,7 @@ import type { OrNull } from '@flex-development/tutils'
  */
 interface AssertionResult {
   ancestorTitles: string[]
-  duration?: OrNull<number>
+  duration?: Nullable<number>
   failureMessages: string[]
   fullName: string
   status: 'disabled' | 'failed' | 'passed' | 'pending' | 'skipped' | 'todo'

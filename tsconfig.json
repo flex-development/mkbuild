@@ -13,7 +13,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
-    "isolatedModules": false,
+    "isolatedModules": true,
     "jsx": "react-jsxdev",
     "lib": ["dom", "es2021"],
     "module": "esnext",

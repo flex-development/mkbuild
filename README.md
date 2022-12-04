@@ -1,112 +1,83 @@
 # mkbuild
 
-[![conventional commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![module type: esm](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
 [![npm](https://img.shields.io/npm/v/@flex-development/mkbuild.svg)](https://npmjs.com/package/@flex-development/mkbuild)
+[![module type: esm](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
 [![license](https://img.shields.io/github/license/flex-development/mkbuild.svg)](LICENSE.md)
-[![typescript](https://badgen.net/badge/-/typescript?color=2a72bc&icon=typescript&label)](https://typescriptlang.org)
+[![conventional commits](https://img.shields.io/badge/-conventional%20commits-fe5196?logo=conventional-commits&logoColor=ffffff)](https://conventionalcommits.org/)
+[![github actions](http://img.shields.io/badge/-github%20actions-2088ff?style=flat&logo=github-actions&logoColor=ffffff)](https://github.com/features/actions)
+[![typescript](https://img.shields.io/badge/-typescript-3178c6?logo=typescript&logoColor=ffffff)](https://typescriptlang.org/)
+[![vitest](https://img.shields.io/badge/-vitest-6e9f18?style=flat&logo=vitest&logoColor=ffffff)](https://vitest.dev/)
+[![yarn](https://img.shields.io/badge/-yarn-2c8ebb?style=flat&logo=yarn&logoColor=ffffff)](https://yarnpkg.com/)
 
-> An [esbuild][1] based file-to-file transformer and bundler.
+An [esbuild][1] based file-to-file transformer and bundler.
 
-## :eyes: Features
+## Contents
+
+- [Features](#features)
+- [Install](#install)
+- [Use](#use)
+  - [Configuration](#configuration)
+  - [Configuring Build Entries](#configuring-build-entries)
+- [Types](#types)
+- [Contribute](#contribute)
+
+## Features
 
 ### :package: optimized bundler and transpiler
 
-fast and minimal builds with [esbuild][1] (integrates with the build api for
-plugin support - say toodles 👋🏾 to transform api hacks! :wink:)
+fast and minimal builds with [esbuild][1] (integrates with the build api for plugin support &mdash; say toodles 👋🏾 to
+transform api hacks! :wink:)
 
 ### :file_folder: bundleless dists
 
-create bundleless distributions with file-to-file transpilation and static asset
-copying
+create bundleless distributions with file-to-file transpilation and static asset copying
 
 ### :relieved: esm friendly
 
-create es modules + add file extensions to specifiers in modules **_and_**
-declaration files
+create es modules + add file extensions to specifiers in modules **_and_** declaration files
 
 ### :bookmark_tabs: dts generation <small>(`.d.cts`, `.d.mts`, `.d.ts`)</small>
 
-generate declarations for `.cjs`, `.cts`, `.js`, `.jsx`, `.mjs`, `.mts`, `.ts`,
-and `.tsx` files
+generate declarations for `.cjs`, `.cts`, `.js`, `.jsx`, `.mjs`, `.mts`, `.ts`, and `.tsx` files
 
 ### :dna: path alias support
 
-resolve path aliases in `.cjs`, `.cts`, `.d.cts`, `.d.mts`, `.d.ts`, `.js`,
-`.jsx`, `.mjs`, `.mts`, `.ts`, and `.tsx` files
+resolve path aliases in `.cjs`, `.cts`, `.d.cts`, `.d.mts`, `.d.ts`, `.js`, `.jsx`, `.mjs`, `.mts`, `.ts`, and `.tsx`
+files
 
 ## Install
+
+This package is [ESM only][2].
 
 ```sh
 yarn add -D @flex-development/mkbuild esbuild typescript
 ```
 
-### GitHub Package Registry
-
-To install from the GitHub Package Registry:
-
-1. Setup a `.npmrc` or `.yarnrc.yml` file to authenticate with the registry
-
-   **`.npmrc`**
-
-   ```ini
-   //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-   @flex-development:registry=https://npm.pkg.github.com/
-   ```
-
-   **`.yarnrc.yml`**
-
-   ```yaml
-   npmRegistries:
-     //npm.pkg.github.com:
-       npmAlwaysAuth: true
-       npmAuthToken: ${GITHUB_TOKEN}
-
-   npmScopes:
-     flex-development:
-       npmRegistryServer: https://npm.pkg.github.com
-   ```
-
-   where `GITHUB_TOKEN` is a [Personal Access Token with the `read:packages`
-   scope][2].
-
-2. Run install command
-
-   ```sh
-   yarn add -D @flex-development/mkbuild esbuild typescript
-   ```
-
-### Git
-
-See [npm-install][3] or [Git - Protocols | Yarn][4] for details on requesting a
-specific branch, commit, or tag.
-
-#### NPM
-
-```sh
-npm i -D flex-development/mkbuild
-```
-
-#### Yarn
+From Git:
 
 ```sh
 yarn add -D @flex-development/mkbuild@flex-development/mkbuild esbuild typescript
 ```
 
-## Usage
+<blockquote>
+  <small>
+    See <a href='https://yarnpkg.com/features/protocols#git'>Git - Protocols | Yarn</a>
+    &nbsp;for details on requesting a specific branch, commit, or tag.
+  </small>
+</blockquote>
+
+## Use
 
 ```shell
 mkbuild
 ```
 
-Running the command above without a [build configuration](#configuration) file
-will create a bundleless [esm][5] build with [declarations][6].
+Running the command above without a [build configuration](#configuration) file will create a bundleless [esm][3] build
+with [declarations][4].
 
-Files within the `src` directory will be transpiled or copied and output to
-`dist/**.{d.mts,mjs}`. Declaration files, `dist/**.d.mts`, will be generated if
-`typescript` is installed. The original folder structure and extensions of
-copied files will remain in tact.
+Files within the `src` directory will be transpiled or copied and output to `dist/**.{d.mts,mjs}`. Declaration files,
+`dist/**.d.mts`, will be generated if `typescript` is installed. The original folder structure and extensions of copied
+files will remain in tact.
 
 ### Configuration
 
@@ -131,8 +102,8 @@ export default defineBuildConfig({
 
 See all configuration options [here](src/interfaces/config).
 
-Options common to build configs and [build entries](#configuring-build-entries)
-can be seen [here](src/interfaces/options).
+Options common to build configs and [build entries](#configuring-build-entries) can be seen
+[here](src/interfaces/options).
 
 ### Configuring Build Entries
 
@@ -143,7 +114,7 @@ can be seen [here](src/interfaces/options).
  */
 
 import { defineBuildConfig } from '@flex-development/mkbuild'
-import tsconfig from './tsconfig.build.json' assert { type: 'json' }
+import pkg from './package.json' assert { type: 'json' }
 
 export default defineBuildConfig({
   entries: [
@@ -155,7 +126,7 @@ export default defineBuildConfig({
   platform: 'node',
   sourcemap: 'external',
   sourcesContent: false,
-  target: [tsconfig.compilerOptions.target, 'node14'],
+  target: 'node' + pkg.engines.node.replace(/^\D+/, ''),
   treeShaking: true,
   tsconfig: 'tsconfig.build.json'
 })
@@ -163,10 +134,16 @@ export default defineBuildConfig({
 
 See all build entry options [here](src/interfaces/entry).
 
+## Types
+
+This package is fully typed with [TypeScript][5].
+
+## Contribute
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 [1]: https://esbuild.github.io
-[2]:
-    https://docs.github.com/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries
-[3]: https://docs.npmjs.com/cli/v8/commands/npm-install#description
-[4]: https://yarnpkg.com/features/protocols#git
-[5]: https://nodejs.org/api/esm.html
-[6]: https://www.typescriptlang.org/docs/handbook/2/type-declarations.html
+[2]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+[3]: https://nodejs.org/api/esm.html
+[4]: https://www.typescriptlang.org/docs/handbook/2/type-declarations.html
+[5]: https://typescriptlang.org/

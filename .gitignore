@@ -44,6 +44,8 @@ yarn-error.log*
 *.lcov
 __tests__/report.json
 coverage/
+tsconfig.temp.json
+vitest.config.*.timestamp-*.mjs
 
 # ESLint
 # ------------------------------------------------------------------------------
@@ -56,4 +58,4 @@ dist/
 
 # Misc
 # ------------------------------------------------------------------------------
-/scratch.ts
+scratch.ts

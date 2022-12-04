@@ -7,10 +7,7 @@
   "proseWrap": "always",
   "quoteProps": "as-needed",
   "semi": false,
-  "singleQuote": true,
-  "tabWidth": 2,
   "trailingComma": "none",
-  "useTabs": false,
   "overrides": [
     {
       "files": [
@@ -24,7 +21,6 @@
       ],
       "options": {
         "functionNextLine": true,
-        "indent": 2,
         "keepComments": true,
         "keepPadding": false,
         "parser": "sh",

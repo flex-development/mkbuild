@@ -53,7 +53,7 @@ const plugin = ({
     } = initialOptions
 
     // esbuild handles path aliases when bundling
-    if (bundle) return
+    if (bundle) return void bundle
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')

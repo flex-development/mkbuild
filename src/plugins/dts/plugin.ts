@@ -63,7 +63,7 @@ const plugin = (): Plugin => {
     } = initialOptions
 
     // not bundling declarations yet
-    if (bundle) return
+    if (bundle) return void bundle
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')

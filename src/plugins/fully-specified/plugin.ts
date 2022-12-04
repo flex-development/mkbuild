@@ -71,7 +71,7 @@ const plugin = (): Plugin => {
     } = initialOptions
 
     // bundle output shouldn't contain relative specifiers
-    if (bundle) return
+    if (bundle) return void bundle
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')

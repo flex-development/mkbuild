@@ -71,10 +71,10 @@ const plugin = (): Plugin => {
     } = initialOptions
 
     // do nothing if bundling is not enabled
-    if (!bundle) return
+    if (!bundle) return void bundle
 
     // do nothing if not creating esm bundle
-    if (format !== 'esm') return
+    if (format !== 'esm') return void format
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
