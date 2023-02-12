@@ -3,22 +3,23 @@
  * @module mkbuild/utils/loaders
  */
 
-import type { Format, Loader } from 'esbuild'
+import type * as pathe from '@flex-development/pathe'
+import type * as esbuild from 'esbuild'
 
 /**
- * Returns the esbuild [`loader`][1] configuration.
+ * Returns an esbuild [build api][1] [`loader`][2] configuration.
  *
- * [1]: https://esbuild.github.io/api/#loader
- * [2]: https://esbuild.github.io/api/#build-api
+ * [1]: https://esbuild.github.io/api/#build-api
+ * [2]: https://esbuild.github.io/api/#loader
  *
- * @param {Format} [format='esm'] - Output file format
+ * @param {esbuild.Format} [format='esm'] - Output file format
  * @param {boolean} [bundle=false] - Bundling enabled?
- * @return {Record<string, Loader>} `loader` config for esbuild [build api][2]
+ * @return {Record<pathe.Ext, esbuild.Loader>} `loader` configuration
  */
 const loaders = (
-  format: Format = 'esm',
+  format: esbuild.Format = 'esm',
   bundle: boolean = false
-): Record<string, Loader> => ({
+): Record<pathe.Ext, esbuild.Loader> => ({
   '.cjs': format === 'cjs' && !bundle ? 'copy' : 'js',
   '.css': bundle ? 'css' : 'copy',
   '.cts': 'ts',

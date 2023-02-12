@@ -4,14 +4,11 @@
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
-import type { BuildOptions, Plugin, PluginBuild } from 'esbuild'
-import { createMatchPath } from 'tsconfig-paths'
+import type * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
-vi.mock('tsconfig-paths')
-
 describe('unit:plugins/tsconfig-paths', () => {
-  let subject: Plugin
+  let subject: esbuild.Plugin
 
   beforeEach(() => {
     subject = testSubject()
@@ -19,27 +16,43 @@ describe('unit:plugins/tsconfig-paths', () => {
 
   it('should do nothing if bundling', async () => {
     // Arrange
-    const bundle: BuildOptions['bundle'] = true
-    const api: PluginBuild = createPluginAPI({ initialOptions: { bundle } })
+    const api: esbuild.PluginBuild = createPluginAPI({
+      initialOptions: { bundle: true }
+    })
 
     // Act
     await subject.setup(api)
 
     // Expect
-    expect(createMatchPath).toHaveBeenCalledTimes(0)
+    expect(api.onResolve).toHaveBeenCalledTimes(0)
     expect(api.onEnd).toHaveBeenCalledTimes(0)
   })
 
-  it('should throw if metafile is not available', async () => {
+  it('should throw if esbuild is writing output files', async () => {
     // Arrange
-    const api: PluginBuild = createPluginAPI()
     let error: Error
 
     // Act
     try {
-      await subject.setup(api)
+      await subject.setup(createPluginAPI({ initialOptions: { write: true } }))
     } catch (e: unknown) {
-      error = e as Error
+      error = e as typeof error
+    }
+
+    // Expect
+    expect(error!).to.not.be.undefined
+    expect(error!).to.have.property('message').equal('write must be disabled')
+  })
+
+  it('should throw if metafile is disabled', async () => {
+    // Arrange
+    let error: Error
+
+    // Act
+    try {
+      await subject.setup(createPluginAPI())
+    } catch (e: unknown) {
+      error = e as typeof error
     }
 
     // Expect

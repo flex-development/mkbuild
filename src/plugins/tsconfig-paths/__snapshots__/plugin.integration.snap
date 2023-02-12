@@ -1,57 +1,36 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases esm output files 1`] = `
-"import \\"../src/config/constants\\";
-import \\"../src/interfaces\\";
-import \\"emoji-regex/es2015\\";
-import \\"esbuild\\";
-import \\"pathe\\";
-import \\"tsconfig-paths\\";
-import \\"tsconfig-paths/lib/tsconfig-loader\\";
-"
-`;
-
-exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases in cjs output files 1`] = `
-"require(\\"../src/config/constants\\");
-require(\\"../src/interfaces\\");
-require(\\"emoji-regex/es2015\\");
-require(\\"esbuild\\");
-require(\\"pathe\\");
-require(\\"tsconfig-paths\\");
-require(\\"tsconfig-paths/lib/tsconfig-loader\\");
-"
-`;
-
-exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases in copied output files 1`] = `
-"declare module '__fixtures__/values' {
-  export { default as MAX_VALUE } from './max-value'
-  export { default as MIN_VALUE } from './min-value'
-}
-"
-`;
-
-exports[`integration:plugins/tsconfig-paths > esbuild > should skip files that are not javascript or typescript 1`] = `
-"[
+exports[`integration:plugins/tsconfig-paths > esbuild > should resolve path aliases in output files 1`] = `
+[
   {
-    \\"date\\": \\"2007-04-24T07:00:00.000Z\\",
-    \\"close\\": 93.24
+    "assertion": "",
+    "code": "import MAX_VALUE from \\"./max-value\\"",
+    "end": 35,
+    "imports": [
+      "MAX_VALUE",
+    ],
+    "kind": "import",
+    "specifier": "./max-value",
+    "specifier_kind": "relative",
+    "specifier_syntax": "static",
+    "start": 0,
+    "syntax": "default",
+    "type": false,
   },
   {
-    \\"date\\": \\"2007-04-25T07:00:00.000Z\\",
-    \\"close\\": 95.35
+    "assertion": "",
+    "code": "import MIN_VALUE from \\"./min-value\\"",
+    "end": 72,
+    "imports": [
+      "MIN_VALUE",
+    ],
+    "kind": "import",
+    "specifier": "./min-value",
+    "specifier_kind": "relative",
+    "specifier_syntax": "static",
+    "start": 37,
+    "syntax": "default",
+    "type": false,
   },
-  {
-    \\"date\\": \\"2007-06-08T07:00:00.000Z\\",
-    \\"close\\": 124.49
-  },
-  {
-    \\"date\\": \\"2007-06-11T07:00:00.000Z\\",
-    \\"close\\": 120.19
-  },
-  {
-    \\"date\\": \\"2007-06-12T07:00:00.000Z\\",
-    \\"close\\": 120.38
-  }
 ]
-"
 `;

@@ -3,9 +3,11 @@
  * @module mkbuild/types/OutputExtension
  */
 
+import type { EmptyString } from '@flex-development/tutils'
+
 /**
  * Output file extensions.
  */
-type OutputExtension = `${'.min' | ''}${'.cjs' | '.js' | '.mjs'}`
+type OutputExtension = `${EmptyString | '.min'}${'.cjs' | '.js' | '.mjs'}`
 
 export type { OutputExtension as default }

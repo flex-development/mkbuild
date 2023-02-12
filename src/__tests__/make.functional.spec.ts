@@ -3,94 +3,110 @@
  * @module mkbuild/tests/make/functional
  */
 
-import vfs from '#fixtures/volume'
-import { IGNORE_PATTERNS as IGNORE } from '#src/config/constants'
 import loadBuildConfig from '#src/config/load'
-import type { Config } from '#src/interfaces'
-import type { Spy } from '#tests/interfaces'
+import esbuilder from '#src/internal/esbuilder'
+import analyzeResults from '#src/utils/analyze-results'
+import fs from '#src/utils/fs'
+import getPackageJson from '#tests/utils/get-package-json'
+import * as mlly from '@flex-development/mlly'
+import pathe from '@flex-development/pathe'
+import type { PackageJson } from '@flex-development/pkg-types'
+import * as color from 'colorette'
 import consola from 'consola'
-import fse from 'fs-extra'
-import { globby } from 'globby'
-import fs from 'node:fs'
-import path from 'node:path'
-import * as pathe from 'pathe'
 import testSubject from '../make'
 
-vi.mock('fs-extra')
-vi.mock('pathe')
+vi.mock('#src/plugins/write/plugin')
+vi.mock('#src/utils/fs')
+vi.mock('@flex-development/mlly')
 vi.mock('../config/load')
+vi.mock('../internal/esbuilder')
+vi.mock('../utils/analyze-results')
 
 describe('functional:make', () => {
   beforeAll(() => {
     consola.mockTypes(() => vi.fn())
   })
 
-  beforeEach(async () => {
-    for (let file of await globby('**', { cwd: 'src', ignore: IGNORE })) {
-      file = path.resolve('src', file)
-      vfs.mkdirpSync(path.dirname(file))
-      vfs.writeFileSync(file, fs.readFileSync(file, 'utf8'))
-    }
+  describe('build', () => {
+    let cwd: string
+    let pkgjson: PackageJson
 
-    vfs.writeFileSync('package.json', fs.readFileSync('package.json'))
-    vfs.writeFileSync('tsconfig.json', fs.readFileSync('tsconfig.json'))
+    beforeAll(async () => {
+      cwd = '__fixtures__/pkg/reverse'
+      pkgjson = await getPackageJson(cwd + '/package.json')
+      await testSubject({ cwd })
+    })
+
+    beforeEach(async () => {
+      await testSubject({ cwd })
+    })
+
+    it('should load build config', () => {
+      expect(loadBuildConfig).toHaveBeenCalledOnce()
+      expect(loadBuildConfig).toHaveBeenCalledWith(cwd)
+    })
+
+    it('should load package.json from current working directory', () => {
+      expect(mlly.readPackageJson).toHaveBeenCalledOnce()
+      expect(mlly.readPackageJson).toHaveBeenCalledWith(pathe.resolve(cwd))
+    })
+
+    it('should print build start info', () => {
+      // Arrange
+      const message: string = `Building ${pkgjson.name}`
+
+      // Expect
+      expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
+    })
+
+    it('should clean output directories', () => {
+      expect(fs.unlink).toHaveBeenCalledOnce()
+      expect(fs.rm).toHaveBeenCalledOnce()
+      expect(fs.mkdir).toHaveBeenCalledOnce()
+    })
+
+    it('should build source files', () => {
+      expect(esbuilder).toHaveBeenCalledOnce()
+    })
+
+    it('should print build done info', () => {
+      // Arrange
+      const message: string = `Build succeeded for ${pkgjson.name}`
+
+      // Expect
+      expect(consola.success).toHaveBeenCalledWith(color.green(message))
+    })
+
+    it('should print build analysis', () => {
+      expect(analyzeResults).toHaveBeenCalledOnce()
+    })
+
+    it('should print total build size', () => {
+      // Arrange
+      const bytes: string = expect.any(String)
+
+      // Expect
+      expect(consola.log).lastCalledWith('Σ Total build size:', bytes)
+    })
   })
 
-  afterEach(() => {
-    vfs.reset()
-  })
+  describe('error handling', () => {
+    it('should throw if package.json file is not found', async () => {
+      // Arrange
+      const cwd: string = '__fixtures__/pkg/no-package-json'
+      const message: string = `${pathe.resolve(cwd)}/package.json not found`
+      let error: Error
 
-  it('should load build config', async () => {
-    // Arrange
-    const config: Config = {}
+      // Act
+      try {
+        await testSubject({ cwd })
+      } catch (e: unknown) {
+        error = e as typeof error
+      }
 
-    // Act
-    ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
-    await testSubject()
-
-    // Expect
-    expect(loadBuildConfig).toHaveBeenCalledOnce()
-    expect(loadBuildConfig).toHaveBeenCalledWith('.')
-  })
-
-  it('should clean output directories', async () => {
-    // Arrange
-    const config: Config = { clean: true, format: 'cjs' }
-
-    // Act
-    ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
-    await testSubject()
-
-    // Expect
-    expect(pathe.resolve).toHaveBeenCalledWith(process.cwd(), 'dist')
-    expect(fse.unlink).toHaveBeenCalledOnce()
-    expect(fse.emptyDir).toHaveBeenCalledOnce()
-    expect(fse.mkdirp).toHaveBeenNthCalledWith(1, path.resolve('dist'))
-  })
-
-  it('should write all build results', async () => {
-    // Arrange
-    const config: Config = { entries: [{ bundle: true, platform: 'node' }] }
-
-    // Act
-    ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
-    await testSubject()
-
-    // Expect
-    expect(vfs.toJSON()[path.resolve('dist/index.mjs')]).to.not.be.null
-  })
-
-  it('should write dts build results only', async () => {
-    // Arrange
-    const config: Config = { dts: 'only', ext: '.js' }
-
-    // Act
-    ;(loadBuildConfig as unknown as Spy).mockResolvedValueOnce(config)
-    await testSubject()
-
-    // Expect
-    expect(Object.keys(vfs.toJSON())).to.each.satisfy((p: string): boolean => {
-      return /\/dist\//.test(p) ? p.endsWith('.d.ts') : true
+      // Expect
+      expect(error!).to.not.be.undefined
+      expect(error!).to.have.property('message').equal(message)
     })
   })
 })

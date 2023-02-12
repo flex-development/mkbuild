@@ -3,47 +3,52 @@
  * @module mkbuild/plugins/fully-specified
  */
 
-import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
-import {
-  resolveModules,
-  RESOLVE_EXTENSIONS,
-  type Ext
-} from '@flex-development/mlly'
+import type { NodeError } from '@flex-development/errnode'
+import * as mlly from '@flex-development/mlly'
+import * as pathe from '@flex-development/pathe'
 import type {
   BuildOptions,
   BuildResult,
+  OnEndResult,
   OutputFile,
   Plugin,
   PluginBuild
 } from 'esbuild'
-import * as pathe from 'pathe'
+import util from 'node:util'
+
+/**
+ * Plugin name.
+ *
+ * @const {string} PLUGIN_NAME
+ */
+const PLUGIN_NAME: string = 'fully-specified'
 
 /**
  * Returns a specifier resolver plugin. There are three types of specifiers:
  *
  * > - *Relative specifiers* like `'./startup.js'` or `'../config.mjs'`. They
- * >   refer to a path relative to the location of the importing file. The file
- * >   extension is always necessary for these.
+ * >   refer to a path relative to the location of the importing file. *The file
+ * >   extension is always necessary for these.*
  * > - *Bare specifiers* like `'some-package'` or `'some-package/shuffle'`. They
  * >   can refer to the main entry point of a package by the package name, or a
  * >   specific feature module within a package prefixed by the package name as
- * >   per the examples respectively. Including the file extension is only
- * >   necessary for packages without an ["exports"][1] field.
+ * >   per the examples respectively. *Including the file extension is only
+ * >   necessary for packages without an [`"exports"`][1] field.*
  * > - *Absolute specifiers* like `'file:///opt/nodejs/config.js'`. They refer
  * >   directly and explicitly to a full path.
  *
- * The resolver adds file extensions to **bare** and **relative** specifiers in
- * output content.
+ * The resolver adds file extensions to **absolute** and **relative** specifiers
+ * in output content.
  *
  * **Note**: [`--experimental-specifier-resolution=node`][2] can be used to
  * customize the ESM specifier resolution algorithm so that file extensions are
  * not required.
  *
- * [1]: https://nodejs.org/docs/latest-v16.x/api/packages.html#exports
- * [2]: https://nodejs.org/docs/latest-v16.x/api/esm.html#customizing-esm-specifier-resolution-algorithm
+ * [1]: https://nodejs.org/api/packages.html#exports
+ * [2]: https://nodejs.org/api/esm.html#customizing-esm-specifier-resolution-algorithm
  *
- * @see https://nodejs.org/docs/latest-v16.x/api/esm.html#terminology
+ * @see https://nodejs.org/api/esm.html#terminology
  *
  * @return {Plugin} Specifier resolver plugin
  */
@@ -64,19 +69,24 @@ const plugin = (): Plugin => {
     const {
       absWorkingDir = process.cwd(),
       bundle,
-      format = 'esm',
+      conditions,
       metafile,
       outExtension: { '.js': ext = '.js' } = {},
-      resolveExtensions: extensions = RESOLVE_EXTENSIONS
+      resolveExtensions,
+      preserveSymlinks,
+      write
     } = initialOptions
 
     // bundle output shouldn't contain relative specifiers
     if (bundle) return void bundle
 
+    // esbuild write must be disabled to access result.outputFiles
+    if (write) throw new Error('write must be disabled')
+
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
 
-    return void onEnd(async (result: BuildResult): Promise<void> => {
+    return void onEnd(async (result: BuildResult): Promise<OnEndResult> => {
       /**
        * Output file objects.
        *
@@ -86,29 +96,18 @@ const plugin = (): Plugin => {
 
       for (const output of result.outputFiles!) {
         /**
-         * Output file extension.
-         *
-         * @const {string} output_ext
-         */
-        const output_ext: string = pathe.extname(output.path)
-
-        // do nothing if output file isn't javascript or typescript
-        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
-          outputFiles.push(output)
-          continue
-        }
-
-        /**
          * Relative path to output file.
          *
-         * **Note**: Relative to {@link absWorkingDir}.
+         * **Note**: Relative to {@linkcode absWorkingDir}.
          *
          * @const {string} outfile
          */
-        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+        const outfile: string = output.path
+          .replace(absWorkingDir, '')
+          .replace(/^\//, '')
 
         /**
-         * {@link output} metadata.
+         * {@linkcode output} metadata.
          *
          * @const {OutputMetadata} metadata
          */
@@ -117,54 +116,61 @@ const plugin = (): Plugin => {
         // because this plugin doesn't handle bundles, the entry point can be
         // reset to the first (and only!) key in metadata.inputs
         if (!metadata.entryPoint) {
-          metadata.entryPoint = Object.keys(metadata.inputs)[0]!
+          const [entryPoint = ''] = Object.keys(metadata.inputs)
+          metadata.entryPoint = entryPoint
         }
 
-        /**
-         * Absolute path to source file.
-         *
-         * @const {string} parent
-         */
-        const parent: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
+        // skip output files without entry points
+        if (!metadata.entryPoint) {
+          outputFiles.push(output)
+          continue
+        }
 
-        /**
-         * {@link output.text} with fully specified modules.
-         *
-         * @const {string} text
-         */
-        const text: string = await resolveModules(output.text, {
-          conditions: [format === 'esm' ? 'import' : 'require'],
+        try {
           /**
-           * Replaces the file extension of `specifier` if specifier does not
-           * already include an extension.
+           * {@linkcode output.text} with fully specified modules.
            *
-           * @param {string} specifier - Module specifier in {@link output.text}
-           * @param {string} resolved - `specifier` as absolute specifier
-           * @return {Ext} New extension for `specifier` or original extension
+           * @const {string} text
            */
-          ext(specifier: string, resolved: string): Ext {
-            const { ext: s_ext } = pathe.parse(specifier)
+          const text: string = await mlly.fillModules(output.text, {
+            conditions: new Set(conditions),
+            ext,
+            extensions: new Set(resolveExtensions),
+            parent: mlly.toURL(pathe.join(absWorkingDir, metadata.entryPoint)),
+            preserveSymlinks
+          })
 
-            // do nothing if specifier already includes file extension
-            // replace file extension otherwise
-            return (s_ext === pathe.extname(resolved) ? s_ext : ext) as Ext
-          },
-          extensions,
-          parent
-        })
+          // add output file with fully specified modules
+          outputFiles.push({
+            ...output,
+            contents: new util.TextEncoder().encode(text),
+            text
+          })
+        } catch (e: unknown) {
+          const { code, message, stack = '' } = e as NodeError
 
-        outputFiles.push({
-          ...output,
-          contents: new Uint8Array(Buffer.from(text)),
-          text
-        })
+          return {
+            errors: [
+              {
+                id: code,
+                location: null,
+                notes: [{ location: null, text: stack }],
+                pluginName: PLUGIN_NAME,
+                text: message
+              }
+            ]
+          }
+        }
       }
 
-      return void (result.outputFiles = outputFiles)
+      // reset output files
+      result.outputFiles = outputFiles
+
+      return {}
     })
   }
 
-  return { name: 'fully-specified', setup }
+  return { name: PLUGIN_NAME, setup }
 }
 
 export default plugin

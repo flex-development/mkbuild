@@ -4,14 +4,14 @@
  */
 
 import type { OutputMetadata } from '#src/types'
-import type { BuildResult, Metafile, OutputFile } from 'esbuild'
+import type esbuild from 'esbuild'
 
 /**
- * Build result object schema.
+ * Object representing a build result.
  *
- * @extends {OutputFile}
+ * @extends {esbuild.OutputFile}
  */
-interface Result extends OutputFile {
+interface Result extends esbuild.OutputFile {
   /**
    * Output file size.
    */
@@ -29,7 +29,7 @@ interface Result extends OutputFile {
    *
    * [1]: https://esbuild.github.io
    */
-  errors: BuildResult['errors']
+  errors: esbuild.BuildResult['errors']
 
   /**
    * Export names.
@@ -44,7 +44,7 @@ interface Result extends OutputFile {
   /**
    * Source file map.
    */
-  inputs: Metafile['inputs']
+  inputs: esbuild.Metafile['inputs']
 
   /**
    * Relative path to output file.
@@ -58,7 +58,7 @@ interface Result extends OutputFile {
    *
    * [1]: https://esbuild.github.io
    */
-  warnings: BuildResult['warnings']
+  warnings: esbuild.BuildResult['warnings']
 }
 
 export type { Result as default }

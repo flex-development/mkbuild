@@ -1,0 +1,8 @@
+{
+  "name": "sum-of-intervals",
+  "type": "module",
+  "exports": {
+    "import": "./dist/sum-of-intervals.mjs",
+    "require": "./dist/sum-of-intervals.cjs"
+  }
+}

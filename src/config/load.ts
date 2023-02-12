@@ -4,6 +4,7 @@
  */
 
 import type { Config } from '#src/interfaces'
+import pathe from '@flex-development/pathe'
 import { cosmiconfig } from 'cosmiconfig'
 import es from './loader-es'
 
@@ -40,7 +41,7 @@ const loadBuildConfig = async (location: string = '.'): Promise<Config> => {
       '#.config.mts',
       '#.config.ts'
     ].map(place => place.replace('#', name)),
-    stopDir: location
+    stopDir: pathe.resolve(location)
   })
 
   return ((await search(location))?.config as Config | null) ?? {}

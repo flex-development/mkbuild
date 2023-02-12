@@ -1,7 +1,9 @@
 {
-  "*": ["yarn check:format", "yarn check:spelling"],
-  "**/*.{cjs,cts,gql,js,json,json5,jsonc,jsx,md,mjs,mts,ts,tsx,yml}": [
-    "yarn check:lint"
+  "*": ["prettier --check", "cspell lint --color --no-progress --relative $@"],
+  "**/*.{cjs,cts,gql,js,json,json5,jsonc,md,mjs,mts,ts,yml}": [
+    "eslint --exit-on-fatal-error"
   ],
-  "**/yarn.lock": "yarn dedupe --check"
+  "**/*.{cjs,cts,mjs,mts,ts}": "vitest typecheck --changed --run",
+  "**/yarn.lock": "yarn dedupe --check",
+  "src/**/*.ts": "vitest --changed --coverage --run"
 }

@@ -2,60 +2,80 @@
 
 exports[`unit:config/esLoader > should return config from .cts file 1`] = `
 {
-  "absWorkingDir": "__fixtures__/configs/cts",
-  "entries": [
-    {
-      "ext": ".cjs",
-      "format": "cjs",
-    },
-  ],
+  "bundle": true,
+  "cwd": "__fixtures__/pkg/my-atoi",
+  "ext": ".js",
+  "format": "cjs",
+  "name": "index",
+  "platform": "neutral",
+  "source": "find-uniq.cts",
+  "sourcemap": true,
+  "sourcesContent": false,
+  "tsconfig": "tsconfig.json",
 }
 `;
 
 exports[`unit:config/esLoader > should return config from .js file 1`] = `
 {
-  "absWorkingDir": "__fixtures__/configs/js",
+  "bundle": true,
+  "cwd": "__fixtures__/pkg/buddy",
   "entries": [
     {
       "format": "esm",
     },
+    {
+      "format": "cjs",
+    },
   ],
+  "name": "index",
+  "platform": "neutral",
+  "source": "buddy.js",
+  "sourcemap": true,
+  "sourcesContent": false,
 }
 `;
 
 exports[`unit:config/esLoader > should return config from .mjs file 1`] = `
 {
-  "absWorkingDir": "__fixtures__/configs/mjs",
+  "cwd": "__fixtures__/pkg/sum-of-intervals",
   "entries": [
     {
       "format": "esm",
+      "pattern": "sum-of-intervals.mjs",
+    },
+    {
+      "format": "cjs",
+      "pattern": "sum-of-intervals.cjs",
     },
   ],
+  "source": ".",
+  "sourcemap": true,
+  "sourcesContent": false,
 }
 `;
 
 exports[`unit:config/esLoader > should return config from .mts file 1`] = `
 {
-  "absWorkingDir": "__fixtures__/configs/mts",
-  "entries": [
-    {
-      "format": "esm",
-    },
-  ],
+  "conditions": Set {
+    "node",
+    "import",
+  },
+  "cwd": "__fixtures__/pkg/reverse",
+  "sourcemap": true,
+  "sourcesContent": false,
+  "tsconfig": "tsconfig.json",
 }
 `;
 
 exports[`unit:config/esLoader > should return config from .ts file 1`] = `
 {
-  "absWorkingDir": "__fixtures__/configs/ts",
-  "entries": [
-    {
-      "format": "esm",
-    },
-    {
-      "ext": ".cjs",
-      "format": "cjs",
-    },
-  ],
+  "cwd": "__fixtures__/pkg/dbl-linear",
+  "format": "esm",
+  "outdir": ".",
+  "pattern": "dbl-linear.ts",
+  "source": ".",
+  "sourcemap": true,
+  "sourcesContent": false,
+  "tsconfig": "tsconfig.json",
 }
 `;

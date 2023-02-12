@@ -3,8 +3,7 @@
  * @module mkbuild/interfaces/Config
  */
 
-import type fse from 'fs-extra'
-import type { Options as GlobbyOptions } from 'globby'
+import type { FileSystemAdapter } from '#src/types'
 import type Entry from './entry'
 import type Options from './options'
 
@@ -14,13 +13,6 @@ import type Options from './options'
  * @extends {Options}
  */
 interface Config extends Options {
-  /**
-   * Current working directory.
-   *
-   * @default '.'
-   */
-  absWorkingDir?: Options['absWorkingDir']
-
   /**
    * Remove output directories before starting build.
    *
@@ -39,20 +31,14 @@ interface Config extends Options {
   entries?: Partial<Entry>[]
 
   /**
-   * Custom implementations of `fs` methods.
+   * Custom implementations of file system methods.
    *
-   * @see https://github.com/mrmlnc/fast-glob#fs
-   * @see https://github.com/jprichardson/node-fs-extra
+   * @see {@linkcode FileSystemAdapter}
+   * @see https://nodejs.org/api/fs.html
    *
-   * @default fse
+   * @default fsa
    */
-  fs?: GlobbyOptions['fs'] & {
-    emptyDir: typeof fse['emptyDir']
-    mkdirp: typeof fse['mkdirp']
-    readJson: typeof fse['readJson']
-    unlink: typeof fse['unlink']
-    writeFile: typeof fse['writeFile']
-  }
+  fs?: FileSystemAdapter
 }
 
 export type { Config as default }

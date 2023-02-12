@@ -21,7 +21,7 @@ const analyzeResults = (
   pad: number = 2
 ): string => {
   /**
-   * Total number of bytes in {@link results}.
+   * Total number of bytes in {@linkcode results}.
    *
    * @const {number} bytes
    */

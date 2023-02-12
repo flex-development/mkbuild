@@ -3,24 +3,39 @@
  * @module mkbuild/utils/tests/unit/loaders
  */
 
+import type * as esbuild from 'esbuild'
 import testSubject from '../loaders'
 
 describe('unit:utils/loaders', () => {
-  interface Case {
-    parameters: Parameters<typeof testSubject>
-    state: `${'cjs' | 'esm'} ${'bundle' | 'transpilation'}`
-  }
+  describe('cjs', () => {
+    let format: esbuild.Format
 
-  const cases: Case[] = [
-    { parameters: [], state: 'esm transpilation' },
-    { parameters: ['esm', true], state: 'esm bundle' },
-    { parameters: ['cjs', true], state: 'cjs bundle' },
-    { parameters: ['cjs'], state: 'cjs transpilation' }
-  ]
+    beforeAll(() => {
+      format = 'cjs'
+    })
 
-  cases.forEach(({ parameters, state }) => {
-    it(`should return esbuild loader config for ${state}`, () => {
-      expect(testSubject(...parameters)).toMatchSnapshot()
+    it('should return loader configuration for cjs bundle', () => {
+      expect(testSubject(format, true)).toMatchSnapshot()
+    })
+
+    it('should return loader configuration for cjs transpilation', () => {
+      expect(testSubject(format, false)).toMatchSnapshot()
+    })
+  })
+
+  describe('esm', () => {
+    let format: esbuild.Format
+
+    beforeAll(() => {
+      format = 'esm'
+    })
+
+    it('should return loader configuration for esm bundle', () => {
+      expect(testSubject(format, true)).toMatchSnapshot()
+    })
+
+    it('should return loader configuration for esm transpilation', () => {
+      expect(testSubject(format, false)).toMatchSnapshot()
     })
   })
 })

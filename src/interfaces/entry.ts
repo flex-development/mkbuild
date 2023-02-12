@@ -3,8 +3,7 @@
  * @module mkbuild/interfaces/Entry
  */
 
-import type { EsbuildOptions, OutputExtension } from '#src/types'
-import type { Format } from 'esbuild'
+import type { EsbuildOptions } from '#src/types'
 import type Options from './options'
 
 /**
@@ -14,18 +13,6 @@ import type Options from './options'
  * @extends {Options}
  */
 interface Entry extends EsbuildOptions, Options {
-  /**
-   * Output file extension.
-   */
-  ext: OutputExtension
-
-  /**
-   * Output file format.
-   *
-   * @see https://esbuild.github.io/api/#format
-   */
-  format: Format
-
   /**
    * Output directory name.
    */

@@ -12,6 +12,7 @@ import {
   type PluginBuild
 } from 'esbuild'
 import regexp from 'escape-string-regexp'
+import util from 'node:util'
 
 /**
  * Returns a plugin that defines the `require` function in ESM bundles.
@@ -61,13 +62,14 @@ const plugin = (): Plugin => {
       absWorkingDir = process.cwd(),
       banner: { js: banner = '' } = {},
       bundle,
-      format,
+      format = 'esm',
       metafile,
-      minify,
+      minify = false,
       minifySyntax,
       minifyWhitespace,
-      platform,
-      target
+      platform = 'node',
+      target = [],
+      write
     } = initialOptions
 
     // do nothing if bundling is not enabled
@@ -75,6 +77,9 @@ const plugin = (): Plugin => {
 
     // do nothing if not creating esm bundle
     if (format !== 'esm') return void format
+
+    // esbuild write must be disabled to access result.outputFiles
+    if (write) throw new Error('write must be disabled')
 
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
@@ -120,17 +125,15 @@ const plugin = (): Plugin => {
         const [hashbang = ''] = /^#!.+\n/.exec(output.text) ?? []
 
         /**
-         * {@link output.text} copy.
+         * {@linkcode output.text} copy.
          *
          * @var {string} text
          */
         let text: string = output.text
 
         // remove hashbang and re-add hashbang to code snippet
-        if (hashbang) {
-          text = text.replace(hashbang, '')
-          code = `${hashbang}${code}`
-        }
+        text = text.replace(hashbang, '')
+        code = `${hashbang}${code}`
 
         // remove banner
         if (banner) text = text.replace(new RegExp(regexp(banner) + '\n?'), '')
@@ -138,17 +141,19 @@ const plugin = (): Plugin => {
         // insert require function definition
         text = `${code}${text}`
 
-        // reset output contents
-        output.contents = new Uint8Array(Buffer.from(text))
+        // reset output file contents
+        output.contents = new util.TextEncoder().encode(text)
 
         /**
          * Relative path to output file.
          *
-         * **Note**: Relative to {@link absWorkingDir}.
+         * **Note**: Relative to {@linkcode absWorkingDir}.
          *
          * @const {string} outfile
          */
-        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+        const outfile: string = output.path
+          .replace(absWorkingDir, '')
+          .replace(/^\//, '')
 
         /**
          * Output contents size including `require` function definition.

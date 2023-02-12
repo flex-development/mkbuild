@@ -3,43 +3,44 @@
  * @module mkbuild/plugins/tsconfig-paths/plugin
  */
 
-import { EXT_JS_REGEX, EXT_TS_REGEX } from '#src/config/constants'
 import type { OutputMetadata } from '#src/types'
-import getCompilerOptions from '#src/utils/get-compiler-options'
-import { resolveAliases, RESOLVE_EXTENSIONS } from '@flex-development/mlly'
+import type { NodeError } from '@flex-development/errnode'
+import pathe from '@flex-development/pathe'
+import * as tscu from '@flex-development/tsconfig-utils'
 import type {
   BuildOptions,
   BuildResult,
+  OnEndResult,
   OutputFile,
   Plugin,
   PluginBuild
 } from 'esbuild'
-import * as pathe from 'pathe'
-import type Options from './options'
+import util from 'node:util'
 
 /**
- * Returns a [`tsconfig-paths`][1] plugin.
+ * Plugin name.
  *
- * [1]: https://github.com/dividab/tsconfig-paths
- *
- * @param {Options} [options={}] - Plugin options
- * @return {Plugin} `tsconfig-paths` plugin
+ * @const {string} PLUGIN_NAME
  */
-const plugin = ({
-  extensions = RESOLVE_EXTENSIONS,
-  fileExists,
-  mainFields = ['main', 'module'],
-  readFile
-}: Options = {}): Plugin => {
+const PLUGIN_NAME: string = 'tsconfig-paths'
+
+/**
+ * Returns a path alias resolution plugin.
+ *
+ * @see https://github.com/flex-development/tsconfig-utils#resolvepathscode-options
+ *
+ * @param {tscu.LoadTsconfigOptions} [options] - Plugin options
+ * @return {Plugin} Path alias resolution plugin
+ */
+const plugin = ({ file, read }: tscu.LoadTsconfigOptions = {}): Plugin => {
   /**
    * Resolves path aliases in output file content.
    *
-   * [1]: https://github.com/dividab/tsconfig-paths
-   * [2]: https://esbuild.github.io/plugins
-   * [3]: https://esbuild.github.io/api/#build-api
+   * [1]: https://esbuild.github.io/plugins
+   * [2]: https://esbuild.github.io/api/#build-api
    *
-   * @param {PluginBuild} build - [esbuild plugin api][2]
-   * @param {BuildOptions} build.initialOptions - [esbuild build api][3] options
+   * @param {PluginBuild} build - [esbuild plugin api][1]
+   * @param {BuildOptions} build.initialOptions - [esbuild build api][2] options
    * @param {PluginBuild['onEnd']} build.onEnd - Build end callback
    * @return {void} Nothing when complete
    * @throws {Error}
@@ -48,51 +49,46 @@ const plugin = ({
     const {
       absWorkingDir = process.cwd(),
       bundle,
+      conditions,
       metafile,
-      tsconfig = 'tsconfig.json'
+      resolveExtensions,
+      preserveSymlinks,
+      tsconfig = 'tsconfig.json',
+      write
     } = initialOptions
 
     // esbuild handles path aliases when bundling
     if (bundle) return void bundle
 
+    // esbuild write must be disabled to access result.outputFiles
+    if (write) throw new Error('write must be disabled')
+
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
 
-    /**
-     * Absolute path to tsconfig.
-     *
-     * @const {string} tsconfigfile
-     */
-    const tsconfigpath: string = pathe.resolve(absWorkingDir, tsconfig)
+    return void onEnd(async (result: BuildResult): Promise<OnEndResult> => {
+      /**
+       * Output file objects.
+       *
+       * @const {OutputFile[]} outputFiles
+       */
+      const outputFiles: OutputFile[] = []
 
-    // user compiler options
-    const { baseUrl = '', paths = {} } = getCompilerOptions(tsconfigpath)
-
-    return void onEnd((result: BuildResult): void => {
-      result.outputFiles = result.outputFiles!.map((output: OutputFile) => {
-        /**
-         * Output file extension.
-         *
-         * @const {string} output_ext
-         */
-        const output_ext: string = pathe.extname(output.path)
-
-        // skip output files that are not javascript or typescript
-        if (!EXT_JS_REGEX.test(output_ext) && !EXT_TS_REGEX.test(output_ext)) {
-          return output
-        }
-
+      // resolve path aliases in output content
+      for (const output of result.outputFiles!) {
         /**
          * Relative path to output file.
          *
-         * **Note**: Relative to {@link absWorkingDir}.
+         * **Note**: Relative to {@linkcode absWorkingDir}.
          *
          * @const {string} outfile
          */
-        const outfile: string = output.path.replace(absWorkingDir + '/', '')
+        const outfile: string = output.path
+          .replace(absWorkingDir, '')
+          .replace(/^\//, '')
 
         /**
-         * {@link output} metadata.
+         * {@linkcode output} metadata.
          *
          * @const {OutputMetadata} metadata
          */
@@ -101,37 +97,65 @@ const plugin = ({
         // because this plugin doesn't handle bundles, the entry point can be
         // reset to the first (and only!) key in metadata.inputs
         if (!metadata.entryPoint) {
-          metadata.entryPoint = Object.keys(metadata.inputs)[0]!
+          const [entryPoint = ''] = Object.keys(metadata.inputs)
+          metadata.entryPoint = entryPoint
         }
 
-        /**
-         * Absolute path to source file.
-         *
-         * @const {string} parent
-         */
-        const parent: string = pathe.resolve(absWorkingDir, metadata.entryPoint)
+        // skip output files without entry points
+        if (!metadata.entryPoint) {
+          outputFiles.push(output)
+          continue
+        }
 
-        /**
-         * {@link output.text} with path aliases replaced.
-         *
-         * @const {string} text
-         */
-        const text: string = resolveAliases(output.text, {
-          baseUrl,
-          extensions,
-          fileExists,
-          mainFields,
-          parent,
-          paths,
-          readFile
-        })
+        try {
+          /**
+           * {@linkcode output.text} with path aliases replaced.
+           *
+           * @const {string} text
+           */
+          const text: string = await tscu.resolvePaths(output.text, {
+            baseUrl: absWorkingDir,
+            conditions: new Set(conditions),
+            ext: '',
+            extensions: new Set(resolveExtensions),
+            file,
+            parent: pathe.resolve(absWorkingDir, metadata.entryPoint),
+            preserveSymlinks,
+            read,
+            tsconfig: pathe.resolve(absWorkingDir, tsconfig)
+          })
 
-        return { ...output, contents: new Uint8Array(Buffer.from(text)), text }
-      })
+          // add output file with path aliases replaced
+          outputFiles.push({
+            ...output,
+            contents: new util.TextEncoder().encode(text),
+            text
+          })
+        } catch (e: unknown) {
+          const { code, message, stack = '' } = e as NodeError
+
+          return {
+            errors: [
+              {
+                id: code,
+                location: null,
+                notes: [{ location: null, text: stack }],
+                pluginName: PLUGIN_NAME,
+                text: message
+              }
+            ]
+          }
+        }
+      }
+
+      // reset output files
+      result.outputFiles = outputFiles
+
+      return {}
     })
   }
 
-  return { name: 'tsconfig-paths', setup }
+  return { name: PLUGIN_NAME, setup }
 }
 
-export { plugin as default, type Options }
+export { plugin as default }

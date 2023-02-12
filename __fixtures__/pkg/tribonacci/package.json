@@ -1,0 +1,8 @@
+{
+  "name": "tribonacci",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  }
+}

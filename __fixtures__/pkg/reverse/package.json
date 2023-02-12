@@ -1,0 +1,8 @@
+{
+  "name": "reverse",
+  "type": "module",
+  "exports": {
+    ".": "./dist/reverse.mjs",
+    "./package.json": "./package.json"
+  }
+}

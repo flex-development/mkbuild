@@ -1,66 +1,51 @@
 // Vitest Snapshot v1
 
-exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in cjs output files 1`] = `
-"require(\\"esbuild\\");
-require(\\"node:util\\");
-require(\\"pathe\\");
-require(\\"tsconfig-paths\\");
-require(\\"tsconfig-paths/lib/tsconfig-loader.js\\");
-require(\\"../src/config/constants.ts\\");
-require(\\"../src/interfaces/index.cjs\\");
-"
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in copied output files 1`] = `
-"/**
- * @file Fixtures - my-atoi.d.mts
- * @module fixtures/my-atoi.d.mts
- */
-
-/**
- * Converts a string, \`s\`, to a 32-bit signed integer (similar to C/C++'s \`atoi\`
- * function).
- *
- * @example myAtoi('') // 0
- * @example myAtoi('42') // 42
- * @example myAtoi('   -42') // -42
- * @example myAtoi('4193 with words') // 4193
- * @example myAtoi('words and 987') // 0
- * @example myAtoi('+-12') // 0
- *
- * @param {string} s - String to convert
- * @return {number} 32-bit signed integer
- */
-declare function myAtoi(s: string): number
-
-export default myAtoi
-
-export { default as MAX_VALUE } from './max-value.mjs'
-export { default as MIN_VALUE } from './min-value.mjs'
-"
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in esm output files 1`] = `
-"import \\"esbuild\\";
-import \\"node:util\\";
-import \\"pathe\\";
-import \\"tsconfig-paths\\";
-import \\"tsconfig-paths/lib/tsconfig-loader.js\\";
-import \\"../src/config/constants.ts\\";
-import \\"../src/interfaces/index.mjs\\";
-"
-`;
-
-exports[`integration:plugins/fully-specified > esbuild > should skip files that are not javascript or typescript 1`] = `
-"{
-  currency: 'USD',
-  prices: [
-    { price: '2486.69', time: '2017-07-03T00:00:00Z' },
-    { price: '2457.05', time: '2017-07-02T00:00:00Z' },
-    { price: '2486.09', time: '2017-07-01T00:00:00Z' },
-    { price: '2535.85', time: '2017-06-30T00:00:00Z' },
-    { price: '2546.06', time: '2017-06-29T00:00:00Z' }
-  ]
-}
-"
+exports[`integration:plugins/fully-specified > esbuild > should fill specifiers in output files 1`] = `
+[
+  {
+    "assertion": "",
+    "code": "import sade from \\"sade\\"",
+    "end": 43,
+    "imports": [
+      "sade",
+    ],
+    "kind": "import",
+    "specifier": "sade",
+    "specifier_kind": "bare",
+    "specifier_syntax": "static",
+    "start": 20,
+    "syntax": "default",
+    "type": false,
+  },
+  {
+    "assertion": "{ type: \\"json\\" }",
+    "code": "import pkg from \\"../package.json\\" assert { type: \\"json\\" }",
+    "end": 102,
+    "imports": [
+      "pkg",
+    ],
+    "kind": "import",
+    "specifier": "../package.json",
+    "specifier_kind": "relative",
+    "specifier_syntax": "static",
+    "start": 45,
+    "syntax": "default",
+    "type": false,
+  },
+  {
+    "assertion": "",
+    "code": "import make from \\"./make.mjs\\"",
+    "end": 133,
+    "imports": [
+      "make",
+    ],
+    "kind": "import",
+    "specifier": "./make.mjs",
+    "specifier_kind": "relative",
+    "specifier_syntax": "static",
+    "start": 104,
+    "syntax": "default",
+    "type": false,
+  },
+]
 `;

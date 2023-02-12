@@ -1,5 +1,0 @@
-# NPM IGNORE
-# https://npm.github.io/publishing-pkgs-docs/publishing/the-npmignore-file.html
-# https://github.com/yarnpkg/yarn/issues/685#issuecomment-457618561
-
-*.dev.patch

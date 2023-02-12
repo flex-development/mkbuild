@@ -3,83 +3,71 @@
  * @module mkbuild/plugins/tsconfig-paths/tests/integration
  */
 
-import ESBUILD_OPTIONS from '#fixtures/esbuild-options'
-import { build, type BuildOptions, type Plugin } from 'esbuild'
+import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
+import type { Spy } from '#tests/interfaces'
+import {
+  ERR_INVALID_MODULE_SPECIFIER,
+  type NodeError
+} from '@flex-development/errnode'
+import * as mlly from '@flex-development/mlly'
+import pathe from '@flex-development/pathe'
+import * as tscu from '@flex-development/tsconfig-utils'
+import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
-describe('integration:plugins/tsconfig-paths', () => {
-  let options: BuildOptions
-  let subject: Plugin
+vi.mock('@flex-development/tsconfig-utils')
 
-  beforeEach(() => {
-    subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
+describe('integration:plugins/tsconfig-paths', () => {
+  let options: esbuild.BuildOptions & { metafile: true; write: false }
+
+  beforeAll(() => {
+    options = {
+      ...ESBUILD_OPTIONS,
+      absWorkingDir: pathe.resolve('__fixtures__/pkg/reverse'),
+      entryPoints: ['src/reverse.mts'],
+      format: 'esm',
+      loader: { '.mts': 'ts' },
+      logLevel: 'silent',
+      outExtension: { '.js': '.mjs' },
+      plugins: [testSubject()],
+      sourcemap: true,
+      sourcesContent: false
+    }
   })
 
   describe('esbuild', () => {
-    it('should resolve path aliases in cjs output files', async () => {
+    it('should resolve path aliases in output files', async () => {
       // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/tsconfig-paths.cts'],
-        format: 'cjs',
-        loader: { '.cts': 'ts' },
-        outExtension: { '.js': '.cjs' }
-      })
+      const { errors, outputFiles, warnings } = await esbuild.build(options)
 
       // Expect
       expect(errors).to.be.an('array').of.length(0)
       expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
+      expect(mlly.findStaticImports(outputFiles[1]?.text)).toMatchSnapshot()
     })
 
-    it('should resolve path aliases in copied output files', async () => {
+    it('should throw if error occurs', async () => {
+      // Arrange
+      const error: NodeError = new ERR_INVALID_MODULE_SPECIFIER('#src\\utils')
+      let errors: esbuild.Message[] = []
+
       // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/values.d.ts'],
-        format: 'esm',
-        loader: { '.d.ts': 'copy' }
-      })
+      try {
+        ;(tscu.resolvePaths as unknown as Spy).mockRejectedValueOnce(error)
+        await esbuild.build(options)
+      } catch (e: unknown) {
+        errors = (e as esbuild.BuildFailure).errors
+      }
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
-    })
-
-    it('should resolve path aliases esm output files', async () => {
-      // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/tsconfig-paths.mts'],
-        format: 'esm',
-        loader: { '.mts': 'ts' },
-        outExtension: { '.js': '.mjs' }
-      })
-
-      // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
-    })
-
-    it('should skip files that are not javascript or typescript', async () => {
-      // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/apple-stock.jsonc'],
-        loader: { '.jsonc': 'copy' }
-      })
-
-      // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(1)
+      expect(errors[0]).to.have.property('id').equal(error.code)
+      expect(errors[0]).to.have.property('location').be.null
+      expect(errors[0]).to.have.property('notes').be.an('array').of.length(1)
+      expect(errors[0]).to.have.property('pluginName').equal('tsconfig-paths')
+      expect(errors[0]).to.have.property('text').equal(error.message)
+      expect(errors[0]!.notes[0]).to.have.property('location').be.null
+      expect(errors[0]!.notes[0]).to.have.property('text').equal(error.stack)
     })
   })
 })

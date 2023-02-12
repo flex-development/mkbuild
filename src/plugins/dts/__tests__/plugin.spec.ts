@@ -4,11 +4,11 @@
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
-import type { BuildOptions, Plugin, PluginBuild } from 'esbuild'
+import type * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
 describe('unit:plugins/dts', () => {
-  let subject: Plugin
+  let subject: esbuild.Plugin
 
   beforeEach(() => {
     subject = testSubject()
@@ -16,8 +16,9 @@ describe('unit:plugins/dts', () => {
 
   it('should do nothing if bundling', async () => {
     // Arrange
-    const bundle: BuildOptions['bundle'] = true
-    const api: PluginBuild = createPluginAPI({ initialOptions: { bundle } })
+    const api: esbuild.PluginBuild = createPluginAPI({
+      initialOptions: { bundle: true }
+    })
 
     // Act
     await subject.setup(api)
@@ -27,16 +28,31 @@ describe('unit:plugins/dts', () => {
     expect(api.onEnd).toHaveBeenCalledTimes(0)
   })
 
-  it('should throw if metafile is not available', async () => {
+  it('should throw if esbuild is writing output files', async () => {
     // Arrange
-    const api: PluginBuild = createPluginAPI()
     let error: Error
 
     // Act
     try {
-      await subject.setup(api)
+      await subject.setup(createPluginAPI({ initialOptions: { write: true } }))
     } catch (e: unknown) {
-      error = e as Error
+      error = e as typeof error
+    }
+
+    // Expect
+    expect(error!).to.not.be.undefined
+    expect(error!).to.have.property('message').equal('write must be disabled')
+  })
+
+  it('should throw if metafile is disabled', async () => {
+    // Arrange
+    let error: Error
+
+    // Act
+    try {
+      await subject.setup(createPluginAPI())
+    } catch (e: unknown) {
+      error = e as typeof error
     }
 
     // Expect

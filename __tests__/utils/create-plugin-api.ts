@@ -1,5 +1,5 @@
 /**
- * @file Test Utilities
+ * @file Test Utilities - createPluginAPI
  * @module tests/utils/createPluginAPI
  */
 
@@ -15,13 +15,21 @@ import * as esbuild from 'esbuild'
  */
 const createPluginAPI = ({
   initialOptions = {},
+  onDispose = vi.fn(),
   onEnd = vi.fn(),
   onLoad = vi.fn(),
   onResolve = vi.fn(),
   onStart = vi.fn(),
   resolve = vi.fn()
-}: Partial<esbuild.PluginBuild> = {}): esbuild.PluginBuild => {
-  return { esbuild, initialOptions, onEnd, onLoad, onResolve, onStart, resolve }
-}
+}: Partial<esbuild.PluginBuild> = {}): esbuild.PluginBuild => ({
+  esbuild,
+  initialOptions,
+  onDispose,
+  onEnd,
+  onLoad,
+  onResolve,
+  onStart,
+  resolve
+})
 
 export default createPluginAPI

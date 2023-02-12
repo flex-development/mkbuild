@@ -6,7 +6,7 @@
 import type { SpyInstance } from 'vitest'
 
 /**
- * {@link SpyInstance} utility.
+ * {@linkcode SpyInstance} utility.
  *
  * @template Fn - Function being spied on
  *

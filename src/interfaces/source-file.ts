@@ -3,14 +3,18 @@
  * @module mkbuild/interfaces/SourceFile
  */
 
+import type * as pathe from '@flex-development/pathe'
+
 /**
- * Source file object schema.
+ * Object representing a source file.
  */
 interface SourceFile {
   /**
-   * Source file extension.
+   * File extension of source file.
+   *
+   * @see {@linkcode pathe.Ext}
    */
-  ext: string
+  ext: pathe.Ext
 
   /**
    * Relative path to source file.

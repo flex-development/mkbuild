@@ -1,0 +1,7 @@
+{
+  "cwd": "__fixtures__/pkg/tribonacci",
+  "entries": [{ "format": "esm" }, { "format": "cjs" }],
+  "sourcemap": true,
+  "sourcesContent": false,
+  "tsconfig": "tsconfig.json"
+}

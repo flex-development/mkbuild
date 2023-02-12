@@ -3,84 +3,68 @@
  * @module mkbuild/plugins/fully-specified/tests/integration
  */
 
-import ESBUILD_OPTIONS from '#fixtures/esbuild-options'
-import { build, type BuildOptions, type Plugin } from 'esbuild'
+import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
+import type { Spy } from '#tests/interfaces'
+import {
+  ERR_PACKAGE_IMPORT_NOT_DEFINED,
+  type NodeError
+} from '@flex-development/errnode'
+import * as mlly from '@flex-development/mlly'
+import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
-describe('integration:plugins/fully-specified', () => {
-  let options: BuildOptions
-  let subject: Plugin
+vi.mock('@flex-development/mlly')
 
-  beforeEach(() => {
-    subject = testSubject()
-    options = { ...ESBUILD_OPTIONS, logLevel: 'silent', plugins: [subject] }
+describe('integration:plugins/fully-specified', () => {
+  let options: esbuild.BuildOptions & { metafile: true; write: false }
+
+  beforeAll(() => {
+    options = {
+      ...ESBUILD_OPTIONS,
+      entryPoints: ['src/cli.ts'],
+      format: 'esm',
+      logLevel: 'silent',
+      outExtension: { '.js': '.mjs' },
+      plugins: [testSubject()],
+      sourcemap: true,
+      sourcesContent: false
+    }
   })
 
   describe('esbuild', () => {
-    it('should fill specifiers in cjs output files', async () => {
+    it('should fill specifiers in output files', async () => {
       // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/relative-specifiers.cts'],
-        format: 'cjs',
-        loader: { '.cts': 'ts' },
-        outExtension: { '.js': '.cjs' }
-      })
+      const { errors, outputFiles, warnings } = await esbuild.build(options)
 
       // Expect
       expect(errors).to.be.an('array').of.length(0)
       expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
+      expect(mlly.findStaticImports(outputFiles[1]?.text)).toMatchSnapshot()
     })
 
-    it('should fill specifiers in copied output files', async () => {
+    it('should throw if error occurs', async () => {
+      // Arrange
+      const base: string = import.meta.url
+      const error: NodeError = new ERR_PACKAGE_IMPORT_NOT_DEFINED('#app', base)
+      let errors: esbuild.Message[] = []
+
       // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/my-atoi.d.mts'],
-        format: 'esm',
-        loader: { '.d.mts': 'copy' },
-        outExtension: { '.js': '.mjs' }
-      })
+      try {
+        ;(mlly.fillModules as unknown as Spy).mockRejectedValueOnce(error)
+        await esbuild.build(options)
+      } catch (e: unknown) {
+        errors = (e as esbuild.BuildFailure).errors
+      }
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
-    })
-
-    it('should fill specifiers in esm output files', async () => {
-      // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/relative-specifiers.mts'],
-        format: 'esm',
-        loader: { '.mts': 'ts' },
-        outExtension: { '.js': '.mjs' }
-      })
-
-      // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
-    })
-
-    it('should skip files that are not javascript or typescript', async () => {
-      // Act
-      const { errors, outputFiles, warnings } = await build({
-        ...options,
-        entryPoints: ['__fixtures__/bitcoin-price.json5'],
-        loader: { '.json5': 'copy' }
-      })
-
-      // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
-      expect(outputFiles).to.be.an('array').of.length(1)
-      expect(outputFiles![0]!.text).toMatchSnapshot()
+      expect(errors).to.be.an('array').of.length(1)
+      expect(errors[0]).to.have.property('id').equal(error.code)
+      expect(errors[0]).to.have.property('location').be.null
+      expect(errors[0]).to.have.property('notes').be.an('array').of.length(1)
+      expect(errors[0]).to.have.property('pluginName').equal('fully-specified')
+      expect(errors[0]).to.have.property('text').equal(error.message)
+      expect(errors[0]!.notes[0]).to.have.property('location').be.null
+      expect(errors[0]!.notes[0]).to.have.property('text').equal(error.stack)
     })
   })
 })

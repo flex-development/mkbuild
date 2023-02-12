@@ -1,0 +1,57 @@
+// Vitest Snapshot v1
+
+exports[`unit:internal/defu > should return object with defaults assigned 1`] = `
+{
+  "bundle": false,
+  "clean": true,
+  "cwd": ".",
+  "dts": true,
+  "entries": [
+    {
+      "ignore": [
+        "cli.ts",
+      ],
+    },
+    {
+      "bundle": true,
+      "minify": true,
+      "platform": "node",
+      "source": "src/cli.ts",
+    },
+  ],
+  "ext": ".mjs",
+  "format": "esm",
+  "fs": {
+    "lstat": [Function lstat],
+    "mkdir": [Function mkdir],
+    "readdir": [Function readdir],
+    "readdirSync": [Function readdirSync],
+    "rm": [Function rm],
+    "stat": [Function stat],
+    "unlink": [Function unlink],
+    "writeFile": [Function writeFile],
+  },
+  "ignore": Set {
+    "**/**.mdx",
+    "**/**.stories.*",
+    "**/.*ignore",
+    "**/.*rc",
+    "**/.DS_Store",
+    "**/.env*",
+    "**/.git*",
+    "**/__mocks__/**",
+    "**/__snapshots__/**",
+    "**/__tests__/**",
+    "**/coverage/**",
+    "**/package-lock.json",
+    "**/yarn.lock",
+  },
+  "outdir": "dist",
+  "pattern": "**",
+  "source": "src",
+  "sourcemap": true,
+  "sourcesContent": false,
+  "target": "node14.21.2",
+  "tsconfig": "tsconfig.build.json",
+}
+`;

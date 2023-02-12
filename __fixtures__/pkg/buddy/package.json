@@ -1,0 +1,14 @@
+{
+  "name": "buddy",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "devDependencies": {
+    "react": "18.2.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0"
+  }
+}

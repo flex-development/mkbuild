@@ -3,27 +3,26 @@
  * @module mkbuild/make
  */
 
+import * as mlly from '@flex-development/mlly'
+import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
+import type { Nullable } from '@flex-development/tutils'
 import * as color from 'colorette'
 import consola from 'consola'
-import { defu } from 'defu'
-import type { Format } from 'esbuild'
-import fse from 'fs-extra'
-import * as pathe from 'pathe'
+import { pathToFileURL } from 'node:url'
 import pb from 'pretty-bytes'
-import { EXT_DTS_REGEX, IGNORE_PATTERNS } from './config/constants'
 import loadBuildConfig from './config/load'
 import type { Config, Entry, Result } from './interfaces'
-import type { OutputExtension } from './types'
-import analyzeResults from './utils/analyze-results'
-import esbuilder from './utils/esbuilder'
-import write from './utils/write'
+import { defu, defuConcat, esbuilder } from './internal'
+import { IGNORE_PATTERNS, analyzeResults, fs as fsa } from './utils'
 
 /**
  * [esbuild][1] based file-to-file transformer and bundler.
  *
  * [1]: https://esbuild.github.io
  *
+ * @todo hooks support
+ * @todo include metafile(s) in return value
  * @todo validate build results against package.json
  *
  * @async
@@ -40,108 +39,77 @@ import write from './utils/write'
  * @param {Config} [config={}] - Build configuration options
  * @return {Promise<Result[]>} Build results
  */
-async function make({
-  absWorkingDir: cwd = '.',
-  ...config
-}: Config = {}): Promise<Result[]> {
+async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   const {
-    absWorkingDir,
-    bundle,
     clean,
-    createRequire,
-    dts,
-    entries: bentries = [],
-    ext,
-    format,
+    cwd: thisdir,
+    entries = [],
     fs,
-    ignore,
-    name,
-    outdir,
-    pattern,
-    source,
-    ...esbuild
+    ...options
   } = defu(await loadBuildConfig(cwd), config, {
-    absWorkingDir: cwd,
     bundle: false,
     clean: true,
     createRequire: false,
-    dts: fse.existsSync(pathe.resolve(cwd, 'node_modules/typescript')),
+    cwd,
+    dts: await (async () => {
+      try {
+        await mlly.resolveModule('typescript', { parent: pathToFileURL(cwd) })
+        return true
+      } catch {
+        return false
+      }
+    })(),
     entries: [] as Partial<Entry>[],
-    ext: '.mjs' as OutputExtension,
-    format: 'esm' as Format,
-    fs: fse,
-    ignore: IGNORE_PATTERNS,
-    name: undefined,
+    ext: '.mjs',
+    format: 'esm',
+    fs: fsa,
+    ignore: [...IGNORE_PATTERNS],
     outdir: 'dist',
     pattern: '**',
+    platform: '',
     source: 'src'
   })
 
-  // determine current working directory
-  cwd = pathe.resolve(process.cwd(), absWorkingDir)
+  // resolve path to current working directory
+  cwd = pathe.resolve(process.cwd(), thisdir)
 
   /**
    * `package.json` data.
    *
-   * @var {PackageJson} pkg
+   * @const {Nullable<PackageJson>} pkg
    */
-  let pkg: PackageJson
+  const pkg: Nullable<PackageJson> = mlly.readPackageJson(cwd)
 
-  // attempt to read package.json
-  try {
-    pkg = await fs.readJson(pathe.resolve(cwd, 'package.json'))
-  } catch {
-    consola.error('package.json not found')
-    return []
-  }
+  // throw if package.json was not found
+  if (!pkg) throw new Error(cwd + '/package.json not found')
 
   // infer entry from config
-  if (bentries.length === 0) {
-    bentries.push({
-      ...esbuild,
-      absWorkingDir: cwd,
-      bundle,
-      createRequire,
-      dts,
-      ext,
-      format,
-      ignore,
-      name,
-      outdir,
-      pattern,
-      source
-    })
-  }
+  if (entries.length === 0) entries.push({ ...options, cwd: cwd })
 
   /**
    * Normalized build entries.
    *
-   * @const {Entry[]} entries
+   * @const {Entry[]} tasks
    */
-  const entries: Entry[] = bentries.map(entry => {
+  const tasks: Entry[] = entries.map(entry => {
     const { peerDependencies = {} } = pkg
 
-    entry.absWorkingDir = pathe.resolve(cwd, entry.absWorkingDir ?? cwd)
-    entry.bundle = entry.bundle ?? bundle
-    entry.format = entry.format ?? format
-    entry.platform = entry.platform ?? esbuild.platform
-    entry.source = entry.source ?? (entry.bundle ? 'src/index' : 'src')
+    const {
+      bundle = options.bundle,
+      cwd: entrydir = cwd,
+      format = options.format,
+      platform = options.platform
+    } = entry
 
-    if (entry.bundle && entry.format === 'esm' && entry.platform === 'node') {
-      entry.createRequire = true
-    }
-
-    return defu(entry, esbuild, {
-      createRequire,
-      dts,
-      ext: (entry.format === 'esm' ? '.mjs' : '.js') as Entry['ext'],
-      external: Object.keys(peerDependencies),
+    return defuConcat(entry, options, {
+      bundle,
+      createRequire: bundle && format === 'esm' && platform === 'node',
+      cwd: pathe.resolve(cwd, entrydir),
+      external: bundle ? Object.keys(peerDependencies) : [],
       format,
-      ignore,
-      name,
-      outdir,
-      pattern
-    }) as Entry
+      platform,
+      source: bundle ? 'src/index' : options.source
+    })
   })
 
   // print build start info
@@ -150,62 +118,48 @@ async function make({
   // clean output directories
   if (clean) {
     /**
-     * Output directory paths.
+     * Absolute paths to output directories.
+     *
+     * **Does not include {@linkcode cwd} if it is an output directory**. This
+     * prevents the current working directory from being accidentally removed.
      *
      * @const {string[]} outdirs
      */
-    const outdirs: string[] = entries.map(entry => {
-      return pathe.resolve(cwd, entry.outdir)
-    })
+    const outdirs: string[] = tasks
+      .map((entry: Entry): string => pathe.resolve(cwd, entry.outdir))
+      .filter(outdir => outdir !== cwd)
 
     // remove and recreate output directories
     for (const outdir of new Set(outdirs)) {
+      // unlink output directory
       await fs.unlink(outdir).catch(() => ({}))
-      await fs.emptyDir(outdir)
-      await fs.mkdirp(outdir)
+
+      // try removing output directory
+      try {
+        await fs.rm(pathe.join(outdir), { recursive: true })
+      } catch {}
+
+      // recreate output directory
+      await fs.mkdir(outdir, { recursive: true })
     }
   }
 
   /**
-   * Written build results.
+   * Build results map.
    *
-   * @const {[string, Result[]][]} written
+   * @const {Map<number, Result[]>} build
    */
-  const written: [string, Result[]][] = []
+  const build: Map<number, Result[]> = new Map<number, Result[]>()
 
   // process build entries
-  for (const entry of entries) {
-    /**
-     * Build results for {@link entry}.
-     *
-     * @var {Result[]} results
-     */
-    let results: Result[] = []
+  for (const [index, entry] of tasks.entries()) {
+    build.set(index, [])
 
-    // attempt to build source files
-    try {
-      results = await esbuilder(entry, fs)
-    } catch {
-      return []
-    }
+    // build source files
+    const [, results] = await esbuilder(entry, fs)
 
-    // filter results if only declaration files should be written
-    if (entry.dts === 'only') {
-      results = results.filter(result => EXT_DTS_REGEX.test(result.outfile))
-    }
-
-    // write build results
-    for (const result of results) {
-      try {
-        await write(result, fs)
-      } catch (e: unknown) {
-        consola.error((e as Error).message)
-        return []
-      }
-    }
-
-    // push written build results
-    written.push([entry.outdir, results])
+    // add build results to build results map
+    for (const result of results) build.get(index)!.push(result)
   }
 
   /**
@@ -219,15 +173,15 @@ async function make({
   consola.success(color.green(`Build succeeded for ${pkg.name}`))
 
   // print build analysis
-  for (const [outdir, results] of written) {
-    bytes += results.reduce((acc, result) => acc + result.bytes, 0)
-    consola.log(analyzeResults(outdir, results))
+  for (const [index, outputs] of build.entries()) {
+    bytes += outputs.reduce((acc, result) => acc + result.bytes, 0)
+    consola.log(analyzeResults(tasks[index]!.outdir, outputs))
   }
 
   // print total build size
   consola.log('Σ Total build size:', color.cyan(pb(bytes)))
 
-  return written.flatMap(([, results]) => results)
+  return [...build.entries()].flatMap(([, results]) => results)
 }
 
 export default make

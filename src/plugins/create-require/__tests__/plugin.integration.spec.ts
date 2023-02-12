@@ -3,14 +3,15 @@
  * @module mkbuild/plugins/create-require/tests/integration
  */
 
-import ESBUILD_OPTIONS from '#fixtures/esbuild-options'
-import { build, type BuildOptions, type Plugin } from 'esbuild'
+import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
+import pathe from '@flex-development/pathe'
+import esbuild from 'esbuild'
 import dedent from 'ts-dedent'
 import testSubject from '../plugin'
 
 describe('integration:plugins/create-require', () => {
-  let options: BuildOptions
-  let subject: Plugin
+  let options: esbuild.BuildOptions
+  let subject: esbuild.Plugin
 
   beforeEach(() => {
     subject = testSubject()
@@ -31,7 +32,7 @@ describe('integration:plugins/create-require', () => {
         errors,
         outputFiles = [],
         warnings
-      } = await build({
+      } = await esbuild.build({
         ...options,
         banner: {
           js: dedent`
@@ -59,7 +60,7 @@ describe('integration:plugins/create-require', () => {
         errors,
         outputFiles = [],
         warnings
-      } = await build({
+      } = await esbuild.build({
         ...options,
         entryPoints: ['__fixtures__/volume.ts'],
         loader: { '.ts': 'ts' },
@@ -73,15 +74,16 @@ describe('integration:plugins/create-require', () => {
       expect(outputFiles[0]!.text.split('var __commonJS')[0]).toMatchSnapshot()
     })
 
-    it('should skip files without __require shim', async () => {
+    it('should skip output files without __require shim', async () => {
       // Act
       const {
         errors,
         outputFiles = [],
         warnings
-      } = await build({
+      } = await esbuild.build({
         ...options,
-        entryPoints: ['__fixtures__/reverse.mts'],
+        absWorkingDir: pathe.resolve('__fixtures__/pkg/reverse'),
+        entryPoints: ['src/reverse.mts'],
         loader: { '.mts': 'ts' }
       })
 

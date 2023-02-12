@@ -1,4 +1,0 @@
-{
-  "absWorkingDir": "__fixtures__/configs/json",
-  "entries": [{ "ext": ".js", "format": "esm" }]
-}

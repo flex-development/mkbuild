@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * @file Test Fixture - volume
  * @module tests/setup/volume
@@ -24,15 +22,15 @@ const volume: Volume = Volume.fromNestedJSON({}, process.cwd())
 volume.mkdirSync(process.cwd(), { recursive: true })
 
 /**
- * Original `volume.reset` function.
+ * Original {@linkcode volume.reset} function.
  *
  * @const {Volume['reset']} reset
  */
 const reset: Volume['reset'] = volume.reset.bind(volume)
 
 /**
- * Clears the virtual file system, {@link volume}, and recursively recreates the
- * current working directory.
+ * Clears the virtual file system, {@linkcode volume}, and recursively recreates
+ * the current working directory.
  *
  * @return {void} Nothing when complete
  */

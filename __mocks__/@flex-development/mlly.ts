@@ -18,7 +18,12 @@ type Actual = typeof import('@flex-development/mlly')
  */
 const actual: Actual = await vi.importActual<Actual>('@flex-development/mlly')
 
+export const CONDITIONS = actual.CONDITIONS
 export const RESOLVE_EXTENSIONS = actual.RESOLVE_EXTENSIONS
-export const resolveAliases = vi.fn(actual.resolveAliases)
+export const fillModules = vi.fn(actual.fillModules)
+export const findStaticImports = vi.fn(actual.findStaticImports)
+export const readPackageJson = vi.fn(actual.readPackageJson)
+export const resolveModule = vi.fn(actual.resolveModule)
 export const resolveModules = vi.fn(actual.resolveModules)
 export const toDataURL = vi.fn(actual.toDataURL)
+export const toURL = vi.fn(actual.toURL)

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`unit:utils/loaders > should return esbuild loader config for cjs bundle 1`] = `
+exports[`unit:utils/loaders > cjs > should return loader configuration for cjs bundle 1`] = `
 {
   ".cjs": "js",
   ".css": "css",
@@ -31,7 +31,7 @@ exports[`unit:utils/loaders > should return esbuild loader config for cjs bundle
 }
 `;
 
-exports[`unit:utils/loaders > should return esbuild loader config for cjs transpilation 1`] = `
+exports[`unit:utils/loaders > cjs > should return loader configuration for cjs transpilation 1`] = `
 {
   ".cjs": "copy",
   ".css": "copy",
@@ -62,7 +62,7 @@ exports[`unit:utils/loaders > should return esbuild loader config for cjs transp
 }
 `;
 
-exports[`unit:utils/loaders > should return esbuild loader config for esm bundle 1`] = `
+exports[`unit:utils/loaders > esm > should return loader configuration for esm bundle 1`] = `
 {
   ".cjs": "js",
   ".css": "css",
@@ -93,7 +93,7 @@ exports[`unit:utils/loaders > should return esbuild loader config for esm bundle
 }
 `;
 
-exports[`unit:utils/loaders > should return esbuild loader config for esm transpilation 1`] = `
+exports[`unit:utils/loaders > esm > should return loader configuration for esm transpilation 1`] = `
 {
   ".cjs": "js",
   ".css": "copy",

@@ -1,9 +1,6 @@
 {
   "arrowParens": "avoid",
-  "bracketSameLine": false,
   "bracketSpacing": true,
-  "htmlWhitespaceSensitivity": "css",
-  "jsxSingleQuote": true,
   "proseWrap": "always",
   "quoteProps": "as-needed",
   "semi": false,
@@ -15,6 +12,7 @@
         "*.txt",
         ".editorconfig",
         ".env*",
+        ".github/.gitconfig",
         ".husky/commit-msg",
         ".husky/pre-commit",
         ".husky/pre-push"

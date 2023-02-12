@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "allowUnreachableCode": false,
     "alwaysStrict": false,
@@ -9,16 +10,12 @@
     "declarationMap": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "exactOptionalPropertyTypes": false,
+    "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "jsx": "react-jsxdev",
     "lib": ["dom", "es2021"],
     "module": "esnext",
-    "moduleDetection": "force",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "newLine": "lf",
     "noEmit": true,
     "noErrorTruncation": true,
@@ -34,44 +31,42 @@
       "#fixtures/*": ["__fixtures__/*"],
       "#src": ["src/index"],
       "#src/*": ["src/*"],
-      "#tests/*": ["__tests__/*"],
-      "emoji-regex": ["node_modules/emoji-regex/es2015/*"]
+      "#tests/*": ["__tests__/*"]
     },
     "preserveConstEnums": true,
     "preserveSymlinks": true,
     "pretty": true,
     "resolveJsonModule": true,
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
     "rootDir": ".",
+    "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "suppressImplicitAnyIndexErrors": true,
     "target": "esnext",
+    // https://github.com/microsoft/TypeScript/issues/42873
+    "rootDirs": [
+      ".",
+      "./node_modules/@flex-development/mlly",
+      "./node_modules/@flex-development/mlly/node_modules",
+      "./node_modules/@flex-development/tsconfig-utils",
+      "./node_modules/@flex-development/tsconfig-utils/node_modules"
+    ],
     "useDefineForClassFields": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["./coverage", "./dist", "./node_modules"],
+  "exclude": ["**/coverage", "**/dist", "**/node_modules"],
   "include": [
     "**/**.cjs",
-    "**/**.cts",
     "**/**.mjs",
     "**/**.mts",
     "**/**.ts",
     "**/.*.cjs",
-    "__fixtures__/*.js",
-    "__fixtures__/*.jsx",
-    "__fixtures__/*.tsx",
-    "__fixtures__/configs/js/build.config.js"
-  ],
-  "ts-node": {
-    "compilerOptions": {},
-    "esm": true,
-    "experimentalResolver": true,
-    "experimentalSpecifierResolution": "node",
-    "moduleTypes": {},
-    "require": [],
-    "transpileOnly": true
-  }
+    "__fixtures__/**/*.cts",
+    "__fixtures__/**/*.js"
+  ]
 }

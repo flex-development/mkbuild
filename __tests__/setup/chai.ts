@@ -4,11 +4,11 @@
  * @see https://chaijs.com
  */
 
-import chai from 'chai'
 import chaiEach from 'chai-each'
 import chaiFs from 'chai-fs'
 import chaiQuantifiers from 'chai-quantifiers'
 import chaiString from 'chai-string'
+import { chai } from 'vitest'
 
 // configure chai
 chai.config.includeStack = true
