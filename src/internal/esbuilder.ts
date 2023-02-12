@@ -53,7 +53,6 @@ const esbuilder = async (
     loader = {},
     name = '[name]',
     outExtension = {},
-    outbase,
     outdir = 'dist',
     pattern = '**',
     platform = '',
@@ -62,6 +61,7 @@ const esbuilder = async (
     source = bundle ? 'src/index' : 'src',
     tsconfig = '',
     write = false,
+    outbase = bundle ? pathe.parse(source).dir : source,
     ...options
   } = entry
 
@@ -122,7 +122,11 @@ const esbuilder = async (
 
     return {
       ext: ext as pathe.Ext,
-      file,
+      file: bundle
+        ? // adds outbase support for bundles (esbuild only uses outbase for
+          // multiple entry points); @see https://esbuild.github.io/api/#outbase
+          file.replace(new RegExp(`^${regexp(outbase)}`), '').replace(/^\//, '')
+        : file,
       path
     }
   })
@@ -175,7 +179,7 @@ const esbuilder = async (
     loader: { ...loaders(format, bundle), ...loader },
     metafile: true,
     outExtension: { ...outExtension, '.js': ext },
-    outbase: outbase ?? (bundle ? pathe.parse(source).dir : source),
+    outbase,
     outdir,
     platform: platform as esbuild.Platform,
     plugins,
