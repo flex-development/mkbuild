@@ -1,3 +1,82 @@
+## [1.0.0-alpha.10](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.9...1.0.0-alpha.10) (2023-02-12)
+
+
+### :package: Build
+
+* **deps-peer:** bump esbuild from >=0.15.0 to >=0.17.7 ([75c620a](https://github.com/flex-development/mkbuild/commit/75c620a5fc1afe27f1a4de7c41f4347f06cea39f))
+* **deps:** Bump cosmiconfig from 7.0.1 to 8.0.0 ([#42](https://github.com/flex-development/mkbuild/issues/42)) ([ab75b8c](https://github.com/flex-development/mkbuild/commit/ab75b8c4d8d57016e8808c48dbf72b30866551d2))
+* **deps:** Bump pretty-bytes from 6.0.0 to 6.1.0 ([#41](https://github.com/flex-development/mkbuild/issues/41)) ([91df1e8](https://github.com/flex-development/mkbuild/commit/91df1e80010c04caca58feec58b5f8020b9edf93))
+* **deps:** replace `pkg-types` with `@flex-development/pkg-types` ([29cbd06](https://github.com/flex-development/mkbuild/commit/29cbd06c3c870eeb9761067c5bdbf77ee9ed511a))
+
+
+### :robot: Continuous Integration
+
+* [[@dependabot](https://github.com/dependabot)] fix npm package-ecosystem x yarn integration ([0586b03](https://github.com/flex-development/mkbuild/commit/0586b034e5f34d9e74e7fcb0db6c25857bfee888))
+* **deps:** bump actions/add-to-project from 0.3.0 to 0.4.0 ([#34](https://github.com/flex-development/mkbuild/issues/34)) ([3f99321](https://github.com/flex-development/mkbuild/commit/3f99321f855c1df7b1f0be30b0732626d50d1842))
+* **deps:** bump actions/checkout from 3.1.0 to 3.2.0 ([#36](https://github.com/flex-development/mkbuild/issues/36)) ([e007d3b](https://github.com/flex-development/mkbuild/commit/e007d3b406e9e5dc74ab1a0693aa5ea4904b1cb1))
+* **deps:** bump actions/checkout from 3.2.0 to 3.3.0 ([#37](https://github.com/flex-development/mkbuild/issues/37)) ([bc6e3b7](https://github.com/flex-development/mkbuild/commit/bc6e3b701d4d08beab0a1e0a59972ce5dd730478))
+* **deps:** bump actions/github-script from 6.3.3 to 6.4.0 ([#40](https://github.com/flex-development/mkbuild/issues/40)) ([df77c5a](https://github.com/flex-development/mkbuild/commit/df77c5aca350f4b94923c6aa3ff4784366d2756d))
+* **deps:** bump actions/setup-node from 3.5.0 to 3.6.0 ([#38](https://github.com/flex-development/mkbuild/issues/38)) ([0df7e82](https://github.com/flex-development/mkbuild/commit/0df7e821834e9a1ade4ecd4cb7ed19ddb5827bea))
+* **deps:** bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 ([#39](https://github.com/flex-development/mkbuild/issues/39)) ([16c9abf](https://github.com/flex-development/mkbuild/commit/16c9abf178265428688f559576932738b8fd42e3))
+* **deps:** bump dessant/lock-threads from 3.0.0 to 4.0.0 ([#35](https://github.com/flex-development/mkbuild/issues/35)) ([252f8d3](https://github.com/flex-development/mkbuild/commit/252f8d3060c86d0301651ec85c8d77d6df2a8c12))
+* **deps:** bump flex-development/dist-tag-action from 1.1.1 to 1.1.2 ([#33](https://github.com/flex-development/mkbuild/issues/33)) ([442728b](https://github.com/flex-development/mkbuild/commit/442728bc1f90b67f7af4cf60b67cbc8441e73879))
+* **deps:** bump octokit/graphql-action from 2.2.22 to 2.2.23 ([#24](https://github.com/flex-development/mkbuild/issues/24)) ([e5cd5ef](https://github.com/flex-development/mkbuild/commit/e5cd5efd1012891bd8fb73cd5f40796feff348ca))
+* **workflows:** [`add-to-project`] add items from repo admin account ([1bc490e](https://github.com/flex-development/mkbuild/commit/1bc490e3a5bb8445038e2feb29e85571f78293e1))
+* **workflows:** [`add-to-project`] run workflow when pr is synchronized ([51b4a93](https://github.com/flex-development/mkbuild/commit/51b4a935848309ce29b0686e96366e311b1c0e8e))
+* **workflows:** [`approve-pr`] refactor approval step conditional ([29c8556](https://github.com/flex-development/mkbuild/commit/29c85569cfe805f9fcec91cc7f51559afe8b9ed6))
+* **workflows:** [`ci`] split ci job into multiple jobs ([80c8fde](https://github.com/flex-development/mkbuild/commit/80c8fde580b4d40eb2c5ee2df8797c42374e6de2))
+* **workflows:** [`ci`] upload coverage report to codecov ([3bdf063](https://github.com/flex-development/mkbuild/commit/3bdf063bc9ebb18fae169d1b79316404990d1a91))
+* **workflows:** [`dependabot-auto`] sign lockfile fix commit ([e0a3c1d](https://github.com/flex-development/mkbuild/commit/e0a3c1da1c508e4644949f07133f70e20e5681a4))
+* **workflows:** [`integrity`] update `pull_request` event activity types ([0ddb1e6](https://github.com/flex-development/mkbuild/commit/0ddb1e68c7146a159708ead3b5fa7f88fbd1809c))
+* **workflows:** add `typescript-canary` ([4f5a3f1](https://github.com/flex-development/mkbuild/commit/4f5a3f1da82a6f4fd2750cb3122e6e852d612e62))
+* **workflows:** use environment files ([048e470](https://github.com/flex-development/mkbuild/commit/048e470ef10a074fc45140fc70b0f9740294555d))
+
+
+### :pencil: Documentation
+
+* add "contributor covenant code of conduct" ([98f96dd](https://github.com/flex-development/mkbuild/commit/98f96ddd2772a293e4ca11f3890b634647c17e46))
+
+
+### :sparkles: Features
+
+* **options:** `write?` ([fd5b227](https://github.com/flex-development/mkbuild/commit/fd5b227f8806c16a9e80756ad4d0c36884479ee0))
+
+
+### :bug: Fixes
+
+* **bundle:** `outbase` support ([b908fd5](https://github.com/flex-development/mkbuild/commit/b908fd501a24b1cef0ffcb53066948d43c3cd0bb))
+* **install:** [git] make `postinstall` script work with git install ([56ba06b](https://github.com/flex-development/mkbuild/commit/56ba06bdbcd69c95fb522c615759620fa6e8f11f))
+
+
+### :house_with_garden: Housekeeping
+
+* update project architecture ([77d6a43](https://github.com/flex-development/mkbuild/commit/77d6a438d5a6a206ccf73f2e57543dfae28c1e17))
+* **github:** add "package manager" dropdown to bug report template ([a972b1b](https://github.com/flex-development/mkbuild/commit/a972b1bcbdc8f5e8d39d3372255b79608ce5ce43))
+* **github:** add "typescript version" input to bug report template ([997e725](https://github.com/flex-development/mkbuild/commit/997e725658b09880352f56882cc3c0bc743b6c9c))
+* **github:** add commit scope `build` ([9302f17](https://github.com/flex-development/mkbuild/commit/9302f17d1b3d2b4fda1d754725354b689281da98))
+* **github:** add commit scope `bundle` ([4c541c8](https://github.com/flex-development/mkbuild/commit/4c541c8bd5100f2077a91fd0e1cfa5d961aab53d))
+* **github:** add commit scope `install` ([498c709](https://github.com/flex-development/mkbuild/commit/498c709cdca52333b44c1a5fe6e2cb6234843de1))
+* **github:** add commit scope `internal` ([0e6bc3c](https://github.com/flex-development/mkbuild/commit/0e6bc3cbfdd2ae24ebe8870675aad335d7873c71))
+* **github:** add commit scope `loader` ([f42a4ab](https://github.com/flex-development/mkbuild/commit/f42a4ab20ef6fad11d0c23e9e59d3f17f9c84af6))
+* **github:** add commit scope `nvm` ([099fa5b](https://github.com/flex-development/mkbuild/commit/099fa5b4240269b38939ccf4fc56015783673551))
+* **github:** add commit scope `spelling` ([ca38cee](https://github.com/flex-development/mkbuild/commit/ca38cee137c7d04dbb011ee86fd906c304c4d605))
+* **github:** add commit scope `transpile` ([bdb4999](https://github.com/flex-development/mkbuild/commit/bdb4999462ef129337170366719284020a9f9e78))
+* **github:** add label `scope:install` ([5137ad7](https://github.com/flex-development/mkbuild/commit/5137ad79461b112fc8c1e2b9929d5d850b4cf0ad))
+* **github:** add label `status:triaged ([077cbce](https://github.com/flex-development/mkbuild/commit/077cbceaea79ef0adce608339aff9e900d73b5f5))
+* **github:** configure sponsor button ([7943874](https://github.com/flex-development/mkbuild/commit/7943874f68ba7c21c7e6329999a5a98413d1c669))
+* **github:** remove "tests" section from pull request template ([bc53f6b](https://github.com/flex-development/mkbuild/commit/bc53f6bd6a0510f1ad4d5fc9e63217dec5710126))
+* **tests:** codecov integration ([79fff1e](https://github.com/flex-development/mkbuild/commit/79fff1eba58717c78c867b992bf2e12632faf471))
+
+
+### :zap: Refactors
+
+* dependencies + project architecture ([da965b7](https://github.com/flex-development/mkbuild/commit/da965b7f6b888aeb1ca5530639d65db3b69e71a7))
+
+
+### :white_check_mark: Testing
+
+* **ts:** add type tests ([c34bb91](https://github.com/flex-development/mkbuild/commit/c34bb91e642cfd0aea594724d5c009655b09a3d2))
+
 ## [1.0.0-alpha.9](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.8...1.0.0-alpha.9) (2022-11-06)
 
 
