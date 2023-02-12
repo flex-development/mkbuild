@@ -10,6 +10,7 @@
       "always",
       [
         "build",
+        "bundle",
         "cjs",
         "cli",
         "config",
