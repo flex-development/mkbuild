@@ -1252,7 +1252,7 @@ __metadata:
     conventional-changelog-writer: "npm:5.0.1"
     conventional-commits-parser: "npm:3.2.4"
     conventional-recommended-bump: "npm:6.1.0"
-    cosmiconfig: "npm:7.0.1"
+    cosmiconfig: "npm:8.0.0"
     cross-env: "npm:7.0.3"
     cspell: "npm:6.23.0"
     esbuild: "npm:0.17.7"
@@ -2197,13 +2197,6 @@ __metadata:
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
   checksum: 4b597289520e45e54f408e91712f31fe7818e2c5d977eefecfae9db1f921a80247470d4f77da2dc8e1ef85bf0b5852ad64faf0106d88647421e45350d124f74f
-  languageName: node
-  linkType: hard
-
-"@types/parse-json@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@types/parse-json@npm:4.0.0"
-  checksum: bea37b307bdeb352d27a4467cac738387641c4f9dfe6c8bf559d474a036952f7b998f0ac54290f9d8765fb79e154f3941dfefbb47296a987fb55ccedf344a0e6
   languageName: node
   linkType: hard
 
@@ -3707,19 +3700,6 @@ __metadata:
     ts-node: ">=10"
     typescript: ">=3"
   checksum: 30a8aa6cd8f63c678ef0bb9f72e59f3b1e6059269b174af2200b4be1070bbf83e22ccae27b5772e21d5b1f79739175643b900bccc9a3f53f9090823891b5d16e
-  languageName: node
-  linkType: hard
-
-"cosmiconfig@npm:7.0.1":
-  version: 7.0.1
-  resolution: "cosmiconfig@npm:7.0.1"
-  dependencies:
-    "@types/parse-json": "npm:^4.0.0"
-    import-fresh: "npm:^3.2.1"
-    parse-json: "npm:^5.0.0"
-    path-type: "npm:^4.0.0"
-    yaml: "npm:^1.10.0"
-  checksum: f5b0588faeb39d1bcb846504cb6693121bf6af4d09a5a0523a9201d189a769a067db33e36d6c6fe23937cc24f9771ad0e76ecb3056a4e244697867d62aa50ec0
   languageName: node
   linkType: hard
 
@@ -9401,13 +9381,6 @@ __metadata:
     lodash: "npm:^4.17.21"
     yaml: "npm:^2.0.0"
   checksum: fe75aed4d2c3d3e162faa6fef2168b04c97f2da58bb7cb6ea2f9493e828d9dfcc8bc1a0eebcbe414db400d545a4ba039c2a1514f5e6afba27f65269641e1775c
-  languageName: node
-  linkType: hard
-
-"yaml@npm:^1.10.0":
-  version: 1.10.2
-  resolution: "yaml@npm:1.10.2"
-  checksum: d6f04384bdf1105256581aef39991f825e358f3f48f081974b0e0f39ff5240c60ccafb5842cb79d1287517efa2b9ee172c702f2e4855ba6cc46948b40a43aa6e
   languageName: node
   linkType: hard
 
