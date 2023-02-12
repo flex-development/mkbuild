@@ -36,6 +36,7 @@
         "scripts",
         "spelling",
         "tests",
+        "transpile",
         "ts",
         "types",
         "utils",
