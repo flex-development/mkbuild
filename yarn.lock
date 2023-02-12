@@ -1285,7 +1285,7 @@ __metadata:
     node-notifier: "npm:10.0.1"
     prettier: "npm:2.8.4"
     prettier-plugin-sh: "npm:0.12.8"
-    pretty-bytes: "npm:6.0.0"
+    pretty-bytes: "npm:6.1.0"
     pretty-format: "npm:29.4.2"
     radash: "npm:10.7.0"
     sade: "npm:1.8.1"
@@ -7420,10 +7420,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-bytes@npm:6.0.0":
-  version: 6.0.0
-  resolution: "pretty-bytes@npm:6.0.0"
-  checksum: 9033b687324fe83d1a74b2c69637e4eb26693da76010a3446bb24bdec1508106ed930fcfe61a7661a227c32ea2e499b1aa0493fe370c844dfb329e4c7c3ff0ff
+"pretty-bytes@npm:6.1.0":
+  version: 6.1.0
+  resolution: "pretty-bytes@npm:6.1.0"
+  checksum: 6c2df1578394426e89388c1b482138480b9468daa618ceb8c974d0048ea3002d28dc80d61553be978aedaf67b2b2909a1d10280f9d00bb9ff693b088db44e3e1
   languageName: node
   linkType: hard
 
