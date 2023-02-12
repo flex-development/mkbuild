@@ -8,7 +8,7 @@ import createRequire from '#src/plugins/create-require/plugin'
 import dts from '#src/plugins/dts/plugin'
 import fullySpecified from '#src/plugins/fully-specified/plugin'
 import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
-import write from '#src/plugins/write/plugin'
+import writeOutputFiles from '#src/plugins/write/plugin'
 import type { FileSystemAdapter, OutputMetadata } from '#src/types'
 import fsa from '#src/utils/fs'
 import IGNORE from '#src/utils/ignore-patterns'
@@ -61,6 +61,7 @@ const esbuilder = async (
     resolveExtensions = mlly.RESOLVE_EXTENSIONS,
     source = bundle ? 'src/index' : 'src',
     tsconfig = '',
+    write = false,
     ...options
   } = entry
 
@@ -141,7 +142,7 @@ const esbuilder = async (
   }
 
   // add output file writer plugin
-  plugins.push(write(fs))
+  write && plugins.push(writeOutputFiles(fs))
 
   // remove unsupported options that are not overridden
   Reflect.deleteProperty(options, 'incremental')

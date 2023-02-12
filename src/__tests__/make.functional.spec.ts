@@ -34,11 +34,10 @@ describe('functional:make', () => {
     beforeAll(async () => {
       cwd = '__fixtures__/pkg/reverse'
       pkgjson = await getPackageJson(cwd + '/package.json')
-      await testSubject({ cwd })
     })
 
     beforeEach(async () => {
-      await testSubject({ cwd })
+      await testSubject({ cwd, write: true })
     })
 
     it('should load build config', () => {

@@ -67,7 +67,8 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     outdir: 'dist',
     pattern: '**',
     platform: '',
-    source: 'src'
+    source: 'src',
+    write: false
   })
 
   // resolve path to current working directory
@@ -113,10 +114,10 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   })
 
   // print build start info
-  consola.info(color.cyan(`Building ${pkg.name}`))
+  options.write && consola.info(color.cyan(`Building ${pkg.name}`))
 
   // clean output directories
-  if (clean) {
+  if (options.write && clean) {
     /**
      * Absolute paths to output directories.
      *
@@ -162,24 +163,27 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     for (const result of results) build.get(index)!.push(result)
   }
 
-  /**
-   * Total build size.
-   *
-   * @var {number} bytes
-   */
-  let bytes: number = 0
+  // print build done info, analysis, and total size
+  if (options.write) {
+    /**
+     * Total build size.
+     *
+     * @var {number} bytes
+     */
+    let bytes: number = 0
 
-  // print build done info
-  consola.success(color.green(`Build succeeded for ${pkg.name}`))
+    // print build done info
+    consola.success(color.green(`Build succeeded for ${pkg.name}`))
 
-  // print build analysis
-  for (const [index, outputs] of build.entries()) {
-    bytes += outputs.reduce((acc, result) => acc + result.bytes, 0)
-    consola.log(analyzeResults(tasks[index]!.outdir, outputs))
+    // print build analysis
+    for (const [index, outputs] of build.entries()) {
+      bytes += outputs.reduce((acc, result) => acc + result.bytes, 0)
+      consola.log(analyzeResults(tasks[index]!.outdir, outputs))
+    }
+
+    // print total build size
+    consola.log('Σ Total build size:', color.cyan(pb(bytes)))
   }
-
-  // print total build size
-  consola.log('Σ Total build size:', color.cyan(pb(bytes)))
 
   return [...build.entries()].flatMap(([, results]) => results)
 }

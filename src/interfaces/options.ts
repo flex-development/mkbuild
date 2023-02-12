@@ -120,6 +120,13 @@ interface Options extends EsbuildOptions {
    * @default 'src'
    */
   source?: string
+
+  /**
+   * Write build results.
+   *
+   * @default false
+   */
+  write?: boolean
 }
 
 export type { Options as default }

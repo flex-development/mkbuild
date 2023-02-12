@@ -12,5 +12,5 @@ import make from './make'
 sade(pkg.name.replace(/.*\//, ''), true)
   .version(pkg.version)
   .describe(pkg.description)
-  .action(async (): Promise<void> => void (await make()))
+  .action(async (): Promise<void> => void (await make({ write: true })))
   .parse(process.argv)

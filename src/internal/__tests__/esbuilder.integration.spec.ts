@@ -66,7 +66,8 @@ describe('integration:internal/esbuilder', () => {
           outdir: '.',
           pattern: 'dbl-linear.ts',
           source: '.',
-          tsconfig: 'tsconfig.json'
+          tsconfig: 'tsconfig.json',
+          write: true
         })
 
         plugins = build.mock.lastCall![0]!.plugins!
@@ -93,6 +94,12 @@ describe('integration:internal/esbuilder', () => {
       it('should use tsconfig-paths if tsconfig file is passed', () => {
         expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
           return plugin.name === 'tsconfig-paths'
+        })
+      })
+
+      it('should use write if requested', () => {
+        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
+          return plugin.name === 'write'
         })
       })
     })
