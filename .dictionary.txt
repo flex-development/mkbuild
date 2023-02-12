@@ -14,6 +14,7 @@ esbuild
 esbuilder
 evanw
 fbca
+ggshield
 gpgsign
 hmarr
 iife
@@ -39,5 +40,4 @@ toodles
 tribonacci
 unstub
 vates
-vitest
 yarnrc

@@ -30,6 +30,15 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
    */
   const LINT_STAGED: boolean = !!Number.parseInt(process.env.LINT_STAGED ?? '0')
 
+  /**
+   * Boolean indicating if the current running version of [`typescript`][1] is
+   * at least `5`.
+   *
+   * @const {boolean} TYPESCRIPT_V5
+   */
+  const TYPESCRIPT_V5: boolean =
+    process.env.TYPESCRIPT_VERSION?.startsWith('5') ?? true
+
   return {
     define: {
       'import.meta.env.NODE_ENV': JSON.stringify(NodeEnv.TEST)
@@ -126,7 +135,10 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
         checker: 'tsc',
         ignoreSourceErrors: false,
         include: ['**/__tests__/*.spec-d.ts'],
-        tsconfig: pathe.resolve('tsconfig.typecheck.json')
+        tsconfig: pathe.resolve(
+          TYPESCRIPT_V5 ? '' : '__tests__/ts/v4/',
+          'tsconfig.typecheck.json'
+        )
       },
       unstubEnvs: true,
       unstubGlobals: true
