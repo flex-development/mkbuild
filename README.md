@@ -1,6 +1,7 @@
 # mkbuild
 
 [![npm](https://img.shields.io/npm/v/@flex-development/mkbuild.svg)](https://npmjs.com/package/@flex-development/mkbuild)
+[![codecov](https://codecov.io/gh/flex-development/mkbuild/branch/main/graph/badge.svg?token=TDSHFXPP4Z)](https://codecov.io/gh/flex-development/mkbuild)
 [![module type: esm](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
 [![license](https://img.shields.io/github/license/flex-development/mkbuild.svg)](LICENSE.md)
 [![conventional commits](https://img.shields.io/badge/-conventional%20commits-fe5196?logo=conventional-commits&logoColor=ffffff)](https://conventionalcommits.org/)

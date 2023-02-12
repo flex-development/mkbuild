@@ -2,6 +2,7 @@ ardatan
 atoi
 bdougie
 cefc
+codecov
 colorette
 commitlintrc
 dawidd
