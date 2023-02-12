@@ -25,6 +25,7 @@
         "internal",
         "loader",
         "node",
+        "nvm",
         "options",
         "patches",
         "pkg",
