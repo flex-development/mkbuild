@@ -23,6 +23,7 @@
         "install",
         "interfaces",
         "internal",
+        "loader",
         "node",
         "options",
         "patches",
