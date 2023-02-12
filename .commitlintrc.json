@@ -22,6 +22,7 @@
         "github",
         "install",
         "interfaces",
+        "internal",
         "node",
         "options",
         "patches",
