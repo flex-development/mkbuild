@@ -6,6 +6,8 @@
 import type { Entry } from '#src'
 import testSubject from '../esbuilder'
 
+vi.mock('#src/plugins/write/plugin')
+
 describe('unit:internal/esbuilder', () => {
   let entry: Entry
 
@@ -14,14 +16,17 @@ describe('unit:internal/esbuilder', () => {
       cwd: '__fixtures__/pkg/dbl-linear',
       outdir: '.',
       pattern: 'dbl-linear.ts',
-      source: '.',
-      sourcemap: false
+      source: '.'
     }
   })
 
   it('should return metafile and build results', async () => {
     // Act
-    const [metafile, results] = await testSubject({ ...entry, dts: false })
+    const [metafile, results] = await testSubject({
+      ...entry,
+      dts: false,
+      sourcemap: false
+    })
 
     // Expect
     expect(metafile).to.have.property('inputs')
@@ -42,7 +47,12 @@ describe('unit:internal/esbuilder', () => {
 
   it('should return metafile and dts-only build results', async () => {
     // Act
-    const [metafile, results] = await testSubject({ ...entry, dts: 'only' })
+    const [metafile, results] = await testSubject({
+      ...entry,
+      dts: 'only',
+      sourcemap: true,
+      write: true
+    })
 
     // Expect
     expect(metafile).to.have.property('inputs')

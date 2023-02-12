@@ -146,7 +146,14 @@ const esbuilder = async (
   }
 
   // add output file writer plugin
-  write && plugins.push(writeOutputFiles(fs))
+  if (write) {
+    plugins.push(
+      writeOutputFiles({
+        ...fs,
+        filter: declaration === 'only' ? regex.dts : undefined
+      })
+    )
+  }
 
   // remove unsupported options that are not overridden
   Reflect.deleteProperty(options, 'incremental')

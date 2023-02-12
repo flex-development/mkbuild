@@ -10,6 +10,13 @@ import type { FileSystemAdapter } from '#src/types'
  */
 interface WritePluginOptions {
   /**
+   * Regex pattern matching the `path` of an output file that should be written.
+   *
+   * @default /.+/
+   */
+  filter?: RegExp | undefined
+
+  /**
    * Creates a directory.
    *
    * If the directory structure does not exist, it will be created.

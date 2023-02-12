@@ -15,6 +15,7 @@ import type Options from './options'
  * @return {Plugin} Output file writer plugin
  */
 const plugin = ({
+  filter = /.+/,
   mkdir = fsa.mkdir,
   writeFile = fsa.writeFile
 }: Options = {}): Plugin => {
@@ -37,8 +38,10 @@ const plugin = ({
     // write output files
     return void onEnd(async (result: BuildResult): Promise<void> => {
       for (const output of result.outputFiles!) {
-        await mkdir(pathe.dirname(output.path), { recursive: true })
-        await writeFile(output.path, output.text, 'utf8')
+        if (filter.test(output.path)) {
+          await mkdir(pathe.dirname(output.path), { recursive: true })
+          await writeFile(output.path, output.text, 'utf8')
+        }
       }
     })
   }
