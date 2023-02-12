@@ -3,23 +3,21 @@
  * @module mkbuild/types/FileSystemAdapter
  */
 
-import type fsc from 'node:fs'
+import type fs from 'node:fs'
 import type fsp from 'node:fs/promises'
 
 /**
  * Custom implementations of file system methods.
  *
- * @todo method documentation
- *
  * @see https://nodejs.org/api/fs.html
  */
 type FileSystemAdapter = {
-  lstat: (typeof fsc)['lstat']
+  lstat: (typeof fs)['lstat']
   mkdir: (typeof fsp)['mkdir']
   readdir: (typeof fsp)['readdir']
-  readdirSync: (typeof fsc)['readdirSync']
+  readdirSync: (typeof fs)['readdirSync']
   rm: (typeof fsp)['rm']
-  stat: (typeof fsc)['stat']
+  stat: (typeof fs)['stat']
   unlink: (typeof fsp)['unlink']
   writeFile: (typeof fsp)['writeFile']
 }

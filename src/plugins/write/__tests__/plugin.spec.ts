@@ -1,6 +1,6 @@
 /**
  * @file Unit Tests - write plugin
- * @module mkbuild/plugins/write/tests/unit
+ * @module mkbuild/plugins/tests/unit/write
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'

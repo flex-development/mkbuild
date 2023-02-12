@@ -4,7 +4,7 @@
  */
 
 import type { OutputMetadata } from '#src/types'
-import type esbuild from 'esbuild'
+import type * as esbuild from 'esbuild'
 
 /**
  * Object representing a build result.

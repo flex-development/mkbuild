@@ -3,7 +3,7 @@
  * @module mkbuild/types/EsbuildOptions
  */
 
-import type { BuildOptions } from 'esbuild'
+import type * as esbuild from 'esbuild'
 
 /**
  * Supported [esbuild build api][1] options.
@@ -11,7 +11,7 @@ import type { BuildOptions } from 'esbuild'
  * [1]: https://esbuild.github.io/api/#build-api
  */
 type EsbuildOptions = Omit<
-  BuildOptions,
+  esbuild.BuildOptions,
   | 'absWorkingDir'
   | 'conditions'
   | 'entryNames'

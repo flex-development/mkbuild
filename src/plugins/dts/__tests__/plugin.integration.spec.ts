@@ -1,6 +1,6 @@
 /**
  * @file Integration Tests - dts plugin
- * @module mkbuild/plugins/dts/tests/integration
+ * @module mkbuild/plugins/tests/integration/dts
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'

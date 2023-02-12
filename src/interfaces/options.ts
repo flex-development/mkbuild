@@ -5,7 +5,7 @@
 
 import type { EsbuildOptions, OutputExtension } from '#src/types'
 import type { OneOrMany } from '@flex-development/tutils'
-import type esbuild from 'esbuild'
+import type * as esbuild from 'esbuild'
 
 /**
  * Common build options.

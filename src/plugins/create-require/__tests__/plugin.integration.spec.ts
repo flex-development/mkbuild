@@ -1,6 +1,6 @@
 /**
  * @file Integration Tests - create-require plugin
- * @module mkbuild/plugins/create-require/tests/integration
+ * @module mkbuild/plugins/tests/integration/create-require
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'

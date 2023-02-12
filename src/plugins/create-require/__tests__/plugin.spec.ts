@@ -1,6 +1,6 @@
 /**
  * @file Unit Tests - create-require plugin
- * @module mkbuild/plugins/create-require/tests/unit
+ * @module mkbuild/plugins/tests/unit/create-require
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'

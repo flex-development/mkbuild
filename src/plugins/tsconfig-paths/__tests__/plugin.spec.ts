@@ -1,6 +1,6 @@
 /**
  * @file Unit Tests - tsconfig-paths plugin
- * @module mkbuild/plugins/tsconfig-paths/tests/unit
+ * @module mkbuild/plugins/tests/unit/tsconfig-paths
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'

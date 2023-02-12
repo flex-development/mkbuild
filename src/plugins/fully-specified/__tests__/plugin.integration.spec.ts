@@ -1,6 +1,6 @@
 /**
  * @file Integration Tests - fully-specified plugin
- * @module mkbuild/plugins/fully-specified/tests/integration
+ * @module mkbuild/plugins/tests/integration/fully-specified
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'

@@ -1,6 +1,6 @@
 /**
  * @file Unit Tests - dts plugin
- * @module mkbuild/plugins/dts/tests/unit
+ * @module mkbuild/plugins/tests/unit/dts
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'

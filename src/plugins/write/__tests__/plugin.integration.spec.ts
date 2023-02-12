@@ -1,6 +1,6 @@
 /**
  * @file Integration Tests - write plugin
- * @module mkbuild/plugins/write/tests/integration
+ * @module mkbuild/plugins/tests/integration/write
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'

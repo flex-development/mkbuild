@@ -3,10 +3,12 @@
  * @module mkbuild/types/OutputMetadata
  */
 
-import type esbuild from 'esbuild'
+import type * as esbuild from 'esbuild'
 
 /**
  * Output file metadata.
+ *
+ * @see {@linkcode esbuild.Metafile}
  */
 type OutputMetadata = esbuild.Metafile['outputs'][string]
 

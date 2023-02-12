@@ -1,6 +1,6 @@
 /**
  * @file Integration Tests - tsconfig-paths plugin
- * @module mkbuild/plugins/tsconfig-paths/tests/integration
+ * @module mkbuild/plugins/tests/integration/tsconfig-paths
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
