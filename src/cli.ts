@@ -66,8 +66,11 @@ sade(pkg.name.replace(/.*\//, ''), true)
           consola[kind === 'error' ? kind : 'warn'](log)
         }
       } else consola.error(e)
+
+      // set exit code
+      process.exitCode = 1
     }
 
-    return void 0
+    return void process.exit()
   })
   .parse(process.argv)
