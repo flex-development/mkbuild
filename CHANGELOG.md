@@ -1,3 +1,10 @@
+## [1.0.0-alpha.11](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.10...1.0.0-alpha.11) (2023-02-12)
+
+
+### :bug: Fixes
+
+* dts-only write ([fcd4c51](https://github.com/flex-development/mkbuild/commit/fcd4c519e3c1935483c9672806a51e704906464d))
+
 ## [1.0.0-alpha.10](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.9...1.0.0-alpha.10) (2023-02-12)
 
 
@@ -257,4 +264,3 @@
 * **utils:** [`esbuilder`] let esbuild externalize node built-ins ([200d360](https://github.com/flex-development/mkbuild/commit/200d360bda3ca7accd5cf7251d6322adeacb4c50))
 * **utils:** [`esbuilder`] remove `TS_NODE_PROJECT` check for tsconfig-paths plugin ([c863c7e](https://github.com/flex-development/mkbuild/commit/c863c7e1467b799609ac084b197ef9f0a4a03cec))
 * **utils:** [`extractStatements`] follow `unsupported-dynamic-import` rule ([ee2110b](https://github.com/flex-development/mkbuild/commit/ee2110ba7abb7214b30a92eb4b72ad9532b7a377))
-
