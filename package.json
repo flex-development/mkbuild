@@ -34,8 +34,7 @@
   "bin": "./dist/cli.mjs",
   "exports": {
     ".": "./dist/index.mjs",
-    "./package.json": "./package.json",
-    "./plugins/*": "./dist/plugins/*.mjs"
+    "./package.json": "./package.json"
   },
   "imports": {
     "#src": "./src/index.ts",
@@ -43,13 +42,6 @@
   },
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
-  "typesVersions": {
-    "*": {
-      "./plugins/*": [
-        "./dist/plugins/*.d.mts"
-      ]
-    }
-  },
   "scripts": {
     "build": "node --loader=./loader.mjs ./src/cli",
     "changelog": "node --loader=./loader.mjs ./changelog.config",
