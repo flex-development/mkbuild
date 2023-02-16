@@ -1256,7 +1256,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:5.51.0"
     "@vates/toggle-scripts": "npm:1.0.0"
     "@vitest/coverage-c8": "npm:0.28.5"
-    "@vitest/spy": "npm:0.28.4"
+    "@vitest/spy": "npm:0.28.5"
     "@vitest/ui": "npm:0.28.4"
     add-stream: "npm:1.0.0"
     chai: "npm:4.3.7"
@@ -2422,12 +2422,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/spy@npm:0.28.4":
-  version: 0.28.4
-  resolution: "@vitest/spy@npm:0.28.4"
+"@vitest/spy@npm:0.28.5":
+  version: 0.28.5
+  resolution: "@vitest/spy@npm:0.28.5"
   dependencies:
     tinyspy: "npm:^1.0.2"
-  checksum: ffd0b51f2f83309cc167461cc6de3b744d5c7e6489e5e827c87b703e167880090fba5db05b9cb9b67870108b429fe1ed2b3fd4acc410bb34beac53784748a14d
+  checksum: 6e86367d973b724522135459e512d591871a39833b1af4cadf08151a2c9753392df916ca22cd1752a6cadfa9ca5ab5fe07b7b4e2daabcb15b8ee88ed8a142ace
   languageName: node
   linkType: hard
 
