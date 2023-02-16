@@ -1,3 +1,49 @@
+## [1.0.0-alpha.12](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.11...1.0.0-alpha.12) (2023-02-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **exports:** remove `./plugins/*`
+
+### :package: Build
+
+* preserve symbol names in bundle output ([bca9aa1](https://github.com/flex-development/mkbuild/commit/bca9aa1f6bb3cc02a7be7b59831d45e983a5b32b))
+* **deps-dev:** Bump @graphql-eslint/eslint-plugin from 3.15.0 to 3.16.0 ([#47](https://github.com/flex-development/mkbuild/issues/47)) ([9a4fc0a](https://github.com/flex-development/mkbuild/commit/9a4fc0a86edd6d58e3152f3e0b8b8b14acd00eec))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.51.0 to 5.52.0 ([#56](https://github.com/flex-development/mkbuild/issues/56)) ([c09abaa](https://github.com/flex-development/mkbuild/commit/c09abaa2f1ffdc89efbe81166a86073c765188a4))
+* **deps-dev:** bump @vitest/coverage-c8 from 0.28.4 to 0.28.5 ([2e02663](https://github.com/flex-development/mkbuild/commit/2e02663497894e414da2dcc50f8a381047c2ceda))
+* **deps-dev:** bump @vitest/spy from 0.28.4 to 0.28.5 ([cbf297d](https://github.com/flex-development/mkbuild/commit/cbf297d6075621d6e478bc774f027db0e0c2c4df))
+* **deps-dev:** bump @vitest/ui from 0.28.4 to 0.28.5 ([b0b075a](https://github.com/flex-development/mkbuild/commit/b0b075aa3430881d74e6a8421a7ff076dd6daf6b))
+* **deps-dev:** Bump cspell from 6.23.0 to 6.24.0 ([#52](https://github.com/flex-development/mkbuild/issues/52)) ([b2e404f](https://github.com/flex-development/mkbuild/commit/b2e404f8817db7b86399dc470766c4721f8622bb))
+* **deps-dev:** Bump esbuild from 0.17.7 to 0.17.8 ([#50](https://github.com/flex-development/mkbuild/issues/50)) ([d2445d4](https://github.com/flex-development/mkbuild/commit/d2445d4bbea506b5ed1231fb74319da60c9f3129))
+* **deps-dev:** Bump lint-staged from 13.1.1 to 13.1.2 ([#53](https://github.com/flex-development/mkbuild/issues/53)) ([85eb9b3](https://github.com/flex-development/mkbuild/commit/85eb9b309be26045013ba881dc2aa5fd7f4d2dd6))
+* **deps-dev:** Bump tempfile from 4.0.0 to 5.0.0 ([#48](https://github.com/flex-development/mkbuild/issues/48)) ([b9212bc](https://github.com/flex-development/mkbuild/commit/b9212bc1f6b974072eb9699387dc07b07fd518ad))
+* **deps-dev:** Bump typescript from 5.0.0-dev.20230211 to 5.0.0-dev.20230213 ([#51](https://github.com/flex-development/mkbuild/issues/51)) ([fe222ec](https://github.com/flex-development/mkbuild/commit/fe222ec37695244ce0068c18cc0c89ba9cd3272e))
+* **deps-dev:** bump vitest from 0.28.4 to 0.28.5 ([a3fa3fa](https://github.com/flex-development/mkbuild/commit/a3fa3fa3ee6ae352d95bbbd72c86af28bedf9f02))
+* **deps-peer:** bump esbuild from >=0.17.7 to >=0.17.8 ([a1eee55](https://github.com/flex-development/mkbuild/commit/a1eee552ed865456e6acafffee82016314174452))
+* **exports:** remove `./plugins/*` ([9119481](https://github.com/flex-development/mkbuild/commit/911948167e525ff8e8dfb9ab01178615e6e5982c))
+
+
+### :robot: Continuous Integration
+
+* **deps:** Bump actions/cache from 3.2.4 to 3.2.5 ([#45](https://github.com/flex-development/mkbuild/issues/45)) ([cc0732c](https://github.com/flex-development/mkbuild/commit/cc0732cff30519cb26dd1f5fddfa6b6be88c76f5))
+* **workflows:** [`dependabot-auto`] remove `enable-auto-merge` job conditional ([4323177](https://github.com/flex-development/mkbuild/commit/432317730d3ad89dc65260703dc35b2609af1260))
+
+
+### :sparkles: Features
+
+* **plugins:** `decorators` ([c9d1e56](https://github.com/flex-development/mkbuild/commit/c9d1e56b1ea53432e3c35cacefeddac430cb413a))
+
+
+### :bug: Fixes
+
+* **options:** bundle defaults ([51c88a9](https://github.com/flex-development/mkbuild/commit/51c88a9ef1c5f03b7bc1bae6b2b06223d9194214))
+
+
+### :zap: Refactors
+
+* **cli:** improve error logs ([c405798](https://github.com/flex-development/mkbuild/commit/c405798a6f0a001459fede43f7898fd55a9392d0))
+* **cli:** set exit code on error ([4587a9d](https://github.com/flex-development/mkbuild/commit/4587a9dc9441716a36197bb753702a5b3dd6f541))
+
 ## [1.0.0-alpha.11](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.10...1.0.0-alpha.11) (2023-02-12)
 
 
