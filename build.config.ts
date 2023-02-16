@@ -14,7 +14,13 @@ import pkg from './package.json' assert { type: 'json' }
 const config: Config = defineBuildConfig({
   entries: [
     { ignore: ['cli.ts'] },
-    { bundle: true, minify: true, platform: 'node', source: 'src/cli.ts' }
+    {
+      bundle: true,
+      keepNames: true,
+      minify: true,
+      platform: 'node',
+      source: 'src/cli.ts'
+    }
   ],
   sourcemap: true,
   sourcesContent: false,
