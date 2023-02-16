@@ -1141,6 +1141,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@flex-development/decorator-regex@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@flex-development/decorator-regex@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fdecorator-regex%2F1.0.0%2Fe485b45a5c66ca688d77188039bb5efa90ca3fb8"
+  checksum: 3200659769897add6af31341c391a58a4edc7920b81042a7117a95c50ae0375da2f62c6869060ce91507a29ac9dbd06a96e440fe30b438536685f7ce36a1daca
+  languageName: node
+  linkType: hard
+
 "@flex-development/errnode@npm:1.2.0":
   version: 1.2.0
   resolution: "@flex-development/errnode@npm:1.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ferrnode%2F1.2.0%2F8e54e66e637d392299cd2d422224da9cf5d16cab"
@@ -1184,6 +1191,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@flex-development/ext-regex@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@flex-development/ext-regex@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fext-regex%2F1.0.0%2Fe1729f6d8dfd8e62423acbdf6a7c341e5436568b"
+  dependencies:
+    "@flex-development/errnode": "npm:1.5.0"
+    "@flex-development/pathe": "npm:1.0.3"
+    "@flex-development/tutils": "npm:6.0.0-alpha.10"
+  checksum: 11f53ffc974dd91a5e17ae680393e61e8f43f673f19ea7d029f14bb0dff918051139230d736a6a52bb9dc017da1da00d5868586d8ea3f705920e4e2ae72a8562
+  languageName: node
+  linkType: hard
+
 "@flex-development/import-regex@npm:2.0.1":
   version: 2.0.1
   resolution: "@flex-development/import-regex@npm:2.0.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fimport-regex%2F2.0.1%2Fb3412222fb42257bd8146591e14249aa1941e089"
@@ -1209,7 +1227,9 @@ __metadata:
     "@commitlint/cli": "npm:17.4.2"
     "@commitlint/config-conventional": "npm:17.4.2"
     "@faker-js/faker": "npm:8.0.0-alpha.0"
+    "@flex-development/decorator-regex": "npm:1.0.0"
     "@flex-development/errnode": "npm:1.5.0"
+    "@flex-development/ext-regex": "npm:1.0.0"
     "@flex-development/mlly": "npm:1.0.0-alpha.11"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/pkg-types": "npm:2.0.0"
@@ -1244,6 +1264,7 @@ __metadata:
     chai-fs: "npm:2.0.0"
     chai-quantifiers: "npm:1.0.17"
     chai-string: "npm:1.5.0"
+    class-validator: "npm:0.14.0"
     colorette: "npm:2.0.19"
     consola: "npm:2.15.3"
     conventional-changelog: "npm:3.1.25"
@@ -2221,6 +2242,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:^13.7.10":
+  version: 13.7.12
+  resolution: "@types/validator@npm:13.7.12"
+  checksum: 3e521200838207253410c1f521348c55b625c369ed4ae9c331813ec671f276d9b93c21cc65deafc4e3c21fb37fbf76af7b33ec29ed92654289efdeb474a5ea6a
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.0.0":
   version: 8.5.4
   resolution: "@types/ws@npm:8.5.4"
@@ -3174,6 +3202,17 @@ __metadata:
   version: 3.8.0
   resolution: "ci-info@npm:3.8.0"
   checksum: cbde5915261038659da39e508b688acd0baa981a73dc34357865957403383e0475b050c2f44971a3b37523849973af345724feb8f2e4a8eddd6db41be708f4ba
+  languageName: node
+  linkType: hard
+
+"class-validator@npm:0.14.0":
+  version: 0.14.0
+  resolution: "class-validator@npm:0.14.0"
+  dependencies:
+    "@types/validator": "npm:^13.7.10"
+    libphonenumber-js: "npm:^1.10.14"
+    validator: "npm:^13.7.0"
+  checksum: 3bd7e3b93ee293b5cd456a52f7240accc69400234cc95985f38271c3f5ca44eb65d751d95d93a18f1bedd6373411b9909ee5c6d117cc6ca0fc77072c25880ccd
   languageName: node
   linkType: hard
 
@@ -6016,6 +6055,13 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: b281df6770286ddce58d431441772b75ec04f03264af49532c330fdbe070795196538459754cb9e564e7759dbd79c2f88fab01bb3295b2a70249d1a777016cb4
+  languageName: node
+  linkType: hard
+
+"libphonenumber-js@npm:^1.10.14":
+  version: 1.10.20
+  resolution: "libphonenumber-js@npm:1.10.20"
+  checksum: 6092d4e036363e6d8651ed83e4abd8c796a0049bd79ad9880456f7dc44a13161e6339768b01abf0a2f46c92083474e42835d7a72afc4caa4aa353368eba8b4d4
   languageName: node
   linkType: hard
 
@@ -9006,6 +9052,13 @@ __metadata:
     spdx-correct: "npm:^3.0.0"
     spdx-expression-parse: "npm:^3.0.0"
   checksum: 6d62b39e947077e554dfdf6a760fb52e8db73e7724aeeab1a1f4aa742e75b2ca5092b9f7b1b9171778e96f592628932ee07784a2c86f4152411180a32a8824be
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.7.0":
+  version: 13.9.0
+  resolution: "validator@npm:13.9.0"
+  checksum: f9839f6c59d717dbce3f34cc20314b2bd9c39847fe543f56e87fc6874461c63f0196dc4c8ed81febf0cc2ae1c67dc47347ac2076ea3d35fa141a94d19eb5c9f5
   languageName: node
   linkType: hard
 

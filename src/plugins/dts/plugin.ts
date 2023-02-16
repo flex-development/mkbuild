@@ -4,8 +4,12 @@
  */
 
 import defu from '#src/internal/defu'
-import regex from '#src/internal/regex'
 import type { OutputMetadata } from '#src/types'
+import {
+  EXT_DTS_REGEX,
+  EXT_JS_REGEX,
+  EXT_TS_REGEX
+} from '@flex-development/ext-regex'
 import pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
 import type {
@@ -89,16 +93,21 @@ const plugin = (): Plugin => {
      */
     const sourcefiles: string[] = []
 
+    /**
+     * Source file filter.
+     *
+     * @const {RegExp} filter
+     */
+    const filter: RegExp = new RegExp(
+      (
+        `(?:(?:${EXT_JS_REGEX.source.slice(0, -8)})` +
+        `|(?:${EXT_TS_REGEX.source.slice(0, -8)}))$`
+      ).replace(/\?<.+?>/g, '?:')
+    )
+
     // get source files as entry points are resolved
-    onResolve({ filter: /.*/ }, (args: OnResolveArgs): undefined => {
-      const { path, resolveDir } = args
-      const { dts, js, ts } = regex
-
-      if ((js.test(path) || ts.test(path)) && !dts.test(path)) {
-        sourcefiles.push(pathe.resolve(resolveDir, path))
-      }
-
-      return void 0
+    onResolve({ filter }, (args: OnResolveArgs): undefined => {
+      return void sourcefiles.push(pathe.resolve(args.resolveDir, args.path))
     })
 
     return void onEnd((result: BuildResult): void => {
@@ -194,14 +203,21 @@ const plugin = (): Plugin => {
         filename: string,
         contents: string
       ): void => {
-        return void vfs.set(filename.replace(regex.dts, `.d.${cm}ts`), contents)
+        return void vfs.set(
+          filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`),
+          contents
+        )
       }
 
       // override write file function
       host.writeFile = writeFile
 
       // emit declarations to virtual file system
-      ts.createProgram(sourcefiles, compilerOptions, host).emit()
+      ts.createProgram(
+        sourcefiles.filter(sourcefile => !EXT_DTS_REGEX.test(sourcefile)),
+        compilerOptions,
+        host
+      ).emit()
 
       // remap output files to insert declaration file outputs
       return void (result.outputFiles = result.outputFiles!.flatMap(output => {
@@ -210,10 +226,10 @@ const plugin = (): Plugin => {
          *
          * @const {string} dtspath
          */
-        const dtspath: string = regex.js.test(output.path)
-          ? output.path.replace(regex.js, '.d.$2ts')
-          : regex.ts.test(output.path) && !regex.dts.test(output.path)
-          ? output.path.replace(regex.ts, '.d.$2ts')
+        const dtspath: string = EXT_JS_REGEX.test(output.path)
+          ? output.path.replace(EXT_JS_REGEX, '.d.$1ts')
+          : EXT_TS_REGEX.test(output.path) && !EXT_DTS_REGEX.test(output.path)
+          ? output.path.replace(EXT_TS_REGEX, '.d.$2ts')
           : ''
 
         // do nothing if missing declaration file

@@ -27,7 +27,6 @@ lcov
 lintstagedrc
 memfs
 micnncim
-mkbuild
 nocheck
 npmrc
 nums

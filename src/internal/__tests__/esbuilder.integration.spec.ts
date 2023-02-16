@@ -79,6 +79,12 @@ describe('integration:internal/esbuilder', () => {
         })
       })
 
+      it('should use decorators if tsconfig file is passed', () => {
+        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
+          return plugin.name === 'decorators'
+        })
+      })
+
       it('should use dts if declarations are enabled', () => {
         expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
           return plugin.name === 'dts'

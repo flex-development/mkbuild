@@ -10,7 +10,7 @@ import dedent from 'ts-dedent'
 import testSubject from '../plugin'
 
 describe('integration:plugins/create-require', () => {
-  let options: esbuild.BuildOptions
+  let options: esbuild.BuildOptions & { metafile: true; write: false }
   let subject: esbuild.Plugin
 
   beforeEach(() => {
@@ -28,11 +28,7 @@ describe('integration:plugins/create-require', () => {
   describe('esbuild', () => {
     it('should insert require definition', async () => {
       // Act
-      const {
-        errors,
-        outputFiles = [],
-        warnings
-      } = await esbuild.build({
+      const { errors, outputFiles, warnings } = await esbuild.build({
         ...options,
         banner: {
           js: dedent`
@@ -56,11 +52,7 @@ describe('integration:plugins/create-require', () => {
 
     it('should insert require definition into minified output', async () => {
       // Act
-      const {
-        errors,
-        outputFiles = [],
-        warnings
-      } = await esbuild.build({
+      const { errors, outputFiles, warnings } = await esbuild.build({
         ...options,
         entryPoints: ['__fixtures__/volume.ts'],
         loader: { '.ts': 'ts' },
@@ -76,11 +68,7 @@ describe('integration:plugins/create-require', () => {
 
     it('should skip output files without __require shim', async () => {
       // Act
-      const {
-        errors,
-        outputFiles = [],
-        warnings
-      } = await esbuild.build({
+      const { errors, outputFiles, warnings } = await esbuild.build({
         ...options,
         absWorkingDir: pathe.resolve('__fixtures__/pkg/reverse'),
         entryPoints: ['src/reverse.mts'],

@@ -4,22 +4,18 @@
  */
 
 import type { Entry, Result, SourceFile } from '#src/interfaces'
-import createRequire from '#src/plugins/create-require/plugin'
-import dts from '#src/plugins/dts/plugin'
-import fullySpecified from '#src/plugins/fully-specified/plugin'
-import tsconfigPaths from '#src/plugins/tsconfig-paths/plugin'
-import writeOutputFiles from '#src/plugins/write/plugin'
+import * as mkp from '#src/plugins'
 import type { FileSystemAdapter, OutputMetadata } from '#src/types'
 import fsa from '#src/utils/fs'
 import IGNORE from '#src/utils/ignore-patterns'
 import loaders from '#src/utils/loaders'
+import { EXT_DTS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import * as esbuild from 'esbuild'
 import regexp from 'escape-string-regexp'
 import fg from 'fast-glob'
 import { omit } from 'radash'
-import regex from './regex'
 
 /**
  * Builds `entry` using the [esbuild build API][1].
@@ -118,7 +114,7 @@ const esbuilder = async (
     let ext: string = pathe.extname(file)
 
     // fix file extension if source file is typescript declaration file
-    /* c8 ignore next */ regex.dts.test(file) && (ext = '.d' + ext)
+    /* c8 ignore next */ EXT_DTS_REGEX.test(file) && (ext = '.d' + ext)
 
     return {
       ext: ext as pathe.Ext,
@@ -132,25 +128,28 @@ const esbuilder = async (
   })
 
   // add fully-specified plugin
-  if (format === 'esm' || ext === '.cjs') plugins.unshift(fullySpecified())
+  if (format === 'esm' || ext === '.cjs') plugins.unshift(mkp.fullySpecified())
 
   // add tsconfig-paths plugin
-  tsconfig && plugins.unshift(tsconfigPaths())
+  tsconfig && plugins.unshift(mkp.tsconfigPaths())
 
   // add dts plugin
-  if (declaration as boolean) plugins.unshift(dts())
+  if (declaration as boolean) plugins.unshift(mkp.dts())
 
   // add create-require plugin
   if ((bundle && format === 'esm' && platform === 'node') || insertRequire) {
-    plugins.unshift(createRequire())
+    plugins.unshift(mkp.createRequire())
   }
+
+  // add decorators plugin
+  tsconfig && plugins.unshift(mkp.decorators())
 
   // add output file writer plugin
   if (write) {
     plugins.push(
-      writeOutputFiles({
+      mkp.write({
         ...fs,
-        filter: declaration === 'only' ? regex.dts : undefined
+        filter: declaration === 'only' ? EXT_DTS_REGEX : undefined
       })
     )
   }
@@ -234,7 +233,9 @@ const esbuilder = async (
           warnings
         }
       })
-      .filter(res => (declaration === 'only' ? regex.dts.test(res.path) : true))
+      .filter(res => {
+        return declaration === 'only' ? EXT_DTS_REGEX.test(res.path) : true
+      })
   ]
 }
 

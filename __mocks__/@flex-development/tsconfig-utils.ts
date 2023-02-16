@@ -21,6 +21,7 @@ const actual: Actual = await vi.importActual<Actual>(
 )
 
 export const ScriptTarget = actual.ScriptTarget
+export const loadCompilerOptions = vi.fn(actual.loadCompilerOptions)
 export const normalizeCompilerOptions = vi.fn(actual.normalizeCompilerOptions)
 export const normalizeModuleResolution = vi.fn(actual.normalizeModuleResolution)
 export const resolvePaths = vi.fn(actual.resolvePaths)

@@ -26,11 +26,7 @@ describe('integration:plugins/dts', () => {
       const dirname: string = pathe.join(absWorkingDir, 'dist')
 
       // Act
-      const {
-        errors,
-        outputFiles = [],
-        warnings
-      } = await esbuild.build({
+      const { errors, outputFiles, warnings } = await esbuild.build({
         ...options,
         absWorkingDir,
         entryPoints: ['src/reverse.mts'],
@@ -56,11 +52,7 @@ describe('integration:plugins/dts', () => {
       const dirname: string = pathe.join(absWorkingDir, 'dist')
 
       // Act
-      const {
-        errors,
-        outputFiles = [],
-        warnings
-      } = await esbuild.build({
+      const { errors, outputFiles, warnings } = await esbuild.build({
         ...options,
         absWorkingDir,
         entryPoints: ['find-uniq.cts'],
