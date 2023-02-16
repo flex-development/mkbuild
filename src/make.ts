@@ -49,7 +49,6 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   } = defu(await loadBuildConfig(cwd), config, {
     bundle: false,
     clean: true,
-    createRequire: false,
     cwd,
     dts: await (async () => {
       try {
@@ -66,7 +65,6 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     ignore: [...IGNORE_PATTERNS],
     outdir: 'dist',
     pattern: '**',
-    platform: '',
     source: 'src',
     write: false
   })
@@ -99,17 +97,18 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       bundle = options.bundle,
       cwd: entrydir = cwd,
       format = options.format,
-      platform = options.platform
+      platform,
+      source = options.source
     } = entry
 
+    // remove default source to reset based on bundling
+    Reflect.deleteProperty(options, 'source')
+
     return defuConcat(entry, options, {
-      bundle,
       createRequire: bundle && format === 'esm' && platform === 'node',
       cwd: pathe.resolve(cwd, entrydir),
       external: bundle ? Object.keys(peerDependencies) : [],
-      format,
-      platform,
-      source: bundle ? 'src/index' : options.source
+      source: (!bundle && source) || source || /* c8 ignore next */ 'src/index'
     })
   })
 

@@ -77,21 +77,27 @@ const esbuilder = async (
    *
    * @const {string[]} files
    */
-  const files: string[] = await fg(bundle ? source : pattern, {
-    braceExpansion: true,
-    caseSensitiveMatch: true,
-    cwd: pathe.join(absWorkingDir, bundle ? '' : source),
-    dot: true,
-    extglob: true,
-    fs: omit(fs, ['readdir']),
-    globstar: true,
-    ignore: [...new Set(ignore)],
-    objectMode: false,
-    onlyFiles: true,
-    stats: false,
-    throwErrorOnBrokenSymbolicLink: false,
-    unique: true
-  })
+  const files: string[] = await fg(
+    bundle
+      ? (!pathe.extname(source) && source + '.*') || /* c8 ignore next */ source
+      : pattern,
+    {
+      absolute: false,
+      braceExpansion: true,
+      caseSensitiveMatch: true,
+      cwd: pathe.join(absWorkingDir, bundle ? '' : source),
+      dot: true,
+      extglob: true,
+      fs: omit(fs, ['readdir']),
+      globstar: true,
+      ignore: [...new Set(ignore)],
+      objectMode: false,
+      onlyFiles: true,
+      stats: false,
+      throwErrorOnBrokenSymbolicLink: false,
+      unique: true
+    }
+  )
 
   /**
    * Source file objects.
