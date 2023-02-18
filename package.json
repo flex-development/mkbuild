@@ -110,7 +110,7 @@
     "@types/conventional-commits-parser": "3.0.3",
     "@types/conventional-recommended-bump": "6.1.0",
     "@types/dateformat": "5.0.0",
-    "@types/eslint": "8.21.0",
+    "@types/eslint": "8.21.1",
     "@types/git-raw-commits": "2.0.1",
     "@types/is-ci": "3.0.0",
     "@types/node": "18.13.0",
