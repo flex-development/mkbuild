@@ -11,6 +11,7 @@ import * as color from 'colorette'
 import consola from 'consola'
 import { pathToFileURL } from 'node:url'
 import pb from 'pretty-bytes'
+import { omit } from 'radash'
 import loadBuildConfig from './config/load'
 import type { Config, Entry, Result } from './interfaces'
 import { defu, defuConcat, esbuilder } from './internal'
@@ -101,10 +102,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
       source = options.source
     } = entry
 
-    // remove default source to reset based on bundling
-    Reflect.deleteProperty(options, 'source')
-
-    return defuConcat(entry, options, {
+    return defuConcat(entry, omit(options, ['source']), {
       createRequire: bundle && format === 'esm' && platform === 'node',
       cwd: pathe.resolve(cwd, entrydir),
       external: bundle ? Object.keys(peerDependencies) : [],
