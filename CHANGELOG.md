@@ -1,3 +1,10 @@
+## [1.0.0-alpha.13](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.12...1.0.0-alpha.13) (2023-02-17)
+
+
+### :bug: Fixes
+
+* **options:** default `source` ([8730e90](https://github.com/flex-development/mkbuild/commit/8730e90fab707e5e064184a378a24f1096778ec3))
+
 ## [1.0.0-alpha.12](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.11...1.0.0-alpha.12) (2023-02-16)
 
 
