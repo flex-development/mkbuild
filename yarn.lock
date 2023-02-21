@@ -1330,7 +1330,7 @@ __metadata:
     yaml-eslint-parser: "npm:1.1.0"
   peerDependencies:
     "@types/node": ">=14.18.36"
-    esbuild: ">=0.17.8"
+    esbuild: ">=0.17.9"
     typescript: ">=4.8"
   peerDependenciesMeta:
     "@types/node":
