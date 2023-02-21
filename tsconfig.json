@@ -6,14 +6,14 @@
     "alwaysStrict": false,
     "baseUrl": ".",
     "checkJs": false,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "emitDecoratorMetadata": false,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "es2021"],
+    "lib": ["dom", "es2020"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "newLine": "lf",
@@ -47,14 +47,6 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "esnext",
-    // https://github.com/microsoft/TypeScript/issues/42873
-    "rootDirs": [
-      ".",
-      "./node_modules/@flex-development/mlly",
-      "./node_modules/@flex-development/mlly/node_modules",
-      "./node_modules/@flex-development/tsconfig-utils",
-      "./node_modules/@flex-development/tsconfig-utils/node_modules"
-    ],
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true

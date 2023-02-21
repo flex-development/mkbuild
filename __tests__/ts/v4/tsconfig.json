@@ -5,8 +5,8 @@
     "alwaysStrict": false,
     "baseUrl": "../../..",
     "checkJs": false,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
     "isolatedModules": true,
-    "lib": ["dom", "es2021"],
+    "lib": ["dom", "es2020"],
     "module": "esnext",
     "moduleResolution": "node",
     "newLine": "lf",
@@ -55,7 +55,7 @@
     "**/**.mts",
     "**/**.ts",
     "**/.*.cjs",
-    "__fixtures__/**/*.cts",
-    "__fixtures__/**/*.js"
+    "**/__fixtures__/**/*.cts",
+    "**/__fixtures__/**/*.js"
   ]
 }

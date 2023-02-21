@@ -53,7 +53,7 @@ declare global {
    *
    * @async
    *
-   * @param {string} url - Module URL
+   * @param {string} url - Resolved module URL
    * @param {LoadHookContext} context - Hook context
    * @param {LoadHook} nextLoad - Subsequent `load` hook in the chain or default
    * Node.js `load` hook after last user-supplied `load` hook
