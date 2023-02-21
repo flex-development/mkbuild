@@ -172,7 +172,7 @@
     "tempfile": "5.0.0",
     "trash-cli": "5.0.0",
     "ts-dedent": "2.2.0",
-    "typescript": "5.0.0-dev.20230213",
+    "typescript": "5.0.0-dev.20230220",
     "version-bump-prompt": "6.1.0",
     "vite": "4.1.2",
     "vite-tsconfig-paths": "4.0.5",
