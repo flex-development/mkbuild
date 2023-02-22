@@ -1241,7 +1241,7 @@ __metadata:
     "@flex-development/mlly": "npm:1.0.0-alpha.11"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/pkg-types": "npm:2.0.0"
-    "@flex-development/tsconfig-utils": "npm:1.1.1"
+    "@flex-development/tsconfig-utils": "npm:1.1.2"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
     "@graphql-eslint/eslint-plugin": "npm:3.16.0"
     "@types/chai": "npm:4.3.4"
@@ -1342,24 +1342,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@flex-development/mlly@npm:1.0.0-alpha.10":
-  version: 1.0.0-alpha.10
-  resolution: "@flex-development/mlly@npm:1.0.0-alpha.10::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fmlly%2F1.0.0-alpha.10%2F6e84e05b66e57a92d750539044617fce7304b80f"
-  dependencies:
-    "@flex-development/errnode": "npm:1.4.0"
-    "@flex-development/export-regex": "npm:1.0.0"
-    "@flex-development/import-regex": "npm:2.0.1"
-    "@flex-development/is-builtin": "npm:2.0.0"
-    "@flex-development/pathe": "npm:1.0.3"
-    "@flex-development/pkg-types": "npm:2.0.0"
-    "@flex-development/tutils": "npm:6.0.0-alpha.9"
-  peerDependencies:
-    "@types/node": ">=14.17.0"
-    node-fetch: ">=3.3.0"
-  checksum: 198d01ebe2c226b9df0aecb35eaf4e1bc56dc87a07ac809b5c5b9a8b88a35382a90837ee4c295f0a598588c3b6c6affb9418b59f0d8ce2e806c4179aa4ad4c06
-  languageName: node
-  linkType: hard
-
 "@flex-development/mlly@npm:1.0.0-alpha.11":
   version: 1.0.0-alpha.11
   resolution: "@flex-development/mlly@npm:1.0.0-alpha.11::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fmlly%2F1.0.0-alpha.11%2F4801f76b2e43ae5f14be38212e22c43cf335af48"
@@ -1375,6 +1357,24 @@ __metadata:
     "@types/node": ">=14.17.0"
     node-fetch: ">=3.3.0"
   checksum: 8f7843719a5002f73bac76b250168e7a9092b2e093c8566c379b396de6f12af84243b54a4401bb76fdd58c2b455d942455e777bc6bb6c407910eb61d962d4aac
+  languageName: node
+  linkType: hard
+
+"@flex-development/mlly@npm:1.0.0-alpha.13":
+  version: 1.0.0-alpha.13
+  resolution: "@flex-development/mlly@npm:1.0.0-alpha.13::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fmlly%2F1.0.0-alpha.13%2F8659ffd4c1af48e0a3de458955d2b6b068e79a08"
+  dependencies:
+    "@flex-development/errnode": "npm:1.5.0"
+    "@flex-development/export-regex": "npm:1.0.0"
+    "@flex-development/import-regex": "npm:2.0.1"
+    "@flex-development/is-builtin": "npm:2.0.0"
+    "@flex-development/pathe": "npm:1.0.3"
+    "@flex-development/pkg-types": "npm:2.0.0"
+    "@flex-development/tutils": "npm:6.0.0-alpha.10"
+  peerDependencies:
+    "@types/node": ">=14.17.0"
+    node-fetch: ">=3.3.0"
+  checksum: 1f0b0790db39a4cebbccce7ee621ddb587b7fb35d4c58945793b7c271946f0bcf0163ef88f46380c825f62550cc542790e910dfc5541c1c0365971a8491e8dd7
   languageName: node
   linkType: hard
 
@@ -1407,12 +1407,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@flex-development/tsconfig-utils@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@flex-development/tsconfig-utils@npm:1.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftsconfig-utils%2F1.1.1%2Ffe7f9d391c9d4f0d8d2c31ab11bd36aae172d7da"
+"@flex-development/tsconfig-utils@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@flex-development/tsconfig-utils@npm:1.1.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftsconfig-utils%2F1.1.2%2F3baf871b6bd1b8324c27a9161334825eba052dc6"
   dependencies:
     "@flex-development/errnode": "npm:1.5.0"
-    "@flex-development/mlly": "npm:1.0.0-alpha.10"
+    "@flex-development/mlly": "npm:1.0.0-alpha.13"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/tsconfig-types": "npm:3.2.0"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
@@ -1423,7 +1423,7 @@ __metadata:
   peerDependencies:
     "@types/node": ">=14.18.36"
     typescript: ">=4.7"
-  checksum: 4a5cd5d2c2e89766ef036b834f0cb36f4c4d3ac1a7340efb8f15fd7448dace057d77756f49305af4a5b202f6d3a05db20680517b60af7e905a40ff7f3d1a6d2d
+  checksum: 4a1e56584279d49a3ac0b47e80c1c71de138ea6846b8e1c8456c42830c6aa6230e3836b07169415aff66f447c434f0c1f0bd668530634b5ddd4a39e547f866d5
   languageName: node
   linkType: hard
 
