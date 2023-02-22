@@ -3,4 +3,4 @@
  * @module fixtures/pkg/my-atoi
  */
 
-export { default as myAtoi } from './my-atoi.cjs'
+export { default as myAtoi } from './my-atoi.cts'

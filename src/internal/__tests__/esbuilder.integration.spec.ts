@@ -115,7 +115,8 @@ describe('integration:internal/esbuilder', () => {
         await testSubject({
           cwd: '__fixtures__/pkg/my-atoi',
           ext: '.cjs',
-          format: 'cjs'
+          format: 'cjs',
+          tsconfig: 'tsconfig.json'
         })
       })
 
