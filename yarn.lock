@@ -1168,18 +1168,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@flex-development/errnode@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@flex-development/errnode@npm:1.4.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ferrnode%2F1.4.0%2Fae3b431e24ba20ed6d79cdb19e616af182c38bc3"
-  dependencies:
-    "@flex-development/tutils": "npm:6.0.0-alpha.9"
-    node-inspect-extracted: "npm:2.0.0"
-  peerDependencies:
-    "@types/node": ">=14"
-  checksum: d61e9b7ad82c94124748955ebaeedfb32bfcc216a1852b2994a548cf448fa1a31415f92d32d27039d92168355d8ba994f1fb2318e6f4c7120e0879d29d8aa87a
-  languageName: node
-  linkType: hard
-
 "@flex-development/errnode@npm:1.5.0":
   version: 1.5.0
   resolution: "@flex-development/errnode@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ferrnode%2F1.5.0%2F33dedbfaeb3139375e41d4382a8de53f9415a261"
@@ -1238,7 +1226,7 @@ __metadata:
     "@flex-development/decorator-regex": "npm:1.0.0"
     "@flex-development/errnode": "npm:1.5.0"
     "@flex-development/ext-regex": "npm:1.0.0"
-    "@flex-development/mlly": "npm:1.0.0-alpha.11"
+    "@flex-development/mlly": "npm:1.0.0-alpha.13"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/pkg-types": "npm:2.0.0"
     "@flex-development/tsconfig-utils": "npm:1.1.2"
@@ -1341,24 +1329,6 @@ __metadata:
     mkbuild: ./dist/cli.mjs
   languageName: unknown
   linkType: soft
-
-"@flex-development/mlly@npm:1.0.0-alpha.11":
-  version: 1.0.0-alpha.11
-  resolution: "@flex-development/mlly@npm:1.0.0-alpha.11::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fmlly%2F1.0.0-alpha.11%2F4801f76b2e43ae5f14be38212e22c43cf335af48"
-  dependencies:
-    "@flex-development/errnode": "npm:1.4.0"
-    "@flex-development/export-regex": "npm:1.0.0"
-    "@flex-development/import-regex": "npm:2.0.1"
-    "@flex-development/is-builtin": "npm:2.0.0"
-    "@flex-development/pathe": "npm:1.0.3"
-    "@flex-development/pkg-types": "npm:2.0.0"
-    "@flex-development/tutils": "npm:6.0.0-alpha.9"
-  peerDependencies:
-    "@types/node": ">=14.17.0"
-    node-fetch: ">=3.3.0"
-  checksum: 8f7843719a5002f73bac76b250168e7a9092b2e093c8566c379b396de6f12af84243b54a4401bb76fdd58c2b455d942455e777bc6bb6c407910eb61d962d4aac
-  languageName: node
-  linkType: hard
 
 "@flex-development/mlly@npm:1.0.0-alpha.13":
   version: 1.0.0-alpha.13

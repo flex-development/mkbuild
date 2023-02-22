@@ -81,7 +81,7 @@
   "dependencies": {
     "@flex-development/decorator-regex": "1.0.0",
     "@flex-development/ext-regex": "1.0.0",
-    "@flex-development/mlly": "1.0.0-alpha.11",
+    "@flex-development/mlly": "1.0.0-alpha.13",
     "@flex-development/pathe": "1.0.3",
     "@flex-development/pkg-types": "2.0.0",
     "@flex-development/tsconfig-utils": "1.1.2",
