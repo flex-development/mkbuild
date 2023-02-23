@@ -10,6 +10,15 @@
  */
 const config = {
   extends: ['./.eslintrc.base.cjs'],
+  overrides: [
+    ...require('./.eslintrc.base.cjs').overrides,
+    {
+      files: ['loader.mjs'],
+      rules: {
+        '@typescript-eslint/no-use-before-define': 0
+      }
+    }
+  ],
   root: true
 }
 

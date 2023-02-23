@@ -1,7 +1,60 @@
 import type { Format } from '@flex-development/mlly'
-import type { Nullable, TypedArray } from '@flex-development/tutils'
+import type { Nilable, TypedArray } from '@flex-development/tutils'
 
 declare global {
+  /**
+   * {@linkcode GetFormatHook} context.
+   */
+  declare interface GetFormatHookContext {}
+
+  /**
+   * Determines how the given `url` should be interpreted.
+   *
+   * @see {@linkcode GetFormatHookContext}
+   * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getformat_url_context_defaultgetformat
+   *
+   * @async
+   *
+   * @param {string} url - Resolved module URL
+   * @param {GetFormatHookContext} context - Hook context
+   * @param {GetFormatHook} defaultGetFormat - Default Node.js hook
+   * @return {Promise<Format>} Hook result
+   */
+  declare type GetFormatHook = (
+    url: string,
+    context: GetFormatHookContext,
+    defaultGetFormat: GetFormatHook
+  ) => Promise<Format>
+
+  /**
+   * {@linkcode GetSourceHook} context.
+   */
+  declare interface GetSourceHookContext {
+    /**
+     * Module format.
+     */
+    format: Format
+  }
+
+  /**
+   * Retrieves the source code of a module.
+   *
+   * @see {@linkcode GetSourceHookContext}
+   * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getsource_url_context_defaultgetsource
+   *
+   * @async
+   *
+   * @param {string} url - Resolved module URL
+   * @param {GetSourceHookContext} context - Hook context
+   * @param {GetSourceHook} defaultGetSource - Default Node.js hook
+   * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+   */
+  declare type GetSourceHook = (
+    url: string,
+    context: GetSourceHookContext,
+    defaultGetSource: GetSourceHook
+  ) => Promise<SharedArrayBuffer | Uint8Array | string>
+
   /**
    * {@linkcode LoadHook} context.
    */
@@ -95,7 +148,7 @@ declare global {
      *
      * **Note**: Hint may be ignored.
      */
-    format?: Nullable<Format | Lowercase<keyof typeof Format>> | undefined
+    format?: Nilable<Format | Lowercase<keyof typeof Format>>
 
     /**
      * Signal that the current {@linkcode ResolveHook} intends to terminate the
@@ -131,4 +184,43 @@ declare global {
     context: ResolveHookContext,
     nextResolve: ResolveHook
   ) => Promise<ResolveHookResult>
+
+  /**
+   * {@linkcode TransformSourceHook} context.
+   */
+  declare interface TransformSourceHookContext {
+    /**
+     * Export conditions.
+     */
+    conditions?: string[]
+
+    /**
+     * Module format.
+     */
+    format: Format
+
+    /**
+     * Resolved module URL.
+     */
+    url: string
+  }
+
+  /**
+   * Modifies the source code of a module.
+   *
+   * @see {@linkcode TransformSourceHookContext}
+   * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_transformsource_source_context_defaulttransformsource
+   *
+   * @async
+   *
+   * @param {SharedArrayBuffer | Uint8Array | string} source - Source code
+   * @param {TransformSourceHookContext} context - Hook context
+   * @param {TransformSourceHook} defaultTransformSource - Default Node.js hook
+   * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+   */
+  declare type TransformSourceHook = (
+    source: string,
+    context: TransformSourceHookContext,
+    defaultTransformSource: TransformSourceHook
+  ) => Promise<SharedArrayBuffer | Uint8Array | string>
 }

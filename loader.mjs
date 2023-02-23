@@ -32,6 +32,36 @@ const tsconfig = mlly.toURL('tsconfig.json')
 const compilerOptions = tscu.loadCompilerOptions(tsconfig)
 
 /**
+ * Determines how the given `url` should be interpreted.
+ *
+ * @see {@linkcode GetFormatHookContext}
+ * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getformat_url_context_defaultgetformat
+ *
+ * @async
+ *
+ * @param {string} url - Resolved module URL
+ * @param {GetFormatHookContext} context - Hook context
+ * @param {GetFormatHook} defaultGetFormat - Default Node.js hook
+ * @return {Promise<mlly.Format>} Hook result
+ */
+export const getFormat = mlly.getFormat
+
+/**
+ * Retrieves the source code of a module.
+ *
+ * @see {@linkcode GetSourceHookContext}
+ * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getsource_url_context_defaultgetsource
+ *
+ * @async
+ *
+ * @param {string} url - Resolved module URL
+ * @param {GetSourceHookContext} context - Hook context
+ * @param {GetSourceHook} defaultGetSource - Default Node.js hook
+ * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+ */
+export const getSource = mlly.getSource
+
+/**
  * Determines how the module at the given `url` should be interpreted,
  * retrieved, and parsed.
  *
@@ -52,53 +82,18 @@ export const load = async (url, context) => {
   mlly.validateAssertions(url, context.format, context.importAssertions)
 
   /**
-   * File extension of {@linkcode url}.
-   *
-   * @type {pathe.Ext | tutils.EmptyString}
-   * @const ext
-   */
-  const ext = pathe.extname(url)
-
-  /**
    * Source code.
    *
    * @type {Uint8Array | string | undefined}
-   * @var source
+   * @const source
    */
-  let source = await mlly.getSource(url, { format: context.format })
+  const source = await mlly.getSource(url, context)
 
-  // transform typescript files
-  if (/^\.(?:cts|mts|tsx?)$/.test(ext) && !/\.d\.(?:cts|mts|ts)$/.test(url)) {
-    // resolve path aliases
-    source = await tscu.resolvePaths(source, {
-      conditions: context.conditions,
-      ext: '',
-      parent: url,
-      tsconfig
-    })
-
-    // resolve modules
-    source = await mlly.resolveModules(source, {
-      conditions: context.conditions,
-      parent: url
-    })
-
-    // transpile source code
-    const { code } = await esbuild.transform(source, {
-      format: ext === '.cts' ? 'cjs' : 'esm',
-      loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
-      minify: false,
-      sourcefile: fileURLToPath(url),
-      sourcemap: 'inline',
-      target: `node${process.versions.node}`,
-      tsconfigRaw: { compilerOptions }
-    })
-
-    // set source code to transpiled source
-    source = code
+  return {
+    format: context.format,
+    shortCircuit: true,
+    source: await transformSource(source, { ...context, url }, () => source)
   }
-
-  return { format: context.format, shortCircuit: true, source }
 }
 
 /**
@@ -146,4 +141,62 @@ export const resolve = async (specifier, context) => {
     shortCircuit: true,
     url: url.href
   }
+}
+
+/**
+ * Modifies the source code of a module.
+ *
+ * @see {@linkcode TransformSourceHookContext}
+ * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_transformsource_source_context_defaulttransformsource
+ *
+ * @async
+ *
+ * @param {SharedArrayBuffer | Uint8Array | string} source - Source code
+ * @param {TransformSourceHookContext} context - Hook context
+ * @param {TransformSourceHook} defaultTransformSource - Default Node.js hook
+ * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+ */
+export const transformSource = async (
+  source,
+  context,
+  defaultTransformSource
+) => {
+  const { conditions = ['node', 'import'], format, url } = context
+
+  /**
+   * File extension of {@linkcode url}.
+   *
+   * @type {pathe.Ext | tutils.EmptyString}
+   * @const ext
+   */
+  const ext = pathe.extname(url)
+
+  // transform typescript files
+  if (/^\.(?:cts|mts|tsx?)$/.test(ext) && !/\.d\.(?:cts|mts|ts)$/.test(url)) {
+    // resolve path aliases
+    source = await tscu.resolvePaths(source, {
+      conditions,
+      ext: '',
+      parent: url,
+      tsconfig
+    })
+
+    // resolve modules
+    source = await mlly.resolveModules(source, { conditions, parent: url })
+
+    // transpile source code
+    const { code } = await esbuild.transform(source, {
+      format: format === mlly.Format.COMMONJS ? 'cjs' : 'esm',
+      loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
+      minify: false,
+      sourcefile: fileURLToPath(url),
+      sourcemap: 'inline',
+      target: `node${process.versions.node}`,
+      tsconfigRaw: { compilerOptions }
+    })
+
+    return code
+  }
+
+  return defaultTransformSource(source, context, defaultTransformSource)
 }

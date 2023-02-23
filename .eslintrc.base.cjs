@@ -40,6 +40,10 @@ const config = {
         BufferEncoding: 'readonly',
         Chai: 'readonly',
         Console: 'readonly',
+        GetFormatHook: 'readonly',
+        GetFormatHookContext: 'readonly',
+        GetSourceHook: 'readonly',
+        GetSourceHookContext: 'readonly',
         JSX: jsx ? 'readonly' : false,
         LoadHook: 'readonly',
         LoadHookContext: 'readonly',
@@ -48,7 +52,9 @@ const config = {
         NodeJS: 'readonly',
         ResolveHook: 'readonly',
         ResolveHookContext: 'readonly',
-        ResolveHookResult: 'readonly'
+        ResolveHookResult: 'readonly',
+        TransformSourceHook: 'readonly',
+        TransformSourceHookContext: 'readonly'
       },
       parser: '@typescript-eslint/parser',
       parserOptions: {
