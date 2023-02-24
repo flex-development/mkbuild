@@ -6,12 +6,14 @@
 import type { Entry } from '#src/interfaces'
 import loaders from '#src/utils/loaders'
 import type { Mock } from '#tests/interfaces'
+import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
+import type { PackageJson } from '@flex-development/pkg-types'
 import * as esbuild from 'esbuild'
 import testSubject from '../esbuilder'
 
-vi.mock('#src/plugins/write/plugin')
+vi.mock('#src/utils/fs')
 vi.mock('esbuild')
 
 describe('integration:internal/esbuilder', () => {
@@ -34,20 +36,22 @@ describe('integration:internal/esbuilder', () => {
       let absWorkingDir: string
       let entry: Partial<Entry>
       let format: esbuild.Format
+      let pkg: PackageJson
 
-      beforeAll(() => {
-        entry = { cwd: '__fixtures__/pkg/find-uniq' }
+      beforeAll(async () => {
+        entry = { cwd: '__fixtures__/pkg/buddy' }
         absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
         format = entry.format = 'cjs'
+        pkg = await getPackageJson(pathe.join(absWorkingDir, 'package.json'))
       })
 
       it('should create bundle in cjs format', async () => {
         // Arrange
         const bundle: boolean = true
-        const source: string = 'find-uniq.cts'
+        const source: string = 'buddy.js'
 
         // Act
-        const [, results] = await testSubject({ ...entry, bundle, source })
+        const [, results] = await testSubject({ ...entry, bundle, source }, pkg)
 
         // Expect
         expect(results).toMatchSnapshot()
@@ -74,11 +78,14 @@ describe('integration:internal/esbuilder', () => {
 
       it('should do transpilation in cjs format', async () => {
         // Arrange
-        const pattern: string = 'find-uniq.cts'
+        const pattern: string = 'buddy.js'
         const source: string = '.'
 
         // Act
-        const [, results] = await testSubject({ ...entry, pattern, source })
+        const [, results] = await testSubject(
+          { ...entry, pattern, source },
+          pkg
+        )
 
         // Expect
         expect(results).toMatchSnapshot()
@@ -214,7 +221,7 @@ describe('integration:internal/esbuilder', () => {
       let format: esbuild.Format
 
       beforeAll(() => {
-        entry = { cwd: '__fixtures__/pkg/buddy' }
+        entry = { cwd: '__fixtures__/pkg/find-uniq' }
         absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
         format = entry.format = 'iife'
       })
@@ -222,7 +229,7 @@ describe('integration:internal/esbuilder', () => {
       it('should create bundle in iife format', async () => {
         // Arrange
         const bundle: boolean = true
-        const source: string = 'buddy.js'
+        const source: string = 'find-uniq.cts'
 
         // Act
         const [, results] = await testSubject({ ...entry, bundle, source })
@@ -252,7 +259,7 @@ describe('integration:internal/esbuilder', () => {
 
       it('should do transpilation in iife format', async () => {
         // Arrange
-        const pattern: string = 'buddy.js'
+        const pattern: string = 'find-uniq.cts'
         const source: string = '.'
 
         // Act

@@ -6,7 +6,7 @@
 import type { Entry } from '#src'
 import testSubject from '../esbuilder'
 
-vi.mock('#src/plugins/write/plugin')
+vi.mock('#src/utils/fs')
 
 describe('unit:internal/esbuilder', () => {
   let entry: Entry

@@ -5,19 +5,20 @@
 
 import { ErrorCode, type NodeError } from '@flex-development/errnode'
 import pathe from '@flex-development/pathe'
-import consola from 'consola'
 import testSubject from '../make'
 
 vi.mock('#src/utils/fs')
 
 describe('unit:make', () => {
+  let configfile: boolean
+
   beforeAll(() => {
-    consola.mockTypes(() => vi.fn())
+    configfile = false
   })
 
   it('should return build results', async () => {
     // Act
-    const results = await testSubject({ configfile: false })
+    const results = await testSubject({ configfile })
 
     // Expect
     expect(results).to.be.an('array').that.is.not.empty
@@ -33,7 +34,7 @@ describe('unit:make', () => {
 
     // Act
     try {
-      await testSubject({ configfile: false, cwd, write: true })
+      await testSubject({ configfile, cwd })
       assert.fail('expected exception not thrown')
     } catch (e: unknown) {
       error = e as typeof error

@@ -116,26 +116,21 @@ async function make({
   /**
    * `package.json` data.
    *
-   * @var {Nullable<PackageJson>} pkg
+   * @const {Nullable<PackageJson>} pkg
    */
-  let pkg: Nullable<PackageJson> = null
+  const pkg: Nullable<PackageJson> = mlly.readPackageJson(cwd)
 
-  // get package.json
-  if (options.write) {
-    pkg = mlly.readPackageJson(cwd)
-
-    // throw if package.json was not found
-    if (!pkg) {
-      throw new ERR_MODULE_NOT_FOUND(
-        pathe.join(cwd, 'package.json'),
-        fileURLToPath(import.meta.url),
-        'module'
-      )
-    }
+  // throw if package.json was not found
+  if (!pkg) {
+    throw new ERR_MODULE_NOT_FOUND(
+      pathe.join(cwd, 'package.json'),
+      fileURLToPath(import.meta.url),
+      'module'
+    )
   }
 
   // print build start info
-  options.write && consola.info(color.cyan(`Building ${pkg!.name}`))
+  options.write && consola.info(color.cyan(`Building ${pkg.name}`))
 
   // push empty object to infer entry from config if initial array is empty
   if (entries.length === 0) entries.push({})
@@ -146,7 +141,7 @@ async function make({
    * @const {Entry[]} tasks
    */
   const tasks: Entry[] = entries.map(entry => {
-    const { peerDependencies = {} } = pkg ?? /* c8 ignore next */ {}
+    const { peerDependencies = {} } = pkg
 
     const {
       bundle = options.bundle,
@@ -208,7 +203,7 @@ async function make({
     build.set(index, [])
 
     // build source files
-    const [, results] = await esbuilder(entry, fs)
+    const [, results] = await esbuilder(entry, pkg, fs)
 
     // add build results to build results map
     for (const result of results) build.get(index)!.push(result)
@@ -224,7 +219,7 @@ async function make({
     let bytes: number = 0
 
     // print build done info
-    consola.success(color.green(`Build succeeded for ${pkg!.name}`))
+    consola.success(color.green(`Build succeeded for ${pkg.name}`))
 
     // print build analysis
     for (const [index, outputs] of build.entries()) {

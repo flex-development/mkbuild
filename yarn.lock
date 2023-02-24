@@ -1229,6 +1229,7 @@ __metadata:
     "@flex-development/mlly": "npm:1.0.0-alpha.13"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/pkg-types": "npm:2.0.0"
+    "@flex-development/toggle-pkg-type": "npm:1.1.1"
     "@flex-development/tsconfig-utils": "npm:1.1.2"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
     "@graphql-eslint/eslint-plugin": "npm:3.16.0"
@@ -1364,6 +1365,19 @@ __metadata:
   peerDependencies:
     "@flex-development/tutils": ">=6.0.0-alpha.7"
   checksum: 7a7ce8a3289f30e0d6aa0b5e5028c308a36956f779b9baf6f2d209842b01acc2bc645f85a541125f83f461d41b15262b3af65ff6cd3b3f727679216acf0520cb
+  languageName: node
+  linkType: hard
+
+"@flex-development/toggle-pkg-type@npm:1.1.1":
+  version: 1.1.1
+  resolution: "@flex-development/toggle-pkg-type@npm:1.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftoggle-pkg-type%2F1.1.1%2F536f86b58a650e7b830ee3d88c750c3771b6dbc5"
+  dependencies:
+    "@flex-development/mlly": "npm:1.0.0-alpha.13"
+    "@flex-development/pathe": "npm:1.0.3"
+    "@flex-development/tutils": "npm:6.0.0-alpha.10"
+  bin:
+    toggle-pkg-type: dist/cli.mjs
+  checksum: 6ae31dfc2a193139b52fba42d9424eca4b4fdf6eb74621fd29d20508ae0148f7fae141f122995d1ec864dade8fd847a747cc24525ea6ad203e766e5692d3311a
   languageName: node
   linkType: hard
 
@@ -8792,13 +8806,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.0.0-dev.20230222":
-  version: 5.0.0-dev.20230222
-  resolution: "typescript@npm:5.0.0-dev.20230222"
+"typescript@npm:5.0.0-dev.20230224":
+  version: 5.0.0-dev.20230224
+  resolution: "typescript@npm:5.0.0-dev.20230224"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e22533927607fb9a52c7dbd2d2f530f268f2a7a03596ed9f76e5b20e9a49fe093c55441650d9d0f566e5f850be4a15d0e3f193aa987e62788d2860f7a909f1a2
+  checksum: 2c30ee32a78f64844b877032db0a974e1666033b867181158770b0283c210f6e2ba8576f5dca5c2e8e95a4239c6733bd5a9d15d67fbade3580d38125606ce26d
   languageName: node
   linkType: hard
 

@@ -12,6 +12,8 @@ import loaders from '#src/utils/loaders'
 import { EXT_DTS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
+import type { PackageJson } from '@flex-development/pkg-types'
+import togglePkgType from '@flex-development/toggle-pkg-type'
 import * as esbuild from 'esbuild'
 import regexp from 'escape-string-regexp'
 import fg from 'fast-glob'
@@ -25,12 +27,14 @@ import { omit } from 'radash'
  * @async
  *
  * @param {Partial<Entry>} entry - Build entry object
- * @param {Partial<FileSystemAdapter>} [fs=fsa] - Custom file system methods
+ * @param {PackageJson?} [pkg={}] - Relevant `package.json`
+ * @param {Partial<FileSystemAdapter>?} [fs=fsa] - Custom file system methods
  * @return {Promise<[esbuild.Metafile, Result[]]>} Metafile and build results
  * @throws {esbuild.BuildFailure}
  */
 const esbuilder = async (
   entry: Partial<Entry>,
+  pkg: PackageJson = {},
   fs: Partial<FileSystemAdapter> = fsa
 ): Promise<[esbuild.Metafile, Result[]]> => {
   const {
@@ -65,6 +69,17 @@ const esbuilder = async (
    */
   const absWorkingDir: string =
     pathe.resolve(cwd).replace(/\/$/, '') + pathe.sep
+
+  /**
+   * Boolean indicating {@linkcode pkg.type} should be disabled before building
+   * source files.
+   *
+   * @see https://github.com/evanw/esbuild/issues/2026
+   * @see https://github.com/flex-development/toggle-pkg-type
+   *
+   * @const {boolean} pkgtype
+   */
+  const pkgtype: boolean = pkg.type === 'module' && format === 'cjs'
 
   /**
    * Relative paths to source files.
@@ -126,6 +141,9 @@ const esbuilder = async (
   Reflect.deleteProperty(options, 'stdin')
   Reflect.deleteProperty(options, 'watch')
 
+  // disable package type
+  pkgtype && togglePkgType(null, absWorkingDir)
+
   // build source files
   const { errors, metafile, outputFiles, warnings } = await esbuild.build({
     ...options,
@@ -166,6 +184,9 @@ const esbuilder = async (
     tsconfig,
     write: false
   })
+
+  // reset package type
+  pkgtype && togglePkgType(null, absWorkingDir)
 
   return [
     metafile,

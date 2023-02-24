@@ -3,10 +3,10 @@
 exports[`integration:internal/esbuilder > esbuild > cjs > should create bundle in cjs format 1`] = `
 [
   {
-    "entryPoint": "find-uniq.cts",
+    "entryPoint": "buddy.js",
     "errors": [],
-    "outfile": "dist/find-uniq.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.cjs",
+    "outfile": "dist/buddy.cjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.cjs",
     "warnings": [],
   },
 ]
@@ -15,10 +15,10 @@ exports[`integration:internal/esbuilder > esbuild > cjs > should create bundle i
 exports[`integration:internal/esbuilder > esbuild > cjs > should do transpilation in cjs format 1`] = `
 [
   {
-    "entryPoint": "find-uniq.cts",
+    "entryPoint": "buddy.js",
     "errors": [],
-    "outfile": "dist/find-uniq.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.cjs",
+    "outfile": "dist/buddy.cjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.cjs",
     "warnings": [],
   },
 ]
@@ -107,10 +107,10 @@ exports[`integration:internal/esbuilder > esbuild > esm > should do transpilatio
 exports[`integration:internal/esbuilder > esbuild > iife > should create bundle in iife format 1`] = `
 [
   {
-    "entryPoint": "buddy.js",
+    "entryPoint": "find-uniq.cts",
     "errors": [],
-    "outfile": "dist/buddy.js",
-    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.js",
+    "outfile": "dist/find-uniq.js",
+    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.js",
     "warnings": [],
   },
 ]
@@ -119,10 +119,10 @@ exports[`integration:internal/esbuilder > esbuild > iife > should create bundle 
 exports[`integration:internal/esbuilder > esbuild > iife > should do transpilation in iife format 1`] = `
 [
   {
-    "entryPoint": "buddy.js",
+    "entryPoint": "find-uniq.cts",
     "errors": [],
-    "outfile": "dist/buddy.js",
-    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.js",
+    "outfile": "dist/find-uniq.js",
+    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.js",
     "warnings": [],
   },
 ]
