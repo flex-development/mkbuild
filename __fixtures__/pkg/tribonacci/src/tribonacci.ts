@@ -1,6 +1,6 @@
 /**
  * @file tribonacci
- * @module @module fixtures/pkg/tribonacci/tribonacci
+ * @module fixtures/pkg/tribonacci/tribonacci
  * @see https://codewars.com/kata/556deca17c58da83c00002db
  */
 

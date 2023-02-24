@@ -3,14 +3,12 @@
  * @module mkbuild/tests/make/unit
  */
 
-import type { Spy } from '#tests/interfaces'
-import { ERR_MODULE_NOT_FOUND, type NodeError } from '@flex-development/errnode'
-import * as mlly from '@flex-development/mlly'
+import { ErrorCode, type NodeError } from '@flex-development/errnode'
+import pathe from '@flex-development/pathe'
 import consola from 'consola'
 import testSubject from '../make'
 
 vi.mock('#src/utils/fs')
-vi.mock('@flex-development/mlly')
 
 describe('unit:make', () => {
   beforeAll(() => {
@@ -18,15 +16,31 @@ describe('unit:make', () => {
   })
 
   it('should return build results', async () => {
-    // Arrange
-    const id: string = 'typescript'
-    const error: NodeError = new ERR_MODULE_NOT_FOUND(id, import.meta.url)
-    ;(mlly.resolveModule as unknown as Spy).mockRejectedValueOnce(error)
-
     // Act
-    const result = await testSubject({ cwd: '__fixtures__/pkg/buddy' })
+    const results = await testSubject({ configfile: false })
 
     // Expect
-    expect(result).to.be.an('array').that.is.not.empty
+    expect(results).to.be.an('array').that.is.not.empty
+  })
+
+  it('should throw if package.json file is not found', async () => {
+    // Arrange
+    const base: string = pathe.resolve('src/make.ts')
+    const cwd: string = '__fixtures__/pkg/no-package-json'
+    const id: string = pathe.resolve(cwd, 'package.json')
+    const message: string = `Cannot find module '${id}' imported from ${base}`
+    let error!: NodeError
+
+    // Act
+    try {
+      await testSubject({ configfile: false, cwd, write: true })
+      assert.fail('expected exception not thrown')
+    } catch (e: unknown) {
+      error = e as typeof error
+    }
+
+    // Expect
+    expect(error).to.have.property('code').equal(ErrorCode.ERR_MODULE_NOT_FOUND)
+    expect(error).to.have.property('message').equal(message)
   })
 })

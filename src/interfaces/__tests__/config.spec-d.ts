@@ -19,6 +19,12 @@ describe('unit-d:interfaces/Config', () => {
       .toEqualTypeOf<boolean | undefined>()
   })
 
+  it('should match [configfile?: boolean]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('configfile')
+      .toEqualTypeOf<boolean | undefined>()
+  })
+
   it('should match [entries?: Partial<Entry>[]]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('entries')

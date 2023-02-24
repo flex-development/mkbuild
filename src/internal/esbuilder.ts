@@ -7,7 +7,7 @@ import type { Entry, Result, SourceFile } from '#src/interfaces'
 import * as mkp from '#src/plugins'
 import type { FileSystemAdapter, OutputMetadata } from '#src/types'
 import fsa from '#src/utils/fs'
-import IGNORE from '#src/utils/ignore-patterns'
+import IGNORE_PATTERNS from '#src/utils/ignore-patterns'
 import loaders from '#src/utils/loaders'
 import { EXT_DTS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
@@ -22,9 +22,6 @@ import { omit } from 'radash'
  *
  * [1]: https://esbuild.github.io/api/#build-api
  *
- * @todo ensure `entry.source` is a directory when bundling is disabled
- * @todo ensure `entry.source` is a file (with extname) when bundling is enabled
- *
  * @async
  *
  * @param {Partial<Entry>} entry - Build entry object
@@ -38,14 +35,12 @@ const esbuilder = async (
 ): Promise<[esbuild.Metafile, Result[]]> => {
   const {
     bundle = false,
-    conditions = bundle ? [] : mlly.CONDITIONS,
-    createRequire: insertRequire,
+    conditions = bundle ? [] : [...mlly.CONDITIONS],
     cwd = '.',
-    dts: declaration,
-    ext = '.mjs',
+    dts,
     external = [],
     format = 'esm',
-    ignore = IGNORE,
+    ignore = [...IGNORE_PATTERNS],
     loader = {},
     name = '[name]',
     outExtension = {},
@@ -53,10 +48,12 @@ const esbuilder = async (
     pattern = '**',
     platform = '',
     plugins = [],
-    resolveExtensions = mlly.RESOLVE_EXTENSIONS,
+    resolveExtensions = [...mlly.RESOLVE_EXTENSIONS],
     source = bundle ? 'src/index' : 'src',
     tsconfig = '',
     write = false,
+    createRequire = bundle && format === 'esm' && platform === 'node',
+    ext = format === 'cjs' ? '.cjs' : format === 'esm' ? '.mjs' : '.js',
     outbase = bundle ? pathe.parse(source).dir : source,
     ...options
   } = entry
@@ -99,53 +96,19 @@ const esbuilder = async (
     }
   )
 
-  /**
-   * Source file objects.
-   *
-   * @const {SourceFile[]} sources
-   */
-  const sources: SourceFile[] = files.map(file => {
-    /**
-     * Absolute path to source file.
-     *
-     * @const {string} path
-     */
-    const path: string = pathe.join(absWorkingDir, source, bundle ? '' : file)
-
-    /**
-     * File extension of source file.
-     *
-     * @var {string} ext
-     */
-    let ext: string = pathe.extname(file)
-
-    // fix file extension if source file is typescript declaration file
-    /* c8 ignore next */ EXT_DTS_REGEX.test(file) && (ext = '.d' + ext)
-
-    return {
-      ext: ext as pathe.Ext,
-      file: bundle
-        ? // adds outbase support for bundles (esbuild only uses outbase for
-          // multiple entry points); @see https://esbuild.github.io/api/#outbase
-          file.replace(new RegExp(`^${regexp(outbase)}`), '').replace(/^\//, '')
-        : file,
-      path
-    }
-  })
-
   // add fully-specified plugin
-  if (format === 'esm' || ext === '.cjs') plugins.unshift(mkp.fullySpecified())
+  if (format === 'esm' || ['.cjs', '.mjs'].some(e => ext.endsWith(e))) {
+    plugins.unshift(mkp.fullySpecified())
+  }
 
   // add tsconfig-paths plugin
-  tsconfig && plugins.unshift(mkp.tsconfigPaths())
+  tsconfig && !bundle && plugins.unshift(mkp.tsconfigPaths())
 
   // add dts plugin
-  if (declaration as boolean) plugins.unshift(mkp.dts())
+  ;(dts === 'only' || dts) && !bundle && plugins.unshift(mkp.dts())
 
   // add create-require plugin
-  if ((bundle && format === 'esm' && platform === 'node') || insertRequire) {
-    plugins.unshift(mkp.createRequire())
-  }
+  createRequire && plugins.unshift(mkp.createRequire())
 
   // add decorators plugin
   tsconfig && plugins.unshift(mkp.decorators())
@@ -153,10 +116,7 @@ const esbuilder = async (
   // add output file writer plugin
   if (write) {
     plugins.push(
-      mkp.write({
-        ...fs,
-        filter: declaration === 'only' ? EXT_DTS_REGEX : undefined
-      })
+      mkp.write({ ...fs, filter: dts === 'only' ? EXT_DTS_REGEX : undefined })
     )
   }
 
@@ -173,19 +133,24 @@ const esbuilder = async (
     bundle,
     conditions: [...new Set(conditions)],
     entryNames: `[dir]/${name}`,
-    entryPoints: sources.reduce<Record<string, string>>((acc, src) => {
-      const { ext, file } = src
-
-      /**
-       * Regex pattern matching {@linkcode ext}.
-       *
-       * @const {RegExp} ext_re
-       */
-      const ext_re: RegExp = new RegExp(`${regexp(ext)}$`)
-
-      acc[file.replace(ext_re, '')] = pathe.join(source, bundle ? '' : file)
-      return acc
-    }, {}),
+    entryPoints: files
+      .map((file: string): SourceFile => {
+        return {
+          ext: pathe.extname(file) as pathe.Ext,
+          file:
+            bundle && outbase !== '.'
+              ? // outbase support for bundles (esbuild only uses outbase for
+                // multiple entries); https://esbuild.github.io/api/#outbase
+                file
+                  .replace(new RegExp(`^${regexp(outbase)}`), '')
+                  .replace(/^\//, '')
+              : file,
+          path: pathe.join(absWorkingDir, source, bundle ? '' : file)
+        }
+      })
+      .map((sourcefile: SourceFile): string => {
+        return pathe.join(bundle ? outbase : source, sourcefile.file)
+      }),
     external: bundle ? [...new Set(external)] : [],
     format,
     loader: { ...loaders(format, bundle), ...loader },
@@ -205,7 +170,7 @@ const esbuilder = async (
   return [
     metafile,
     outputFiles
-      .map(({ contents, path, text }) => {
+      .map((output: esbuild.OutputFile): Result => {
         /**
          * Relative path to output file.
          *
@@ -213,7 +178,7 @@ const esbuilder = async (
          *
          * @const {string} outfile
          */
-        const outfile: string = path.replace(
+        const outfile: string = output.path.replace(
           new RegExp(`^${regexp(absWorkingDir)}`),
           ''
         )
@@ -227,21 +192,19 @@ const esbuilder = async (
 
         return {
           bytes: metadata.bytes,
-          contents,
+          contents: output.contents,
           entryPoint: metadata.entryPoint,
           errors,
           exports: [...new Set(metadata.exports)],
           imports: metadata.imports,
           inputs: metafile.inputs,
           outfile,
-          path,
-          text,
+          path: output.path,
+          text: output.text,
           warnings
         }
       })
-      .filter(res => {
-        return declaration === 'only' ? EXT_DTS_REGEX.test(res.path) : true
-      })
+      .filter(res => (dts === 'only' ? EXT_DTS_REGEX.test(res.path) : true))
   ]
 }
 

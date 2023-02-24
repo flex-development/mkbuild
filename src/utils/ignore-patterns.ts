@@ -11,18 +11,28 @@
  * @const {Set<string>} IGNORE_PATTERNS
  */
 const IGNORE_PATTERNS: Set<string> = new Set<string>([
-  '**/**.mdx',
-  '**/**.stories.*',
+  '**/*.mdx',
+  '**/*.stories.*',
   '**/.*ignore',
   '**/.*rc',
-  '**/.DS_Store',
+  '**/.*rc.*',
+  '**/.DS_*',
+  '**/.codecov.yml',
+  '**/.cspell.json',
+  '**/.dictionary.txt',
+  '**/.editorconfig',
   '**/.env*',
   '**/.git*',
-  '**/__mocks__/**',
-  '**/__snapshots__/**',
-  '**/__tests__/**',
-  '**/coverage/**',
+  '**/Brewfile',
+  '**/__mocks__',
+  '**/__snapshots__',
+  '**/__tests__',
+  '**/build.config.*',
   '**/package-lock.json',
+  '**/package.json',
+  '**/tsconfig*.json',
+  '**/vitest-env.*',
+  '**/vitest.config.*',
   '**/yarn.lock'
 ])
 

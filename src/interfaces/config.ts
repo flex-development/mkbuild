@@ -21,6 +21,13 @@ interface Config extends Options {
   clean?: boolean
 
   /**
+   * Load build config from config file.
+   *
+   * @default true
+   */
+  configfile?: boolean
+
+  /**
    * Build entries.
    *
    * **Note**: If empty or `undefined`, a single build entry will be inferred

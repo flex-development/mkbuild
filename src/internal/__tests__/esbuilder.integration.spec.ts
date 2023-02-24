@@ -4,7 +4,10 @@
  */
 
 import type { Entry } from '#src/interfaces'
-import type { Spy } from '#tests/interfaces'
+import loaders from '#src/utils/loaders'
+import type { Mock } from '#tests/interfaces'
+import * as mlly from '@flex-development/mlly'
+import * as pathe from '@flex-development/pathe'
 import * as esbuild from 'esbuild'
 import testSubject from '../esbuilder'
 
@@ -13,115 +16,269 @@ vi.mock('esbuild')
 
 describe('integration:internal/esbuilder', () => {
   describe('esbuild', () => {
-    let build: Spy<(typeof esbuild)['build']>
+    let build: Mock<(typeof esbuild)['build']>
+    let external: string[]
+    let resolveExtensions: pathe.Ext[]
+    let outdir: string
+    let write: boolean
 
     beforeEach(() => {
       build = esbuild.build as unknown as typeof build
+      external = []
+      resolveExtensions = [...mlly.RESOLVE_EXTENSIONS]
+      outdir = 'dist'
+      write = false
     })
 
-    describe('bundling', () => {
+    describe('cjs', () => {
+      let absWorkingDir: string
       let entry: Partial<Entry>
-      let plugins: esbuild.Plugin[]
+      let format: esbuild.Format
 
       beforeAll(() => {
-        entry = {
-          assetNames: 'assets/[name]-[hash]',
-          bundle: true,
-          chunkNames: 'chunks/[name]-[hash]',
-          cwd: '__fixtures__/pkg/reverse',
-          dts: false,
-          format: 'esm',
-          name: 'index',
-          platform: 'node',
-          splitting: true
-        }
+        entry = { cwd: '__fixtures__/pkg/find-uniq' }
+        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
+        format = entry.format = 'cjs'
       })
 
-      beforeEach(async () => {
-        await testSubject(entry)
-        plugins = build.mock.lastCall![0]!.plugins!
+      it('should create bundle in cjs format', async () => {
+        // Arrange
+        const bundle: boolean = true
+        const source: string = 'find-uniq.cts'
+
+        // Act
+        const [, results] = await testSubject({ ...entry, bundle, source })
+
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle,
+          conditions: [],
+          entryNames: '[dir]/[name]',
+          entryPoints: [source],
+          external,
+          format,
+          loader: loaders(format, bundle),
+          metafile: true,
+          outExtension: { '.js': '.cjs' },
+          outbase: '.',
+          outdir,
+          platform: '',
+          plugins: [{ name: 'fully-specified', setup: expect.any(Function) }],
+          resolveExtensions,
+          tsconfig: '',
+          write
+        })
       })
 
-      it('should enable bundling', () => {
-        expect(build.mock.lastCall![0]!.bundle).to.be.true
-      })
+      it('should do transpilation in cjs format', async () => {
+        // Arrange
+        const pattern: string = 'find-uniq.cts'
+        const source: string = '.'
 
-      it('should use create-require plugin if esm bundle is for node', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'create-require'
+        // Act
+        const [, results] = await testSubject({ ...entry, pattern, source })
+
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle: false,
+          conditions: [...mlly.CONDITIONS],
+          entryNames: '[dir]/[name]',
+          entryPoints: [pattern],
+          external,
+          format,
+          loader: loaders(format),
+          metafile: true,
+          outExtension: { '.js': '.cjs' },
+          outbase: source,
+          outdir,
+          platform: '',
+          plugins: [{ name: 'fully-specified', setup: expect.any(Function) }],
+          resolveExtensions,
+          tsconfig: '',
+          write
         })
       })
     })
 
-    describe('plugins', () => {
-      let plugins: esbuild.Plugin[] = []
+    describe('esm', () => {
+      let absWorkingDir: string
+      let entry: Partial<Entry>
+      let format: esbuild.Format
 
-      beforeEach(async () => {
-        await testSubject({
-          createRequire: true,
-          cwd: '__fixtures__/pkg/dbl-linear',
+      beforeAll(() => {
+        entry = { cwd: '__fixtures__/pkg/reverse', tsconfig: 'tsconfig.json' }
+        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
+        format = 'esm'
+      })
+
+      it('should create bundle in esm format', async () => {
+        // Arrange
+        const bundle: boolean = true
+        const keepNames: boolean = true
+        const name: string = 'index'
+        const platform: esbuild.Platform = 'node'
+        const sourcemap: boolean = true
+        const sourcesContent: boolean = false
+
+        // Act
+        const [, results] = await testSubject({
+          ...entry,
+          bundle,
+          keepNames,
+          name,
+          platform,
+          sourcemap,
+          sourcesContent
+        })
+
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle,
+          conditions: [],
+          entryNames: `[dir]/${name}`,
+          entryPoints: ['src/index.mts'],
+          external,
+          format,
+          keepNames,
+          loader: loaders(format, bundle),
+          metafile: true,
+          outExtension: { '.js': '.mjs' },
+          outbase: 'src',
+          outdir,
+          platform,
+          plugins: [
+            { name: 'decorators', setup: expect.any(Function) },
+            { name: 'create-require', setup: expect.any(Function) },
+            { name: 'fully-specified', setup: expect.any(Function) }
+          ],
+          resolveExtensions,
+          sourcemap,
+          sourcesContent,
+          tsconfig: entry.tsconfig,
+          write
+        })
+      })
+
+      it('should do transpilation in esm format', async () => {
+        // Act
+        const [, results] = await testSubject({
+          ...entry,
           dts: true,
-          ext: '.js',
-          format: 'esm',
-          outdir: '.',
-          pattern: 'dbl-linear.ts',
-          source: '.',
-          tsconfig: 'tsconfig.json',
           write: true
         })
 
-        plugins = build.mock.lastCall![0]!.plugins!
-      })
-
-      it('should use create-require if requested', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'create-require'
-        })
-      })
-
-      it('should use decorators if tsconfig file is passed', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'decorators'
-        })
-      })
-
-      it('should use dts if declarations are enabled', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'dts'
-        })
-      })
-
-      it('should use fully-specified if specifers require extensions', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'fully-specified'
-        })
-      })
-
-      it('should use tsconfig-paths if tsconfig file is passed', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'tsconfig-paths'
-        })
-      })
-
-      it('should use write if requested', () => {
-        expect(plugins).to.containExactlyOne((plugin: esbuild.Plugin) => {
-          return plugin.name === 'write'
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle: false,
+          conditions: [...mlly.CONDITIONS],
+          entryNames: '[dir]/[name]',
+          entryPoints: [
+            'src/index.mts',
+            'src/max-value.ts',
+            'src/min-value.ts',
+            'src/reverse.mts'
+          ],
+          external,
+          format,
+          loader: loaders(format),
+          metafile: true,
+          outExtension: { '.js': '.mjs' },
+          outbase: 'src',
+          outdir,
+          platform: '',
+          plugins: [
+            { name: 'decorators', setup: expect.any(Function) },
+            { name: 'dts', setup: expect.any(Function) },
+            { name: 'tsconfig-paths', setup: expect.any(Function) },
+            { name: 'fully-specified', setup: expect.any(Function) },
+            { name: 'write', setup: expect.any(Function) }
+          ],
+          resolveExtensions,
+          tsconfig: entry.tsconfig,
+          write
         })
       })
     })
 
-    describe('transpiling', () => {
-      beforeEach(async () => {
-        await testSubject({
-          cwd: '__fixtures__/pkg/my-atoi',
-          ext: '.cjs',
-          format: 'cjs',
-          tsconfig: 'tsconfig.json'
+    describe('iife', () => {
+      let absWorkingDir: string
+      let entry: Partial<Entry>
+      let format: esbuild.Format
+
+      beforeAll(() => {
+        entry = { cwd: '__fixtures__/pkg/buddy' }
+        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
+        format = entry.format = 'iife'
+      })
+
+      it('should create bundle in iife format', async () => {
+        // Arrange
+        const bundle: boolean = true
+        const source: string = 'buddy.js'
+
+        // Act
+        const [, results] = await testSubject({ ...entry, bundle, source })
+
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle,
+          conditions: [],
+          entryNames: '[dir]/[name]',
+          entryPoints: [source],
+          external,
+          format,
+          loader: loaders(format, bundle),
+          metafile: true,
+          outExtension: { '.js': '.js' },
+          outbase: '.',
+          outdir,
+          platform: '',
+          plugins: [],
+          resolveExtensions,
+          tsconfig: '',
+          write
         })
       })
 
-      it('should disable bundling', () => {
-        expect(build.mock.lastCall![0]!.bundle).to.not.be.true
+      it('should do transpilation in iife format', async () => {
+        // Arrange
+        const pattern: string = 'buddy.js'
+        const source: string = '.'
+
+        // Act
+        const [, results] = await testSubject({ ...entry, pattern, source })
+
+        // Expect
+        expect(results).toMatchSnapshot()
+        expect(build.mock.lastCall?.[0]).toMatchObject({
+          absWorkingDir,
+          bundle: false,
+          conditions: [...mlly.CONDITIONS],
+          entryNames: '[dir]/[name]',
+          entryPoints: [pattern],
+          external,
+          format,
+          loader: loaders(format),
+          metafile: true,
+          outExtension: { '.js': '.js' },
+          outbase: source,
+          outdir,
+          platform: '',
+          plugins: [],
+          resolveExtensions,
+          tsconfig: '',
+          write
+        })
       })
     })
   })

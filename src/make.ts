@@ -3,13 +3,14 @@
  * @module mkbuild/make
  */
 
+import { ERR_MODULE_NOT_FOUND } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
 import type { Nullable } from '@flex-development/tutils'
 import * as color from 'colorette'
 import consola from 'consola'
-import { pathToFileURL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 import pb from 'pretty-bytes'
 import { omit } from 'radash'
 import loadBuildConfig from './config/load'
@@ -40,33 +41,72 @@ import { IGNORE_PATTERNS, analyzeResults, fs as fsa } from './utils'
  * @param {Config} [config={}] - Build configuration options
  * @return {Promise<Result[]>} Build results
  */
-async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
+async function make({
+  configfile = true,
+  cwd = '.',
+  ...config
+}: Config = {}): Promise<Result[]> {
   const {
     clean,
     cwd: thisdir,
     entries = [],
     fs,
     ...options
-  } = defu(await loadBuildConfig(cwd), config, {
+  } = defu(configfile ? await loadBuildConfig(cwd) : {}, config, {
     bundle: false,
     clean: true,
     cwd,
     dts: await (async () => {
       try {
-        await mlly.resolveModule('typescript', { parent: pathToFileURL(cwd) })
+        await mlly.resolveModule(
+          pathe.resolve(cwd, 'node_modules', 'typescript', 'package.json')
+        )
         return true
       } catch {
         return false
       }
     })(),
     entries: [] as Partial<Entry>[],
-    ext: '.mjs',
+    ext: '',
     format: 'esm',
     fs: fsa,
-    ignore: [...IGNORE_PATTERNS],
+    ignore: await (async () => {
+      /**
+       * Ignore patterns.
+       *
+       * @const {Set<string>} ignore
+       */
+      const ignore: Set<string> = IGNORE_PATTERNS
+
+      // try adding ignore patterns from .gitignore
+      try {
+        /**
+         * Absolute path to `.gitignore` file.
+         *
+         * @const {string} gip
+         */
+        const gip: string = pathe.resolve(cwd, '.gitignore')
+
+        /**
+         * `.gitignore` file content.
+         *
+         * @const {string} gitignore
+         */
+        const gitignore: string = (await mlly.getSource(gip)) as string
+
+        // add ignore patterns from .gitignore
+        for (const line of gitignore.split(/\r?\n/)) {
+          if (!line.trim()) continue
+          if (line.startsWith('#') || line.startsWith('!')) continue
+          ignore.add(line.trim())
+        }
+      } catch {}
+
+      return [...ignore]
+    })(),
     outdir: 'dist',
     pattern: '**',
-    source: 'src',
+    source: '',
     write: false
   })
 
@@ -76,15 +116,29 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
   /**
    * `package.json` data.
    *
-   * @const {Nullable<PackageJson>} pkg
+   * @var {Nullable<PackageJson>} pkg
    */
-  const pkg: Nullable<PackageJson> = mlly.readPackageJson(cwd)
+  let pkg: Nullable<PackageJson> = null
 
-  // throw if package.json was not found
-  if (!pkg) throw new Error(cwd + '/package.json not found')
+  // get package.json
+  if (options.write) {
+    pkg = mlly.readPackageJson(cwd)
 
-  // infer entry from config
-  if (entries.length === 0) entries.push({ ...options, cwd: cwd })
+    // throw if package.json was not found
+    if (!pkg) {
+      throw new ERR_MODULE_NOT_FOUND(
+        pathe.join(cwd, 'package.json'),
+        fileURLToPath(import.meta.url),
+        'module'
+      )
+    }
+  }
+
+  // print build start info
+  options.write && consola.info(color.cyan(`Building ${pkg!.name}`))
+
+  // push empty object to infer entry from config if initial array is empty
+  if (entries.length === 0) entries.push({})
 
   /**
    * Normalized build entries.
@@ -92,26 +146,26 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
    * @const {Entry[]} tasks
    */
   const tasks: Entry[] = entries.map(entry => {
-    const { peerDependencies = {} } = pkg
+    const { peerDependencies = {} } = pkg ?? /* c8 ignore next */ {}
 
     const {
       bundle = options.bundle,
-      cwd: entrydir = cwd,
+      cwd: thiscwd = cwd,
+      ext = options.ext as string,
       format = options.format,
-      platform,
+      platform = options.platform,
       source = options.source
     } = entry
 
-    return defuConcat(entry, omit(options, ['source']), {
+    return defuConcat(entry, omit(options, ['ext', 'source']), {
       createRequire: bundle && format === 'esm' && platform === 'node',
-      cwd: pathe.resolve(cwd, entrydir),
+      cwd: pathe.resolve(cwd, thiscwd),
+      ext:
+        ext || (format === 'cjs' ? '.cjs' : format === 'esm' ? '.mjs' : '.js'),
       external: bundle ? Object.keys(peerDependencies) : [],
-      source: (!bundle && source) || source || /* c8 ignore next */ 'src/index'
+      source: source || (bundle ? 'src/index' : 'src')
     })
   })
-
-  // print build start info
-  options.write && consola.info(color.cyan(`Building ${pkg.name}`))
 
   // clean output directories
   if (options.write && clean) {
@@ -170,7 +224,7 @@ async function make({ cwd = '.', ...config }: Config = {}): Promise<Result[]> {
     let bytes: number = 0
 
     // print build done info
-    consola.success(color.green(`Build succeeded for ${pkg.name}`))
+    consola.success(color.green(`Build succeeded for ${pkg!.name}`))
 
     // print build analysis
     for (const [index, outputs] of build.entries()) {

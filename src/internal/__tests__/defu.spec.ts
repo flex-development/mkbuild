@@ -5,7 +5,6 @@
 
 import type { Config } from '#src/interfaces'
 import fs from '#src/utils/fs'
-import ignore from '#src/utils/ignore-patterns'
 import testSubject from '../defu'
 
 describe('unit:internal/defu', () => {
@@ -30,7 +29,6 @@ describe('unit:internal/defu', () => {
       ext: '.mjs',
       format: 'esm',
       fs,
-      ignore,
       outdir: 'dist',
       pattern: '**',
       source: 'src'

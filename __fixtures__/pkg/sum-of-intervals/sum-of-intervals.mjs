@@ -6,7 +6,9 @@
 
 /**
  * Given an array of intervals, all of varying lengths, the function returns the
- * sum of all interval lengths. **Overlapping intervals will be counted once**.
+ * sum of all interval lengths.
+ *
+ * **Overlapping intervals will be counted once**.
  *
  * @example
  *  sumOfIntervals([[1, 5]]) // 4

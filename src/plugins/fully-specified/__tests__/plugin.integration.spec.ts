@@ -4,7 +4,7 @@
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
-import type { Spy } from '#tests/interfaces'
+import type { Mock } from '#tests/interfaces'
 import {
   ERR_PACKAGE_IMPORT_NOT_DEFINED,
   type NodeError
@@ -50,7 +50,7 @@ describe('integration:plugins/fully-specified', () => {
 
       // Act
       try {
-        ;(mlly.fillModules as unknown as Spy).mockRejectedValueOnce(error)
+        ;(mlly.fillModules as unknown as Mock).mockRejectedValueOnce(error)
         await esbuild.build(options)
       } catch (e: unknown) {
         errors = (e as esbuild.BuildFailure).errors

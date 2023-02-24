@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .cjs file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .cjs file 1`] = `
 {
   "cwd": "__fixtures__/find-uniq",
   "ext": ".cjs",
@@ -12,7 +12,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .cts file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .cts file 1`] = `
 {
   "bundle": true,
   "cwd": "__fixtures__/pkg/my-atoi",
@@ -27,7 +27,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .js file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .js file 1`] = `
 {
   "bundle": true,
   "cwd": "__fixtures__/pkg/buddy",
@@ -47,7 +47,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .json file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .json file 1`] = `
 {
   "cwd": "__fixtures__/pkg/tribonacci",
   "entries": [
@@ -64,7 +64,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .mjs file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .mjs file 1`] = `
 {
   "cwd": "__fixtures__/pkg/sum-of-intervals",
   "entries": [
@@ -83,7 +83,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .mts file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .mts file 1`] = `
 {
   "conditions": Set {
     "node",
@@ -96,7 +96,7 @@ exports[`integration:config/loadBuildConfig > cosmiconfig > should return config
 }
 `;
 
-exports[`integration:config/loadBuildConfig > cosmiconfig > should return config from .ts file 1`] = `
+exports[`integration:config/loadBuildConfig > cosmiconfig > should load config from .ts file 1`] = `
 {
   "cwd": "__fixtures__/pkg/dbl-linear",
   "format": "esm",

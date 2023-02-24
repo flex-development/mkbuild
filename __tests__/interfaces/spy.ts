@@ -3,16 +3,17 @@
  * @module tests/interfaces/Spy
  */
 
+import type { Fn } from '@flex-development/tutils'
 import type { SpyInstance } from 'vitest'
 
 /**
  * {@linkcode SpyInstance} utility.
  *
- * @template Fn - Function being spied on
+ * @template F - Function being spied on
  *
- * @extends {SpyInstance<Parameters<Fn>, ReturnType<Fn>>}
+ * @extends {SpyInstance<Parameters<F>,ReturnType<F>>}
  */
-interface Spy<Fn extends (...args: any) => any = (...args: any) => any>
-  extends SpyInstance<Parameters<Fn>, ReturnType<Fn>> {}
+interface Spy<F extends Fn = Fn>
+  extends SpyInstance<Parameters<F>, ReturnType<F>> {}
 
-export { type Spy as default }
+export type { Spy as default }

@@ -19,12 +19,6 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<boolean | undefined>()
   })
 
-  it('should match [conditions?: Set<string> | string[]]', () => {
-    expectTypeOf<TestSubject>()
-      .toHaveProperty('conditions')
-      .toEqualTypeOf<Set<string> | string[] | undefined>()
-  })
-
   it('should match [createRequire?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('createRequire')
@@ -55,10 +49,10 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<esbuild.Format | undefined>()
   })
 
-  it('should match [ignore?: Set<string> | string[]]', () => {
+  it('should match [ignore?: string[]]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('ignore')
-      .toEqualTypeOf<Set<string> | string[] | undefined>()
+      .toEqualTypeOf<string[] | undefined>()
   })
 
   it('should match [name?: string]', () => {
@@ -77,12 +71,6 @@ describe('unit-d:interfaces/Options', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('pattern')
       .toEqualTypeOf<OneOrMany<string> | undefined>()
-  })
-
-  it('should match [resolveExtensions?: Set<string> | string[]]', () => {
-    expectTypeOf<TestSubject>()
-      .toHaveProperty('resolveExtensions')
-      .toEqualTypeOf<Set<string> | string[] | undefined>()
   })
 
   it('should match [source?: string]', () => {

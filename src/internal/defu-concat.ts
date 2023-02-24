@@ -34,8 +34,6 @@ function defuConcat<
   const compare = (val1: unknown, val2: unknown): unknown => {
     return Array.isArray(val1) && Array.isArray(val2)
       ? [...new Set([...val1, ...val2])]
-      : val1 instanceof Set && val2 instanceof Set
-      ? new Set([...val1, ...val2])
       : isUndefined(val1)
       ? val2
       : val1

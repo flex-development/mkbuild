@@ -27,9 +27,9 @@ interface Options extends EsbuildOptions {
    *
    * @see https://esbuild.github.io/api/#conditions
    *
-   * @default bundle ? [] : mlly.CONDITIONS
+   * @default bundle ? [] : [...mlly.CONDITIONS]
    */
-  conditions?: Set<string> | string[]
+  conditions?: string[]
 
   /**
    * Insert `require` function definition snippet into ESM bundles.
@@ -52,7 +52,7 @@ interface Options extends EsbuildOptions {
    *
    * Pass `'only'` to only write declaration files.
    *
-   * @default !!mlly.resolveModule('node_modules/typescript')
+   * @default !!mlly.resolveModule(cwd + 'node_modules/typescript/package.json')
    */
   dts?: boolean | 'only'
 
@@ -75,14 +75,14 @@ interface Options extends EsbuildOptions {
   /**
    * An array of glob patterns to exclude matches in {@linkcode pattern}.
    *
-   * **Note**: This is an alternative way to use negative patterns. Patterns
-   * will be merged with those specified in {@linkcode pattern}.
+   * If a `.gitignore` file is found, patterns from the ignore file (that are
+   * not negated) will be added to the default set of ignore patterns.
    *
    * @see https://github.com/mrmlnc/fast-glob#ignore
    *
-   * @default IGNORE_PATTERNS
+   * @default [...IGNORE_PATTERNS]
    */
-  ignore?: Set<string> | string[]
+  ignore?: string[]
 
   /**
    * Bundle output file name.
@@ -99,6 +99,8 @@ interface Options extends EsbuildOptions {
   /**
    * Glob patterns matching source files.
    *
+   * Not applicable if {@linkcode bundle} is enabled.
+   *
    * @see https://github.com/sindresorhus/globby
    *
    * @default '**'
@@ -110,14 +112,14 @@ interface Options extends EsbuildOptions {
    *
    * @see https://esbuild.github.io/api/#resolve-extensions
    *
-   * @default mlly.RESOLVE_EXTENSIONS
+   * @default [...mlly.RESOLVE_EXTENSIONS]
    */
-  resolveExtensions?: Set<string> | string[]
+  resolveExtensions?: string[]
 
   /**
    * Name of directory containing source files or relative path to bundle input.
    *
-   * @default 'src'
+   * @default bundle ? 'src/index' : 'src'
    */
   source?: string
 

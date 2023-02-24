@@ -4,7 +4,7 @@
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
-import type { Spy } from '#tests/interfaces'
+import type { Mock } from '#tests/interfaces'
 import {
   ERR_INVALID_MODULE_SPECIFIER,
   type NodeError
@@ -53,7 +53,7 @@ describe('integration:plugins/tsconfig-paths', () => {
 
       // Act
       try {
-        ;(tscu.resolvePaths as unknown as Spy).mockRejectedValueOnce(error)
+        ;(tscu.resolvePaths as unknown as Mock).mockRejectedValueOnce(error)
         await esbuild.build(options)
       } catch (e: unknown) {
         errors = (e as esbuild.BuildFailure).errors

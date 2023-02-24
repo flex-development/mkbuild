@@ -1,0 +1,129 @@
+// Vitest Snapshot v1
+
+exports[`integration:internal/esbuilder > esbuild > cjs > should create bundle in cjs format 1`] = `
+[
+  {
+    "entryPoint": "find-uniq.cts",
+    "errors": [],
+    "outfile": "dist/find-uniq.cjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.cjs",
+    "warnings": [],
+  },
+]
+`;
+
+exports[`integration:internal/esbuilder > esbuild > cjs > should do transpilation in cjs format 1`] = `
+[
+  {
+    "entryPoint": "find-uniq.cts",
+    "errors": [],
+    "outfile": "dist/find-uniq.cjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/find-uniq/dist/find-uniq.cjs",
+    "warnings": [],
+  },
+]
+`;
+
+exports[`integration:internal/esbuilder > esbuild > esm > should create bundle in esm format 1`] = `
+[
+  {
+    "entryPoint": undefined,
+    "errors": [],
+    "outfile": "dist/index.mjs.map",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/index.mjs.map",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/index.mts",
+    "errors": [],
+    "outfile": "dist/index.mjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/index.mjs",
+    "warnings": [],
+  },
+]
+`;
+
+exports[`integration:internal/esbuilder > esbuild > esm > should do transpilation in esm format 1`] = `
+[
+  {
+    "entryPoint": "src/index.mts",
+    "errors": [],
+    "outfile": "dist/index.mjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/index.mjs",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/index.mts",
+    "errors": [],
+    "outfile": "dist/index.d.mts",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/index.d.mts",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/max-value.ts",
+    "errors": [],
+    "outfile": "dist/max-value.mjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/max-value.mjs",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/max-value.ts",
+    "errors": [],
+    "outfile": "dist/max-value.d.mts",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/max-value.d.mts",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/min-value.ts",
+    "errors": [],
+    "outfile": "dist/min-value.mjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/min-value.mjs",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/min-value.ts",
+    "errors": [],
+    "outfile": "dist/min-value.d.mts",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/min-value.d.mts",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/reverse.mts",
+    "errors": [],
+    "outfile": "dist/reverse.mjs",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/reverse.mjs",
+    "warnings": [],
+  },
+  {
+    "entryPoint": "src/reverse.mts",
+    "errors": [],
+    "outfile": "dist/reverse.d.mts",
+    "path": "\${process.cwd()}/__fixtures__/pkg/reverse/dist/reverse.d.mts",
+    "warnings": [],
+  },
+]
+`;
+
+exports[`integration:internal/esbuilder > esbuild > iife > should create bundle in iife format 1`] = `
+[
+  {
+    "entryPoint": "buddy.js",
+    "errors": [],
+    "outfile": "dist/buddy.js",
+    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.js",
+    "warnings": [],
+  },
+]
+`;
+
+exports[`integration:internal/esbuilder > esbuild > iife > should do transpilation in iife format 1`] = `
+[
+  {
+    "entryPoint": "buddy.js",
+    "errors": [],
+    "outfile": "dist/buddy.js",
+    "path": "\${process.cwd()}/__fixtures__/pkg/buddy/dist/buddy.js",
+    "warnings": [],
+  },
+]
+`;

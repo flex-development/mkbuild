@@ -3,7 +3,7 @@
  * @module mkbuild
  */
 
-export * from './interfaces'
+export type * from './interfaces'
 export { default } from './make'
-export * from './types'
+export type * from './types'
 export * from './utils'

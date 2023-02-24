@@ -5,3 +5,4 @@
 
 import './chai'
 import './faker'
+import './serializers'
