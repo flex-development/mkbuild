@@ -1253,7 +1253,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:5.53.0"
     "@vates/toggle-scripts": "npm:1.0.0"
     "@vitest/coverage-c8": "npm:0.28.5"
-    "@vitest/ui": "npm:0.28.5"
+    "@vitest/ui": "npm:0.29.1"
     add-stream: "npm:1.0.0"
     chai: "npm:4.3.7"
     chai-each: "npm:0.0.1"
@@ -2422,16 +2422,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/ui@npm:0.28.5":
-  version: 0.28.5
-  resolution: "@vitest/ui@npm:0.28.5"
+"@vitest/ui@npm:0.29.1":
+  version: 0.29.1
+  resolution: "@vitest/ui@npm:0.29.1"
   dependencies:
     fast-glob: "npm:^3.2.12"
     flatted: "npm:^3.2.7"
     pathe: "npm:^1.1.0"
     picocolors: "npm:^1.0.0"
     sirv: "npm:^2.0.2"
-  checksum: 0664b2b2e4b7fc0c5a09511cb6804081d439c05e7a460f299c5c97254056366d39bfe04bbf30eaca847d75cc2aa562b89f0e5a58956ccc2b287405bc3b7bc326
+  checksum: 235c5efba177b2787b1efab9394b96b827f37392c22a39211267a91063e95d0589ce28ff16e361185f70a4b356c20f1e779e513dbf516c7d6584a54900002f51
   languageName: node
   linkType: hard
 
