@@ -1269,7 +1269,7 @@ __metadata:
     conventional-changelog-writer: "npm:5.0.1"
     conventional-commits-parser: "npm:3.2.4"
     conventional-recommended-bump: "npm:6.1.0"
-    cosmiconfig: "npm:8.0.0"
+    cosmiconfig: "npm:8.1.0"
     cross-env: "npm:7.0.3"
     cspell: "npm:6.26.3"
     dateformat: "npm:5.0.3"
@@ -3733,7 +3733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:8.0.0, cosmiconfig@npm:^8.0.0":
+"cosmiconfig@npm:8.0.0":
   version: 8.0.0
   resolution: "cosmiconfig@npm:8.0.0"
   dependencies:
@@ -3742,6 +3742,18 @@ __metadata:
     parse-json: "npm:^5.0.0"
     path-type: "npm:^4.0.0"
   checksum: 436a849ca0a434b4a7344e9213db6314512c6af23c0b187728d21b0292736eec8c2df046a95b8c796a9304afbd9d154bf5e9aeeae535e6303d835d44835cad6d
+  languageName: node
+  linkType: hard
+
+"cosmiconfig@npm:8.1.0, cosmiconfig@npm:^8.0.0":
+  version: 8.1.0
+  resolution: "cosmiconfig@npm:8.1.0"
+  dependencies:
+    import-fresh: "npm:^3.2.1"
+    js-yaml: "npm:^4.1.0"
+    parse-json: "npm:^5.0.0"
+    path-type: "npm:^4.0.0"
+  checksum: afc737bbfdd6e963183336d016f37dbdae4ba41b412187e3be35eaf2d095b5a6fb0bb08f9d9a0f0f7cc893ab363aaff4ebe9f28fd99064adb0a754667b170026
   languageName: node
   linkType: hard
 
