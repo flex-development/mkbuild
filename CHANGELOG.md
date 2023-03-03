@@ -1,3 +1,28 @@
+## [1.0.0-alpha.15](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.14...1.0.0-alpha.15) (2023-03-03)
+
+
+### :package: Build
+
+* **deps-dev:** Bump @graphql-eslint/eslint-plugin from 3.16.0 to 3.16.1 ([#99](https://github.com/flex-development/mkbuild/issues/99)) ([669c2b7](https://github.com/flex-development/mkbuild/commit/669c2b7c2639344ae491cc4e732be6c0639d26c5))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.53.0 to 5.54.0 ([#95](https://github.com/flex-development/mkbuild/issues/95)) ([c59b7de](https://github.com/flex-development/mkbuild/commit/c59b7de11279af1b126c5f5243fd458d10766f67))
+* **deps-dev:** Bump @typescript-eslint/parser from 5.53.0 to 5.54.0 ([#94](https://github.com/flex-development/mkbuild/issues/94)) ([eba1278](https://github.com/flex-development/mkbuild/commit/eba12787e5c19acb96496f4570c5f924c1bc43f1))
+* **deps-dev:** Bump @vitest/ui from 0.28.5 to 0.29.1 ([#90](https://github.com/flex-development/mkbuild/issues/90)) ([a92483f](https://github.com/flex-development/mkbuild/commit/a92483f1e24d7e9908737884c190e4fdd0b96ac8))
+* **deps-dev:** Bump cspell from 6.26.3 to 6.27.0 ([#88](https://github.com/flex-development/mkbuild/issues/88)) ([8cea99d](https://github.com/flex-development/mkbuild/commit/8cea99da81febc1cc2b759694438e81761d6fcdc))
+* **deps:** bump @flex-development/mlly from 1.0.0-alpha.13 to 1.0.0-alpha.14 ([e839b54](https://github.com/flex-development/mkbuild/commit/e839b54c3169ebf9a1b812848d3d2791d9a62016))
+* **deps:** Bump cosmiconfig from 8.0.0 to 8.1.0 ([#87](https://github.com/flex-development/mkbuild/issues/87)) ([409461a](https://github.com/flex-development/mkbuild/commit/409461a10ffd3b35925fb1120f407c820f4a1ad2))
+
+
+### :robot: Continuous Integration
+
+* **deps:** Bump actions/add-to-project from 0.4.0 to 0.4.1 ([#93](https://github.com/flex-development/mkbuild/issues/93)) ([c7d963d](https://github.com/flex-development/mkbuild/commit/c7d963dc81a21e5078423450d58966c61590e440))
+* **workflows:** [`ci`] add `commitlint` job ([a31805b](https://github.com/flex-development/mkbuild/commit/a31805bbeed419125513f52901aecc9453aa1fa2))
+* **workflows:** [`ci`] make jobs dependant on `gitguardian` ([d139c70](https://github.com/flex-development/mkbuild/commit/d139c7025ca6002b2bae995f25b7f1505823c091))
+
+
+### :house_with_garden: Housekeeping
+
+* sync config files ([aa46fa3](https://github.com/flex-development/mkbuild/commit/aa46fa3c220d3fe6a98b140d5cd87ed186767d16))
+
 ## [1.0.0-alpha.14](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.13...1.0.0-alpha.14) (2023-02-24)
 
 
