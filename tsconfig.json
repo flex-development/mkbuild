@@ -34,7 +34,7 @@
       "#tests/*": ["__tests__/*"]
     },
     "preserveConstEnums": true,
-    "preserveSymlinks": true,
+    "preserveSymlinks": false,
     "pretty": true,
     "resolveJsonModule": true,
     "resolvePackageJsonExports": true,
@@ -52,13 +52,6 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["**/coverage", "**/dist", "**/node_modules"],
-  "include": [
-    "**/**.cjs",
-    "**/**.mjs",
-    "**/**.mts",
-    "**/**.ts",
-    "**/.*.cjs",
-    "__fixtures__/**/*.cts",
-    "__fixtures__/**/*.js"
-  ]
+  "include": ["**/**.js", "**/**.mjs", "**/**.mts", "**/**.ts"],
+  "references": [{ "path": "./tsconfig.cjs.json" }]
 }

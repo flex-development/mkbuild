@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`unit:utils/analyzeResults > should return pretty printed build results 1`] = `
 "  [1mdist[22m (total size: [36m22.1 kB[39m)

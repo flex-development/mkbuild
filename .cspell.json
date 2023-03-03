@@ -13,12 +13,12 @@
   "failFast": false,
   "flagWords": [],
   "ignorePaths": [
+    "**/*.log",
     "**/*.snap",
     "**/.*ignore",
     "**/.gitconfig",
     "**/CHANGELOG.md",
     "**/LICENSE.md",
-    "**/RELEASE_NOTES.md",
     ".cspell.json",
     ".git/",
     ".husky/_/",

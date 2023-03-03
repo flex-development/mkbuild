@@ -62,7 +62,7 @@ declare global {
     /**
      * Export conditions of relevant `package.json`.
      */
-    conditions: string[]
+    conditions?: string[]
 
     /**
      * Module format.

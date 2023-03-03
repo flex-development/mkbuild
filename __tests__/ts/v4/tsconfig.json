@@ -7,7 +7,7 @@
     "checkJs": false,
     "declaration": false,
     "declarationMap": false,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": false,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
@@ -35,10 +35,11 @@
       "#tests/*": ["__tests__/*"]
     },
     "preserveConstEnums": true,
-    "preserveSymlinks": true,
+    "preserveSymlinks": false,
     "pretty": true,
     "resolveJsonModule": true,
     "rootDir": "../../..",
+    "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
@@ -49,13 +50,5 @@
     "useUnknownInCatchVariables": true
   },
   "exclude": ["**/coverage", "**/dist", "**/node_modules"],
-  "include": [
-    "**/**.cjs",
-    "**/**.mjs",
-    "**/**.mts",
-    "**/**.ts",
-    "**/.*.cjs",
-    "**/__fixtures__/**/*.cts",
-    "**/__fixtures__/**/*.js"
-  ]
+  "include": ["**/**.js", "**/**.mjs", "**/**.mts", "**/**.ts"]
 }

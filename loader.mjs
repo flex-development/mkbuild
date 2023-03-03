@@ -76,7 +76,10 @@ export const getSource = mlly.getSource
  */
 export const load = async (url, context) => {
   // get module format
-  context.format = context.format ?? (await mlly.getFormat(url))
+  context.format =
+    pathe.extname(url) === '.cts'
+      ? mlly.Format.MODULE
+      : context.format ?? (await mlly.getFormat(url))
 
   // validate import assertions
   mlly.validateAssertions(url, context.format, context.importAssertions)
@@ -161,7 +164,7 @@ export const transformSource = async (
   context,
   defaultTransformSource
 ) => {
-  const { conditions = ['node', 'import'], format, url } = context
+  const { conditions = ['node', 'import'], url } = context
 
   /**
    * File extension of {@linkcode url}.
@@ -173,6 +176,13 @@ export const transformSource = async (
 
   // transform typescript files
   if (/^\.(?:cts|mts|tsx?)$/.test(ext) && !/\.d\.(?:cts|mts|ts)$/.test(url)) {
+    // push require condition for .cts files and update format
+    if (ext === '.cts') {
+      context.conditions = context.conditions ?? []
+      context.conditions.unshift('require', 'node')
+      context.format = mlly.Format.MODULE
+    }
+
     // resolve path aliases
     source = await tscu.resolvePaths(source, {
       conditions,
@@ -186,7 +196,7 @@ export const transformSource = async (
 
     // transpile source code
     const { code } = await esbuild.transform(source, {
-      format: format === mlly.Format.COMMONJS ? 'cjs' : 'esm',
+      format: 'esm',
       loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
       minify: false,
       sourcefile: fileURLToPath(url),

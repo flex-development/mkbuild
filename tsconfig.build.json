@@ -2,7 +2,6 @@
   "compilerOptions": {
     "declaration": true,
     "noEmitOnError": true,
-    "rootDirs": ["."],
     "skipLibCheck": false,
     "target": "es2020"
   },
