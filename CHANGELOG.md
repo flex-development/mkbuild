@@ -1,3 +1,15 @@
+## [1.0.0-alpha.16](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.15...1.0.0-alpha.16) (2023-03-03)
+
+
+### :package: Build
+
+* **deps:** Bump @flex-development/mlly from 1.0.0-alpha.14 to 1.0.0-alpha.15 ([#101](https://github.com/flex-development/mkbuild/issues/101)) ([38d5a59](https://github.com/flex-development/mkbuild/commit/38d5a5982c70c4f896c6a0df661388e51ec3628f))
+
+
+### :robot: Continuous Integration
+
+* **workflows:** add `auto-merge` ([f8d3c62](https://github.com/flex-development/mkbuild/commit/f8d3c6240fd31d5ae89a949bf2e2ebec39956612))
+
 ## [1.0.0-alpha.15](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.14...1.0.0-alpha.15) (2023-03-03)
 
 
