@@ -104,7 +104,7 @@ jobs:
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
   format:
-    needs: metadata
+    needs: gitguardian
     runs-on: ubuntu-latest
     steps:
       - id: checkout
@@ -129,7 +129,7 @@ jobs:
         name: Check code formatting
         run: yarn check:format
   lint:
-    needs: metadata
+    needs: gitguardian
     runs-on: ubuntu-latest
     steps:
       - id: checkout
@@ -154,7 +154,7 @@ jobs:
         name: Check lint status
         run: yarn check:lint
   spelling:
-    needs: metadata
+    needs: gitguardian
     runs-on: ubuntu-latest
     steps:
       - id: checkout
@@ -179,7 +179,9 @@ jobs:
         name: Check spelling
         run: yarn check:spelling
   typescript:
-    needs: metadata
+    needs:
+      - gitguardian
+      - metadata
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -222,7 +224,7 @@ jobs:
         name: Run typecheck
         run: yarn typecheck
   test:
-    needs: metadata
+    needs: gitguardian
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -275,7 +277,9 @@ jobs:
           GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           GITHUB_WORKSPACE: ${{ github.workspace }}
   build:
-    needs: metadata
+    needs:
+      - gitguardian
+      - metadata
     runs-on: ubuntu-latest
     steps:
       - id: checkout
