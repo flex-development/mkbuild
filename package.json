@@ -98,7 +98,7 @@
     "radash": "10.7.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.4.4",
+    "@commitlint/cli": "17.5.0",
     "@commitlint/types": "17.4.4",
     "@faker-js/faker": "8.0.0-alpha.0",
     "@flex-development/commitlint-config": "1.0.1",
