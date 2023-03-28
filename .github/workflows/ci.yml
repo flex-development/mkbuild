@@ -366,6 +366,9 @@ jobs:
       - id: typecheck
         name: Run typecheck
         run: yarn check:types:build
+      - id: pkg-size-report
+        name: Package size report
+        run: yarn pkg-size
       - id: archive
         name: Archive production artifacts
         uses: actions/upload-artifact@v3.1.2
