@@ -1044,6 +1044,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@flex-development/esm-types@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@flex-development/esm-types@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fesm-types%2F1.0.0%2Ffde631289466ab81c4ff20b848ea26926ee9d478"
+  dependencies:
+    "@flex-development/tutils": "npm:6.0.0-alpha.10"
+  peerDependencies:
+    "@types/node": ">=14"
+  checksum: d88b84bcfdba0aa42a7ebc663e63920586463ac443b568c69f200b87d3d4a8269ede15146f345cab8394b954197183d1c59ff1e467262153d7a400ca87ad5f1e
+  languageName: node
+  linkType: hard
+
 "@flex-development/export-regex@npm:1.0.0":
   version: 1.0.0
   resolution: "@flex-development/export-regex@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Fexport-regex%2F1.0.0%2Fee7486c94c3ecbb392ae3beff0c9ecc4f1ce7282"
@@ -1104,6 +1115,7 @@ __metadata:
     "@flex-development/commitlint-config": "npm:1.0.1"
     "@flex-development/decorator-regex": "npm:1.0.0"
     "@flex-development/errnode": "npm:1.5.0"
+    "@flex-development/esm-types": "npm:1.0.0"
     "@flex-development/ext-regex": "npm:1.0.0"
     "@flex-development/mlly": "npm:1.0.0-alpha.15"
     "@flex-development/pathe": "npm:1.0.3"

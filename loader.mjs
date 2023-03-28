@@ -4,21 +4,22 @@
  * @see https://nodejs.org/api/esm.html#loaders
  */
 
+import * as esm from '@flex-development/esm-types'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
 import * as tutils from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import { URL, fileURLToPath, pathToFileURL } from 'node:url'
 
 // add support for extensionless files in "bin" scripts
 // https://github.com/nodejs/modules/issues/488
 mlly.EXTENSION_FORMAT_MAP.set('', mlly.Format.COMMONJS)
 
 /**
- * URL of tsconfig file.
+ * {@linkcode URL} of tsconfig file.
  *
- * @type {import('node:url').URL}
+ * @type {URL}
  * @const tsconfig
  */
 const tsconfig = mlly.toURL('tsconfig.json')
@@ -32,47 +33,53 @@ const tsconfig = mlly.toURL('tsconfig.json')
 const compilerOptions = tscu.loadCompilerOptions(tsconfig)
 
 /**
- * Determines how the given `url` should be interpreted.
+ * Determines how the given module `url` should be interpreted.
  *
- * @see {@linkcode GetFormatHookContext}
+ * The `format` returned also affects what the acceptable forms of source values
+ * are for a module when parsing.
+ *
+ * @see {@linkcode esm.GetFormatHookResult}
+ * @see {@linkcode esm.GetFormatHook}
+ * @see {@linkcode esm.ResolvedModuleUrl}
  * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getformat_url_context_defaultgetformat
  *
  * @async
  *
- * @param {string} url - Resolved module URL
- * @param {GetFormatHookContext} context - Hook context
- * @param {GetFormatHook} defaultGetFormat - Default Node.js hook
- * @return {Promise<mlly.Format>} Hook result
+ * @param {esm.ResolvedModuleUrl} url - Resolved module URL
+ * @return {Promise<esm.GetFormatHookResult>} Hook result
  */
-export const getFormat = mlly.getFormat
+export const getFormat = async url => ({ format: await mlly.getFormat(url) })
 
 /**
- * Retrieves the source code of a module.
+ * Retrieves the source code of an ES module specifier.
  *
- * @see {@linkcode GetSourceHookContext}
+ * @see {@linkcode esm.GetSourceHook}
+ * @see {@linkcode esm.ResolvedModuleUrl}
+ * @see {@linkcode esm.SourceHookResult}
  * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_getsource_url_context_defaultgetsource
  *
  * @async
  *
- * @param {string} url - Resolved module URL
- * @param {GetSourceHookContext} context - Hook context
- * @param {GetSourceHook} defaultGetSource - Default Node.js hook
- * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+ * @param {esm.ResolvedModuleUrl} url - Resolved module URL
+ * @return {Promise<esm.SourceHookResult>} Hook result
  */
-export const getSource = mlly.getSource
+export const getSource = async url => ({ source: await mlly.getSource(url) })
 
 /**
- * Determines how the module at the given `url` should be interpreted,
- * retrieved, and parsed.
+ * Determines how the given module `url` should be interpreted, retrieved, and
+ * parsed.
  *
- * @see {@linkcode LoadHookContext}
+ * @see {@linkcode esm.LoadHookContext}
+ * @see {@linkcode esm.LoadHookResult}
+ * @see {@linkcode esm.LoadHook}
+ * @see {@linkcode esm.ResolvedModuleUrl}
  * @see https://nodejs.org/api/esm.html#loadurl-context-nextload
  *
  * @async
  *
- * @param {string} url - Resolved module URL
- * @param {LoadHookContext} context - Hook context
- * @return {Promise<LoadHookResult>} Hook result
+ * @param {esm.ResolvedModuleUrl} url - Resolved module URL
+ * @param {esm.LoadHookContext} context - Hook context
+ * @return {Promise<esm.LoadHookResult>} Hook result
  */
 export const load = async (url, context) => {
   // get module format
@@ -85,9 +92,9 @@ export const load = async (url, context) => {
   mlly.validateAssertions(url, context.format, context.importAssertions)
 
   /**
-   * Source code.
+   * Module source code.
    *
-   * @type {Uint8Array | string | undefined}
+   * @type {esm.Source<Uint8Array | string> | undefined}
    * @const source
    */
   const source = await mlly.getSource(url, context)
@@ -100,22 +107,24 @@ export const load = async (url, context) => {
 }
 
 /**
- * Resolves the given module `specifier`.
+ * Resolves the given module `specifier`, and its module format as a hint to the
+ * {@linkcode load} hook.
  *
  * Adds supports for:
  *
  * - Path alias resolution
  * - Extensionless file and directory index resolution
  *
- * @see {@linkcode ResolveHookContext}
+ * @see {@linkcode esm.ResolveHookContext}
+ * @see {@linkcode esm.ResolveHookResult}
+ * @see {@linkcode esm.ResolveHook}
  * @see https://nodejs.org/api/esm.html#resolvespecifier-context-nextresolve
  *
  * @async
  *
  * @param {string} specifier - Module specifier
- * @param {ResolveHookContext} context - Hook context
- * @return {Promise<ResolveHookResult>} Hook result
- * @throws {Error}
+ * @param {esm.ResolveHookContext} context - Hook context
+ * @return {esm.Promise<esm.ResolveHookResult>} Hook result
  */
 export const resolve = async (specifier, context) => {
   const { conditions, parentURL: parent } = context
@@ -131,7 +140,7 @@ export const resolve = async (specifier, context) => {
   /**
    * Resolved module URL.
    *
-   * @type {import('node:url').URL}
+   * @type {URL}
    * @const url
    */
   const url = await mlly.resolveModule(specifier, {
@@ -149,15 +158,20 @@ export const resolve = async (specifier, context) => {
 /**
  * Modifies the source code of a module.
  *
- * @see {@linkcode TransformSourceHookContext}
+ * @see {@linkcode esm.LoadHookContext}
+ * @see {@linkcode esm.Source}
+ * @see {@linkcode esm.TransformSourceHookContext}
+ * @see {@linkcode esm.TransformSourceHook}
  * @see https://nodejs.org/docs/latest-v14.x/api/esm.html#esm_transformsource_source_context_defaulttransformsource
  *
  * @async
  *
- * @param {SharedArrayBuffer | Uint8Array | string} source - Source code
- * @param {TransformSourceHookContext} context - Hook context
- * @param {TransformSourceHook} defaultTransformSource - Default Node.js hook
- * @return {Promise<SharedArrayBuffer | Uint8Array | string>} Hook result
+ * @param {esm.Source} source - Source code
+ * @param {esm.LoadHookContext & esm.TransformSourceHookContext} context - Hook
+ * context
+ * @param {esm.TransformSourceHook} defaultTransformSource - Default Node.js
+ * hook
+ * @return {Promise<esm.Source>} Hook result
  */
 export const transformSource = async (
   source,

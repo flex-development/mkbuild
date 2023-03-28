@@ -25,7 +25,6 @@ larsgw
 lcov
 lintstagedrc
 memfs
-micnncim
 mkbuild
 mlly
 nocheck
@@ -36,7 +35,6 @@ pathe
 pkgs
 pnpm
 preid
-syncer
 toodles
 tribonacci
 tscu
