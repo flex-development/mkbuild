@@ -6,3 +6,4 @@
 export { default as defu } from './defu'
 export { default as defuConcat } from './defu-concat'
 export { default as esbuilder } from './esbuilder'
+export { default as gitignore } from './gitignore'
