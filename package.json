@@ -163,7 +163,7 @@
     "memfs": "3.4.13",
     "mri": "1.2.0",
     "node-notifier": "10.0.1",
-    "prettier": "2.8.6",
+    "prettier": "2.8.7",
     "prettier-plugin-sh": "0.12.8",
     "pretty-format": "29.5.0",
     "sade": "1.8.1",
