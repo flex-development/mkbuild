@@ -20,10 +20,8 @@ on:
     types:
       - opened
       - synchronize
-permissions:
-  pull-requests: write
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.PAT_REPO }}
 jobs:
   auto-merge:
     if: github.event.pull_request.auto_merge == null && github.event.pull_request.draft == false
