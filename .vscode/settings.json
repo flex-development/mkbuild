@@ -2,6 +2,16 @@
   "[dotenv]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
+  "[github-actions-workflow]": {
+    "editor.rulers": [
+      {
+        "color": "var(--vscode-editorRuler-foreground)",
+        "column": 100
+      }
+    ],
+    "editor.wordWrapColumn": 100,
+    "rewrap.wrappingColumn": 100
+  },
   "[handlebars]": {
     "editor.defaultFormatter": "Greenbyte.handlebars-preview",
     "editor.rulers": [
