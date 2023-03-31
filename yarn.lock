@@ -1195,7 +1195,7 @@ __metadata:
     prettier-plugin-sh: "npm:0.12.8"
     pretty-bytes: "npm:6.1.0"
     pretty-format: "npm:29.5.0"
-    radash: "npm:10.7.1"
+    radash: "npm:10.8.1"
     sade: "npm:1.8.1"
     semver: "npm:7.3.8"
     serve: "npm:14.2.0"
@@ -7366,10 +7366,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"radash@npm:10.7.1":
-  version: 10.7.1
-  resolution: "radash@npm:10.7.1"
-  checksum: 6da5acf9120c4818c378c99d657bef36ae1b879c5ea8973951e96fce5f5807a6ebf82485e0d50bcd82c17e4d5c52e8fa489d4588f68c515a71623ed15d38c2df
+"radash@npm:10.8.1":
+  version: 10.8.1
+  resolution: "radash@npm:10.8.1"
+  checksum: 43c1a0a67ed5e960841f68d4dd9d19a6879e5e13b9b8d6d817c309c65fa834ad51577243d2dfd9bbb8c40d2e7959e594f202c85abe6568aee93cfe88ee5400f2
   languageName: node
   linkType: hard
 
