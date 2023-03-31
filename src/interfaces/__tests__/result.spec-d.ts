@@ -3,25 +3,14 @@
  * @module mkbuild/interfaces/tests/unit-d/Result
  */
 
-import type { OutputMetadata } from '#src/types'
 import type * as esbuild from 'esbuild'
+import type Output from '../output'
 import type TestSubject from '../result'
+import type Task from '../task'
 
-describe('unit-d:interfaces/Options', () => {
-  it('should extend esbuild.OutputFile', () => {
-    expectTypeOf<TestSubject>().toMatchTypeOf<esbuild.OutputFile>()
-  })
-
-  it('should match [bytes: OutputMetadata["bytes"]]', () => {
-    expectTypeOf<TestSubject>()
-      .toHaveProperty('bytes')
-      .toEqualTypeOf<OutputMetadata['bytes']>()
-  })
-
-  it('should match [entryPoint: OutputMetadata["entryPoint"]]', () => {
-    expectTypeOf<TestSubject>()
-      .toHaveProperty('entryPoint')
-      .toEqualTypeOf<OutputMetadata['entryPoint']>()
+describe('unit-d:interfaces/Result', () => {
+  it('should match [cwd: string]', () => {
+    expectTypeOf<TestSubject>().toHaveProperty('cwd').toBeString()
   })
 
   it('should match [errors: esbuild.BuildResult["errors"]]', () => {
@@ -30,26 +19,28 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<esbuild.BuildResult['errors']>()
   })
 
-  it('should match [exports: OutputMetadata["exports"]]', () => {
+  it('should match [mangleCache: esbuild.BuildResult["mangleCache"]]', () => {
     expectTypeOf<TestSubject>()
-      .toHaveProperty('exports')
-      .toEqualTypeOf<OutputMetadata['exports']>()
+      .toHaveProperty('mangleCache')
+      .toEqualTypeOf<esbuild.BuildResult['mangleCache']>()
   })
 
-  it('should match [imports: OutputMetadata["imports"]]', () => {
+  it('should match [metafile: esbuild.Metafile]', () => {
     expectTypeOf<TestSubject>()
-      .toHaveProperty('imports')
-      .toEqualTypeOf<OutputMetadata['imports']>()
+      .toHaveProperty('metafile')
+      .toEqualTypeOf<esbuild.Metafile>()
   })
 
-  it('should match [inputs: esbuild.Metafile["inputs"]]', () => {
+  it('should match [outdir: Task["outdir"]]', () => {
     expectTypeOf<TestSubject>()
-      .toHaveProperty('inputs')
-      .toEqualTypeOf<esbuild.Metafile['inputs']>()
+      .toHaveProperty('outdir')
+      .toEqualTypeOf<Task['outdir']>()
   })
 
-  it('should match [outfile: string]', () => {
-    expectTypeOf<TestSubject>().toHaveProperty('outfile').toBeString()
+  it('should match [outputs: Output[]]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('outputs')
+      .toEqualTypeOf<Output[]>()
   })
 
   it('should match [warnings: esbuild.BuildResult["warnings"]]', () => {

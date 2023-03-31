@@ -1,15 +1,15 @@
 /**
- * @file Unit Tests - analyzeResults
- * @module mkbuild/utils/tests/unit/analyzeResults
+ * @file Unit Tests - analyzeOutputs
+ * @module mkbuild/utils/tests/unit/analyzeOutputs
  */
 
-import type { Result } from '#src/interfaces'
-import testSubject from '../analyze-results'
+import type { Output } from '#src/interfaces'
+import testSubject from '../analyze-outputs'
 
-describe('unit:utils/analyzeResults', () => {
-  it('should return pretty printed build results', () => {
+describe('unit:utils/analyzeOutputs', () => {
+  it('should return pretty printed build outputs', () => {
     // Arrange
-    const results: Pick<Result, 'bytes' | 'outfile'>[] = [
+    const outputs: Pick<Output, 'bytes' | 'outfile'>[] = [
       { bytes: 30, outfile: 'dist/index.mjs' },
       { bytes: 86, outfile: 'dist/index.d.mts' },
       { bytes: 526, outfile: 'dist/config/constants.mjs' },
@@ -26,8 +26,8 @@ describe('unit:utils/analyzeResults', () => {
       { bytes: 583, outfile: 'dist/interfaces/source-file.d.mts' },
       { bytes: 0, outfile: 'dist/interfaces/statement.mjs' },
       { bytes: 686, outfile: 'dist/interfaces/statement.d.mts' },
-      { bytes: 575, outfile: 'dist/utils/analyze-results.mjs' },
-      { bytes: 626, outfile: 'dist/utils/analyze-results.d.mts' },
+      { bytes: 575, outfile: 'dist/utils/analyze-outputs.mjs' },
+      { bytes: 626, outfile: 'dist/utils/analyze-outputs.d.mts' },
       { bytes: 1048, outfile: 'dist/utils/extract-statements.mjs' },
       { bytes: 810, outfile: 'dist/utils/extract-statements.d.mts' },
       { bytes: 289, outfile: 'dist/utils/write.mjs' },
@@ -45,6 +45,6 @@ describe('unit:utils/analyzeResults', () => {
     ]
 
     // Act + Expect
-    expect(testSubject('dist', results)).toMatchSnapshot()
+    expect(testSubject('dist', outputs)).toMatchSnapshot()
   })
 })

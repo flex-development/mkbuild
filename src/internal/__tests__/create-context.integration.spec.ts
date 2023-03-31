@@ -1,31 +1,32 @@
 /**
- * @file Integration Tests - esbuilder
- * @module mkbuild/internal/tests/integration/esbuilder
+ * @file Integration Tests - createContext
+ * @module mkbuild/internal/tests/integration/createContext
  */
 
-import type { Entry } from '#src/interfaces'
+import type { Task } from '#src/interfaces'
 import loaders from '#src/utils/loaders'
-import type { Mock } from '#tests/interfaces'
 import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
 import * as esbuild from 'esbuild'
-import testSubject from '../esbuilder'
+import testSubject from '../create-context'
 
 vi.mock('#src/utils/fs')
 vi.mock('esbuild')
 
-describe('integration:internal/esbuilder', () => {
+describe('integration:internal/createContext', () => {
   describe('esbuild', () => {
-    let build: Mock<(typeof esbuild)['build']>
+    let allowOverwrite: boolean
+    let conditions: string[]
     let external: string[]
     let resolveExtensions: pathe.Ext[]
     let outdir: string
     let write: boolean
 
     beforeEach(() => {
-      build = esbuild.build as unknown as typeof build
+      allowOverwrite = false
+      conditions = [...mlly.CONDITIONS]
       external = []
       resolveExtensions = [...mlly.RESOLVE_EXTENSIONS]
       outdir = 'dist'
@@ -34,31 +35,31 @@ describe('integration:internal/esbuilder', () => {
 
     describe('cjs', () => {
       let absWorkingDir: string
-      let entry: Partial<Entry>
       let format: esbuild.Format
       let pkg: PackageJson
+      let task: Partial<Task>
 
       beforeAll(async () => {
-        entry = { cwd: '__fixtures__/pkg/buddy' }
-        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
-        format = entry.format = 'cjs'
+        task = { clean: false, cwd: '__fixtures__/pkg/buddy' }
+        absWorkingDir = pathe.resolve(task.cwd!)
+        format = task.format = 'cjs'
         pkg = await getPackageJson(pathe.join(absWorkingDir, 'package.json'))
       })
 
-      it('should create bundle in cjs format', async () => {
+      it('should create context for cjs bundle', async () => {
         // Arrange
         const bundle: boolean = true
         const source: string = 'buddy.js'
 
         // Act
-        const [, results] = await testSubject({ ...entry, bundle, source }, pkg)
+        await testSubject({ ...task, bundle, source }, pkg)
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle,
-          conditions: [],
+          conditions,
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
@@ -68,31 +69,30 @@ describe('integration:internal/esbuilder', () => {
           outExtension: { '.js': '.cjs' },
           outbase: '.',
           outdir,
-          platform: '',
-          plugins: [{ name: 'fully-specified', setup: expect.any(Function) }],
+          plugins: [
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'fully-specified', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) }
+          ],
           resolveExtensions,
-          tsconfig: '',
           write
         })
       })
 
-      it('should do transpilation in cjs format', async () => {
+      it('should create context for cjs transpilation', async () => {
         // Arrange
         const pattern: string = 'buddy.js'
         const source: string = '.'
 
         // Act
-        const [, results] = await testSubject(
-          { ...entry, pattern, source },
-          pkg
-        )
+        await testSubject({ ...task, pattern, source }, pkg)
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle: false,
-          conditions: [...mlly.CONDITIONS],
+          conditions,
           entryNames: '[dir]/[name]',
           entryPoints: [pattern],
           external,
@@ -102,10 +102,12 @@ describe('integration:internal/esbuilder', () => {
           outExtension: { '.js': '.cjs' },
           outbase: source,
           outdir,
-          platform: '',
-          plugins: [{ name: 'fully-specified', setup: expect.any(Function) }],
+          plugins: [
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'fully-specified', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) }
+          ],
           resolveExtensions,
-          tsconfig: '',
           write
         })
       })
@@ -113,16 +115,16 @@ describe('integration:internal/esbuilder', () => {
 
     describe('esm', () => {
       let absWorkingDir: string
-      let entry: Partial<Entry>
       let format: esbuild.Format
+      let task: Partial<Task>
 
       beforeAll(() => {
-        entry = { cwd: '__fixtures__/pkg/reverse', tsconfig: 'tsconfig.json' }
-        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
+        task = { cwd: '__fixtures__/pkg/reverse', tsconfig: 'tsconfig.json' }
         format = 'esm'
+        absWorkingDir = pathe.resolve(task.cwd!)
       })
 
-      it('should create bundle in esm format', async () => {
+      it('should create context for esm bundle', async () => {
         // Arrange
         const bundle: boolean = true
         const keepNames: boolean = true
@@ -132,8 +134,8 @@ describe('integration:internal/esbuilder', () => {
         const sourcesContent: boolean = false
 
         // Act
-        const [, results] = await testSubject({
-          ...entry,
+        await testSubject({
+          ...task,
           bundle,
           keepNames,
           name,
@@ -143,11 +145,11 @@ describe('integration:internal/esbuilder', () => {
         })
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle,
-          conditions: [],
+          conditions,
           entryNames: `[dir]/${name}`,
           entryPoints: ['src/index.mts'],
           external,
@@ -160,32 +162,32 @@ describe('integration:internal/esbuilder', () => {
           outdir,
           platform,
           plugins: [
-            { name: 'decorators', setup: expect.any(Function) },
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'clean', setup: expect.any(Function) },
             { name: 'create-require', setup: expect.any(Function) },
-            { name: 'fully-specified', setup: expect.any(Function) }
+            { name: 'decorators', setup: expect.any(Function) },
+            { name: 'tsconfig-paths', setup: expect.any(Function) },
+            { name: 'fully-specified', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) }
           ],
           resolveExtensions,
           sourcemap,
           sourcesContent,
-          tsconfig: entry.tsconfig,
+          tsconfig: task.tsconfig,
           write
         })
       })
 
-      it('should do transpilation in esm format', async () => {
+      it('should create context for esm transpilation', async () => {
         // Act
-        const [, results] = await testSubject({
-          ...entry,
-          dts: true,
-          write: true
-        })
+        await testSubject({ ...task, dts: 'only', write: true })
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle: false,
-          conditions: [...mlly.CONDITIONS],
+          conditions,
           entryNames: '[dir]/[name]',
           entryPoints: [
             'src/index.mts',
@@ -200,16 +202,18 @@ describe('integration:internal/esbuilder', () => {
           outExtension: { '.js': '.mjs' },
           outbase: 'src',
           outdir,
-          platform: '',
           plugins: [
-            { name: 'decorators', setup: expect.any(Function) },
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'clean', setup: expect.any(Function) },
             { name: 'dts', setup: expect.any(Function) },
+            { name: 'decorators', setup: expect.any(Function) },
             { name: 'tsconfig-paths', setup: expect.any(Function) },
             { name: 'fully-specified', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) },
             { name: 'write', setup: expect.any(Function) }
           ],
           resolveExtensions,
-          tsconfig: entry.tsconfig,
+          tsconfig: task.tsconfig,
           write
         })
       })
@@ -217,29 +221,29 @@ describe('integration:internal/esbuilder', () => {
 
     describe('iife', () => {
       let absWorkingDir: string
-      let entry: Partial<Entry>
       let format: esbuild.Format
+      let task: Partial<Task>
 
       beforeAll(() => {
-        entry = { cwd: '__fixtures__/pkg/find-uniq' }
-        absWorkingDir = pathe.resolve(entry.cwd!) + pathe.sep
-        format = entry.format = 'iife'
+        task = { cwd: '__fixtures__/pkg/find-uniq' }
+        format = task.format = 'iife'
+        absWorkingDir = pathe.resolve(task.cwd!)
       })
 
-      it('should create bundle in iife format', async () => {
+      it('should create context for iife bundle', async () => {
         // Arrange
         const bundle: boolean = true
         const source: string = 'find-uniq.cts'
 
         // Act
-        const [, results] = await testSubject({ ...entry, bundle, source })
+        await testSubject({ ...task, bundle, source })
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle,
-          conditions: [],
+          conditions,
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
@@ -249,28 +253,30 @@ describe('integration:internal/esbuilder', () => {
           outExtension: { '.js': '.js' },
           outbase: '.',
           outdir,
-          platform: '',
-          plugins: [],
+          plugins: [
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'clean', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) }
+          ],
           resolveExtensions,
-          tsconfig: '',
           write
         })
       })
 
-      it('should do transpilation in iife format', async () => {
+      it('should create context for iife transpilation', async () => {
         // Arrange
         const pattern: string = 'find-uniq.cts'
         const source: string = '.'
 
         // Act
-        const [, results] = await testSubject({ ...entry, pattern, source })
+        await testSubject({ ...task, pattern, source })
 
         // Expect
-        expect(results).toMatchSnapshot()
-        expect(build.mock.lastCall?.[0]).toMatchObject({
+        expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
+          allowOverwrite,
           bundle: false,
-          conditions: [...mlly.CONDITIONS],
+          conditions,
           entryNames: '[dir]/[name]',
           entryPoints: [pattern],
           external,
@@ -280,10 +286,12 @@ describe('integration:internal/esbuilder', () => {
           outExtension: { '.js': '.js' },
           outbase: source,
           outdir,
-          platform: '',
-          plugins: [],
+          plugins: [
+            { name: 'pkgtype', setup: expect.any(Function) },
+            { name: 'clean', setup: expect.any(Function) },
+            { name: 'filter', setup: expect.any(Function) }
+          ],
           resolveExtensions,
-          tsconfig: '',
           write
         })
       })

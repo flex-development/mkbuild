@@ -49,10 +49,13 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
   },
   {
     "assertion": "",
-    "code": "import { get } from \\"radash\\"",
-    "end": 165,
+    "code": "import { camel, get, mapEntries, shake } from \\"radash\\"",
+    "end": 191,
     "imports": [
+      "camel",
       "get",
+      "mapEntries",
+      "shake",
     ],
     "kind": "import",
     "specifier": "radash",
@@ -65,7 +68,7 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
   {
     "assertion": "",
     "code": "import sade from \\"sade\\"",
-    "end": 190,
+    "end": 216,
     "imports": [
       "sade",
     ],
@@ -73,14 +76,14 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "sade",
     "specifier_kind": "bare",
     "specifier_syntax": "static",
-    "start": 167,
+    "start": 193,
     "syntax": "default",
     "type": false,
   },
   {
     "assertion": "{ type: \\"json\\" }",
     "code": "import pkg from \\"../package.json\\" assert { type: \\"json\\" }",
-    "end": 249,
+    "end": 275,
     "imports": [
       "pkg",
     ],
@@ -88,14 +91,14 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "../package.json",
     "specifier_kind": "relative",
     "specifier_syntax": "static",
-    "start": 192,
+    "start": 218,
     "syntax": "default",
     "type": false,
   },
   {
     "assertion": "",
     "code": "import make from \\"./make.mjs\\"",
-    "end": 280,
+    "end": 306,
     "imports": [
       "make",
     ],
@@ -103,7 +106,7 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "./make.mjs",
     "specifier_kind": "relative",
     "specifier_syntax": "static",
-    "start": 251,
+    "start": 277,
     "syntax": "default",
     "type": false,
   },

@@ -13,14 +13,15 @@ import type * as esbuild from 'esbuild'
 type EsbuildOptions = Omit<
   esbuild.BuildOptions,
   | 'absWorkingDir'
+  | 'conditions'
   | 'entryNames'
   | 'entryPoints'
   | 'incremental'
   | 'metafile'
   | 'outfile'
+  | 'resolveExtensions'
   | 'stdin'
   | 'watch'
-  | 'write'
 >
 
 export type { EsbuildOptions as default }

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`unit:utils/analyzeResults > should return pretty printed build results 1`] = `
+exports[`unit:utils/analyzeOutputs > should return pretty printed build outputs 1`] = `
 "  [1mdist[22m (total size: [36m22.1 kB[39m)
 [90m  └─ dist/index.mjs (30 B)[39m
 [90m  └─ dist/index.d.mts (86 B)[39m
@@ -18,8 +18,8 @@ exports[`unit:utils/analyzeResults > should return pretty printed build results 
 [90m  └─ dist/interfaces/source-file.d.mts (583 B)[39m
 [90m  └─ dist/interfaces/statement.mjs (0 B)[39m
 [90m  └─ dist/interfaces/statement.d.mts (686 B)[39m
-[90m  └─ dist/utils/analyze-results.mjs (575 B)[39m
-[90m  └─ dist/utils/analyze-results.d.mts (626 B)[39m
+[90m  └─ dist/utils/analyze-outputs.mjs (575 B)[39m
+[90m  └─ dist/utils/analyze-outputs.d.mts (626 B)[39m
 [90m  └─ dist/utils/extract-statements.mjs (1.05 kB)[39m
 [90m  └─ dist/utils/extract-statements.d.mts (810 B)[39m
 [90m  └─ dist/utils/write.mjs (289 B)[39m

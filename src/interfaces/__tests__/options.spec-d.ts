@@ -19,6 +19,18 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<boolean | undefined>()
   })
 
+  it('should match [clean?: boolean]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('clean')
+      .toEqualTypeOf<boolean | undefined>()
+  })
+
+  it('should match [conditions?: Set<string> | string[]]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('conditions')
+      .toEqualTypeOf<Set<string> | string[] | undefined>()
+  })
+
   it('should match [createRequire?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('createRequire')
@@ -49,10 +61,10 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<esbuild.Format | undefined>()
   })
 
-  it('should match [ignore?: string[]]', () => {
+  it('should match [ignore?: Set<string> | string[]]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('ignore')
-      .toEqualTypeOf<string[] | undefined>()
+      .toEqualTypeOf<Set<string> | string[] | undefined>()
   })
 
   it('should match [name?: string]', () => {
@@ -73,15 +85,15 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<OneOrMany<string> | undefined>()
   })
 
+  it('should match [resolveExtensions?: Set<string> | string[]]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('resolveExtensions')
+      .toEqualTypeOf<Set<string> | string[] | undefined>()
+  })
+
   it('should match [source?: string]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('source')
       .toEqualTypeOf<string | undefined>()
-  })
-
-  it('should match [write?: boolean]', () => {
-    expectTypeOf<TestSubject>()
-      .toHaveProperty('write')
-      .toEqualTypeOf<boolean | undefined>()
   })
 })

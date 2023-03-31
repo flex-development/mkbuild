@@ -8,17 +8,39 @@
 import { isNIL } from '@flex-development/tutils'
 import consola from 'consola'
 import * as esbuild from 'esbuild'
-import { get } from 'radash'
+import type mri from 'mri'
+import { camel, get, mapEntries, shake } from 'radash'
 import sade from 'sade'
 import pkg from '../package.json' assert { type: 'json' }
+import type { Flags } from './interfaces'
 import make from './make'
 
 sade(pkg.name.replace(/.*\//, ''), true)
   .version(pkg.version)
   .describe(pkg.description)
-  .action(async (): Promise<void> => {
+  .option('--sourcemap', 'Generate sourcemaps')
+  .option('--sources-content', 'Add original source code to sourcemap')
+  .option('-c, --clean', 'Remove output directories', true)
+  .option('-d, --dts', 'Generate TypeScript declaration files')
+  .option('-e, --ext', 'Output file extension')
+  .option('-f, --format', 'Output file format', 'esm')
+  .option('-n, --name', 'Bundle output file name', '[name]')
+  .option('-o, --outdir', 'Output directory', 'dist')
+  .option('-p, --pattern', 'Glob patterns matching source files', '**')
+  .option('-s, --source', 'Directory containing source files or bundle input')
+  .option('-t, --tsconfig', 'Relative path to tsconfig file')
+  .option('-w, --watch', 'Watch files', false)
+  .example('')
+  .example('--watch')
+  .action(async (flags: mri.Argv<Flags>): Promise<void> => {
     try {
-      await make({ write: true })
+      await make(
+        shake(
+          mapEntries({ ...flags, write: true }, (k: string, v: unknown) => {
+            return k.length === 1 ? ['', undefined] : [camel(k), v]
+          })
+        )
+      )
     } catch (e: unknown) {
       // format and log esbuild build failure messages
       if (!isNIL(get(e, 'errors')) && !isNIL(get(e, 'warnings'))) {
@@ -71,6 +93,6 @@ sade(pkg.name.replace(/.*\//, ''), true)
       process.exitCode = 1
     }
 
-    return void process.exit()
+    return void (flags.watch ? flags.watch : process.exit())
   })
   .parse(process.argv)

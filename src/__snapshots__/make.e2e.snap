@@ -3,10 +3,17 @@
 exports[`e2e:make > cjs > should create bundle in cjs format 1`] = `
 [
   {
-    "entryPoint": "src/index.cts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/my-atoi",
     "errors": [],
-    "outfile": "dist/index.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/index.cjs",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "src/index.cts",
+        "outfile": "dist/index.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/index.cjs",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -15,31 +22,32 @@ exports[`e2e:make > cjs > should create bundle in cjs format 1`] = `
 exports[`e2e:make > cjs > should create bundleless build in cjs format 1`] = `
 [
   {
-    "entryPoint": "src/index.cts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/my-atoi",
     "errors": [],
-    "outfile": "dist/index.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/index.cjs",
-    "warnings": [],
-  },
-  {
-    "entryPoint": "src/max-value.ts",
-    "errors": [],
-    "outfile": "dist/max-value.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/max-value.cjs",
-    "warnings": [],
-  },
-  {
-    "entryPoint": "src/min-value.ts",
-    "errors": [],
-    "outfile": "dist/min-value.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/min-value.cjs",
-    "warnings": [],
-  },
-  {
-    "entryPoint": "src/my-atoi.cts",
-    "errors": [],
-    "outfile": "dist/my-atoi.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/my-atoi.cjs",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "src/index.cts",
+        "outfile": "dist/index.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/index.cjs",
+      },
+      {
+        "entryPoint": "src/max-value.ts",
+        "outfile": "dist/max-value.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/max-value.cjs",
+      },
+      {
+        "entryPoint": "src/min-value.ts",
+        "outfile": "dist/min-value.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/min-value.cjs",
+      },
+      {
+        "entryPoint": "src/my-atoi.cts",
+        "outfile": "dist/my-atoi.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/my-atoi/dist/my-atoi.cjs",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -48,10 +56,17 @@ exports[`e2e:make > cjs > should create bundleless build in cjs format 1`] = `
 exports[`e2e:make > esm > should create bundle in esm format 1`] = `
 [
   {
-    "entryPoint": "dbl-linear.ts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/dbl-linear",
     "errors": [],
-    "outfile": "dist/index.mjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/dbl-linear/dist/index.mjs",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "dbl-linear.ts",
+        "outfile": "dist/index.mjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/dbl-linear/dist/index.mjs",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -60,10 +75,17 @@ exports[`e2e:make > esm > should create bundle in esm format 1`] = `
 exports[`e2e:make > esm > should create bundleless build in esm format 1`] = `
 [
   {
-    "entryPoint": "dbl-linear.ts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/dbl-linear",
     "errors": [],
-    "outfile": "dist/dbl-linear.mjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/dbl-linear/dist/dbl-linear.mjs",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "dbl-linear.ts",
+        "outfile": "dist/dbl-linear.mjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/dbl-linear/dist/dbl-linear.mjs",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -72,10 +94,17 @@ exports[`e2e:make > esm > should create bundleless build in esm format 1`] = `
 exports[`e2e:make > iife > should create bundle in iife format 1`] = `
 [
   {
-    "entryPoint": "src/tribonacci.ts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/tribonacci",
     "errors": [],
-    "outfile": "dist/index.js",
-    "path": "\${process.cwd()}/__fixtures__/pkg/tribonacci/dist/index.js",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "src/tribonacci.ts",
+        "outfile": "dist/index.js",
+        "path": "\${process.cwd()}/__fixtures__/pkg/tribonacci/dist/index.js",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -84,10 +113,17 @@ exports[`e2e:make > iife > should create bundle in iife format 1`] = `
 exports[`e2e:make > iife > should create bundleless build in iife format 1`] = `
 [
   {
-    "entryPoint": "src/tribonacci.ts",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/tribonacci",
     "errors": [],
-    "outfile": "dist/tribonacci.js",
-    "path": "\${process.cwd()}/__fixtures__/pkg/tribonacci/dist/tribonacci.js",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "src/tribonacci.ts",
+        "outfile": "dist/tribonacci.js",
+        "path": "\${process.cwd()}/__fixtures__/pkg/tribonacci/dist/tribonacci.js",
+      },
+    ],
     "warnings": [],
   },
 ]
@@ -96,24 +132,27 @@ exports[`e2e:make > iife > should create bundleless build in iife format 1`] = `
 exports[`e2e:make > should copy files to output directory 1`] = `
 [
   {
-    "entryPoint": "sum-of-intervals.cjs",
+    "cwd": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals",
     "errors": [],
-    "outfile": "dist/sum-of-intervals.cjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.cjs",
-    "warnings": [],
-  },
-  {
-    "entryPoint": "sum-of-intervals.d.ts",
-    "errors": [],
-    "outfile": "dist/sum-of-intervals.d.ts",
-    "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.d.ts",
-    "warnings": [],
-  },
-  {
-    "entryPoint": "sum-of-intervals.mjs",
-    "errors": [],
-    "outfile": "dist/sum-of-intervals.mjs",
-    "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.mjs",
+    "mangleCache": undefined,
+    "outdir": "dist",
+    "outputs": [
+      {
+        "entryPoint": "sum-of-intervals.cjs",
+        "outfile": "dist/sum-of-intervals.cjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.cjs",
+      },
+      {
+        "entryPoint": "sum-of-intervals.d.ts",
+        "outfile": "dist/sum-of-intervals.d.ts",
+        "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.d.ts",
+      },
+      {
+        "entryPoint": "sum-of-intervals.mjs",
+        "outfile": "dist/sum-of-intervals.mjs",
+        "path": "\${process.cwd()}/__fixtures__/pkg/sum-of-intervals/dist/sum-of-intervals.mjs",
+      },
+    ],
     "warnings": [],
   },
 ]

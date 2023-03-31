@@ -2,10 +2,7 @@
 
 exports[`unit:internal/defu > should return object with defaults assigned 1`] = `
 {
-  "bundle": false,
-  "clean": true,
   "cwd": ".",
-  "dts": true,
   "entries": [
     {
       "ignore": [
@@ -19,8 +16,6 @@ exports[`unit:internal/defu > should return object with defaults assigned 1`] = 
       "source": "src/cli.ts",
     },
   ],
-  "ext": ".mjs",
-  "format": "esm",
   "fs": {
     "lstat": [Function lstat],
     "mkdir": [Function mkdir],
@@ -32,11 +27,12 @@ exports[`unit:internal/defu > should return object with defaults assigned 1`] = 
     "writeFile": [Function writeFile],
   },
   "outdir": "dist",
-  "pattern": "**",
-  "source": "src",
+  "source": ".",
   "sourcemap": true,
   "sourcesContent": false,
   "target": "node14.21.2",
   "tsconfig": "tsconfig.build.json",
+  "watch": false,
+  "write": false,
 }
 `;

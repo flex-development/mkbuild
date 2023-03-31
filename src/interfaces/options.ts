@@ -23,13 +23,18 @@ interface Options extends EsbuildOptions {
   bundle?: boolean
 
   /**
+   * Remove output directory before starting build.
+   */
+  clean?: boolean
+
+  /**
    * Export conditions to apply.
    *
    * @see https://esbuild.github.io/api/#conditions
    *
-   * @default bundle ? [] : [...mlly.CONDITIONS]
+   * @default mlly.CONDITIONS
    */
-  conditions?: string[]
+  conditions?: Set<string> | string[]
 
   /**
    * Insert `require` function definition snippet into ESM bundles.
@@ -59,7 +64,7 @@ interface Options extends EsbuildOptions {
   /**
    * Output file extension.
    *
-   * @default '.mjs'
+   * @default format === 'cjs' ? '.cjs' : format === 'esm' ? '.mjs' : '.js'
    */
   ext?: OutputExtension
 
@@ -80,12 +85,14 @@ interface Options extends EsbuildOptions {
    *
    * @see https://github.com/mrmlnc/fast-glob#ignore
    *
-   * @default [...IGNORE_PATTERNS]
+   * @default IGNORE_PATTERNS
    */
-  ignore?: string[]
+  ignore?: Set<string> | string[]
 
   /**
    * Bundle output file name.
+   *
+   * @default '[name]'
    */
   name?: string
 
@@ -112,23 +119,16 @@ interface Options extends EsbuildOptions {
    *
    * @see https://esbuild.github.io/api/#resolve-extensions
    *
-   * @default [...mlly.RESOLVE_EXTENSIONS]
+   * @default mlly.RESOLVE_EXTENSIONS
    */
-  resolveExtensions?: string[]
+  resolveExtensions?: Set<string> | string[]
 
   /**
-   * Name of directory containing source files or relative path to bundle input.
+   * Directory containing source files or relative path to bundle input.
    *
    * @default bundle ? 'src/index' : 'src'
    */
   source?: string
-
-  /**
-   * Write build results.
-   *
-   * @default false
-   */
-  write?: boolean
 }
 
 export type { Options as default }

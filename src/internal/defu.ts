@@ -3,7 +3,11 @@
  * @module mkbuild/internal/defu
  */
 
-import { isUndefined, type ObjectPlain } from '@flex-development/tutils'
+import {
+  isUndefined,
+  type ExactOptionalPropertyTypes,
+  type ObjectPlain
+} from '@flex-development/tutils'
 import { mergeAndCompare as merge, type Merge } from 'merge-anything'
 
 /**
@@ -16,24 +20,24 @@ import { mergeAndCompare as merge, type Merge } from 'merge-anything'
  *
  * @param {T} object - Destination object
  * @param {D} defaults - Object(s) used to assign default properties
- * @return {Merge<T, D> & T} `object` with defaults assigned
+ * @return {ExactOptionalPropertyTypes<Merge<T, D> & T>} `object` with defaults
  */
-function defu<
-  T extends ObjectPlain = ObjectPlain,
-  D extends ObjectPlain[] = ObjectPlain[]
->(object: T, ...defaults: D): Merge<T, D> & T {
-  /**
-   * Determines how to assign a property.
-   *
-   * @param {unknown} val1 - Original value from {@linkcode object}
-   * @param {unknown} val2 - Incoming value from object in {@linkcode defaults}
-   * @return {unknown} Property value for {@linkcode object}
-   */
-  const compare = (val1: unknown, val2: unknown): unknown => {
-    return isUndefined(val1) ? val2 : val1
-  }
-
-  return merge<T, D>(compare, object, ...defaults) as Merge<T, D> & T
+function defu<T extends ObjectPlain, D extends ObjectPlain[]>(
+  object: T,
+  ...defaults: D
+): ExactOptionalPropertyTypes<Merge<T, D> & T> {
+  return merge<T, D>(
+    /**
+     * Determines how to assign a property.
+     *
+     * @param {unknown} v1 - Original value from {@linkcode object}
+     * @param {unknown} v2 - Incoming value from object in {@linkcode defaults}
+     * @return {unknown} Property value for {@linkcode object}
+     */
+    (v1: unknown, v2: unknown): unknown => (isUndefined(v1) ? v2 : v1),
+    object,
+    ...defaults
+  )
 }
 
 export default defu

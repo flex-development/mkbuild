@@ -1177,6 +1177,7 @@ __metadata:
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-unicorn: "npm:46.0.0"
     eslint-plugin-yml: "npm:1.5.0"
+    exit-hook: "npm:3.2.0"
     fast-glob: "npm:3.2.12"
     graphql: "npm:16.6.0"
     graphql-config: "npm:4.5.0"
@@ -1209,7 +1210,7 @@ __metadata:
     yaml-eslint-parser: "npm:1.2.0"
   peerDependencies:
     "@types/node": ">=14.18.36"
-    esbuild: ">=0.17.9"
+    esbuild: ">=0.17.14"
     typescript: ">=4.8"
   peerDependenciesMeta:
     "@types/node":
@@ -4561,6 +4562,13 @@ __metadata:
     signal-exit: "npm:^3.0.7"
     strip-final-newline: "npm:^3.0.0"
   checksum: 2ec41b94feda3a1ab5b00062432df0601927a29ec9e7b10b85dd32164b7cda7b43fb2d76de3fbd04e05129da243d990898131a6655ddf36aaa54904d772dfeba
+  languageName: node
+  linkType: hard
+
+"exit-hook@npm:3.2.0":
+  version: 3.2.0
+  resolution: "exit-hook@npm:3.2.0"
+  checksum: a6aa64efb52ba10071b8f1313a8a5095c71efa036ad282b488bcb10b4515e699e031b96ac116c4c2975b9f0514b048adc47a9a98d41f687d46a87625fea6e67e
   languageName: node
   linkType: hard
 

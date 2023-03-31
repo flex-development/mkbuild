@@ -11,6 +11,7 @@ describe('unit:internal/defuConcat', () => {
   it('should return object with defaults assigned', () => {
     // Arrange
     const object: Config = {
+      ignore: ['src/cli.ts'],
       pattern: '*.ts',
       source: '.',
       sourcemap: true,
@@ -26,6 +27,12 @@ describe('unit:internal/defuConcat', () => {
       ext: '.mjs',
       format: 'esm',
       fs,
+      ignore: new Set<string>([
+        '**/.DS_*',
+        '**/__mocks__',
+        '**/__snapshots__',
+        '**/__tests__'
+      ]),
       outdir: 'dist',
       pattern: '**',
       source: 'src',

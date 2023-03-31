@@ -4,8 +4,8 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
-import type Entry from './entry'
 import type Options from './options'
+import type Task from './task'
 
 /**
  * Build configuration options.
@@ -13,13 +13,6 @@ import type Options from './options'
  * @extends {Options}
  */
 interface Config extends Options {
-  /**
-   * Remove output directories before starting build.
-   *
-   * @default true
-   */
-  clean?: boolean
-
   /**
    * Load build config from config file.
    *
@@ -35,7 +28,7 @@ interface Config extends Options {
    *
    * @default []
    */
-  entries?: Partial<Entry>[]
+  entries?: Partial<Omit<Task, 'write'>>[]
 
   /**
    * Custom implementations of file system methods.
@@ -46,6 +39,20 @@ interface Config extends Options {
    * @default fsa
    */
   fs?: FileSystemAdapter
+
+  /**
+   * Watch files.
+   *
+   * @default false
+   */
+  watch?: boolean
+
+  /**
+   * Write build results.
+   *
+   * @default false
+   */
+  write?: boolean
 }
 
 export type { Config as default }

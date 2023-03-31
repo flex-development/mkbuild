@@ -15,23 +15,20 @@ describe('unit:internal/defu', () => {
         { ignore: ['cli.ts'] },
         { bundle: true, minify: true, platform: 'node', source: 'src/cli.ts' }
       ],
+      source: '.',
       sourcemap: true,
       sourcesContent: false,
       target: 'node14.21.2',
       tsconfig: 'tsconfig.build.json'
     }
     const defaults: Config = {
-      bundle: false,
-      clean: true,
       cwd: '.',
-      dts: true,
       entries: [],
-      ext: '.mjs',
-      format: 'esm',
       fs,
       outdir: 'dist',
-      pattern: '**',
-      source: 'src'
+      sourcemap: false,
+      watch: false,
+      write: false
     }
 
     // Act + Expect

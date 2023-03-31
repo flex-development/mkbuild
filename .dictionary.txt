@@ -12,7 +12,6 @@ dessant
 dists
 dohm
 esbuild
-esbuilder
 evanw
 fbca
 ggshield

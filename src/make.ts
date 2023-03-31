@@ -10,13 +10,16 @@ import type { PackageJson } from '@flex-development/pkg-types'
 import type { Nullable } from '@flex-development/tutils'
 import * as color from 'colorette'
 import consola from 'consola'
+import type * as esbuild from 'esbuild'
+import regexp from 'escape-string-regexp'
+import { asyncExitHook as exitHook } from 'exit-hook'
 import { fileURLToPath } from 'node:url'
 import pb from 'pretty-bytes'
-import { omit } from 'radash'
 import loadBuildConfig from './config/load'
-import type { Config, Entry, Result } from './interfaces'
-import { defu, defuConcat, esbuilder } from './internal'
-import { IGNORE_PATTERNS, analyzeResults, fs as fsa } from './utils'
+import type { Config, Context, Result, Task } from './interfaces'
+import { createContext, defu, defuConcat } from './internal'
+import type { OutputMetadata } from './types'
+import { analyzeOutputs, fs as fsa } from './utils'
 
 /**
  * [esbuild][1] based file-to-file transformer and bundler.
@@ -24,7 +27,6 @@ import { IGNORE_PATTERNS, analyzeResults, fs as fsa } from './utils'
  * [1]: https://esbuild.github.io
  *
  * @todo hooks support
- * @todo include metafile(s) in return value
  * @todo validate build results against package.json
  *
  * @async
@@ -46,192 +48,211 @@ async function make({
   cwd = '.',
   ...config
 }: Config = {}): Promise<Result[]> {
-  const {
-    clean,
-    cwd: thisdir,
-    entries = [],
-    fs,
-    ...options
-  } = defu(configfile ? await loadBuildConfig(cwd) : {}, config, {
-    bundle: false,
-    clean: true,
-    cwd,
-    dts: await (async () => {
-      try {
-        await mlly.resolveModule(
-          pathe.resolve(cwd, 'node_modules', 'typescript', 'package.json')
-        )
-        return true
-      } catch {
-        return false
-      }
-    })(),
-    entries: [] as Partial<Entry>[],
-    ext: '',
-    format: 'esm',
-    fs: fsa,
-    ignore: await (async () => {
-      /**
-       * Ignore patterns.
-       *
-       * @const {Set<string>} ignore
-       */
-      const ignore: Set<string> = IGNORE_PATTERNS
+  const { entries, fs, watch, write, ...options } = defu(
+    config,
+    configfile ? await loadBuildConfig(cwd) : {},
+    {
+      cwd,
+      entries: [] as Partial<Task>[],
+      fs: fsa,
+      outdir: 'dist',
+      watch: false,
+      write: false
+    }
+  )
 
-      // try adding ignore patterns from .gitignore
-      try {
-        /**
-         * Absolute path to `.gitignore` file.
-         *
-         * @const {string} gip
-         */
-        const gip: string = pathe.resolve(cwd, '.gitignore')
-
-        /**
-         * `.gitignore` file content.
-         *
-         * @const {string} gitignore
-         */
-        const gitignore: string = (await mlly.getSource(gip)) as string
-
-        // add ignore patterns from .gitignore
-        for (const line of gitignore.split(/\r?\n/)) {
-          if (!line.trim()) continue
-          if (line.startsWith('#') || line.startsWith('!')) continue
-          ignore.add(line.trim())
-        }
-      } catch {}
-
-      return [...ignore]
-    })(),
-    outdir: 'dist',
-    pattern: '**',
-    source: '',
-    write: false
-  })
-
-  // resolve path to current working directory
-  cwd = pathe.resolve(process.cwd(), thisdir)
+  /**
+   * Absolute path to current working directory.
+   *
+   * @const {string} absWorkingDir
+   */
+  const absWorkingDir: string = pathe.resolve(options.cwd)
 
   /**
    * `package.json` data.
    *
    * @const {Nullable<PackageJson>} pkg
    */
-  const pkg: Nullable<PackageJson> = mlly.readPackageJson(cwd)
+  const pkg: Nullable<PackageJson> = mlly.readPackageJson(absWorkingDir)
 
   // throw if package.json was not found
   if (!pkg) {
     throw new ERR_MODULE_NOT_FOUND(
-      pathe.join(cwd, 'package.json'),
+      pathe.join(absWorkingDir, 'package.json'),
       fileURLToPath(import.meta.url),
       'module'
     )
   }
 
   // print build start info
-  options.write && consola.info(color.cyan(`Building ${pkg.name}`))
-
-  // push empty object to infer entry from config if initial array is empty
-  if (entries.length === 0) entries.push({})
+  if (watch || write) {
+    consola.info(color.cyan(`${watch ? 'Watching' : 'Building'} ${pkg.name}`))
+  }
 
   /**
-   * Normalized build entries.
+   * Build tasks.
    *
-   * @const {Entry[]} tasks
+   * @const {Task[]} tasks
    */
-  const tasks: Entry[] = entries.map(entry => {
-    const { peerDependencies = {} } = pkg
-
+  const tasks: Task[] = (entries.length === 0 ? [{}] : entries).map(entry => {
     const {
       bundle = options.bundle,
-      cwd: thiscwd = cwd,
-      ext = options.ext as string,
-      format = options.format,
-      platform = options.platform,
-      source = options.source
+      cwd = options.cwd,
+      logLevel = options.logLevel ?? (watch ? 'info' : options.logLevel),
+      outdir = options.outdir,
+      source = options.source ?? (bundle ? 'src/index' : 'src'),
+      ...rest
     } = entry
 
-    return defuConcat(entry, omit(options, ['ext', 'source']), {
-      createRequire: bundle && format === 'esm' && platform === 'node',
-      cwd: pathe.resolve(cwd, thiscwd),
-      ext:
-        ext || (format === 'cjs' ? '.cjs' : format === 'esm' ? '.mjs' : '.js'),
-      external: bundle ? Object.keys(peerDependencies) : [],
-      source: source || (bundle ? 'src/index' : 'src')
-    })
+    return defuConcat(
+      {
+        bundle,
+        cwd,
+        logLevel,
+        outdir,
+        source,
+        write
+      },
+      rest,
+      options
+    )
   })
 
-  // clean output directories
-  if (options.write && clean) {
-    /**
-     * Absolute paths to output directories.
-     *
-     * **Does not include {@linkcode cwd} if it is an output directory**. This
-     * prevents the current working directory from being accidentally removed.
-     *
-     * @const {string[]} outdirs
-     */
-    const outdirs: string[] = tasks
-      .map((entry: Entry): string => pathe.resolve(cwd, entry.outdir))
-      .filter(outdir => outdir !== cwd)
-
-    // remove and recreate output directories
-    for (const outdir of new Set(outdirs)) {
-      // unlink output directory
-      await fs.unlink(outdir).catch(() => ({}))
-
-      // try removing output directory
-      try {
-        await fs.rm(pathe.join(outdir), { recursive: true })
-      } catch {}
-
-      // recreate output directory
-      await fs.mkdir(outdir, { recursive: true })
-    }
-  }
+  /**
+   * Build results.
+   *
+   * @const {Result[]} results
+   */
+  const results: Result[] = []
 
   /**
-   * Build results map.
+   * Build context.
    *
-   * @const {Map<number, Result[]>} build
+   * @var {Context} context
    */
-  const build: Map<number, Result[]> = new Map<number, Result[]>()
+  let context: Context
 
-  // process build entries
-  for (const [index, entry] of tasks.entries()) {
-    build.set(index, [])
+  // enable watch mode or do static build
+  if (watch) {
+    const [task] = tasks as [Task]
 
-    // build source files
-    const [, results] = await esbuilder(entry, pkg, fs)
+    // force clean output directory when watch mode is enabled
+    task.clean = true
 
-    // add build results to build results map
-    for (const result of results) build.get(index)!.push(result)
-  }
+    // disable declaration file generation when watch mode is enabled
+    task.dts = false
 
-  // print build done info, analysis, and total size
-  if (options.write) {
-    /**
-     * Total build size.
-     *
-     * @var {number} bytes
-     */
-    let bytes: number = 0
+    // force writing output files if watch mode is enabled
+    task.write = true
 
-    // print build done info
-    consola.success(color.green(`Build succeeded for ${pkg.name}`))
+    // create build context
+    context = await createContext(task, pkg, fs)
 
-    // print build analysis
-    for (const [index, outputs] of build.entries()) {
-      bytes += outputs.reduce((acc, result) => acc + result.bytes, 0)
-      consola.log(analyzeResults(tasks[index]!.outdir, outputs))
+    // watch source files
+    await context.watch()
+
+    // dispose build context on process exit
+    exitHook(context.dispose.bind(context), { minimumWait: 10 })
+  } else {
+    // process build tasks
+    for (const [i, task] of tasks.entries()) {
+      // prevent new builds from being accidentally removed
+      if (i > 0 && tasks.slice(0, i).some(t => t.outdir === task.outdir)) {
+        task.clean = false
+      }
+
+      // create build context
+      context = await createContext(task, pkg, fs)
+
+      /**
+       * esbuild build result.
+       *
+       * @const {esbuild.BuildResult<{ metafile: true; write: false }>} result
+       */
+      const result: esbuild.BuildResult<{ metafile: true; write: false }> =
+        await context.rebuild()
+
+      // add build results
+      results.push({
+        cwd: pathe.resolve(task.cwd),
+        errors: result.errors,
+        mangleCache: result.mangleCache,
+        metafile: result.metafile,
+        outdir: task.outdir,
+        outputs: result.outputFiles.map(output => {
+          /**
+           * Relative path to output file.
+           *
+           * **Note**: Relative to {@linkcode absWorkingDir}.
+           *
+           * @const {string} outfile
+           */
+          const outfile: string = output.path
+            .replace(new RegExp('^' + regexp(absWorkingDir)), '')
+            .replace(/^\//, '')
+
+          /**
+           * Output metadata.
+           *
+           * @const {OutputMetadata} metadata
+           */
+          const metadata: OutputMetadata = result.metafile.outputs[outfile]!
+
+          return {
+            bytes: metadata.bytes,
+            contents: output.contents,
+            entryPoint: metadata.entryPoint,
+            exports: [...new Set(metadata.exports)],
+            imports: metadata.imports,
+            outfile,
+            path: output.path,
+            text: output.text
+          }
+        }),
+        warnings: result.warnings
+      })
+
+      // dispose build context
+      await context.dispose()
     }
 
-    // print total build size
-    consola.log('Σ Total build size:', color.cyan(pb(bytes)))
+    // print build done info, output analysis, and total size
+    if (write) {
+      /**
+       * Total build size.
+       *
+       * @var {number} bytes
+       */
+      let bytes: number = 0
+
+      // print build done info
+      consola.success(color.green(`Build succeeded for ${pkg.name}`))
+
+      // print build analysis
+      for (const { outdir, metafile } of results) {
+        /**
+         * Array containing output file paths and sizes.
+         *
+         * @const {{ bytes: number; outfile: string }[]} data
+         */
+        const data: { bytes: number; outfile: string }[] = []
+
+        // update total build size and get output file analytics
+        for (const [outfile, metadata] of Object.entries(metafile.outputs)) {
+          bytes += metadata.bytes
+          data.push({ bytes: metadata.bytes, outfile })
+        }
+
+        // print build output analysis
+        consola.log(analyzeOutputs(outdir, data))
+      }
+
+      // print total build size
+      consola.log('Σ Total build size:', color.cyan(pb(bytes)))
+    }
   }
 
-  return [...build.entries()].flatMap(([, results]) => results)
+  return results
 }
 
 export default make

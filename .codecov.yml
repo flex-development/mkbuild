@@ -120,5 +120,5 @@ ignore:
 profiling:
   critical_files_paths:
     - src/config/*.ts
-    - src/internal/esbuilder.ts
+    - src/internal/create-context.ts
     - src/make.ts

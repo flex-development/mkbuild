@@ -18,6 +18,13 @@ exports[`unit:internal/defuConcat > should return object with defaults assigned 
     "unlink": [Function unlink],
     "writeFile": [Function writeFile],
   },
+  "ignore": [
+    "src/cli.ts",
+    "**/.DS_*",
+    "**/__mocks__",
+    "**/__snapshots__",
+    "**/__tests__",
+  ],
   "outdir": "dist",
   "pattern": "*.ts",
   "source": ".",

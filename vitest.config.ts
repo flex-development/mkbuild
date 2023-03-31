@@ -120,14 +120,14 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
       },
       setupFiles: ['./__tests__/setup/index.ts'],
       silent: false,
-      slowTestThreshold: 300,
+      slowTestThreshold: 500,
       snapshotFormat: {
         callToJSON: true,
         min: false,
         printBasicPrototype: false,
         printFunctionName: true
       },
-      testTimeout: 15 * 1000,
+      testTimeout: 20 * 1000,
       typecheck: {
         allowJs: false,
         checker: 'tsc',

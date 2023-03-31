@@ -1,31 +1,31 @@
 /**
- * @file Utilities - analyzeResults
- * @module mkbuild/utils/analyzeResults
+ * @file Utilities - analyzeOutputs
+ * @module mkbuild/utils/analyzeOutputs
  */
 
-import type { Result } from '#src/interfaces'
+import type { Output } from '#src/interfaces'
 import * as color from 'colorette'
 import pb from 'pretty-bytes'
 
 /**
- * Returns a pretty printed version of `results`.
+ * Returns a pretty printed version of `outputs`.
  *
  * @param {string} outdir - Output directory name
- * @param {Pick<Result, 'bytes' | 'outfile'>[]} [results=[]] - Build results
+ * @param {Pick<Output, 'bytes' | 'outfile'>[]} [outputs=[]] - Build outputs
  * @param {number} [pad=2] - Number of spaces before new lines
- * @return {string} Pretty printed `results`
+ * @return {string} Pretty printed `outputs`
  */
-const analyzeResults = (
+const analyzeOutputs = (
   outdir: string,
-  results: Pick<Result, 'bytes' | 'outfile'>[] = [],
+  outputs: Pick<Output, 'bytes' | 'outfile'>[] = [],
   pad: number = 2
 ): string => {
   /**
-   * Total number of bytes in {@linkcode results}.
+   * Total number of bytes in {@linkcode outputs}.
    *
    * @const {number} bytes
    */
-  const bytes: number = results.reduce((acc, result) => acc + result.bytes, 0)
+  const bytes: number = outputs.reduce((acc, result) => acc + result.bytes, 0)
 
   /**
    * Space before new lines.
@@ -36,10 +36,10 @@ const analyzeResults = (
 
   return [
     `${padding}${color.bold(outdir)} (total size: ${color.cyan(pb(bytes))})`,
-    ...results.map(({ bytes, outfile }) => {
+    ...outputs.map(({ bytes, outfile }) => {
       return color.gray(`${padding}└─ ${outfile} (${pb(bytes)})`)
     })
   ].join('\n')
 }
 
-export default analyzeResults
+export default analyzeOutputs

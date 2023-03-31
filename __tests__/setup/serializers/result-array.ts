@@ -4,15 +4,9 @@
  */
 
 import type { Result } from '#src/interfaces'
-import {
-  isNIL,
-  isNull,
-  isNumber,
-  isObjectPlain,
-  isString
-} from '@flex-development/tutils'
+import { isNIL, isObjectPlain, isString } from '@flex-development/tutils'
 import pf from 'pretty-format'
-import { get, pick } from 'radash'
+import { get, omit, pick } from 'radash'
 
 expect.addSnapshotSerializer({
   /**
@@ -23,14 +17,15 @@ expect.addSnapshotSerializer({
    */
   print(value: unknown): string {
     value = (value as Result[]).map(result => {
-      result.path = result.path.replace(/.*?(?=\/__.+)/, '${process.cwd()}')
-      return pick(result, [
-        'entryPoint',
-        'errors',
-        'outfile',
-        'path',
-        'warnings'
-      ])
+      result.cwd = result.cwd.replace(/.*?(?=\/__.+)/, '${process.cwd()}')
+
+      return {
+        ...omit(result, ['metafile']),
+        outputs: result.outputs.map(output => {
+          output.path = output.path.replace(/.*?(?=\/__.+)/, '${process.cwd()}')
+          return pick(output, ['entryPoint', 'outfile', 'path'])
+        })
+      }
     })
 
     return pf(value, { printBasicPrototype: false })
@@ -45,17 +40,12 @@ expect.addSnapshotSerializer({
     return Array.isArray(value)
       ? value.every(item => {
           return (
-            isNumber(get(item, 'bytes')) &&
-            !isNIL(get(item, 'contents')) &&
-            (isString(get(item, 'entryPoint')) ||
-              isNull(get(item, 'entryPoint'))) &&
+            isString(get(item, 'cwd')) &&
             Array.isArray(get(item, 'errors')) &&
-            Array.isArray(get(item, 'exports')) &&
-            Array.isArray(get(item, 'imports')) &&
-            isObjectPlain(get(item, 'inputs')) &&
-            isString(get(item, 'outfile')) &&
-            isString(get(item, 'path')) &&
-            isString(get(item, 'text')) &&
+            (isObjectPlain(get(item, 'mangleCache')) ||
+              isNIL(get(item, 'mangleCache'))) &&
+            isString(get(item, 'outdir')) &&
+            Array.isArray(get(item, 'outputs')) &&
             Array.isArray(get(item, 'warnings'))
           )
         })

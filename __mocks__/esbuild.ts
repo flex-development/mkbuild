@@ -18,5 +18,5 @@ type Actual = typeof import('esbuild')
  */
 const actual: Actual = await vi.importActual<Actual>('esbuild')
 
-export const build = vi.fn(actual.build)
+export const context = vi.fn(actual.context)
 export const transform = vi.fn(actual.transform)

@@ -15,6 +15,10 @@ describe('unit-d:types/EsbuildOptions', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('absWorkingDir')
   })
 
+  it('should omit "conditions"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('conditions')
+  })
+
   it('should omit "entryNames"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('entryNames')
   })
@@ -35,15 +39,15 @@ describe('unit-d:types/EsbuildOptions', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('outfile')
   })
 
+  it('should omit "resolveExtensions"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('resolveExtensions')
+  })
+
   it('should omit "stdin"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('stdin')
   })
 
   it('should omit "watch"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('watch')
-  })
-
-  it('should omit "write"', () => {
-    expectTypeOf<TestSubject>().not.toHaveProperty('write')
   })
 })

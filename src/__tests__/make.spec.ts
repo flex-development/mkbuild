@@ -7,7 +7,7 @@ import { ErrorCode, type NodeError } from '@flex-development/errnode'
 import pathe from '@flex-development/pathe'
 import testSubject from '../make'
 
-vi.mock('#src/utils/fs')
+vi.mock('../plugins/clean/plugin')
 
 describe('unit:make', () => {
   let configfile: boolean
@@ -18,7 +18,11 @@ describe('unit:make', () => {
 
   it('should return build results', async () => {
     // Act
-    const results = await testSubject({ configfile })
+    const results = await testSubject({
+      configfile,
+      ignore: ['cli.ts'],
+      tsconfig: 'tsconfig.build.json'
+    })
 
     // Expect
     expect(results).to.be.an('array').that.is.not.empty
