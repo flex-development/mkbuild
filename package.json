@@ -107,7 +107,7 @@
     "@flex-development/commitlint-config": "1.0.1",
     "@flex-development/errnode": "1.5.0",
     "@flex-development/esm-types": "1.0.0",
-    "@graphql-eslint/eslint-plugin": "3.17.0",
+    "@graphql-eslint/eslint-plugin": "3.18.0",
     "@types/chai": "4.3.4",
     "@types/chai-fs": "2.0.2",
     "@types/chai-string": "1.4.2",
