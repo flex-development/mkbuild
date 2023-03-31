@@ -98,7 +98,7 @@
     "fast-glob": "3.2.12",
     "merge-anything": "5.1.4",
     "pretty-bytes": "6.1.0",
-    "radash": "10.7.1"
+    "radash": "10.8.1"
   },
   "devDependencies": {
     "@commitlint/cli": "17.5.1",
