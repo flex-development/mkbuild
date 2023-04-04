@@ -31,6 +31,10 @@ describe('unit-d:types/EsbuildOptions', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('incremental')
   })
 
+  it('should omit "mainFields"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('mainFields')
+  })
+
   it('should omit "metafile"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('metafile')
   })

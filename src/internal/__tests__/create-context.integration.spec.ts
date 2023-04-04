@@ -18,18 +18,36 @@ vi.mock('esbuild')
 describe('integration:internal/createContext', () => {
   describe('esbuild', () => {
     let allowOverwrite: boolean
+    let assetNames: string
+    let chunkNames: string
+    let color: boolean
     let conditions: string[]
+    let drop: string[]
     let external: string[]
-    let resolveExtensions: pathe.Ext[]
+    let inject: string[]
+    let logLimit: number
+    let mainFields: string[]
     let outdir: string
+    let platform: esbuild.Platform
+    let pure: string[]
+    let resolveExtensions: pathe.Ext[]
     let write: boolean
 
     beforeEach(() => {
       allowOverwrite = false
-      conditions = [...mlly.CONDITIONS]
+      assetNames = 'assets/[name]-[hash]'
+      chunkNames = 'chunks/[name]-[hash]'
+      color = true
+      conditions = ['import', 'default']
+      drop = []
       external = []
-      resolveExtensions = [...mlly.RESOLVE_EXTENSIONS]
+      inject = []
+      logLimit = 10
+      mainFields = ['module', 'main']
       outdir = 'dist'
+      platform = 'neutral'
+      pure = []
+      resolveExtensions = [...mlly.RESOLVE_EXTENSIONS]
       write = false
     })
 
@@ -58,22 +76,31 @@ describe('integration:internal/createContext', () => {
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
           format,
+          inject,
           loader: loaders(format, bundle),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.cjs' },
           outbase: '.',
           outdir,
+          platform,
           plugins: [
             { name: 'pkgtype', setup: expect.any(Function) },
             { name: 'fully-specified', setup: expect.any(Function) },
             { name: 'filter', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           write
         })
@@ -91,22 +118,31 @@ describe('integration:internal/createContext', () => {
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle: false,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: '[dir]/[name]',
           entryPoints: [pattern],
           external,
           format,
+          inject,
           loader: loaders(format),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.cjs' },
           outbase: source,
           outdir,
+          platform,
           plugins: [
             { name: 'pkgtype', setup: expect.any(Function) },
             { name: 'fully-specified', setup: expect.any(Function) },
             { name: 'filter', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           write
         })
@@ -132,6 +168,7 @@ describe('integration:internal/createContext', () => {
         const platform: esbuild.Platform = 'node'
         const sourcemap: boolean = true
         const sourcesContent: boolean = false
+        const target: string[] = ['es2021', 'node16.20.0']
 
         // Act
         await testSubject({
@@ -141,21 +178,29 @@ describe('integration:internal/createContext', () => {
           name,
           platform,
           sourcemap,
-          sourcesContent
+          sourcesContent,
+          target
         })
 
         // Expect
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: `[dir]/${name}`,
           entryPoints: ['src/index.mts'],
           external,
           format,
+          inject,
           keepNames,
           loader: loaders(format, bundle),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.mjs' },
           outbase: 'src',
@@ -170,9 +215,11 @@ describe('integration:internal/createContext', () => {
             { name: 'fully-specified', setup: expect.any(Function) },
             { name: 'filter', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           sourcemap,
           sourcesContent,
+          target,
           tsconfig: task.tsconfig,
           write
         })
@@ -186,8 +233,12 @@ describe('integration:internal/createContext', () => {
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle: false,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: '[dir]/[name]',
           entryPoints: [
             'src/index.mts',
@@ -197,11 +248,15 @@ describe('integration:internal/createContext', () => {
           ],
           external,
           format,
+          inject,
           loader: loaders(format),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.mjs' },
           outbase: 'src',
           outdir,
+          platform,
           plugins: [
             { name: 'pkgtype', setup: expect.any(Function) },
             { name: 'clean', setup: expect.any(Function) },
@@ -212,6 +267,7 @@ describe('integration:internal/createContext', () => {
             { name: 'filter', setup: expect.any(Function) },
             { name: 'write', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           tsconfig: task.tsconfig,
           write
@@ -242,22 +298,31 @@ describe('integration:internal/createContext', () => {
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
           format,
+          inject,
           loader: loaders(format, bundle),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.js' },
           outbase: '.',
           outdir,
+          platform,
           plugins: [
             { name: 'pkgtype', setup: expect.any(Function) },
             { name: 'clean', setup: expect.any(Function) },
             { name: 'filter', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           write
         })
@@ -265,7 +330,7 @@ describe('integration:internal/createContext', () => {
 
       it('should create context for iife transpilation', async () => {
         // Arrange
-        const pattern: string = 'find-uniq.cts'
+        const pattern: string[] = ['find-uniq.cts']
         const source: string = '.'
 
         // Act
@@ -275,22 +340,31 @@ describe('integration:internal/createContext', () => {
         expect(vi.mocked(esbuild.context).mock.lastCall?.[0]).toMatchObject({
           absWorkingDir,
           allowOverwrite,
+          assetNames,
           bundle: false,
+          chunkNames,
+          color,
           conditions,
+          drop,
           entryNames: '[dir]/[name]',
-          entryPoints: [pattern],
+          entryPoints: pattern,
           external,
           format,
+          inject,
           loader: loaders(format),
+          logLimit,
+          mainFields,
           metafile: true,
           outExtension: { '.js': '.js' },
           outbase: source,
           outdir,
+          platform,
           plugins: [
             { name: 'pkgtype', setup: expect.any(Function) },
             { name: 'clean', setup: expect.any(Function) },
             { name: 'filter', setup: expect.any(Function) }
           ],
+          pure,
           resolveExtensions,
           write
         })

@@ -9,6 +9,7 @@ import * as pathe from '@flex-development/pathe'
 /**
  * Returns a set of ignore patterns found in a `.gitignore` file.
  *
+ * @internal
  * @async
  *
  * @param {string} absWorkingDir - Absolute path to current working directory

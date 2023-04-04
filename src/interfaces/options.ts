@@ -14,6 +14,15 @@ import type * as esbuild from 'esbuild'
  */
 interface Options extends EsbuildOptions {
   /**
+   * Asset name template.
+   *
+   * @see https://esbuild.github.io/api/#asset-names
+   *
+   * @default 'assets/[name]-[hash]'
+   */
+  assetNames?: string
+
+  /**
    * Bundle files.
    *
    * @see https://esbuild.github.io/api/#bundle
@@ -21,6 +30,15 @@ interface Options extends EsbuildOptions {
    * @default false
    */
   bundle?: boolean
+
+  /**
+   * Chunk name template.
+   *
+   * @see https://esbuild.github.io/api/#chunk-names
+   *
+   * @default 'chunks/[name]-[hash]'
+   */
+  chunkNames?: string
 
   /**
    * Remove output directory before starting build.
@@ -32,7 +50,7 @@ interface Options extends EsbuildOptions {
    *
    * @see https://esbuild.github.io/api/#conditions
    *
-   * @default mlly.CONDITIONS
+   * @default ['import','default']
    */
   conditions?: Set<string> | string[]
 
@@ -78,7 +96,7 @@ interface Options extends EsbuildOptions {
   format?: esbuild.Format
 
   /**
-   * An array of glob patterns to exclude matches in {@linkcode pattern}.
+   * Glob patterns to exclude matches in {@linkcode pattern}.
    *
    * If a `.gitignore` file is found, patterns from the ignore file (that are
    * not negated) will be added to the default set of ignore patterns.
@@ -88,6 +106,24 @@ interface Options extends EsbuildOptions {
    * @default IGNORE_PATTERNS
    */
   ignore?: Set<string> | string[]
+
+  /**
+   * Log level.
+   *
+   * @see https://esbuild.github.io/api/#log-level
+   *
+   * @default 'info'
+   */
+  logLevel?: esbuild.LogLevel
+
+  /**
+   * Additional `package.json` fields to try when resolving a package.
+   *
+   * @see https://esbuild.github.io/api/#main-fields
+   *
+   * @default ['module','main']
+   */
+  mainFields?: Set<string> | string[]
 
   /**
    * Bundle output file name.
@@ -112,7 +148,16 @@ interface Options extends EsbuildOptions {
    *
    * @default '**'
    */
-  pattern?: OneOrMany<string>
+  pattern?: OneOrMany<string> | Set<string>
+
+  /**
+   * Platform to generate code for.
+   *
+   * @see https://esbuild.github.io/api/#platform
+   *
+   * @default 'neutral'
+   */
+  platform?: esbuild.Platform
 
   /**
    * Resolvable file extensions.

@@ -30,7 +30,7 @@ exports[`unit:internal/defu > should return object with defaults assigned 1`] = 
   "source": ".",
   "sourcemap": true,
   "sourcesContent": false,
-  "target": "node14.21.2",
+  "target": "node16.20.0",
   "tsconfig": "tsconfig.build.json",
   "watch": false,
   "write": false,

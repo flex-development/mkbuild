@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @file Configuration - Changelog
  * @module config/changelog
@@ -8,6 +10,8 @@
  * @see https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/git-raw-commits
  */
 
+import { CHOICES_BOOLEAN } from '#src/cli/constants'
+import { HelpService, UtilityService } from '#src/cli/providers'
 import {
   Type,
   parserPreset,
@@ -15,7 +19,10 @@ import {
 } from '@flex-development/commitlint-config'
 import pathe from '@flex-development/pathe'
 import { CompareResult, isNIL } from '@flex-development/tutils'
+import { Inject, Module } from '@nestjs/common'
 import addStream from 'add-stream'
+import { Command, CommanderError } from 'commander'
+import consola from 'consola'
 import conventionalChangelog from 'conventional-changelog'
 import type { Options } from 'conventional-changelog-core'
 import type {
@@ -23,7 +30,12 @@ import type {
   GeneratedContext
 } from 'conventional-changelog-writer'
 import dateformat from 'dateformat'
-import type mri from 'mri'
+import {
+  CommandFactory,
+  CommandRunner,
+  Option,
+  RootCommand
+} from 'nest-commander'
 import {
   createReadStream,
   createWriteStream,
@@ -32,7 +44,7 @@ import {
   type WriteStream
 } from 'node:fs'
 import type { Readable } from 'node:stream'
-import sade from 'sade'
+import { get, intersects } from 'radash'
 import semver from 'semver'
 import tempfile from 'tempfile'
 import pkg from '../package.json' assert { type: 'json' }
@@ -48,9 +60,33 @@ interface CommitEnhanced extends Commit {
 }
 
 /**
- * CLI flags.
+ * CLI options.
  */
 interface Flags {
+  /**
+   * Enable verbose output.
+   *
+   * @default false
+   */
+  debug?: boolean
+
+  /**
+   * Print help text.
+   */
+  help?: boolean
+
+  /**
+   * Read `CHANGELOG` from this file.
+   */
+  infile?: string
+
+  /**
+   * Write content to this file.
+   *
+   * **Note**: Requires {@linkcode write} to be `true`.
+   */
+  outfile?: string
+
   /**
    * Output unreleased changelog.
    *
@@ -63,7 +99,7 @@ interface Flags {
    *
    * @default true
    */
-  'output-unreleased'?: boolean | string
+  outputUnreleased?: boolean | string
 
   /**
    * Number of releases to be generated.
@@ -73,33 +109,14 @@ interface Flags {
    *
    * @default 1
    */
-  'release-count'?: number
+  releaseCount?: number
 
   /**
    * Output content to {@linkcode infile}.
    *
    * @default false
    */
-  'same-file'?: boolean
-
-  /**
-   * Enable verbose output.
-   *
-   * @default false
-   */
-  debug?: boolean
-
-  /**
-   * Read CHANGELOG from this file.
-   */
-  infile?: string
-
-  /**
-   * Write content to this file.
-   *
-   * **Note**: Requires {@linkcode write} to be `true`.
-   */
-  outfile?: string
+  samefile?: boolean
 
   /**
    * Write content to file instead of {@linkcode process.stdout}.
@@ -109,31 +126,208 @@ interface Flags {
   write?: boolean
 }
 
-sade('changelog', true)
-  .option('-d, --debug', 'Enable verbose output', false)
-  .option('-i, --infile', 'Read CHANGELOG from this file')
-  .option('-o, --outfile', 'Write content to this file (requires --write)')
-  .option('-r, --release-count', 'Number of releases to be generated', 1)
-  .option('-s, --same-file', 'Output content to infile', false)
-  .option('-u, --output-unreleased', 'Output unreleased changelog')
-  .option('-w, --write', 'Write content to file', false)
-  .action((flags: mri.Argv<Flags>): void => {
-    const {
-      'release-count': releaseCount = 1,
-      debug = false,
-      write = false
-    } = flags
-    let {
-      'output-unreleased': outputUnreleased = true,
-      infile,
-      'same-file': samefile,
-      outfile
-    } = flags
+/**
+ * `changelog` command model.
+ *
+ * @class
+ * @extends {CommandRunner}
+ */
+@RootCommand({ description: 'Changelog CLI' })
+class ChangelogCommand extends CommandRunner {
+  /**
+   * Creates a new `changelog` command instance.
+   *
+   * @param {HelpService} help - Help service instance
+   * @param {UtilityService} util - CLI utilities service instance
+   */
+  constructor(
+    @Inject(HelpService) protected readonly help: HelpService,
+    @Inject(UtilityService) protected readonly util: UtilityService
+  ) {
+    super()
+  }
 
-    // convert possible 'false' or 'true' to boolean value
-    if (outputUnreleased === 'false' || outputUnreleased === 'true') {
-      outputUnreleased = JSON.parse(outputUnreleased)
+  /**
+   * Parses the `--debug` flag.
+   *
+   * @see {@linkcode Flags.debug}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CHOICES_BOOLEAN,
+    defaultValue: false,
+    description: 'Enable verbose output',
+    flags: '-d, --debug [choice]',
+    name: 'debug'
+  })
+  protected parseDebug(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--help` flag.
+   *
+   * @see {@linkcode Flags.help}
+   *
+   * @protected
+   *
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    description: 'Display this message',
+    flags: '-h, --help',
+    name: 'help'
+  })
+  protected parseHelp(): boolean {
+    return intersects(get<Command, string[]>(this.command, 'rawArgs', [])!, [
+      ...this.util.parseList(this.help.optionTermByName('help', this.command))
+    ])
+  }
+
+  /**
+   * Parses the `--infile` flag.
+   *
+   * @see {@linkcode Flags.infile}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'Read CHANGELOG from this file',
+    flags: '-i, --infile <path>',
+    name: 'infile'
+  })
+  protected parseInfile(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--outfile` flag.
+   *
+   * @see {@linkcode Flags.outfile}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'Write content to this file (requires --write)',
+    flags: '-o, --outfile <path>',
+    name: 'outfile'
+  })
+  protected parseOutfile(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--output-unreleased` flag.
+   *
+   * @see {@linkcode Flags.outputUnreleased}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean | string} Parsed option value
+   */
+  @Option({
+    defaultValue: true,
+    description: 'Output unreleased changelog',
+    flags: '-u, --output-unreleased [option]',
+    name: 'outputUnreleased'
+  })
+  protected parseOutputUnreleased(val: string): boolean | string {
+    try {
+      return this.util.parseBoolean(val)
+    } catch {
+      return val
     }
+  }
+
+  /**
+   * Parses the `--release-count` flag.
+   *
+   * @see {@linkcode Flags.releaseCount}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {number} Parsed option value
+   */
+  @Option({
+    defaultValue: 1,
+    description: 'Number of releases to be generated',
+    flags: '-r, --release-count <count>',
+    name: 'releaseCount'
+  })
+  protected parseReleaseCount(val: string): number {
+    return this.util.parseInt(val)
+  }
+
+  /**
+   * Parses the `--samefile` flag.
+   *
+   * @see {@linkcode Flags.samefile}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CHOICES_BOOLEAN,
+    defaultValue: false,
+    description: 'Output content to infile',
+    flags: '-s, --samefile [choice]',
+    name: 'samefile'
+  })
+  protected parseSamefile(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--write` flag.
+   *
+   * @see {@linkcode Flags.write}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CHOICES_BOOLEAN,
+    defaultValue: false,
+    description: 'Write content to file',
+    flags: '-w, --write [choice]',
+    name: 'write'
+  })
+  protected parseWrite(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Command runner.
+   *
+   * @public
+   * @async
+   *
+   * @param {string[]} _ - Command arguments
+   * @param {Flags} [flags={}] - Command options
+   * @return {Promise<void>} Nothing when complete
+   */
+  public async run(_: string[], flags: Flags = {}): Promise<void> {
+    const { debug, help, outputUnreleased, releaseCount, write } = flags
+    let { infile, outfile, samefile } = flags
+
+    // print help text and exit
+    if (help) return void consola.log(this.help.formatHelp(this.command))
 
     /**
      * Regex used to extract a release version from a string containing
@@ -154,7 +348,7 @@ sade('changelog', true)
     const changelog: Readable = conventionalChangelog<Commit>(
       {
         append: false,
-        debug: debug ? console.debug.bind(console) : undefined,
+        debug: debug ? consola.log.bind(consola) : undefined,
         outputUnreleased:
           typeof outputUnreleased === 'boolean'
             ? outputUnreleased
@@ -352,7 +546,7 @@ sade('changelog', true)
         ),
         ignoreReverted: false
       }
-    ).on('error', err => console.error(err.stack))
+    ).on('error', err => consola.error(err.stack))
 
     // override samefile if infile and outfile are the same file
     if (infile && infile === outfile) samefile = true
@@ -388,7 +582,7 @@ sade('changelog', true)
          * @const {ReadStream} rs
          */
         const rs: ReadStream = createReadStream(infile!).on('error', () => {
-          if (debug) console.error('infile does not exist.')
+          if (debug) consola.error('infile does not exist.')
           if (samefile) changelog.pipe(writer())
         })
 
@@ -416,5 +610,85 @@ sade('changelog', true)
     }
 
     return void 0
-  })
-  .parse(process.argv)
+  }
+
+  /**
+   * Sets {@linkcode command}.
+   *
+   * @protected
+   * @override
+   *
+   * @param {Command} cmd - CLI command instance
+   * @return {this} `this`
+   */
+  public override setCommand(cmd: Command): this {
+    cmd.addHelpCommand(false)
+    cmd.allowExcessArguments(false)
+    cmd.allowUnknownOption(false)
+    cmd.createHelp = () => this.help
+    cmd.enablePositionalOptions()
+    cmd.helpOption(false)
+    cmd.showHelpAfterError()
+    cmd.showSuggestionAfterError()
+    this.command = cmd
+    return this
+  }
+}
+
+/**
+ * CLI application module.
+ *
+ * @class
+ */
+@Module({ providers: [ChangelogCommand, HelpService, UtilityService] })
+class AppModule {
+  /**
+   * Commander error handler.
+   *
+   * @see {@linkcode Command.exitOverride}
+   * @see {@linkcode CommanderError}
+   * @see https://github.com/jmcdo29/nest-commander/blob/nest-commander%403.6.1/packages/nest-commander/src/command-runner.service.ts#L49-L51
+   *
+   * @public
+   * @static
+   *
+   * @param {CommanderError} error - Error to handle
+   * @return {void} Nothing when complete
+   */
+  public static errorHandler(error: CommanderError): void {
+    if (error.exitCode) consola.error(error)
+    return void process.exit(error.exitCode)
+  }
+
+  /**
+   * CLI command error handler.
+   *
+   * @public
+   * @static
+   *
+   * @param {Error} error - Error to handle
+   * @return {void} Nothing when complete
+   */
+  public static serviceErrorHandler(error: Error): void {
+    consola.error(error)
+    return void process.exit(1)
+  }
+}
+
+/**
+ * CLI application runner.
+ *
+ * @async
+ *
+ * @return {Promise<void>} Nothing when complete
+ */
+async function main(): Promise<void> {
+  return void (await CommandFactory.run(AppModule, {
+    errorHandler: AppModule.errorHandler,
+    logger: ['error', 'warn'],
+    serviceErrorHandler: AppModule.serviceErrorHandler
+  }))
+}
+
+// run application and exit
+void (await main())

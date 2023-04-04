@@ -21,7 +21,7 @@ describe('integration:plugins/fully-specified', () => {
   beforeAll(() => {
     options = {
       ...ESBUILD_OPTIONS,
-      entryPoints: ['src/cli.ts'],
+      entryPoints: ['src/cli/index.ts'],
       format: 'esm',
       logLevel: 'silent',
       outExtension: { '.js': '.mjs' },

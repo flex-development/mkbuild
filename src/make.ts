@@ -3,7 +3,7 @@
  * @module mkbuild/make
  */
 
-import { ERR_MODULE_NOT_FOUND } from '@flex-development/errnode'
+import { ERR_MODULE_NOT_FOUND, type NodeError } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
@@ -42,6 +42,7 @@ import { analyzeOutputs, fs as fsa } from './utils'
  *
  * @param {Config} [config={}] - Build configuration options
  * @return {Promise<Result[]>} Build results
+ * @throws {esbuild.BuildFailure | NodeError}
  */
 async function make({
   configfile = true,
@@ -55,6 +56,7 @@ async function make({
       cwd,
       entries: [] as Partial<Task>[],
       fs: fsa,
+      logLevel: 'info',
       outdir: 'dist',
       watch: false,
       write: false
@@ -98,7 +100,6 @@ async function make({
     const {
       bundle = options.bundle,
       cwd = options.cwd,
-      logLevel = options.logLevel ?? (watch ? 'info' : options.logLevel),
       outdir = options.outdir,
       source = options.source ?? (bundle ? 'src/index' : 'src'),
       ...rest
@@ -108,7 +109,6 @@ async function make({
       {
         bundle,
         cwd,
-        logLevel,
         outdir,
         source,
         write

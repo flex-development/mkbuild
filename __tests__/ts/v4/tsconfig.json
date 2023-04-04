@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
     "isolatedModules": true,
-    "lib": ["dom", "es2020"],
+    "lib": ["dom", "es2022"],
     "module": "esnext",
     "moduleResolution": "node",
     "newLine": "lf",
@@ -30,6 +30,7 @@
     "outDir": "../../../dist",
     "paths": {
       "#fixtures/*": ["__fixtures__/*"],
+      "#pkg": ["package.json"],
       "#src": ["src/index"],
       "#src/*": ["src/*"],
       "#tests/*": ["__tests__/*"]

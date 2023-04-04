@@ -13,6 +13,7 @@ import { EXT_DTS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
+import { isString, isUndefined } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import regexp from 'escape-string-regexp'
 import fg from 'fast-glob'
@@ -22,9 +23,13 @@ import gitignore from './gitignore'
 /**
  * Creates a build context for the given build `task`.
  *
+ * @todo throw if `absWorkingDir` is not a directory
+ * @todo throw if `task.ext` is not a valid `OutputExtension`
+ * @todo throw if `task.outdir` is not a directory
  * @todo throw if `task.source` is not a directory when not bundling
  * @todo throw if `task.source` is not a file when bundling
  *
+ * @internal
  * @async
  *
  * @param {Partial<Task & { write?: boolean }>} task - Build task object
@@ -38,10 +43,14 @@ async function createContext(
   fs: Partial<FileSystemAdapter> = fsa
 ): Promise<Context> {
   const {
+    assetNames = 'assets/[name]-[hash]',
     bundle = false,
+    chunkNames = 'chunks/[name]-[hash]',
     clean = true,
-    conditions = mlly.CONDITIONS,
+    color = true,
+    conditions = ['import', 'default'],
     cwd = '.',
+    drop,
     dts = await (async () => {
       try {
         await mlly.resolveModule(
@@ -55,15 +64,20 @@ async function createContext(
     external = bundle ? Object.keys(get(pkg, 'peerDependencies', {})!) : [],
     format = 'esm',
     ignore = IGNORE_PATTERNS,
+    inject,
     loader = {},
+    logLimit = 10,
+    mainFields = ['module', 'main'],
     name = '[name]',
     outExtension = {},
     outdir = 'dist',
     pattern = '**',
-    platform,
+    pure,
+    platform = 'neutral',
     plugins = [],
     resolveExtensions = mlly.RESOLVE_EXTENSIONS,
     source = bundle ? 'src/index' : 'src',
+    target,
     tsconfig,
     write = false,
     createRequire = bundle && format === 'esm' && platform === 'node',
@@ -90,7 +104,9 @@ async function createContext(
   const files: string[] = await fg(
     bundle
       ? (!pathe.extname(source) && source + '.*') || /* c8 ignore next */ source
-      : pattern,
+      : isString(pattern)
+      ? pattern
+      : [...new Set<string>(pattern)],
     {
       absolute: false,
       braceExpansion: true,
@@ -131,8 +147,12 @@ async function createContext(
       ...options,
       absWorkingDir,
       allowOverwrite: false,
+      assetNames,
       bundle,
+      chunkNames,
+      color,
       conditions: [...new Set(conditions)],
+      drop: [...new Set(drop)],
       entryNames: `[dir]/${name}`,
       entryPoints: files
         .map((file: string): SourceFile => {
@@ -161,9 +181,12 @@ async function createContext(
           ]
         : [],
       format,
+      inject: [...new Set(inject)],
       loader: { ...loaders(format, bundle), ...loader },
+      logLimit,
+      mainFields: [...new Set(mainFields)],
       metafile: true,
-      outExtension: { ...outExtension, '.js': ext },
+      outExtension: { ...outExtension, '.js': pathe.formatExt(ext) },
       outbase,
       outdir,
       platform,
@@ -179,9 +202,15 @@ async function createContext(
         mkp.filter(dts === 'only' ? EXT_DTS_REGEX : undefined),
         write && mkp.write(fs)
       ]) as esbuild.Plugin[],
+      pure: [...new Set(pure)],
       resolveExtensions: [...new Set(resolveExtensions)].map(ext => {
         return pathe.formatExt(ext)
       }),
+      target: isUndefined(target)
+        ? undefined
+        : isString(target)
+        ? target
+        : [...new Set(target)],
       tsconfig,
       write: false
     })

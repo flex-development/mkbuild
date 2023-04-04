@@ -44,7 +44,6 @@ branches:
           - context: gitguardian
           - context: lint
           - context: spelling
-          - context: test (14)
           - context: test (16)
           - context: test (18)
           - context: test (19)
@@ -217,10 +216,13 @@ repository:
   topics:
     - bundle
     - bundler
+    - cli
     - dts
     - esbuild
     - file-to-file
     - jsx
+    - nest-commander
+    - nestjs-commander
     - react
     - transpile
     - transpiler

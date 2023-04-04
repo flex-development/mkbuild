@@ -9,12 +9,12 @@
     "customConditions": ["import", "node", "default"],
     "declaration": false,
     "declarationMap": false,
-    "emitDecoratorMetadata": false,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "es2020"],
+    "lib": ["dom", "es2022"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "newLine": "lf",
@@ -30,6 +30,7 @@
     "outDir": "dist",
     "paths": {
       "#fixtures/*": ["__fixtures__/*"],
+      "#pkg": ["package.json"],
       "#src": ["src/index"],
       "#src/*": ["src/*"],
       "#tests/*": ["__tests__/*"]

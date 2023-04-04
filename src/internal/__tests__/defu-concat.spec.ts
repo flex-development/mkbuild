@@ -16,7 +16,7 @@ describe('unit:internal/defuConcat', () => {
       source: '.',
       sourcemap: true,
       sourcesContent: false,
-      target: ['node14.21.2'],
+      target: ['node16.20.0'],
       tsconfig: 'tsconfig.build.json'
     }
     const defaults: Config = {
@@ -36,7 +36,7 @@ describe('unit:internal/defuConcat', () => {
       outdir: 'dist',
       pattern: '**',
       source: 'src',
-      target: ['esnext']
+      target: ['es2022']
     }
 
     // Act + Expect

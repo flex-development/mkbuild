@@ -18,7 +18,7 @@ describe('unit:internal/defu', () => {
       source: '.',
       sourcemap: true,
       sourcesContent: false,
-      target: 'node14.21.2',
+      target: 'node16.20.0',
       tsconfig: 'tsconfig.build.json'
     }
     const defaults: Config = {

@@ -8,6 +8,9 @@ import type { EmptyString } from '@flex-development/tutils'
 /**
  * Output file extensions.
  */
-type OutputExtension = `${EmptyString | '.min'}${'.cjs' | '.js' | '.mjs'}`
+type OutputExtension = `${EmptyString | '.'}${EmptyString | 'min.'}${
+  | 'cjs'
+  | 'js'
+  | 'mjs'}`
 
 export type { OutputExtension as default }
