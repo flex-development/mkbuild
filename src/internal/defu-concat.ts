@@ -17,6 +17,8 @@ import { mergeAndCompare as merge, type Merge } from 'merge-anything'
  *
  * Supports {@linkcode Set} and array concatenation.
  *
+ * @internal
+ *
  * @template T - Destination object type
  * @template D - Source object type(s)
  *

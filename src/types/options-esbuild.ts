@@ -17,6 +17,7 @@ type EsbuildOptions = Omit<
   | 'entryNames'
   | 'entryPoints'
   | 'incremental'
+  | 'mainFields'
   | 'metafile'
   | 'outfile'
   | 'resolveExtensions'

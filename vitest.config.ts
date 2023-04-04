@@ -56,14 +56,13 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
           '**/__mocks__/**',
           '**/__tests__/**',
           '**/index.ts',
-          'src/cli.ts',
           'src/interfaces/',
           'src/plugins/**/options.ts',
           'src/types/'
         ],
         extension: ['.ts'],
-        ignoreClassMethods: [],
         include: ['src'],
+        provider: 'c8',
         reporter: [ci ? 'lcovonly' : 'lcov', 'text'],
         reportsDirectory: './coverage',
         skipFull: false
@@ -120,7 +119,7 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
       },
       setupFiles: ['./__tests__/setup/index.ts'],
       silent: false,
-      slowTestThreshold: 500,
+      slowTestThreshold: 5000,
       snapshotFormat: {
         callToJSON: true,
         min: false,

@@ -5,6 +5,7 @@
 
 import { defineBuildConfig, type Config } from '#src'
 import pkg from './package.json' assert { type: 'json' }
+import tsconfig from './tsconfig.build.json' assert { type: 'json' }
 
 /**
  * Build configuration options.
@@ -13,19 +14,30 @@ import pkg from './package.json' assert { type: 'json' }
  */
 const config: Config = defineBuildConfig({
   entries: [
-    { ignore: ['cli.ts'] },
+    { ignore: ['cli/**'] },
     {
       bundle: true,
-      external: ['node-fetch'],
+      external: [
+        '@nestjs/microservices',
+        '@nestjs/platform-express',
+        '@nestjs/websockets/socket-module',
+        'cache-manager',
+        'class-transformer',
+        'node-fetch'
+      ],
       keepNames: true,
       minify: true,
+      name: 'cli',
       platform: 'node',
-      source: 'src/cli.ts'
+      source: 'src/cli/index.ts'
     }
   ],
   sourcemap: true,
   sourcesContent: false,
-  target: 'node' + pkg.engines.node.replace(/^\D+/, ''),
+  target: [
+    pkg.engines.node.replace(/^\D+/, 'node'),
+    tsconfig.compilerOptions.target
+  ],
   tsconfig: 'tsconfig.build.json'
 })
 

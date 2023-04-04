@@ -67,6 +67,12 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<Set<string> | string[] | undefined>()
   })
 
+  it('should match [mainFields?: Set<string> | string[]]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('mainFields')
+      .toEqualTypeOf<Set<string> | string[] | undefined>()
+  })
+
   it('should match [name?: string]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('name')
@@ -79,10 +85,10 @@ describe('unit-d:interfaces/Options', () => {
       .toEqualTypeOf<string | undefined>()
   })
 
-  it('should match [pattern?: OneOrMany<string>]', () => {
+  it('should match [pattern?: OneOrMany<string> | Set<string>]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('pattern')
-      .toEqualTypeOf<OneOrMany<string> | undefined>()
+      .toEqualTypeOf<OneOrMany<string> | Set<string> | undefined>()
   })
 
   it('should match [resolveExtensions?: Set<string> | string[]]', () => {

@@ -15,6 +15,8 @@ import { mergeAndCompare as merge, type Merge } from 'merge-anything'
  *
  * Leftmost arguments have more priority when assigning defaults.
  *
+ * @internal
+ *
  * @template T - Destination object type
  * @template D - Source object type(s)
  *

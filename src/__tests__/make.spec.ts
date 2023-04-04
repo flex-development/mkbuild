@@ -20,7 +20,7 @@ describe('unit:make', () => {
     // Act
     const results = await testSubject({
       configfile,
-      ignore: ['cli.ts'],
+      ignore: ['cli/**'],
       tsconfig: 'tsconfig.build.json'
     })
 

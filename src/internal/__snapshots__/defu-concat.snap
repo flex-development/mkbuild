@@ -31,8 +31,8 @@ exports[`unit:internal/defuConcat > should return object with defaults assigned 
   "sourcemap": true,
   "sourcesContent": false,
   "target": [
-    "node14.21.2",
-    "esnext",
+    "node16.20.0",
+    "es2022",
   ],
   "tsconfig": "tsconfig.build.json",
 }

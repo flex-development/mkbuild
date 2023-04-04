@@ -30,6 +30,8 @@ updates:
       prefix: build
       include: scope
     directory: /
+    ignore:
+      - dependency-name: nest-commander
     labels:
       - scope:dependencies
       - type:build

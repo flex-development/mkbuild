@@ -13,9 +13,9 @@ const config = {
   overrides: [
     ...require('./.eslintrc.base.cjs').overrides,
     {
-      files: ['loader.mjs'],
+      files: ['config/changelog.config.ts'],
       rules: {
-        '@typescript-eslint/no-use-before-define': 0
+        '@typescript-eslint/require-await': 0
       }
     }
   ],
