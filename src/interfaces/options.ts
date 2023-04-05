@@ -3,7 +3,12 @@
  * @module mkbuild/interfaces/Options
  */
 
-import type { EsbuildOptions, OutputExtension } from '#src/types'
+import type {
+  EsbuildOptions,
+  GeneratedFileType,
+  OutputExtension
+} from '#src/types'
+import type * as pathe from '@flex-development/pathe'
 import type { OneOrMany } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 
@@ -21,6 +26,16 @@ interface Options extends EsbuildOptions {
    * @default 'assets/[name]-[hash]'
    */
   assetNames?: string
+
+  /**
+   * Arbitrary strings to insert at the beginning of generated JavaScript and
+   * CSS files.
+   *
+   * @see https://esbuild.github.io/api/#banner
+   *
+   * @default {}
+   */
+  banner?: { [K in GeneratedFileType]?: string }
 
   /**
    * Bundle files.
@@ -75,7 +90,7 @@ interface Options extends EsbuildOptions {
    *
    * Pass `'only'` to only write declaration files.
    *
-   * @default !!mlly.resolveModule(cwd + 'node_modules/typescript/package.json')
+   * @default !!mlly.resolveModule(cwd+'node_modules/typescript/package.json')
    */
   dts?: boolean | 'only'
 
@@ -85,6 +100,16 @@ interface Options extends EsbuildOptions {
    * @default format === 'cjs' ? '.cjs' : format === 'esm' ? '.mjs' : '.js'
    */
   ext?: OutputExtension
+
+  /**
+   * Arbitrary strings to insert at the end of generated JavaScript and CSS
+   * files.
+   *
+   * @see https://esbuild.github.io/api/#footer
+   *
+   * @default {}
+   */
+  footer?: { [K in GeneratedFileType]?: string }
 
   /**
    * Output file format.
@@ -108,6 +133,16 @@ interface Options extends EsbuildOptions {
   ignore?: Set<string> | string[]
 
   /**
+   * Input file interpreter.
+   *
+   * @see https://esbuild.github.io/api/#loader
+   * @see https://esbuild.github.io/content-types
+   *
+   * @default loaders(format,bundle)
+   */
+  loader?: Record<pathe.Ext, esbuild.Loader>
+
+  /**
    * Log level.
    *
    * @see https://esbuild.github.io/api/#log-level
@@ -115,6 +150,15 @@ interface Options extends EsbuildOptions {
    * @default 'info'
    */
   logLevel?: esbuild.LogLevel
+
+  /**
+   * Log overrides.
+   *
+   * @see https://esbuild.github.io/api/#log-override
+   *
+   * @default {}
+   */
+  logOverride?: Record<string, esbuild.LogLevel>
 
   /**
    * Additional `package.json` fields to try when resolving a package.
@@ -133,6 +177,17 @@ interface Options extends EsbuildOptions {
   name?: string
 
   /**
+   * Output file extension map.
+   *
+   * **Note**: Entry `.js` will be overwritten by {@linkcode ext}.
+   *
+   * @see https://esbuild.github.io/api/#out-extension
+   *
+   * @default {}
+   */
+  outExtension?: Record<pathe.Ext, pathe.Ext>
+
+  /**
    * Output directory.
    *
    * @default 'dist'
@@ -142,7 +197,7 @@ interface Options extends EsbuildOptions {
   /**
    * Glob patterns matching source files.
    *
-   * Not applicable if {@linkcode bundle} is enabled.
+   * **Note**: Not applicable if {@linkcode bundle} is enabled.
    *
    * @see https://github.com/sindresorhus/globby
    *

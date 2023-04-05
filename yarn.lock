@@ -1213,6 +1213,7 @@ __metadata:
     vite: "npm:4.2.1"
     vite-tsconfig-paths: "npm:4.0.8"
     vitest: "npm:0.29.8"
+    word-wrap: "npm:1.2.3"
     yaml-eslint-parser: "npm:1.2.0"
   peerDependencies:
     "@types/node": ">=16.18.23"
@@ -9371,7 +9372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"word-wrap@npm:^1.2.3":
+"word-wrap@npm:1.2.3, word-wrap@npm:^1.2.3":
   version: 1.2.3
   resolution: "word-wrap@npm:1.2.3"
   checksum: 17267cdb6baa9d5452b0998531adafd2df52a25159f27cbb754b2fdcff4af8808019efe4c0a2bcc5ceb63becb30df07c792c0125ad21991266aefadb940df74a

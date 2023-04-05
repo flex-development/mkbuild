@@ -8,17 +8,17 @@ Usage
   $ mkbuild [options]
 
 Options
-  -b, --bundle [choice]         Bundle files (default: false)
-  -c, --clean [choice]          Remove output directories (default: true)
-  -d, --dts [choice]            Generate TypeScript declaration files
-  -e, --ext <ext>               Output file extension
-  -f, --format <format>         Output file format (default: \\"esm\\")
-  -n, --name <name>             Bundle output file name (default: \\"[name]\\")
-  -o, --outdir <directory>      Output directory (default: \\"dist\\")
-  -s, --source <path>           Source directory or bundle input path
-      --sourcemap [choice]      Generate sourcemaps
-  -w, --watch [choice]          Watch files (default: false)
-  -h, --help                    Display this message
-  -v, --version                 Display version number
+  -b, --bundle [choice]           Bundle files (default: false)
+  -c, --clean [choice]            Remove output directories (default: true)
+  -d, --dts [choice]              Generate TypeScript declaration files
+  -e, --ext <ext>                 Output file extension
+  -f, --format <format>           Output file format (default: 'esm')
+  -n, --name <name>               Bundle output file name (default: '[name]')
+  -o, --outdir <directory>        Output directory (default: 'dist')
+  -s, --source <path>             Source directory or bundle input path
+      --sourcemap [choice]        Generate sourcemaps
+  -w, --watch [choice]            Watch files (default: false)
+  -h, --help                      Display this message
+  -v, --version                   Display version number
 "
 `;

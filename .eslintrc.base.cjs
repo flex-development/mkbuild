@@ -1147,9 +1147,13 @@ const config = {
   settings: {
     jsdoc: {
       augmentsExtendsReplacesDocs: true,
+      ignoreInternal: false,
       ignorePrivate: false,
       implementsReplacesDocs: true,
       overrideReplacesDocs: true,
+      preferredTypes: {
+        '*': false
+      },
       structuredTags: {
         const: {
           name: 'namepath-defining',

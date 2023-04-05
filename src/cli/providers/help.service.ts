@@ -5,8 +5,9 @@
 
 import { Injectable } from '@nestjs/common'
 import * as commander from 'commander'
-import { flat, fork } from 'radash'
+import { flat, fork, template } from 'radash'
 import { dedent } from 'ts-dedent'
+import wrap from 'word-wrap'
 
 /**
  * Help flag (`-h, --help`) behavior provider.
@@ -56,7 +57,21 @@ class HelpService extends commander.Help {
     const indent: number = 2
 
     /**
-     * Amount of space between the end of an {@linkcode Option} term and
+     * Indentation.
+     *
+     * @const {string} indentation
+     */
+    const indentation: string = ' '.repeat(indent)
+
+    /**
+     * Maximum width per line.
+     *
+     * @const {number} linewidth
+     */
+    const linewidth: number = this.helpWidth - indent
+
+    /**
+     * Amount of padding between the end of an {@linkcode Option} term and
      * beginning of an {@linkcode Option} description.
      *
      * @see {@linkcode Help.optionDescription}
@@ -82,10 +97,10 @@ class HelpService extends commander.Help {
 
     return dedent`
       Description
-        ${this.wrap(this.commandDescription(cmd), this.helpWidth, 0)}
+      ${indentation}${this.wrap(this.commandDescription(cmd), linewidth, 0)}
 
       Usage
-        $ ${this.commandUsage(cmd)}
+      ${indentation}${template('$ {{0}}', { 0: this.commandUsage(cmd) })}
 
       Options
       ${options.reduce((acc: string, option: commander.Option): string => {
@@ -94,7 +109,21 @@ class HelpService extends commander.Help {
          *
          * @const {number} padend
          */
-        const padend: number = padwidth + (option.short ? indent * 2 : 0)
+        const padend: number = padwidth + indent * (option.short ? 3 : 1)
+
+        /**
+         * Option flags.
+         *
+         * @const {string} term
+         */
+        const term: string = this.optionTerm(option).padEnd(padend)
+
+        /**
+         * Length from left side of terminal to an option description.
+         *
+         * @const {number} left
+         */
+        const left: number = term.length + indent * (option.short ? 2 : 3)
 
         /**
          * String representation of {@linkcode option}.
@@ -102,12 +131,26 @@ class HelpService extends commander.Help {
          * @const {string} str
          */
         const str: string =
-          ' '.repeat(indent) +
-          (option.short ? '' : ' '.repeat(indent * 2)) +
-          this.optionTerm(option).padEnd(padend) +
-          this.optionDescription(option)
+          indentation +
+          ' '.repeat(indent * (option.short ? 0 : 2)) +
+          term +
+          wrap(
+            this.wrap(
+              this.optionDescription(option).replaceAll('"', "'"),
+              linewidth,
+              linewidth - left
+            ),
+            {
+              cut: true,
+              indent: indentation.trim(),
+              newline: template('\n{{0}}', {
+                0: ' '.repeat(left - indent * (option.short ? 1 : 0))
+              }),
+              width: linewidth - left
+            }
+          )
 
-        return (acc += `${this.wrap(str, this.helpWidth - indent, padwidth)}\n`)
+        return (acc += `${this.wrap(str, linewidth, padwidth)}\n`)
       }, '')}
     `
   }
@@ -148,7 +191,7 @@ class HelpService extends commander.Help {
       throw new commander.CommanderError(
         1,
         'commander.unknownOption',
-        `error: unknown option '${name}'`
+        template("error: unknown option '{{name}}'", { name })
       )
     }
 

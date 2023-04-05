@@ -188,6 +188,7 @@
     "vite": "4.2.1",
     "vite-tsconfig-paths": "4.0.8",
     "vitest": "0.29.8",
+    "word-wrap": "1.2.3",
     "yaml-eslint-parser": "1.2.0"
   },
   "peerDependencies": {

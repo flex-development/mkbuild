@@ -39,18 +39,52 @@ describe('functional:cli/commands/MkbuildCommand', () => {
     util = command.get(UtilityService)
   })
 
+  describe('--alias <list>', () => {
+    it('should call make with flags.alias', async () => {
+      // Arrange
+      const alias: string = 'oldpkg:newpkg'
+
+      // Act
+      await CommandTestFactory.run(command, [`--alias=${alias}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        alias: util.parseObject(alias),
+        write
+      })
+    })
+  })
+
   describe('--asset-names <template>', () => {
     it('should call make with flags.assetNames', async () => {
       // Arrange
       const assetNames: string = 'assets/[name]-[hash]'
 
       // Act
-      await CommandTestFactory.run(command, ['--asset-names', `${assetNames}`])
+      await CommandTestFactory.run(command, [`--asset-names=${assetNames}`])
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         assetNames,
+        write
+      })
+    })
+  })
+
+  describe('--banner <list>', () => {
+    it('should call make with flags.banner', async () => {
+      // Arrange
+      const banner: string = 'css:/*comment:*/,js://comment'
+
+      // Act
+      await CommandTestFactory.run(command, [`--banner=${banner}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        banner: util.parseObject(banner),
         write
       })
     })
@@ -221,6 +255,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
     })
   })
 
+  describe('--define <list>', () => {
+    it('should call make with flags.define', async () => {
+      // Arrange
+      const define: string = 'id:text,str:"text"'
+
+      // Act
+      await CommandTestFactory.run(command, [`--define=${define}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        define: util.parseObject(define),
+        write
+      })
+    })
+  })
+
   describe('--drop <list>', () => {
     it('should call make with flags.drop', async () => {
       // Arrange
@@ -303,6 +354,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         external: [...util.parseList(external)],
+        write
+      })
+    })
+  })
+
+  describe('--footer <list>', () => {
+    it('should call make with flags.footer', async () => {
+      // Arrange
+      const footer: string = 'css:/*comment:*/,js://comment'
+
+      // Act
+      await CommandTestFactory.run(command, [`--footer=${footer}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        footer: util.parseObject(footer),
         write
       })
     })
@@ -601,6 +669,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
     })
   })
 
+  describe('--loader <list>', () => {
+    it('should call make with flags.loader', async () => {
+      // Arrange
+      const loader: string = '.css:css,.ts:ts,.tsx:tsx'
+
+      // Act
+      await CommandTestFactory.run(command, [`--loader=${loader}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        loader: util.parseObject(loader),
+        write
+      })
+    })
+  })
+
   describe('--log-level <level>', () => {
     it('should call make with flags.logLevel', async () => {
       // Arrange
@@ -613,6 +698,24 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         logLevel,
+        write
+      })
+    })
+  })
+
+  describe('--log-override <list>', () => {
+    it('should call make with flags.logOverride', async () => {
+      // Arrange
+      const logOverride: string =
+        'unsupported-dynamic-import:warning,unsupported-jsx-comment:warning'
+
+      // Act
+      await CommandTestFactory.run(command, [`--log-override=${logOverride}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logOverride: util.parseObject(logOverride),
         write
       })
     })
@@ -647,6 +750,41 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         mainFields: util.parseList(mainFields),
+        write
+      })
+    })
+  })
+
+  describe('--mangle-cache <list>', () => {
+    it('should call make with flags.mangleCache', async () => {
+      // Arrange
+      const mangleCache: string =
+        'customRenaming_:"cR_",disabledRenaming_:false'
+
+      // Act
+      await CommandTestFactory.run(command, [`--mangle-cache=${mangleCache}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        mangleCache: util.parseObject(mangleCache),
+        write
+      })
+    })
+  })
+
+  describe('--mangle-props <regex>', () => {
+    it('should call make with flags.mangleProps', async () => {
+      // Arrange
+      const mangleProps: string = '/_$/'
+
+      // Act
+      await CommandTestFactory.run(command, [`--mangle-props=${mangleProps}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        mangleProps: util.parseRegExp(mangleProps),
         write
       })
     })
@@ -768,6 +906,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         name,
+        write
+      })
+    })
+  })
+
+  describe('--out-extension <list>', () => {
+    it('should call make with flags.outExtension', async () => {
+      // Arrange
+      const outExtension: string = '.sass:.scss'
+
+      // Act
+      await CommandTestFactory.run(command, [`--out-extension=${outExtension}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        outExtension: util.parseObject(outExtension),
         write
       })
     })
@@ -943,6 +1098,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
     })
   })
 
+  describe('--reserve-props <regex>', () => {
+    it('should call make with flags.reserveProps', async () => {
+      // Arrange
+      const reserveProps: string = '/^__.*__$/'
+
+      // Act
+      await CommandTestFactory.run(command, [`--reserve-props=${reserveProps}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        reserveProps: util.parseRegExp(reserveProps),
+        write
+      })
+    })
+  })
+
   describe('--resolve-extensions <list>', () => {
     it('should call make with flags.resolveExtensions', async () => {
       // Arrange
@@ -1059,6 +1231,23 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         splitting,
+        write
+      })
+    })
+  })
+
+  describe('--supported <list>', () => {
+    it('should call make with flags.supported', async () => {
+      // Arrange
+      const supported: string = 'async-await:true,bigint:false'
+
+      // Act
+      await CommandTestFactory.run(command, [`--supported=${supported}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        supported: util.parseObject(supported),
         write
       })
     })

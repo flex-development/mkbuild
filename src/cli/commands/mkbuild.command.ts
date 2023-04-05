@@ -8,8 +8,16 @@ import { CHOICES_BOOLEAN, CLI_NAME } from '#src/cli/constants'
 import { HelpService, UtilityService } from '#src/cli/providers'
 import type { Flags } from '#src/interfaces'
 import make from '#src/make'
-import type { Jsx, LegalComments, OutputExtension, Sourcemap } from '#src/types'
+import type {
+  GeneratedFileType,
+  Jsx,
+  LegalComments,
+  OutputExtension,
+  Sourcemap
+} from '#src/types'
+import { IGNORE_PATTERNS, loaders } from '#src/utils'
 import * as mlly from '@flex-development/mlly'
+import type * as pathe from '@flex-development/pathe'
 import { Inject } from '@nestjs/common'
 import { Command } from 'commander'
 import consola from 'consola'
@@ -24,18 +32,6 @@ import { get, intersects, set, shake } from 'radash'
 
 /**
  * `mkbuild` command model.
- *
- * @todo implement `--alias`
- * @todo implement `--banner`
- * @todo implement `--define`
- * @todo implement `--footer`
- * @todo implement `--loader`
- * @todo implement `--log-override`
- * @todo implement `--mangle-cache`
- * @todo implement `--mangle-props`
- * @todo implement `--out-extension`
- * @todo implement `--reserve-props`
- * @todo implement `--supported`
  *
  * @class
  * @extends {CommandRunner}
@@ -84,12 +80,12 @@ class MkbuildCommand extends CommandRunner {
       '.cjs',
       '.js',
       '.mjs',
-      'cjs',
-      'js',
-      'mjs',
       '.min.cjs',
       '.min.js',
       '.min.mjs',
+      'cjs',
+      'js',
+      'mjs',
       'min.cjs',
       'min.js',
       'min.mjs'
@@ -181,6 +177,26 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--alias` flag.
+   *
+   * @see {@linkcode Flags.alias}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, string>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#alias',
+    flags: '--alias <list>',
+    name: 'alias'
+  })
+  protected parseAlias(val: string): Record<string, string> {
+    return this.util.parseObject(val)
+  }
+
+  /**
    * Parses the `--asset-names` flag.
    *
    * @see {@linkcode Flags.assetNames}
@@ -198,6 +214,26 @@ class MkbuildCommand extends CommandRunner {
   })
   protected parseAssetNames(val: string): string {
     return val
+  }
+
+  /**
+   * Parses the `--banner` flag.
+   *
+   * @see {@linkcode Flags.banner}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Partial<Record<GeneratedFileType, string>>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#banner',
+    flags: '--banner <list>',
+    name: 'banner'
+  })
+  protected parseBanner(val: string): { [K in GeneratedFileType]?: string } {
+    return this.util.parseObject<GeneratedFileType>(val)
   }
 
   /**
@@ -364,6 +400,26 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--define` flag.
+   *
+   * @see {@linkcode Flags.define}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, string>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#define',
+    flags: '--define <list>',
+    name: 'define'
+  })
+  protected parseDefine(val: string): Record<string, string> {
+    return this.util.parseObject(val)
+  }
+
+  /**
    * Parses the `--drop` flag.
    *
    * @see {@linkcode Flags.drop}
@@ -443,6 +499,26 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--footer` flag.
+   *
+   * @see {@linkcode Flags.footer}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Partial<Record<GeneratedFileType, string>>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#footer',
+    flags: '--footer <list>',
+    name: 'footer'
+  })
+  protected parseFooter(val: string): { [K in GeneratedFileType]?: string } {
+    return this.util.parseObject<GeneratedFileType>(val)
+  }
+
+  /**
    * Parses the `--format` flag.
    *
    * @see {@linkcode Flags.format}
@@ -514,6 +590,7 @@ class MkbuildCommand extends CommandRunner {
    * @return {Set<string>} Parsed option value
    */
   @Option({
+    defaultValue: [...IGNORE_PATTERNS],
     description: 'Glob patterns to exclude matches in --pattern',
     flags: '-i, --ignore <list>',
     name: 'ignore'
@@ -722,6 +799,26 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--loader` flag.
+   *
+   * @see {@linkcode Flags.loader}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<pathe.Ext, esbuild.Loader>} Parsed option value
+   */
+  @Option({
+    defaultValue: loaders(),
+    description: 'https://esbuild.github.io/api/#loader',
+    flags: '--loader <list>',
+    name: 'loader'
+  })
+  protected parseLoader(val: string): Record<pathe.Ext, esbuild.Loader> {
+    return this.util.parseObject<pathe.Ext, esbuild.Loader>(val)
+  }
+
+  /**
    * Parses the `--log-level` flag.
    *
    * @see {@linkcode Flags.logLevel}
@@ -763,6 +860,26 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--log-override` flag.
+   *
+   * @see {@linkcode Flags.logOverride}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, esbuild.LogLevel>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#log-override',
+    flags: '--log-override <list>',
+    name: 'logOverride'
+  })
+  protected parseLogOverride(val: string): Record<string, esbuild.LogLevel> {
+    return this.util.parseObject<string, esbuild.LogLevel>(val)
+  }
+
+  /**
    * Parses the `--main-fields` flag.
    *
    * @see {@linkcode Flags.mainFields}
@@ -780,6 +897,45 @@ class MkbuildCommand extends CommandRunner {
   })
   protected parseMainFields(val: string): Set<string> {
     return this.util.parseList(val)
+  }
+
+  /**
+   * Parses the `--mangle-cache` flag.
+   *
+   * @see {@linkcode Flags.mangleCache}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, string | false>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#mangle-cache',
+    flags: '--mangle-cache <list>',
+    name: 'mangleCache'
+  })
+  protected parseMangleCache(val: string): Record<string, string | false> {
+    return this.util.parseObject<string, string | false>(val)
+  }
+
+  /**
+   * Parses the `--mangle-props` flag.
+   *
+   * @see {@linkcode Flags.mangleProps}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {RegExp} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#mangle-props',
+    flags: '--mangle-props <regex>',
+    name: 'mangleProps'
+  })
+  protected parseMangleProps(val: string): RegExp {
+    return this.util.parseRegExp(val)
   }
 
   /**
@@ -905,6 +1061,26 @@ class MkbuildCommand extends CommandRunner {
   })
   protected parseName(val: string): string {
     return val
+  }
+
+  /**
+   * Parses the `--out-extension` flag.
+   *
+   * @see {@linkcode Flags.outExtension}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<pathe.Ext, pathe.Ext>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#out-extension',
+    flags: '--out-extension <list>',
+    name: 'outExtension'
+  })
+  protected parseOutExtension(val: string): Record<pathe.Ext, pathe.Ext> {
+    return this.util.parseObject<pathe.Ext, pathe.Ext>(val)
   }
 
   /**
@@ -1067,6 +1243,25 @@ class MkbuildCommand extends CommandRunner {
   }
 
   /**
+   * Parses the `--reserve-props` flag.
+   *
+   * @see {@linkcode Flags.reserveProps}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {RegExp} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#reserve-props',
+    flags: '--reserve-props <regex>',
+    name: 'reserveProps'
+  })
+  protected parseReserveProps(val: string): RegExp {
+    return this.util.parseRegExp(val)
+  }
+
+  /**
    * Parses the `--resolve-extensions` flag.
    *
    * @see {@linkcode Flags.resolveExtensions}
@@ -1190,6 +1385,26 @@ class MkbuildCommand extends CommandRunner {
   })
   protected parseSplitting(val: string): boolean {
     return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--supported` flag.
+   *
+   * @see {@linkcode Flags.supported}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, boolean>} Parsed option value
+   */
+  @Option({
+    defaultValue: {},
+    description: 'https://esbuild.github.io/api/#supported',
+    flags: '--supported <list>',
+    name: 'supported'
+  })
+  protected parseSupported(val: string): Record<string, boolean> {
+    return this.util.parseObject<string, boolean>(val)
   }
 
   /**

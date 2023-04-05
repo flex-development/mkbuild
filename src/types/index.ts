@@ -4,6 +4,7 @@
  */
 
 export type { default as FileSystemAdapter } from './adapter-file-system'
+export type { default as GeneratedFileType } from './generated-file-type'
 export type { default as Jsx } from './jsx'
 export type { default as LegalComments } from './legal-comments'
 export type { default as EsbuildOptions } from './options-esbuild'

@@ -15,6 +15,10 @@ describe('unit-d:types/EsbuildOptions', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('absWorkingDir')
   })
 
+  it('should omit "banner"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('banner')
+  })
+
   it('should omit "conditions"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('conditions')
   })
@@ -27,8 +31,16 @@ describe('unit-d:types/EsbuildOptions', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('entryPoints')
   })
 
+  it('should omit "footer"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('footer')
+  })
+
   it('should omit "incremental"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('incremental')
+  })
+
+  it('should omit "loader"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('loader')
   })
 
   it('should omit "mainFields"', () => {
@@ -37,6 +49,10 @@ describe('unit-d:types/EsbuildOptions', () => {
 
   it('should omit "metafile"', () => {
     expectTypeOf<TestSubject>().not.toHaveProperty('metafile')
+  })
+
+  it('should omit "outExtension"', () => {
+    expectTypeOf<TestSubject>().not.toHaveProperty('outExtension')
   })
 
   it('should omit "outfile"', () => {

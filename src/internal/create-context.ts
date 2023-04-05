@@ -44,6 +44,7 @@ async function createContext(
 ): Promise<Context> {
   const {
     assetNames = 'assets/[name]-[hash]',
+    banner = {},
     bundle = false,
     chunkNames = 'chunks/[name]-[hash]',
     clean = true,
@@ -62,11 +63,13 @@ async function createContext(
       }
     })(),
     external = bundle ? Object.keys(get(pkg, 'peerDependencies', {})!) : [],
+    footer = {},
     format = 'esm',
     ignore = IGNORE_PATTERNS,
     inject,
     loader = {},
     logLimit = 10,
+    logOverride = {},
     mainFields = ['module', 'main'],
     name = '[name]',
     outExtension = {},
@@ -148,6 +151,7 @@ async function createContext(
       absWorkingDir,
       allowOverwrite: false,
       assetNames,
+      banner,
       bundle,
       chunkNames,
       color,
@@ -180,10 +184,12 @@ async function createContext(
             ])
           ]
         : [],
+      footer,
       format,
       inject: [...new Set(inject)],
       loader: { ...loaders(format, bundle), ...loader },
       logLimit,
+      logOverride,
       mainFields: [...new Set(mainFields)],
       metafile: true,
       outExtension: { ...outExtension, '.js': pathe.formatExt(ext) },

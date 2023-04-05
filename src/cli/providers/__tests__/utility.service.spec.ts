@@ -27,8 +27,38 @@ describe('unit:cli/providers/UtilityService', () => {
     })
   })
 
+  describe('#parseObject', () => {
+    it('should return empty object if val is not key/value pair list', () => {
+      expect(subject.parseObject('import,node,default')).to.deep.equal({})
+    })
+
+    it('should return val as object', () => {
+      // Arrange
+      const list: string = 'customRenaming_:cR_,disabledRenaming_:false'
+
+      // Act + Expect
+      expect(subject.parseObject(list)).to.deep.equal({
+        customRenaming_: 'cR_',
+        disabledRenaming_: false
+      })
+    })
+  })
+
+  describe('#parseRegExp', () => {
+    it('should return empty regular expression if val is invalid', () => {
+      expect(subject.parseRegExp('foo').source).to.equal('(?:)')
+    })
+
+    it('should return regular expression', () => {
+      expect(subject.parseRegExp('/_$/gm')).toMatchObject({
+        flags: 'gm',
+        source: '_$'
+      })
+    })
+  })
+
   describe('#parseString', () => {
-    it('should return string', () => {
+    it('should return val', () => {
       // Arrange
       const string: string = 'esm'
 

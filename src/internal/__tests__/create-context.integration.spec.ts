@@ -4,6 +4,7 @@
  */
 
 import type { Task } from '#src/interfaces'
+import type { GeneratedFileType } from '#src/types'
 import loaders from '#src/utils/loaders'
 import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
@@ -19,13 +20,16 @@ describe('integration:internal/createContext', () => {
   describe('esbuild', () => {
     let allowOverwrite: boolean
     let assetNames: string
+    let banner: { [K in GeneratedFileType]?: string }
     let chunkNames: string
     let color: boolean
     let conditions: string[]
     let drop: string[]
     let external: string[]
+    let footer: { [K in GeneratedFileType]?: string }
     let inject: string[]
     let logLimit: number
+    let logOverride: Record<string, esbuild.LogLevel>
     let mainFields: string[]
     let outdir: string
     let platform: esbuild.Platform
@@ -36,13 +40,16 @@ describe('integration:internal/createContext', () => {
     beforeEach(() => {
       allowOverwrite = false
       assetNames = 'assets/[name]-[hash]'
+      banner = {}
       chunkNames = 'chunks/[name]-[hash]'
       color = true
       conditions = ['import', 'default']
       drop = []
       external = []
+      footer = {}
       inject = []
       logLimit = 10
+      logOverride = {}
       mainFields = ['module', 'main']
       outdir = 'dist'
       platform = 'neutral'
@@ -77,6 +84,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle,
           chunkNames,
           color,
@@ -85,10 +93,12 @@ describe('integration:internal/createContext', () => {
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
+          footer,
           format,
           inject,
           loader: loaders(format, bundle),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.cjs' },
@@ -119,6 +129,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle: false,
           chunkNames,
           color,
@@ -127,10 +138,12 @@ describe('integration:internal/createContext', () => {
           entryNames: '[dir]/[name]',
           entryPoints: [pattern],
           external,
+          footer,
           format,
           inject,
           loader: loaders(format),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.cjs' },
@@ -187,6 +200,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle,
           chunkNames,
           color,
@@ -195,11 +209,13 @@ describe('integration:internal/createContext', () => {
           entryNames: `[dir]/${name}`,
           entryPoints: ['src/index.mts'],
           external,
+          footer,
           format,
           inject,
           keepNames,
           loader: loaders(format, bundle),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.mjs' },
@@ -234,6 +250,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle: false,
           chunkNames,
           color,
@@ -247,10 +264,12 @@ describe('integration:internal/createContext', () => {
             'src/reverse.mts'
           ],
           external,
+          footer,
           format,
           inject,
           loader: loaders(format),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.mjs' },
@@ -299,6 +318,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle,
           chunkNames,
           color,
@@ -307,10 +327,12 @@ describe('integration:internal/createContext', () => {
           entryNames: '[dir]/[name]',
           entryPoints: [source],
           external,
+          footer,
           format,
           inject,
           loader: loaders(format, bundle),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.js' },
@@ -341,6 +363,7 @@ describe('integration:internal/createContext', () => {
           absWorkingDir,
           allowOverwrite,
           assetNames,
+          banner,
           bundle: false,
           chunkNames,
           color,
@@ -349,10 +372,12 @@ describe('integration:internal/createContext', () => {
           entryNames: '[dir]/[name]',
           entryPoints: pattern,
           external,
+          footer,
           format,
           inject,
           loader: loaders(format),
           logLimit,
+          logOverride,
           mainFields,
           metafile: true,
           outExtension: { '.js': '.js' },
