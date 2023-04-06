@@ -28,7 +28,7 @@ import {
   OptionChoiceFor,
   RootCommand
 } from 'nest-commander'
-import { get, intersects, set, shake } from 'radash'
+import { set, shake } from 'radash'
 
 /**
  * `mkbuild` command model.
@@ -566,17 +566,15 @@ class MkbuildCommand extends CommandRunner {
    *
    * @protected
    *
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
     description: 'Display this message',
     flags: '-h, --help',
     name: 'help'
   })
-  protected parseHelp(): boolean {
-    return intersects(get<Command, string[]>(this.command, 'rawArgs', [])!, [
-      ...this.util.parseList(this.help.optionTermByName('help', this.command))
-    ])
+  protected parseHelp(): true {
+    return true
   }
 
   /**
@@ -1472,24 +1470,15 @@ class MkbuildCommand extends CommandRunner {
    *
    * @protected
    *
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
     description: 'Print version number',
     flags: '-v, --version',
     name: 'version'
   })
-  protected parseVersion(): boolean {
-    /**
-     * Option flags.
-     *
-     * @const {string} term
-     */
-    const term: string = this.help.optionTermByName('version', this.command)
-
-    return intersects(get<Command, string[]>(this.command, 'rawArgs', [])!, [
-      ...this.util.parseList(term)
-    ])
+  protected parseVersion(): true {
+    return true
   }
 
   /**
