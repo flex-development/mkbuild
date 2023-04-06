@@ -1542,6 +1542,7 @@ class MkbuildCommand extends CommandRunner {
     cmd.addHelpCommand(false)
     cmd.allowExcessArguments()
     cmd.allowUnknownOption(false)
+    cmd.combineFlagAndOptionalValue(false)
     cmd.createHelp = /* c8 ignore next */ () => this.help
     cmd.enablePositionalOptions()
     cmd.helpOption(false)

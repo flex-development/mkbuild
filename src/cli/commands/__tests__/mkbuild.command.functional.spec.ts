@@ -28,6 +28,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
   beforeAll(() => {
     consola.mockTypes(() => vi.fn())
+    vi.spyOn(process, 'exit').mockImplementation(vi.fn())
     write = true
   })
 
@@ -111,7 +112,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
     it('should call make with flags.bundle given short flag', async () => {
       // Act
-      await CommandTestFactory.run(command, ['-b', bundle.toString()])
+      await CommandTestFactory.run(command, ['-b'])
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
@@ -177,7 +178,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
     it('should call make with flags.clean given short flag', async () => {
       // Act
-      await CommandTestFactory.run(command, ['-c', clean.toString()])
+      await CommandTestFactory.run(command, ['-c'])
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
