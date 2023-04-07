@@ -219,36 +219,24 @@ async function make({
     // print build done info, output analysis, and total size
     if (write) {
       /**
-       * Total build size.
+       * Total build size (in bytes).
        *
-       * @var {number} bytes
+       * @var {number} size
        */
-      let bytes: number = 0
+      let size: number = 0
 
       // print build done info
       consola.success(color.green(`Build succeeded for ${pkg.name}`))
 
-      // print build analysis
+      // print build output analysis and update total build size
       for (const { outdir, metafile } of results) {
-        /**
-         * Array containing output file paths and sizes.
-         *
-         * @const {{ bytes: number; outfile: string }[]} data
-         */
-        const data: { bytes: number; outfile: string }[] = []
-
-        // update total build size and get output file analytics
-        for (const [outfile, metadata] of Object.entries(metafile.outputs)) {
-          bytes += metadata.bytes
-          data.push({ bytes: metadata.bytes, outfile })
-        }
-
-        // print build output analysis
-        consola.log(analyzeOutputs(outdir, data))
+        const { analysis, bytes } = analyzeOutputs(outdir, metafile.outputs)
+        size += bytes
+        consola.log(analysis)
       }
 
       // print total build size
-      consola.log('Σ Total build size:', color.cyan(pb(bytes)))
+      consola.log('Σ Total build size:', color.cyan(pb(size)))
     }
   }
 

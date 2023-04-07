@@ -76,7 +76,7 @@ describe('functional:make', () => {
 
     it('should print build output analysis', () => {
       expect(analyzeOutputs).toHaveBeenCalledTimes(2)
-      expect(analyzeOutputs).toHaveBeenCalledWith('dist', expect.any(Array))
+      expect(analyzeOutputs).toHaveBeenCalledWith('dist', expect.any(Object))
     })
 
     it('should print total build size', () => {

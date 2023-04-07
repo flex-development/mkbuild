@@ -1,37 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`unit:utils/analyzeOutputs > should return pretty printed build outputs 1`] = `
-"  [1mdist[22m (total size: [36m22.1 kB[39m)
-[90m  └─ dist/index.mjs (30 B)[39m
+exports[`unit:utils/analyzeOutputs > should return build analysis object 1`] = `
+"[1mdist[22m (total size: [36m4.48 kB[39m)
 [90m  └─ dist/index.d.mts (86 B)[39m
-[90m  └─ dist/config/constants.mjs (526 B)[39m
-[90m  └─ dist/config/constants.d.mts (901 B)[39m
+[90m  └─ dist/index.mjs (30 B)[39m
+[90m  └─ dist/interfaces/entry.d.mts (342 B)[39m
 [90m  └─ dist/interfaces/entry.mjs (0 B)[39m
-[90m  └─ dist/interfaces/entry.d.mts (872 B)[39m
-[90m  └─ dist/interfaces/index.mjs (0 B)[39m
 [90m  └─ dist/interfaces/index.d.mts (342 B)[39m
-[90m  └─ dist/interfaces/options.mjs (0 B)[39m
-[90m  └─ dist/interfaces/options.d.mts (2.29 kB)[39m
-[90m  └─ dist/interfaces/result.mjs (0 B)[39m
+[90m  └─ dist/interfaces/index.mjs (0 B)[39m
 [90m  └─ dist/interfaces/result.d.mts (1.21 kB)[39m
-[90m  └─ dist/interfaces/source-file.mjs (0 B)[39m
+[90m  └─ dist/interfaces/result.mjs (0 B)[39m
 [90m  └─ dist/interfaces/source-file.d.mts (583 B)[39m
-[90m  └─ dist/interfaces/statement.mjs (0 B)[39m
+[90m  └─ dist/interfaces/source-file.mjs (0 B)[39m
 [90m  └─ dist/interfaces/statement.d.mts (686 B)[39m
-[90m  └─ dist/utils/analyze-outputs.mjs (575 B)[39m
+[90m  └─ dist/interfaces/statement.mjs (0 B)[39m
 [90m  └─ dist/utils/analyze-outputs.d.mts (626 B)[39m
-[90m  └─ dist/utils/extract-statements.mjs (1.05 kB)[39m
-[90m  └─ dist/utils/extract-statements.d.mts (810 B)[39m
-[90m  └─ dist/utils/write.mjs (289 B)[39m
-[90m  └─ dist/utils/write.d.mts (619 B)[39m
-[90m  └─ dist/plugins/dts/plugin.mjs (2.74 kB)[39m
-[90m  └─ dist/plugins/dts/plugin.d.mts (265 B)[39m
-[90m  └─ dist/plugins/tsconfig-paths/options.mjs (0 B)[39m
-[90m  └─ dist/plugins/tsconfig-paths/options.d.mts (1.04 kB)[39m
-[90m  └─ dist/plugins/tsconfig-paths/plugin.mjs (2.56 kB)[39m
-[90m  └─ dist/plugins/tsconfig-paths/plugin.d.mts (507 B)[39m
-[90m  └─ dist/plugins/fully-specified/options.mjs (0 B)[39m
-[90m  └─ dist/plugins/fully-specified/options.d.mts (367 B)[39m
-[90m  └─ dist/plugins/fully-specified/plugin.mjs (2.27 kB)[39m
-[90m  └─ dist/plugins/fully-specified/plugin.d.mts (878 B)[39m"
+[90m  └─ dist/utils/analyze-outputs.mjs (575 B)[39m"
 `;
