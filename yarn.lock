@@ -1124,7 +1124,7 @@ __metadata:
     "@flex-development/tsconfig-utils": "npm:1.1.2"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
     "@graphql-eslint/eslint-plugin": "npm:3.18.0"
-    "@nestjs/common": "npm:9.3.12"
+    "@nestjs/common": "npm:9.4.0"
     "@nestjs/core": "npm:9.3.12"
     "@nestjs/testing": "npm:9.3.12"
     "@types/chai": "npm:4.3.4"
@@ -1778,13 +1778,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:9.3.12":
-  version: 9.3.12
-  resolution: "@nestjs/common@npm:9.3.12"
+"@nestjs/common@npm:9.4.0":
+  version: 9.4.0
+  resolution: "@nestjs/common@npm:9.4.0"
   dependencies:
     iterare: "npm:1.2.1"
     tslib: "npm:2.5.0"
-    uid: "npm:2.0.1"
+    uid: "npm:2.0.2"
   peerDependencies:
     cache-manager: <=5
     class-transformer: "*"
@@ -1798,7 +1798,7 @@ __metadata:
       optional: true
     class-validator:
       optional: true
-  checksum: 239792b7cc1014ef50ebe6608a0a71fcc95d004dbe00f4e6fa71ea630681cece153c5fea3c2b2da698da2d54441621d145e0c35b304aa8c17a282ee10ee29fdf
+  checksum: 852da9b5cdc297a6c88b7308ed04c2b1741391f71d7e63be0c19b002b53c3ad01bf05eb37517ecbb0eb61f37a2bce64abb9bb2b4414cf87661b236e58b1f52ec
   languageName: node
   linkType: hard
 
@@ -8966,6 +8966,15 @@ __metadata:
   dependencies:
     "@lukeed/csprng": "npm:^1.0.0"
   checksum: 455751dc885cf27efbc511b0bba94d0d3ed636a13bde590811410224bb9e78fa6dfc881ff3a65688a97b7b4cc9eb3035d4b46c32f44f376dafaa9407780e1e3c
+  languageName: node
+  linkType: hard
+
+"uid@npm:2.0.2":
+  version: 2.0.2
+  resolution: "uid@npm:2.0.2"
+  dependencies:
+    "@lukeed/csprng": "npm:^1.0.0"
+  checksum: ff7fd6551b61a43f0c197a3b69c3ba610e0ff02e74f0e07b702a41854fa2e29268a24c992345e8d31dfe0f74576f9861c17571377108bb88dd69e4057259bbd5
   languageName: node
   linkType: hard
 
