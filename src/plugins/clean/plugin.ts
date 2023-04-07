@@ -6,6 +6,7 @@
 import fsa from '#src/utils/fs'
 import pathe from '@flex-development/pathe'
 import type { BuildOptions, Plugin, PluginBuild } from 'esbuild'
+import CLEAN_CACHE from './cache'
 import type Options from './options'
 
 /**
@@ -22,9 +23,10 @@ const plugin = ({
   /**
    * Cleans an output directory.
    *
-   * Does **not** clean an output directory if `initialOptions.outdir` resolves
-   * to `initialOptions.absWorkingDir`. This prevents the current working
-   * directory from being accidentally removed.
+   * Cleaning will skipped under either of the following conditions:
+   *
+   * - `initialOptions.outdir` resolves to `initialOptions.absWorkingDir`
+   * - a cache hit is found in {@linkcode CLEAN_CACHE}
    *
    * [1]: https://esbuild.github.io/plugins
    * [2]: https://esbuild.github.io/api/#build-api
@@ -45,8 +47,9 @@ const plugin = ({
      */
     const path: string = pathe.resolve(absWorkingDir, outdir).replace(/\/$/, '')
 
-    // only clean output directory if outdir does not resolve to absWorkingDir
-    if (absWorkingDir.replace(/\/$/, '') !== path) {
+    // clean output directory if outdir does not resolve to absWorkingDir and
+    // cache hit was not found for path
+    if (absWorkingDir.replace(/\/$/, '') !== path && !CLEAN_CACHE.get(path)) {
       // unlink output directory
       await unlink(path).catch(() => ({}))
 
@@ -57,7 +60,7 @@ const plugin = ({
       await mkdir(path, { recursive: true })
     }
 
-    return void path
+    return void CLEAN_CACHE.set(path, true)
   }
 
   return { name: 'clean', setup }

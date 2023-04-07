@@ -155,12 +155,7 @@ async function make({
     exitHook(context.dispose.bind(context), { minimumWait: 10 })
   } else {
     // process build tasks
-    for (const [i, task] of tasks.entries()) {
-      // prevent new builds from being accidentally removed
-      if (i > 0 && tasks.slice(0, i).some(t => t.outdir === task.outdir)) {
-        task.clean = false
-      }
-
+    for (const task of tasks) {
       // create build context
       context = await createContext(task, pkg, fs)
 
