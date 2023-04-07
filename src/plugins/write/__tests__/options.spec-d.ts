@@ -6,7 +6,7 @@
 import type { FileSystemAdapter } from '#src/types'
 import type TestSubject from '../options'
 
-describe('unit-d:plugins/WritePluginOptions', () => {
+describe('unit-d:plugins/write/WritePluginOptions', () => {
   it('should match [filter?: RegExp]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('filter')

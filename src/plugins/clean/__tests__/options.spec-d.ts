@@ -6,7 +6,7 @@
 import type { FileSystemAdapter } from '#src/types'
 import type TestSubject from '../options'
 
-describe('unit-d:plugins/CleanPluginOptions', () => {
+describe('unit-d:plugins/clean/CleanPluginOptions', () => {
   it('should match [mkdir?: FileSystemAdapter["mkdir"]]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('mkdir')
