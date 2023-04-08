@@ -10,7 +10,6 @@
  * @see https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/git-raw-commits
  */
 
-import { CHOICES_BOOLEAN } from '#src/cli/constants'
 import { HelpService, UtilityService } from '#src/cli/providers'
 import {
   Type,
@@ -44,7 +43,6 @@ import {
   type WriteStream
 } from 'node:fs'
 import type { Readable } from 'node:stream'
-import { get, intersects } from 'radash'
 import semver from 'semver'
 import tempfile from 'tempfile'
 import pkg from '../package.json' assert { type: 'json' }
@@ -154,18 +152,16 @@ class ChangelogCommand extends CommandRunner {
    *
    * @protected
    *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
     defaultValue: false,
     description: 'Enable verbose output',
-    flags: '-d, --debug [choice]',
+    flags: '-d, --debug',
     name: 'debug'
   })
-  protected parseDebug(val: string): boolean {
-    return this.util.parseBoolean(val)
+  protected parseDebug(): true {
+    return true
   }
 
   /**
@@ -175,17 +171,15 @@ class ChangelogCommand extends CommandRunner {
    *
    * @protected
    *
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
     description: 'Display this message',
     flags: '-h, --help',
     name: 'help'
   })
-  protected parseHelp(): boolean {
-    return intersects(get<Command, string[]>(this.command, 'rawArgs', [])!, [
-      ...this.util.parseList(this.help.optionTermByName('help', this.command))
-    ])
+  protected parseHelp(): true {
+    return true
   }
 
   /**
@@ -277,18 +271,16 @@ class ChangelogCommand extends CommandRunner {
    *
    * @protected
    *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
     defaultValue: false,
     description: 'Output content to infile',
-    flags: '-s, --samefile [choice]',
+    flags: '-s, --samefile',
     name: 'samefile'
   })
-  protected parseSamefile(val: string): boolean {
-    return this.util.parseBoolean(val)
+  protected parseSamefile(): true {
+    return true
   }
 
   /**
@@ -298,18 +290,16 @@ class ChangelogCommand extends CommandRunner {
    *
    * @protected
    *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
+   * @return {true} Option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
     defaultValue: false,
     description: 'Write content to file',
-    flags: '-w, --write [choice]',
+    flags: '-w, --write',
     name: 'write'
   })
-  protected parseWrite(val: string): boolean {
-    return this.util.parseBoolean(val)
+  protected parseWrite(): true {
+    return true
   }
 
   /**
@@ -626,6 +616,7 @@ class ChangelogCommand extends CommandRunner {
     cmd.allowExcessArguments(false)
     cmd.allowUnknownOption(false)
     cmd.createHelp = () => this.help
+    cmd.combineFlagAndOptionalValue(false)
     cmd.enablePositionalOptions()
     cmd.helpOption(false)
     cmd.showHelpAfterError()

@@ -46,7 +46,7 @@ const analyzeOutputs = (
   }, 0)
 
   return {
-    analysis: template('{{0}} (total size: {{1}})\n{{2}}', {
+    analysis: template(`${indent}{{0}} (total size: {{1}})\n{{2}}`, {
       0: color.bold(outdir),
       1: color.cyan(pb(size)),
       2: strings.join('\n')
