@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`unit:utils/analyzeOutputs > should return build analysis object 1`] = `
-"[1mdist[22m (total size: [36m4.48 kB[39m)
+"  [1mdist[22m (total size: [36m4.48 kB[39m)
 [90m  └─ dist/index.d.mts (86 B)[39m
 [90m  └─ dist/index.mjs (30 B)[39m
 [90m  └─ dist/interfaces/entry.d.mts (342 B)[39m
