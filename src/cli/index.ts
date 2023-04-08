@@ -5,6 +5,7 @@
  * @module mkbuild/cli
  */
 
+import mri from 'mri'
 import { CommandFactory } from 'nest-commander'
 import AppModule from './app.module'
 import { CLI_NAME } from './constants'
@@ -26,6 +27,15 @@ async function main(): Promise<void> {
   }))
 }
 
-// run application and exit
+// run application
 void (await main())
-process.exit()
+
+// check if watch mode is enabled
+const { watch } = mri<{ watch: boolean }>(process.argv.slice(2), {
+  alias: { watch: 'w' },
+  boolean: ['watch'],
+  default: { write: false }
+})
+
+// exit if watch mode is not enabled
+!watch && process.exit()

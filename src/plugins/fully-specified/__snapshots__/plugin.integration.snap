@@ -4,8 +4,23 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
 [
   {
     "assertion": "",
+    "code": "import mri from \\"mri\\"",
+    "end": 41,
+    "imports": [
+      "mri",
+    ],
+    "kind": "import",
+    "specifier": "mri",
+    "specifier_kind": "bare",
+    "specifier_syntax": "static",
+    "start": 20,
+    "syntax": "default",
+    "type": false,
+  },
+  {
+    "assertion": "",
     "code": "import { CommandFactory } from \\"nest-commander\\"",
-    "end": 67,
+    "end": 90,
     "imports": [
       "CommandFactory",
     ],
@@ -13,14 +28,14 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "nest-commander",
     "specifier_kind": "bare",
     "specifier_syntax": "static",
-    "start": 20,
+    "start": 43,
     "syntax": "named",
     "type": false,
   },
   {
     "assertion": "",
     "code": "import AppModule from \\"./app.module.mjs\\"",
-    "end": 109,
+    "end": 132,
     "imports": [
       "AppModule",
     ],
@@ -28,14 +43,14 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "./app.module.mjs",
     "specifier_kind": "relative",
     "specifier_syntax": "static",
-    "start": 69,
+    "start": 92,
     "syntax": "default",
     "type": false,
   },
   {
     "assertion": "",
     "code": "import { CLI_NAME } from \\"./constants.mjs\\"",
-    "end": 153,
+    "end": 176,
     "imports": [
       "CLI_NAME",
     ],
@@ -43,7 +58,7 @@ exports[`integration:plugins/fully-specified > esbuild > should fill specifiers 
     "specifier": "./constants.mjs",
     "specifier_kind": "relative",
     "specifier_syntax": "static",
-    "start": 111,
+    "start": 134,
     "syntax": "named",
     "type": false,
   },

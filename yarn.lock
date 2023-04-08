@@ -1192,6 +1192,7 @@ __metadata:
     lint-staged: "npm:13.2.0"
     memfs: "npm:3.5.0"
     merge-anything: "npm:5.1.4"
+    mri: "npm:1.2.0"
     nest-commander: "npm:3.6.1"
     nest-commander-testing: "npm:3.1.0"
     node-notifier: "npm:10.0.1"
@@ -6750,6 +6751,13 @@ __metadata:
   dependencies:
     path-exists: "npm:^5.0.0"
   checksum: 7124a4d040865336e3d82745e3b445a81dbcb5645f43ee5eb33d975d16ab0d14f435d3ee2e614f49051401aac6b18ca6934343419c82326ab59b22458d05615f
+  languageName: node
+  linkType: hard
+
+"mri@npm:1.2.0":
+  version: 1.2.0
+  resolution: "mri@npm:1.2.0"
+  checksum: f459cd82edbe77b6296cc59a5005c351cd52f6a6d733539ae91f6dbc61a23c6e558bf9dea2703212b2caf1b0803852f357325612ba848795686577432740bd49
   languageName: node
   linkType: hard
 
