@@ -1,3 +1,10 @@
+## [1.0.0-alpha.18](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.17...1.0.0-alpha.18) (2023-04-07)
+
+
+### :bug: Fixes
+
+* **cli:** terminate `watch` mode via esbuild ([34ef996](https://github.com/flex-development/mkbuild/commit/34ef996197443dcd2b51987731537314d9831a57))
+
 ## [1.0.0-alpha.17](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.16...1.0.0-alpha.17) (2023-04-07)
 
 
