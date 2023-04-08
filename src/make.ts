@@ -54,7 +54,7 @@ async function make({
     configfile ? await loadBuildConfig(cwd) : {},
     {
       cwd,
-      entries: [] as Partial<Task>[],
+      entries: [{}] as Partial<Task>[],
       fs: fsa,
       logLevel: 'info',
       outdir: 'dist',
@@ -96,7 +96,7 @@ async function make({
    *
    * @const {Task[]} tasks
    */
-  const tasks: Task[] = (entries.length === 0 ? [{}] : entries).map(entry => {
+  const tasks: Task[] = entries.map(entry => {
     const {
       bundle = options.bundle,
       cwd = options.cwd,

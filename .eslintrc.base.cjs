@@ -839,6 +839,7 @@ const config = {
         '@typescript-eslint/no-empty-function': 0,
         '@typescript-eslint/no-unused-expressions': 0,
         '@typescript-eslint/prefer-ts-expect-error': 0,
+        '@typescript-eslint/require-await': 0,
         '@typescript-eslint/restrict-template-expressions': 0,
         '@typescript-eslint/unbound-method': 0,
         'chai-expect/missing-assertion': 2,

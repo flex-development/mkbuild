@@ -10,10 +10,12 @@ import testSubject from '../make'
 vi.mock('../plugins/clean/plugin')
 
 describe('e2e:make', () => {
-  let configfile: boolean
+  let configfile: false
+  let dts: false
 
   beforeAll(() => {
     configfile = false
+    dts = false
   })
 
   it('should copy files to output directory', async () => {
@@ -21,6 +23,7 @@ describe('e2e:make', () => {
     const results = await testSubject({
       configfile,
       cwd: '__fixtures__/pkg/sum-of-intervals',
+      dts,
       loader: { '.cjs': 'copy', '.mjs': 'copy' },
       source: '.'
     })
@@ -36,6 +39,7 @@ describe('e2e:make', () => {
       config = {
         configfile,
         cwd: '__fixtures__/pkg/my-atoi',
+        dts,
         format: 'cjs',
         tsconfig: 'tsconfig.json'
       }
@@ -59,7 +63,7 @@ describe('e2e:make', () => {
     let config: Config
 
     beforeAll(() => {
-      config = { configfile, cwd: '__fixtures__/pkg/dbl-linear' }
+      config = { configfile, cwd: '__fixtures__/pkg/dbl-linear', dts }
     })
 
     it('should create bundle in esm format', async () => {
@@ -73,6 +77,7 @@ describe('e2e:make', () => {
       const results = await testSubject({
         ...config,
         bundle,
+        dts,
         name,
         platform,
         source
@@ -102,6 +107,7 @@ describe('e2e:make', () => {
       config = {
         configfile,
         cwd: '__fixtures__/pkg/tribonacci',
+        dts,
         format: 'iife'
       }
     })

@@ -13,6 +13,7 @@ import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
 import * as color from 'colorette'
 import consola from 'consola'
+import type * as esbuild from 'esbuild'
 import { asyncExitHook as exitHook } from 'exit-hook'
 import testSubject from '../make'
 
@@ -25,23 +26,67 @@ vi.mock('../plugins/write/plugin')
 vi.mock('../utils/analyze-outputs')
 
 describe('functional:make', () => {
-  beforeAll(() => {
+  let context: Context
+  let cwd: string
+  let outfile: string
+  let outputs: esbuild.Metafile['outputs']
+  let pattern: string
+  let pkgjson: PackageJson
+
+  beforeAll(async () => {
+    cwd = '__fixtures__/pkg/dbl-linear'
+    outfile = 'dist/dbl-linear.mjs'
+    pattern = 'dbl-linear.ts'
+    pkgjson = await getPackageJson(cwd + '/package.json')
+
+    outputs = {
+      [outfile]: {
+        bytes: 350,
+        entryPoint: pattern,
+        exports: [],
+        imports: [],
+        inputs: {}
+      }
+    }
+
+    context = {
+      cancel: vi.fn(),
+      dispose: vi.fn(),
+      rebuild: vi.fn(async () => ({
+        errors: [],
+        mangleCache: undefined,
+        metafile: {
+          inputs: { [pattern]: { bytes: 1501, format: 'esm', imports: [] } },
+          outputs
+        } as esbuild.Metafile,
+        outputFiles: [
+          {
+            bytes: 350,
+            contents: new Uint8Array(350),
+            entryPoint: pattern,
+            exports: ['default'],
+            imports: [],
+            outfile,
+            path: pathe.resolve(cwd, outfile),
+            text: ''
+          }
+        ],
+        warnings: []
+      })),
+      serve: vi.fn(),
+      watch: vi.fn()
+    }
+
     consola.mockTypes(() => vi.fn())
   })
 
+  beforeEach(() => {
+    vi.mocked(createContext).mockResolvedValue(context)
+  })
+
   describe('build', () => {
-    let cwd: string
-    let pkgjson: PackageJson
-    let pattern: string
-
-    beforeAll(async () => {
-      cwd = '__fixtures__/pkg/buddy'
-      pattern = 'buddy.js'
-      pkgjson = await getPackageJson(cwd + '/package.json')
-    })
-
     beforeEach(async () => {
-      await testSubject({ cwd, pattern, write: true })
+      await testSubject({ cwd, dts: false, pattern, write: true })
     })
 
     it('should load build config', () => {
@@ -62,8 +107,8 @@ describe('functional:make', () => {
       expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
     })
 
-    it('should create build context', () => {
-      expect(createContext).toHaveBeenCalledTimes(2)
+    it('should do static build', () => {
+      expect(context.rebuild).toHaveBeenCalledOnce()
     })
 
     it('should print build done info', () => {
@@ -75,8 +120,8 @@ describe('functional:make', () => {
     })
 
     it('should print build output analysis', () => {
-      expect(analyzeOutputs).toHaveBeenCalledTimes(2)
-      expect(analyzeOutputs).toHaveBeenCalledWith('dist', expect.any(Object))
+      expect(analyzeOutputs).toHaveBeenCalledTimes(1)
+      expect(analyzeOutputs).toHaveBeenCalledWith('.', outputs)
     })
 
     it('should print total build size', () => {
@@ -89,25 +134,7 @@ describe('functional:make', () => {
   })
 
   describe('watch', () => {
-    let context: Context
-    let cwd: string
-    let pkgjson: PackageJson
-
-    beforeAll(async () => {
-      context = {
-        cancel: vi.fn(),
-        dispose: vi.fn(),
-        rebuild: vi.fn(),
-        serve: vi.fn(),
-        watch: vi.fn()
-      }
-
-      cwd = '__fixtures__/pkg/tribonacci'
-      pkgjson = await getPackageJson(cwd + '/package.json')
-    })
-
     beforeEach(async () => {
-      vi.mocked(createContext).mockResolvedValue(context)
       await testSubject({ configfile: false, cwd, watch: true })
     })
 

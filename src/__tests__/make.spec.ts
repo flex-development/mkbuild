@@ -7,27 +7,7 @@ import { ErrorCode, type NodeError } from '@flex-development/errnode'
 import pathe from '@flex-development/pathe'
 import testSubject from '../make'
 
-vi.mock('../plugins/clean/plugin')
-
 describe('unit:make', () => {
-  let configfile: boolean
-
-  beforeAll(() => {
-    configfile = false
-  })
-
-  it('should return build results', async () => {
-    // Act
-    const results = await testSubject({
-      configfile,
-      ignore: ['cli/**'],
-      tsconfig: 'tsconfig.build.json'
-    })
-
-    // Expect
-    expect(results).to.be.an('array').that.is.not.empty
-  })
-
   it('should throw if package.json file is not found', async () => {
     // Arrange
     const base: string = pathe.resolve('src/make.ts')
@@ -38,7 +18,7 @@ describe('unit:make', () => {
 
     // Act
     try {
-      await testSubject({ configfile, cwd })
+      await testSubject({ configfile: false, cwd })
       assert.fail('expected exception not thrown')
     } catch (e: unknown) {
       error = e as typeof error
