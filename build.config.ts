@@ -13,6 +13,7 @@ import tsconfig from './tsconfig.build.json' assert { type: 'json' }
  * @const {Config} config
  */
 const config: Config = defineBuildConfig({
+  charset: 'utf8',
   entries: [
     { ignore: ['cli/**'] },
     {
