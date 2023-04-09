@@ -26,7 +26,7 @@ on:
     inputs:
       all:
         default: false
-        description: delete caches without filtering by github.ref
+        description: delete caches without filtering by branch
         type: boolean
 permissions:
   actions: write
@@ -43,11 +43,11 @@ jobs:
         name: Print environment variables and event payload
         uses: hmarr/debug-action@v2.1.0
       - id: checkout
-        name: Checkout ${{ github.ref_name }}
+        name: Checkout main
         uses: actions/checkout@v3.5.0
         with:
           persist-credentials: false
-          ref: ${{ github.ref }}
+          ref: main
       - id: gh-actions-cache
         name: Install actions/gh-actions-cache
         run: gh extension install actions/gh-actions-cache
