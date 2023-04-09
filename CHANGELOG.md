@@ -1,3 +1,15 @@
+## [1.0.0-alpha.19](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.18...1.0.0-alpha.19) (2023-04-08)
+
+
+### :package: Build
+
+* output `utf8` ([9b3eba3](https://github.com/flex-development/mkbuild/commit/9b3eba3652ae14c2822539cfca9e57996959879c))
+
+
+### :sparkles: Features
+
+* serve mode + live reload ([f47bbf0](https://github.com/flex-development/mkbuild/commit/f47bbf072d6d4c45fc2f9de59dadc61e77e1a0d4))
+
 ## [1.0.0-alpha.18](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.17...1.0.0-alpha.18) (2023-04-07)
 
 
