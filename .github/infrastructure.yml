@@ -196,7 +196,7 @@ repository:
   archived: false
   automated_security_fixes: true
   default_branch: main
-  delete_branch_on_merge: false
+  delete_branch_on_merge: true
   description: 🚧 An esbuild based file-to-file transformer and bundler
   has_issues: true
   has_projects: true
