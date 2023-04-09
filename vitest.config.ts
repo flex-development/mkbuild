@@ -72,10 +72,7 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
       globalSetup: [],
       globals: true,
       hookTimeout: 10 * 1000,
-      include: [
-        '**/__tests__/*.spec.ts',
-        LINT_STAGED ? '**/__tests__/*.spec-d.ts' : ''
-      ].filter(pattern => pattern.length > 0),
+      include: [`**/__tests__/*.spec${LINT_STAGED ? ',spec-d' : ''}.{ts,tsx}`],
       isolate: true,
       mockReset: true,
       outputFile: { json: './__tests__/report.json' },
