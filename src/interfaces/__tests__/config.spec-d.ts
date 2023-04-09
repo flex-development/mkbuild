@@ -4,6 +4,7 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
+import type * as esbuild from 'esbuild'
 import type TestSubject from '../config'
 import type Options from '../options'
 import type Task from '../task'
@@ -29,6 +30,12 @@ describe('unit-d:interfaces/Config', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('fs')
       .toEqualTypeOf<FileSystemAdapter | undefined>()
+  })
+
+  it('should match [serve?: esbuild.ServeOptions | boolean]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('serve')
+      .toEqualTypeOf<esbuild.ServeOptions | boolean | undefined>()
   })
 
   it('should match [watch?: boolean]', () => {

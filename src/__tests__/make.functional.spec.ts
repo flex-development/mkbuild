@@ -107,6 +107,10 @@ describe('functional:make', () => {
       expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
     })
 
+    it('should create build context', () => {
+      expect(createContext).toHaveBeenCalledOnce()
+    })
+
     it('should do static build', () => {
       expect(context.rebuild).toHaveBeenCalledOnce()
     })
@@ -133,6 +137,38 @@ describe('functional:make', () => {
     })
   })
 
+  describe('serve', () => {
+    beforeEach(async () => {
+      await testSubject({ configfile: false, cwd, serve: true })
+    })
+
+    it('should load package.json from current working directory', () => {
+      expect(mlly.readPackageJson).toHaveBeenCalledOnce()
+      expect(mlly.readPackageJson).toHaveBeenCalledWith(pathe.resolve(cwd))
+    })
+
+    it('should print serve start info', () => {
+      // Arrange
+      const message: string = `Serving ${pkgjson.name}`
+
+      // Expect
+      expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
+    })
+
+    it('should create build context', () => {
+      expect(createContext).toHaveBeenCalledOnce()
+    })
+
+    it('should enable serve mode', () => {
+      expect(context.serve).toHaveBeenCalledOnce()
+      expect(context.serve).toHaveBeenCalledWith({})
+    })
+
+    it('should add hook to dispose build context on process exit', () => {
+      expect(exitHook).toHaveBeenCalledOnce()
+    })
+  })
+
   describe('watch', () => {
     beforeEach(async () => {
       await testSubject({ configfile: false, cwd, watch: true })
@@ -149,6 +185,10 @@ describe('functional:make', () => {
 
       // Expect
       expect(consola.info).toHaveBeenCalledWith(color.cyan(message))
+    })
+
+    it('should create build context', () => {
+      expect(createContext).toHaveBeenCalledOnce()
     })
 
     it('should enable watch mode', () => {

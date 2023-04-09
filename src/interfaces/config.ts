@@ -4,6 +4,7 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
+import type * as esbuild from 'esbuild'
 import type Options from './options'
 import type Task from './task'
 
@@ -39,6 +40,16 @@ interface Config extends Options {
    * @default fsa
    */
   fs?: FileSystemAdapter
+
+  /**
+   * Serve files.
+   *
+   * @see {@linkcode esbuild.ServeOptions}
+   * @see https://esbuild.github.io/api/#serve
+   *
+   * @default false
+   */
+  serve?: esbuild.ServeOptions | boolean
 
   /**
    * Watch files.

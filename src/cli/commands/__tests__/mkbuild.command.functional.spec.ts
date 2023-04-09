@@ -556,6 +556,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       // Expect
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        jsx: 'automatic',
         jsxDev,
         write
       })
@@ -1130,6 +1131,124 @@ describe('functional:cli/commands/MkbuildCommand', () => {
       expect(make).toHaveBeenCalledOnce()
       expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
         resolveExtensions: util.parseList(resolveExtensions),
+        write
+      })
+    })
+  })
+
+  describe('--serve, -S [choice]', () => {
+    it('should call make with flags.serve', async () => {
+      // Act
+      await CommandTestFactory.run(command, ['--serve'])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: {},
+        write
+      })
+    })
+
+    it('should call make with flags.serve given short flag', async () => {
+      // Act
+      await CommandTestFactory.run(command, ['-S', 'false'])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: false,
+        write
+      })
+    })
+  })
+
+  describe('--serve.certfile <path>', () => {
+    it('should call make with flags.serve.certfile', async () => {
+      // Arrange
+      const certfile: string = './.lego/certificates/_.mkbuild.app.crt'
+
+      // Act
+      await CommandTestFactory.run(command, [`--serve.certfile=${certfile}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: { certfile },
+        write
+      })
+    })
+  })
+
+  describe('--serve.host <host>', () => {
+    it('should call make with flags.serve.host', async () => {
+      // Arrange
+      const host: string = 'localhost'
+
+      // Act
+      await CommandTestFactory.run(command, [`--serve.host=${host}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: { host },
+        write
+      })
+    })
+  })
+
+  describe('--serve.keyfile <path>', () => {
+    it('should call make with flags.serve.keyfile', async () => {
+      // Arrange
+      const keyfile: string = './.lego/certificates/_.mkbuild.app.key'
+
+      // Act
+      await CommandTestFactory.run(command, [`--serve.keyfile=${keyfile}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: { keyfile },
+        write
+      })
+    })
+  })
+
+  describe('--serve.port <port>', () => {
+    it('should call make with flags.serve.port', async () => {
+      // Arrange
+      const port: number = 8004
+
+      // Act
+      await CommandTestFactory.run(command, [`--serve.port=${port}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: { port },
+        write
+      })
+    })
+  })
+
+  describe('--serve.servedir <directory>', () => {
+    it('should call make with flags.serve.servedir', async () => {
+      // Arrange
+      const servedir: string = 'www/js'
+
+      // Act
+      await CommandTestFactory.run(command, [`--serve.servedir=${servedir}`])
+
+      // Expect
+      expect(make).toHaveBeenCalledOnce()
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+        logLevel: 'info',
+        serve: { servedir },
         write
       })
     })

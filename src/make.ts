@@ -49,7 +49,7 @@ async function make({
   cwd = '.',
   ...config
 }: Config = {}): Promise<Result[]> {
-  const { entries, fs, watch, write, ...options } = defu(
+  const { entries, fs, serve, watch, write, ...options } = defu(
     config,
     configfile ? await loadBuildConfig(cwd) : {},
     {
@@ -58,6 +58,7 @@ async function make({
       fs: fsa,
       logLevel: 'info',
       outdir: 'dist',
+      serve: false as esbuild.ServeOptions | boolean,
       watch: false,
       write: false
     }
@@ -86,9 +87,17 @@ async function make({
     )
   }
 
-  // print build start info
-  if (watch || write) {
-    consola.info(color.cyan(`${watch ? 'Watching' : 'Building'} ${pkg.name}`))
+  // print start info
+  if (serve !== false || watch || write) {
+    /**
+     * Start message prefix.
+     *
+     * @const {string} prefix
+     */
+    const prefix: string =
+      serve !== false ? 'Serving' : watch ? 'Watching' : 'Building'
+
+    consola.info(color.cyan(`${prefix} ${pkg.name}`))
   }
 
   /**
@@ -100,6 +109,7 @@ async function make({
     const {
       bundle = options.bundle,
       cwd = options.cwd,
+      dts = serve !== false || watch ? false : undefined,
       outdir = options.outdir,
       source = options.source ?? (bundle ? 'src/index' : 'src'),
       ...rest
@@ -109,6 +119,7 @@ async function make({
       {
         bundle,
         cwd,
+        dts,
         outdir,
         source,
         write
@@ -132,29 +143,8 @@ async function make({
    */
   let context: Context
 
-  // enable watch mode or do static build
-  if (watch) {
-    const [task] = tasks as [Task]
-
-    // force clean output directory when watch mode is enabled
-    task.clean = true
-
-    // disable declaration file generation when watch mode is enabled
-    task.dts = false
-
-    // force writing output files if watch mode is enabled
-    task.write = true
-
-    // create build context
-    context = await createContext(task, pkg, fs)
-
-    // watch source files
-    await context.watch()
-
-    // dispose build context on process exit
-    exitHook(context.dispose.bind(context), { minimumWait: 10 })
-  } else {
-    // process build tasks
+  // do static build
+  if (!watch && serve === false) {
     for (const task of tasks) {
       // create build context
       context = await createContext(task, pkg, fs)
@@ -233,6 +223,31 @@ async function make({
       // print total build size
       consola.log('Σ Total build size:', color.cyan(pb(size)))
     }
+  }
+
+  // enable serve or watch mode
+  if (serve !== false || watch) {
+    const [task] = tasks as [Task]
+
+    // force clean output directory
+    task.clean = true
+
+    // force writing output files
+    task.write = true
+
+    // create build context
+    context = await createContext(task, pkg, fs)
+
+    // watch files
+    watch && (await context.watch())
+
+    // serve files
+    if (serve !== false) {
+      await context.serve({ ...(serve as esbuild.ServeOptions) })
+    }
+
+    // dispose build context on process exit
+    exitHook(context.dispose.bind(context), { minimumWait: 5 })
   }
 
   return results

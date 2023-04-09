@@ -30,12 +30,29 @@ async function main(): Promise<void> {
 // run application
 void (await main())
 
-// check if watch mode is enabled
-const { watch } = mri<{ watch: boolean }>(process.argv.slice(2), {
-  alias: { watch: 'w' },
-  boolean: ['watch'],
-  default: { write: false }
+// check if serve or watch mode is enabled
+const {
+  'serve.certfile': certfile = '',
+  'serve.host': host = '',
+  'serve.keyfile': keyfile = '',
+  'serve.port': port,
+  'serve.servedir': servedir = '',
+  serve = !!(certfile || host || keyfile || port !== undefined || servedir),
+  watch
+} = mri<{
+  'serve.certfile'?: string
+  'serve.host'?: string
+  'serve.keyfile'?: string
+  'serve.port'?: number
+  'serve.servedir'?: string
+  serve?: boolean | undefined
+  watch?: boolean
+}>(process.argv.slice(2), {
+  alias: { serve: 'S', watch: 'w' },
+  boolean: ['serve', 'watch'],
+  default: { write: false },
+  string: ['serve.certfile', 'serve.host', 'serve.keyfile', 'serve.servedir']
 })
 
-// exit if watch mode is not enabled
-!watch && process.exit()
+// exit process after static build
+!serve && !watch && process.exit()

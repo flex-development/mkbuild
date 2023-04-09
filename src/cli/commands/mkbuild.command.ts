@@ -19,7 +19,7 @@ import { IGNORE_PATTERNS, loaders } from '#src/utils'
 import * as mlly from '@flex-development/mlly'
 import type * as pathe from '@flex-development/pathe'
 import { Inject } from '@nestjs/common'
-import { Command } from 'commander'
+import type * as commander from 'commander'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import {
@@ -28,10 +28,12 @@ import {
   OptionChoiceFor,
   RootCommand
 } from 'nest-commander'
-import { set, shake } from 'radash'
+import { construct, set, shake } from 'radash'
 
 /**
  * `mkbuild` command model.
+ *
+ * @todo `--serve.onrequest`
  *
  * @class
  * @extends {CommandRunner}
@@ -188,6 +190,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#alias',
     flags: '--alias <list>',
     name: 'alias'
@@ -228,6 +231,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#banner',
     flags: '--banner <list>',
     name: 'banner'
@@ -251,7 +255,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#bundle',
     flags: '-b, --bundle [choice]',
-    name: 'bundle'
+    name: 'bundle',
+    preset: 'true'
   })
   protected parseBundle(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -312,7 +317,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: true,
     description: 'Remove output directories before starting build',
     flags: '-c, --clean [choice]',
-    name: 'clean'
+    name: 'clean',
+    preset: 'true'
   })
   protected parseClean(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -333,7 +339,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: true,
     description: 'https://esbuild.github.io/api/#color',
     flags: '--color [choice]',
-    name: 'color'
+    name: 'color',
+    preset: 'true'
   })
   protected parseColor(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -351,6 +358,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: ['import', 'default'],
+    defaultValueDescription: 'import,default',
     description: 'https://esbuild.github.io/api/#conditions',
     flags: '--conditions <list>',
     name: 'conditions'
@@ -373,7 +381,8 @@ class MkbuildCommand extends CommandRunner {
     choices: CHOICES_BOOLEAN,
     description: 'Insert `require` function definition',
     flags: '--create-require [choice]',
-    name: 'createRequire'
+    name: 'createRequire',
+    preset: 'true'
   })
   protected parseCreateRequire(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -411,6 +420,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#define',
     flags: '--define <list>',
     name: 'define'
@@ -430,6 +440,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {string[]} Parsed option value
    */
   @Option({
+    defaultValue: [],
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#drop',
     flags: '--drop <list>',
     name: 'drop'
@@ -510,6 +522,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#footer',
     flags: '--footer <list>',
     name: 'footer'
@@ -571,7 +584,8 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'Display this message',
     flags: '-h, --help',
-    name: 'help'
+    name: 'help',
+    preset: true
   })
   protected parseHelp(): true {
     return true
@@ -589,6 +603,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: [...IGNORE_PATTERNS],
+    defaultValueDescription: JSON.stringify([...IGNORE_PATTERNS].join(',')),
     description: 'Glob patterns to exclude matches in --pattern',
     flags: '-i, --ignore <list>',
     name: 'ignore'
@@ -612,7 +627,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#ignore-annotations',
     flags: '--ignore-annotations [choice]',
-    name: 'ignoreAnnotations'
+    name: 'ignoreAnnotations',
+    preset: 'true'
   })
   protected parseIgnoreAnnotations(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -629,6 +645,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {string[]} Parsed option value
    */
   @Option({
+    defaultValue: [],
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#inject',
     flags: '--inject <list>',
     name: 'inject'
@@ -669,9 +687,12 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     choices: CHOICES_BOOLEAN,
+    defaultValue: false,
     description: 'https://esbuild.github.io/api/#jsx-dev',
     flags: '--jsx-dev [choice]',
-    name: 'jsxDev'
+    implies: { jsx: 'automatic' },
+    name: 'jsxDev',
+    preset: 'true'
   })
   protected parseJsxDev(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -747,9 +768,11 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     choices: CHOICES_BOOLEAN,
+    defaultValue: false,
     description: 'https://esbuild.github.io/api/#jsx-side-effects',
     flags: '--jsx-side-effects [choice]',
-    name: 'jsxSideEffects'
+    name: 'jsxSideEffects',
+    preset: 'true'
   })
   protected parseJsxSideEffects(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -770,7 +793,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#keep-names',
     flags: '--keep-names [choice]',
-    name: 'keepNames'
+    name: 'keepNames',
+    preset: 'true'
   })
   protected parseKeepNames(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -808,6 +832,11 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: loaders(),
+    defaultValueDescription: JSON.stringify(
+      Object.entries(loaders())
+        .map(([ext, loader]): string => `${ext}:${loader}`)
+        .join(',')
+    ),
     description: 'https://esbuild.github.io/api/#loader',
     flags: '--loader <list>',
     name: 'loader'
@@ -869,6 +898,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#log-override',
     flags: '--log-override <list>',
     name: 'logOverride'
@@ -889,7 +919,8 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: ['module', 'main'],
-    description: 'https://esbuild.github.io/api/#main-field',
+    defaultValueDescription: 'module,main',
+    description: 'https://esbuild.github.io/api/#main-fields',
     flags: '--main-fields <list>',
     name: 'mainFields'
   })
@@ -909,6 +940,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#mangle-cache',
     flags: '--mangle-cache <list>',
     name: 'mangleCache'
@@ -951,7 +983,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#mangle-quoted',
     flags: '--mangle-quoted [choice]',
-    name: 'mangleQuoted'
+    name: 'mangleQuoted',
+    preset: 'true'
   })
   protected parseMangleQuoted(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -972,7 +1005,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#minify',
     flags: '--minify [choice]',
-    name: 'minify'
+    name: 'minify',
+    preset: 'true'
   })
   protected parseMinify(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -993,7 +1027,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#minify-identifiers',
     flags: '--minify-identifiers [choice]',
-    name: 'minifyIdentifiers'
+    name: 'minifyIdentifiers',
+    preset: 'true'
   })
   protected parseMinifyIdentifiers(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1014,7 +1049,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#minify-syntax',
     flags: '--minify-syntax [choice]',
-    name: 'minifySyntax'
+    name: 'minifySyntax',
+    preset: 'true'
   })
   protected parseMinifySyntax(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1035,7 +1071,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#minify-whitespace',
     flags: '--minify-whitespace [choice]',
-    name: 'minifyWhitespace'
+    name: 'minifyWhitespace',
+    preset: 'true'
   })
   protected parseMinifyWhitespace(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1073,6 +1110,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#out-extension',
     flags: '--out-extension <list>',
     name: 'outExtension'
@@ -1196,7 +1234,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#preserve-symlinks',
     flags: '--preserve-symlinks [choice]',
-    name: 'preserveSymlinks'
+    name: 'preserveSymlinks',
+    preset: 'true'
   })
   protected parsePreserveSymlinks(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1232,6 +1271,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {string[]} Parsed option value
    */
   @Option({
+    defaultValue: [],
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#pure',
     flags: '--pure <list>',
     name: 'pure'
@@ -1271,12 +1312,129 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: [...mlly.RESOLVE_EXTENSIONS],
+    defaultValueDescription: JSON.stringify(
+      [...mlly.RESOLVE_EXTENSIONS].join(',')
+    ),
     description: 'Resolvable file extensions',
     flags: '--resolve-extensions <list>',
     name: 'resolveExtensions'
   })
   protected parseResolveExtensions(val: string): Set<string> {
     return this.util.parseList(val)
+  }
+
+  /**
+   * Parses the `--serve` flag.
+   *
+   * @see {@linkcode Flags.serve}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {esbuild.ServeOptions | false} Parsed option value
+   */
+  @Option({
+    choices: CHOICES_BOOLEAN,
+    defaultValue: false,
+    description: 'https://esbuild.github.io/api/#serve',
+    flags: '-S, --serve [choice]',
+    implies: { logLevel: 'info' },
+    name: 'serve',
+    preset: 'true'
+  })
+  protected parseServe(val: string): esbuild.ServeOptions | false {
+    return this.util.parseBoolean(val) && {}
+  }
+
+  /**
+   * Parses the `--serve.certfile` flag.
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#serve-arguments',
+    flags: '--serve.certfile <path>',
+    implies: { logLevel: 'info', serve: {} },
+    name: 'serve.certfile'
+  })
+  protected parseServeCertfile(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--serve.servedir` flag.
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#serve-arguments',
+    flags: '--serve.servedir <directory>',
+    implies: { logLevel: 'info', serve: {} },
+    name: 'serve.servedir'
+  })
+  protected parseServeDir(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--serve.host` flag.
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    defaultValue: '0.0.0.0',
+    description: 'https://esbuild.github.io/api/#serve-arguments',
+    flags: '--serve.host <host>',
+    implies: { logLevel: 'info', serve: {} },
+    name: 'serve.host'
+  })
+  protected parseServeHost(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--serve.keyfile` flag.
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#serve-arguments',
+    flags: '--serve.keyfile <path>',
+    implies: { logLevel: 'info', serve: {} },
+    name: 'serve.keyfile'
+  })
+  protected parseServeKeyfile(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--serve.port` flag.
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {number} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#serve-arguments',
+    flags: '--serve.port <port>',
+    implies: { logLevel: 'info', serve: {} },
+    name: 'serve.port'
+  })
+  protected parseServePort(val: string): number {
+    return this.util.parseInt(val)
   }
 
   /**
@@ -1333,7 +1491,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#sourcemap',
     flags: '--sourcemap [choice]',
-    name: 'sourcemap'
+    name: 'sourcemap',
+    preset: 'true'
   })
   protected parseSourcemap(val: string): Sourcemap | boolean {
     try {
@@ -1358,7 +1517,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#sources-content',
     flags: '--sources-content [choice]',
-    name: 'sourcesContent'
+    name: 'sourcesContent',
+    preset: 'true'
   })
   protected parseSourcesContent(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1379,7 +1539,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'https://esbuild.github.io/api/#splitting',
     flags: '--splitting [choice]',
-    name: 'splitting'
+    name: 'splitting',
+    preset: 'true'
   })
   protected parseSplitting(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1397,6 +1558,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     defaultValue: {},
+    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#supported',
     flags: '--supported <list>',
     name: 'supported'
@@ -1438,7 +1600,8 @@ class MkbuildCommand extends CommandRunner {
     choices: CHOICES_BOOLEAN,
     description: 'https://esbuild.github.io/api/#tree-shaking',
     flags: '--tree-shaking [choice]',
-    name: 'treeShaking'
+    name: 'treeShaking',
+    preset: 'true'
   })
   protected parseTreeShaking(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1475,7 +1638,8 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'Print version number',
     flags: '-v, --version',
-    name: 'version'
+    name: 'version',
+    preset: true
   })
   protected parseVersion(): true {
     return true
@@ -1496,7 +1660,8 @@ class MkbuildCommand extends CommandRunner {
     defaultValue: false,
     description: 'Watch files',
     flags: '-w, --watch [choice]',
-    name: 'watch'
+    name: 'watch',
+    preset: 'true'
   })
   protected parseWatch(val: string): boolean {
     return this.util.parseBoolean(val)
@@ -1526,7 +1691,7 @@ class MkbuildCommand extends CommandRunner {
     if (flags.version) return void consola.log(pkg.version)
 
     // run make
-    return void (await make(shake(set(flags, 'write', true))))
+    return void (await make(shake(set(construct(flags), 'write', true))))
   }
 
   /**
@@ -1535,10 +1700,10 @@ class MkbuildCommand extends CommandRunner {
    * @protected
    * @override
    *
-   * @param {Command} cmd - CLI command instance
+   * @param {commander.Command} cmd - CLI command instance
    * @return {this} `this`
    */
-  public override setCommand(cmd: Command): this {
+  public override setCommand(cmd: commander.Command): this {
     cmd.addHelpCommand(false)
     cmd.allowExcessArguments()
     cmd.allowUnknownOption(false)

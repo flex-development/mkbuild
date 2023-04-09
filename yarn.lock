@@ -6872,7 +6872,7 @@ __metadata:
 
 "nest-commander@patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
   version: 3.6.1
-  resolution: "nest-commander@patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch::version=3.6.1&hash=abf6be&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  resolution: "nest-commander@patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch::version=3.6.1&hash=724d10&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
     "@golevelup/nestjs-discovery": "npm:3.0.0"
     commander: "npm:10.0.0"
@@ -6884,7 +6884,7 @@ __metadata:
     "@types/inquirer": ^8.1.3
     reflect-metadata: 0.1.13
     rxjs: 7.8.0
-  checksum: 3609d0aca90f9f26a4bfa3349c7a732e9a3f2693401f8389ac4181ad2e6a2be266ad281264d303188b466d3b4d4843b90f53e11ec8e192143002da55dbe8da8a
+  checksum: c60107c2bf194155a12af29eb270fbde0df608cc22e3576a1d978dc33eb50f3458be14eb37f31e7b51da2dc7980db26a37b7ae3870095a1cea2e7d2a0eebb2e6
   languageName: node
   linkType: hard
 
@@ -7640,6 +7640,13 @@ __metadata:
   version: 10.8.1
   resolution: "radash@npm:10.8.1"
   checksum: 43c1a0a67ed5e960841f68d4dd9d19a6879e5e13b9b8d6d817c309c65fa834ad51577243d2dfd9bbb8c40d2e7959e594f202c85abe6568aee93cfe88ee5400f2
+  languageName: node
+  linkType: hard
+
+"radash@patch:radash@npm%3A10.8.1#patches/radash+10.8.1.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
+  version: 10.8.1
+  resolution: "radash@patch:radash@npm%3A10.8.1#patches/radash+10.8.1.dev.patch::version=10.8.1&hash=29b41c&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+  checksum: dca43393e14f057da74df3976927030f21e3eb78aeff5db24f324623818d587ccd7975feeca6b701628f2874446dc7b74e7ea36b33fe2152d6c4b6edf1f1af6d
   languageName: node
   linkType: hard
 

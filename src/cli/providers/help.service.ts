@@ -90,7 +90,7 @@ class HelpService extends commander.Help {
      */
     const options: commander.Option[] = flat(
       fork(
-        this.visibleOptions(cmd),
+        this.visibleOptions(cmd).sort((a, b) => a.long!.localeCompare(b.long!)),
         option => option.name() !== 'help' && option.name() !== 'version'
       )
     )

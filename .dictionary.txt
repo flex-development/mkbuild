@@ -30,6 +30,7 @@ nestjs
 nocheck
 npmrc
 nvmrc
+onrequest
 outdirs
 pathe
 pkgs
