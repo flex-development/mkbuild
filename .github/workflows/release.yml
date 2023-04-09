@@ -1,6 +1,6 @@
 # Release
 #
-# Publish a GitHub release when a `release/*` branch is merged into `main` or on workflow dispatch.
+# Publish a GitHub release on release branch merge or workflow dispatch.
 #
 # References:
 #
@@ -17,7 +17,6 @@
 # - https://github.com/actions/checkout
 # - https://github.com/bdougie/close-issues-based-on-label
 # - https://github.com/crazy-max/ghaction-import-gpg
-# - https://github.com/dawidd6/action-delete-branch
 # - https://github.com/flex-development/dist-tag-action
 # - https://github.com/hmarr/debug-action
 # - https://yarnpkg.com/cli/pack
@@ -33,19 +32,20 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        description: pull request merge commit sha
+        description: release commit sha
         required: true
         type: string
+env:
+  REF: ${{ inputs.sha || github.event.pull_request.merge_commit_sha }}
+  REF_NAME: ${{ format('main@{0}', inputs.sha || github.event.pull_request.merge_commit_sha) }}
 jobs:
   preflight:
     if: |
       (github.event.pull_request.merged && startsWith(github.head_ref, 'release/')) ||
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      REF: ${{ inputs.sha || github.head_ref }}
     outputs:
       prerelease: ${{ steps.dist-tag.outputs.prerelease }}
       tag: ${{ steps.tag.outputs.result }}
@@ -55,7 +55,7 @@ jobs:
         name: Print environment variables and event payload
         uses: hmarr/debug-action@v2.1.0
       - id: checkout
-        name: Checkout ${{ env.REF }}
+        name: Checkout ${{ env.REF_NAME }}
         uses: actions/checkout@v3.5.0
         with:
           ref: ${{ env.REF }}
@@ -92,11 +92,10 @@ jobs:
       NODE_NO_WARNINGS: 1
       NOTES_FILE: ./RELEASE_NOTES.md
       PRERELEASE: ${{ needs.preflight.outputs.prerelease }}
-      REF: ${{ inputs.sha || github.event.pull_request.merge_commit_sha }}
       TAG: ${{ needs.preflight.outputs.tag }}
     steps:
       - id: checkout
-        name: Checkout ${{ env.REF }}
+        name: Checkout ${{ env.REF_NAME }}
         uses: actions/checkout@v3.5.0
         with:
           fetch-depth: 0
@@ -143,25 +142,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_REPO }}
         run: gh release create $TAG *.tgz -t=$TAG -p=$PRERELEASE -F=$NOTES_FILE
-  cleanup:
-    needs:
-      - preflight
-      - publish
-    permissions:
-      contents: write
-      issues: write
-    runs-on: ubuntu-latest
-    steps:
-      - id: close-released-issues
+      - id: close-issues
         name: Close released issues
         uses: bdougie/close-issues-based-on-label@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LABEL: status:${{ (needs.preflight.outputs.prerelease && 'prereleased') || 'released' }}
-      - id: delete-release-branch
-        name: Delete release/${{ needs.preflight.outputs.version }}
-        uses: dawidd6/action-delete-branch@v3.1.0
-        with:
-          branches: release/
-          soft_fail: true
-          suffix: ${{ needs.preflight.outputs.version }}
+          LABEL: status:${{ needs.preflight.outputs.prerelease && 'prereleased' || 'released' }}
