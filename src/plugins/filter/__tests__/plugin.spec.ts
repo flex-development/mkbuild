@@ -16,17 +16,35 @@ describe('unit:plugins/filter', () => {
 
   it('should throw if esbuild is writing output files', async () => {
     // Arrange
-    let error: Error
+    let error!: Error
 
     // Act
     try {
-      await subject.setup(createPluginAPI({ initialOptions: { write: true } }))
+      await subject.setup(
+        createPluginAPI({ initialOptions: { metafile: true, write: true } })
+      )
     } catch (e: unknown) {
       error = e as typeof error
     }
 
     // Expect
-    expect(error!).to.not.be.undefined
-    expect(error!.message).to.equal('write must be disabled')
+    expect(error).to.not.be.undefined
+    expect(error.message).to.equal('write must be disabled')
+  })
+
+  it('should throw if metafile is disabled', async () => {
+    // Arrange
+    let error!: Error
+
+    // Act
+    try {
+      await subject.setup(createPluginAPI())
+    } catch (e: unknown) {
+      error = e as typeof error
+    }
+
+    // Expect
+    expect(error).to.not.be.undefined
+    expect(error.message).to.equal('metafile required')
   })
 })

@@ -3,6 +3,7 @@
  * @module mkbuild/plugins/filter/plugin
  */
 
+import type { OutputMetadata } from '#src/types'
 import type {
   BuildOptions,
   BuildResult,
@@ -31,17 +32,44 @@ const plugin = (filter: RegExp = /.+/): Plugin => {
    * @throws {Error}
    */
   const setup = ({ initialOptions, onEnd }: PluginBuild): void => {
-    // esbuild write must be disabled to access result.outputFiles
+    // metafile required to filter output metadata from result.metafile
+    if (!initialOptions.metafile) throw new Error('metafile required')
+
+    // esbuild write must be disabled to filter result.outputFiles
     if (initialOptions.write) throw new Error('write must be disabled')
 
     // filter output files
-    return void onEnd((result: BuildResult): void => {
-      result.outputFiles = result.outputFiles!.filter((output: OutputFile) => {
-        return filter.test(output.path)
-      })
+    return void onEnd(
+      (result: BuildResult<{ metafile: true; write: false }>): void => {
+        /**
+         * Output file metadata.
+         *
+         * @const {Record<string, OutputMetadata>} outputs
+         */
+        const outputs: Record<string, OutputMetadata> = {}
 
-      return void result.outputFiles
-    })
+        // filter output files
+        result.outputFiles = result.outputFiles.filter((output: OutputFile) => {
+          return filter.test(output.path)
+        })
+
+        // filter output file metadata
+        for (const output of Object.entries(result.metafile.outputs)) {
+          const [outfile, metadata] = output
+          if (result.outputFiles.some(o => o.path.endsWith(outfile))) {
+            outputs[outfile] = metadata
+          }
+        }
+
+        // reset metafile
+        result.metafile = {
+          inputs: result.metafile.inputs,
+          outputs
+        }
+
+        return void result
+      }
+    )
   }
 
   return { name: 'filter', setup }
