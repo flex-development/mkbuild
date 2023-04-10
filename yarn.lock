@@ -1139,7 +1139,7 @@ __metadata:
     "@flex-development/mlly": "npm:1.0.0-alpha.15"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/pkg-types": "npm:2.0.0"
-    "@flex-development/toggle-pkg-type": "npm:1.1.1"
+    "@flex-development/toggle-pkg-type": "npm:2.0.0"
     "@flex-development/tsconfig-utils": "npm:1.1.2"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
     "@graphql-eslint/eslint-plugin": "npm:3.18.0"
@@ -1305,16 +1305,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@flex-development/toggle-pkg-type@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@flex-development/toggle-pkg-type@npm:1.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftoggle-pkg-type%2F1.1.1%2F536f86b58a650e7b830ee3d88c750c3771b6dbc5"
+"@flex-development/toggle-pkg-type@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@flex-development/toggle-pkg-type@npm:2.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftoggle-pkg-type%2F2.0.0%2F17a6fa065f0ecaab0782ceef6243cabf69d4a7ad"
   dependencies:
-    "@flex-development/mlly": "npm:1.0.0-alpha.13"
+    "@flex-development/mlly": "npm:1.0.0-alpha.15"
     "@flex-development/pathe": "npm:1.0.3"
     "@flex-development/tutils": "npm:6.0.0-alpha.10"
   bin:
     toggle-pkg-type: dist/cli.mjs
-  checksum: 6ae31dfc2a193139b52fba42d9424eca4b4fdf6eb74621fd29d20508ae0148f7fae141f122995d1ec864dade8fd847a747cc24525ea6ad203e766e5692d3311a
+  checksum: 051bcb57d78652e02621e0490aa4fd44788841683255376a965a65426ba978d5f1aa12899d7165e9ebfe3bd859acd0636a35ae833f3613ae9043e1f49d42dbba
   languageName: node
   linkType: hard
 
