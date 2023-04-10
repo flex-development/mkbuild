@@ -5,7 +5,6 @@ cefc
 codecov
 colorette
 commitlintrc
-dawidd
 dedupe
 defu
 dessant
@@ -31,10 +30,8 @@ nocheck
 npmrc
 nvmrc
 onrequest
-outdirs
 pathe
 pkgs
-pnpm
 preid
 toodles
 tribonacci

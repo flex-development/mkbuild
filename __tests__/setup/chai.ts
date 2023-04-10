@@ -10,10 +10,6 @@ import chaiQuantifiers from 'chai-quantifiers'
 import chaiString from 'chai-string'
 import { chai } from 'vitest'
 
-// configure chai
-chai.config.includeStack = true
-chai.config.truncateThreshold = 0
-
 /**
  * initialize chai plugins.
  *

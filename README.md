@@ -1,5 +1,6 @@
 # mkbuild
 
+[![github release](https://img.shields.io/github/v/release/flex-development/mkbuild.svg?include_prereleases&sort=semver)](https://github.com/flex-development/mkbuild/releases/latest)
 [![npm](https://img.shields.io/npm/v/@flex-development/mkbuild.svg)](https://npmjs.com/package/@flex-development/mkbuild)
 [![codecov](https://codecov.io/gh/flex-development/mkbuild/branch/main/graph/badge.svg?token=TDSHFXPP4Z)](https://codecov.io/gh/flex-development/mkbuild)
 [![module type: esm](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
@@ -34,7 +35,7 @@ create bundleless distributions with file-to-file transpilation and static asset
 
 ### :relieved: esm friendly
 
-create es modules + add file extensions to specifiers in modules **_and_** declaration files
+create es modules + add file extensions to specifiers in modules ***and*** declaration files
 
 ### :bookmark_tabs: dts generation <small>(`.d.cts`, `.d.mts`, `.d.ts`)</small>
 
