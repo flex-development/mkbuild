@@ -1,3 +1,31 @@
+## [1.0.0-alpha.20](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.19...1.0.0-alpha.20) (2023-04-10)
+
+
+### :package: Build
+
+* **deps-dev:** bump esbuild from 0.17.15 to 0.17.16 ([3d87eee](https://github.com/flex-development/mkbuild/commit/3d87eee043a91cb7813a3a91d9bd2fa472a6d4fb))
+* **deps-peer:** bump esbuild from >=0.17.15 to >=0.17.16 ([69610a0](https://github.com/flex-development/mkbuild/commit/69610a0b4f01a282be6bf8dc3e2ee139431f2f42))
+* **deps:** bump @flex-development/toggle-pkg-type from 1.1.1 to 2.0.0 ([36117e9](https://github.com/flex-development/mkbuild/commit/36117e9acabae95e37e69c6fb5dfe2fc99a2ecee))
+* **deps:** bump consola from 2.15.3 to 3.0.0-3 ([78b5666](https://github.com/flex-development/mkbuild/commit/78b5666ae50d5db4bb6e24089f3dfa0e79c20e6c))
+
+
+### :robot: Continuous Integration
+
+* **workflows:** [`cache-cleanup`] fix branch checkout ([50a20ce](https://github.com/flex-development/mkbuild/commit/50a20ce4bff749f8f2ebc54abdaf094a58c22b86))
+* **workflows:** [`ci`] check for test files ([5578022](https://github.com/flex-development/mkbuild/commit/5578022f15f2554b33720df77a4ea75e940092e8))
+* **workflows:** [`release`] checkout release commit from `main` ([0edd574](https://github.com/flex-development/mkbuild/commit/0edd57436a48456baf7209dceb8ffcd5a0463b22))
+
+
+### :bug: Fixes
+
+* **plugins:** [`filter`] filter output file metadata ([7efead9](https://github.com/flex-development/mkbuild/commit/7efead95d1feaa19f3b395932bc243d0b2e32045))
+
+
+### :house_with_garden: Housekeeping
+
+* sync config files ([0740dcc](https://github.com/flex-development/mkbuild/commit/0740dcc653ec543b8416e066d025c5e00c17fbf9))
+* **github:** delete branch on merge ([5e929c4](https://github.com/flex-development/mkbuild/commit/5e929c460700f33b2e6fc76bbb53893f9c83757c))
+
 ## [1.0.0-alpha.19](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.18...1.0.0-alpha.19) (2023-04-08)
 
 
