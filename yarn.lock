@@ -1173,7 +1173,7 @@ __metadata:
     chai-quantifiers: "npm:1.0.17"
     chai-string: "npm:1.5.0"
     class-validator: "npm:0.14.0"
-    colorette: "npm:2.0.19"
+    colorette: "npm:2.0.20"
     commander: "npm:10.0.0"
     consola: "npm:3.0.2"
     conventional-changelog: "npm:3.1.25"
@@ -3493,10 +3493,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorette@npm:2.0.19, colorette@npm:^2.0.19":
-  version: 2.0.19
-  resolution: "colorette@npm:2.0.19"
-  checksum: f887e4f7608a1a37037f0b9f7da4d1608e2e1ac0126b87c4c143ff0348bc586173b86fde37f71f1b7742cd1c04285d0cb3cbeab391935886c86a162f4f2b5b87
+"colorette@npm:2.0.20, colorette@npm:^2.0.19":
+  version: 2.0.20
+  resolution: "colorette@npm:2.0.20"
+  checksum: 51a2b1cf140e120074178dd17ffdd4e349b7e84d2cb498f83978124ba0efc19d4d35c1859226f7a75ef0b368b0feafd10370927e871827af428b7500396af274
   languageName: node
   linkType: hard
 
