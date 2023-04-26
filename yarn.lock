@@ -1175,7 +1175,7 @@ __metadata:
     class-validator: "npm:0.14.0"
     colorette: "npm:2.0.20"
     commander: "npm:10.0.0"
-    consola: "npm:3.0.2"
+    consola: "npm:3.1.0"
     conventional-changelog: "npm:3.1.25"
     conventional-changelog-conventionalcommits: "npm:5.0.0"
     conventional-changelog-core: "npm:4.2.4"
@@ -3584,10 +3584,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"consola@npm:3.0.2":
-  version: 3.0.2
-  resolution: "consola@npm:3.0.2"
-  checksum: 16808e270f3b835ff0fb9e7831ddb0f71df1ed365a6bb9a928bc47aa9d87c07eee4520eec8e08b4d8ce61f5c2fbe21c79f7ca3df0bae9d7dd3e01f4e51f1d863
+"consola@npm:3.1.0":
+  version: 3.1.0
+  resolution: "consola@npm:3.1.0"
+  checksum: a1d33995e5ef083f1fb16d946c2fee4747f4487638e8f39136f2953b779c32b6f5e649ae945db4da80411a79511d0ebc04451c777b2c89d2498aed6ac13362b3
   languageName: node
   linkType: hard
 
