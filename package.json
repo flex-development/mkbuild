@@ -179,7 +179,7 @@
     "pretty-format": "29.5.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "8.0.0-alpha.8",
-    "semver": "7.4.0",
+    "semver": "7.5.0",
     "serve": "14.2.0",
     "tempfile": "5.0.0",
     "trash-cli": "5.0.0",
