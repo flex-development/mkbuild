@@ -1210,7 +1210,7 @@ __metadata:
     jsonc-eslint-parser: "npm:2.2.0"
     lint-staged: "npm:13.2.1"
     memfs: "npm:3.5.0"
-    merge-anything: "npm:5.1.4"
+    merge-anything: "npm:5.1.5"
     mri: "npm:1.2.0"
     nest-commander: "npm:3.6.1"
     nest-commander-testing: "npm:3.1.0"
@@ -6586,6 +6586,15 @@ __metadata:
   dependencies:
     is-what: "npm:^4.1.8"
   checksum: 489fbf11bb7455e397a59bb1ed46e577308d6822b26c81ca204974f251c1e30b0f8586910195a59769c3732b33d6026f254031c05f77d54c99dcc160b35cb9a4
+  languageName: node
+  linkType: hard
+
+"merge-anything@npm:5.1.5":
+  version: 5.1.5
+  resolution: "merge-anything@npm:5.1.5"
+  dependencies:
+    is-what: "npm:^4.1.8"
+  checksum: 789918fe4dca78918b4cbeffa3073809314cd46a359ddbfaa9731a906d2492212439214045916383c656ed9b41d2e807938881e3375372ddab2d5caef752cc01
   languageName: node
   linkType: hard
 

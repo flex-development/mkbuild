@@ -96,7 +96,7 @@
     "escape-string-regexp": "5.0.0",
     "exit-hook": "3.2.0",
     "fast-glob": "3.2.12",
-    "merge-anything": "5.1.4",
+    "merge-anything": "5.1.5",
     "pretty-bytes": "6.1.0",
     "radash": "10.8.1"
   },
