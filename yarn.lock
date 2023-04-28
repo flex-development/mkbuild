@@ -1222,7 +1222,7 @@ __metadata:
     pretty-format: "npm:29.5.0"
     radash: "npm:10.8.1"
     reflect-metadata: "npm:0.1.13"
-    rxjs: "npm:8.0.0-alpha.8"
+    rxjs: "npm:8.0.0-alpha.9"
     semver: "npm:7.5.0"
     serve: "npm:14.2.0"
     tempfile: "npm:5.0.0"
@@ -8124,12 +8124,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:8.0.0-alpha.8":
-  version: 8.0.0-alpha.8
-  resolution: "rxjs@npm:8.0.0-alpha.8"
+"rxjs@npm:8.0.0-alpha.9":
+  version: 8.0.0-alpha.9
+  resolution: "rxjs@npm:8.0.0-alpha.9"
   dependencies:
     tslib: "npm:^2.1.0"
-  checksum: 2adbe6cf9ecbbaf10f06918e7652a908e0964c4bbfeff0626e159a998b0b3d36fa425ecb4f9ce037ad700d9de67eb417beb8501d718159afb48e6c45283f7708
+  checksum: 0fd1a6a301756e767b4da18ef28499aa0fab792c50f1bf1a14ce58d492135ccfaef8eb37c69c9f26ab0b84bef642718b4ce3f793251c95c58e9397bc3d54a758
   languageName: node
   linkType: hard
 
