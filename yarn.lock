@@ -3492,14 +3492,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:10.0.0, commander@npm:^10.0.0":
+"commander@npm:10.0.0":
   version: 10.0.0
   resolution: "commander@npm:10.0.0"
   checksum: 1b6c9c0a4bbb4b8aa1f123445f74972c5ddd1b83e7c3fc70a74e7fa679b685dccb7a230f56c1a951e5906da1db4accc61be99884ab6a28a50898906f652efc4d
   languageName: node
   linkType: hard
 
-"commander@npm:10.0.1":
+"commander@npm:10.0.1, commander@npm:^10.0.0":
   version: 10.0.1
   resolution: "commander@npm:10.0.1"
   checksum: b2a03d799104eac407ca031b94126c98198594fcff41554eb253cef748de57fb1a4cdd591baa075de589f2fddf1f968d1ecd1b79e8b47570ee441ab4f3363776
