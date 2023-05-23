@@ -110,7 +110,7 @@
     "@graphql-eslint/eslint-plugin": "3.18.0",
     "@nestjs/common": "9.4.1",
     "@nestjs/core": "9.4.0",
-    "@nestjs/testing": "9.4.0",
+    "@nestjs/testing": "9.4.1",
     "@types/chai": "4.3.4",
     "@types/chai-fs": "2.0.2",
     "@types/chai-string": "1.4.2",
