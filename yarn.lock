@@ -1155,7 +1155,7 @@ __metadata:
     "@graphql-eslint/eslint-plugin": "npm:3.18.0"
     "@nestjs/common": "npm:9.4.1"
     "@nestjs/core": "npm:9.4.0"
-    "@nestjs/testing": "npm:9.4.0"
+    "@nestjs/testing": "npm:9.4.2"
     "@types/chai": "npm:4.3.4"
     "@types/chai-fs": "npm:2.0.2"
     "@types/chai-string": "npm:1.4.2"
@@ -1868,11 +1868,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:9.4.0":
-  version: 9.4.0
-  resolution: "@nestjs/testing@npm:9.4.0"
+"@nestjs/testing@npm:9.4.2":
+  version: 9.4.2
+  resolution: "@nestjs/testing@npm:9.4.2"
   dependencies:
-    tslib: "npm:2.5.0"
+    tslib: "npm:2.5.2"
   peerDependencies:
     "@nestjs/common": ^9.0.0
     "@nestjs/core": ^9.0.0
@@ -1883,7 +1883,7 @@ __metadata:
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: cfda9e36285134c70de72f6c3ffd84f7a6d7f24acf968884892a2a5c4f5541f9d1392a6a2451734935a33849c0afd2e0c80af6af30be9da41bc0dd3c2f9d1355
+  checksum: 5d898980950a216c581563697ec827b58a2bc669d2e5432f0fed55baae55b3b455dcebabcf636a0923d0cea93e593065341b4d7b4d3baddef36b427417a73880
   languageName: node
   linkType: hard
 
@@ -8982,10 +8982,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.5.0, tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0, tslib@npm:~2.5.0":
+"tslib@npm:2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: 5a6ee935f56cd653af29de928483acbab7323f964b053e98b6b318abc69431fb0e4f660c4f4a396e2e93852510bef25eeb9f1d951d060b2d7bcc313811e5da6f
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.5.2, tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0, tslib@npm:~2.5.0":
+  version: 2.5.2
+  resolution: "tslib@npm:2.5.2"
+  checksum: ed22e23f3d390c305c714064679149f3dd298bc7473697480343c6ec4d2afc94270f85d947fca2ccc6324a22602ef04fe2c7177dda317fbea55f7da1dca3fa36
   languageName: node
   linkType: hard
 
