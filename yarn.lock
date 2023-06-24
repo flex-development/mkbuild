@@ -1184,7 +1184,7 @@ __metadata:
     chai-string: "npm:1.5.0"
     class-validator: "npm:0.14.0"
     colorette: "npm:2.0.20"
-    commander: "npm:10.0.0"
+    commander: "npm:11.0.0"
     consola: "npm:3.1.0"
     conventional-changelog: "npm:4.0.0"
     conventional-changelog-conventionalcommits: "npm:5.0.0"
@@ -3548,6 +3548,13 @@ __metadata:
   version: 10.0.0
   resolution: "commander@npm:10.0.0"
   checksum: 1b6c9c0a4bbb4b8aa1f123445f74972c5ddd1b83e7c3fc70a74e7fa679b685dccb7a230f56c1a951e5906da1db4accc61be99884ab6a28a50898906f652efc4d
+  languageName: node
+  linkType: hard
+
+"commander@npm:11.0.0":
+  version: 11.0.0
+  resolution: "commander@npm:11.0.0"
+  checksum: cbdf1f81454204ef49b8ba7c1c03353fb102aa79ca6a107eff35fdfa0322c9610350510edcc098d1172f449d3a6035d108238dc5f3b846436c373740a7a3523e
   languageName: node
   linkType: hard
 
