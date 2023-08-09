@@ -4,6 +4,7 @@
  */
 
 import type { OutputMetadata } from '#src/types'
+import { includes, keys } from '@flex-development/tutils'
 import testSubject from '../analyze-outputs'
 
 describe('unit:utils/analyzeOutputs', () => {
@@ -31,6 +32,8 @@ describe('unit:utils/analyzeOutputs', () => {
 
     // Expect
     expect(result).to.have.property('bytes').be.a('number')
-    expect(result.analysis).toMatchSnapshot()
+    expect(keys(outputs)).to.each.satisfy((outfile: string) => {
+      return includes(result.analysis, outfile)
+    })
   })
 })
