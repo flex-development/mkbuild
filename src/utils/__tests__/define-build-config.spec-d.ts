@@ -4,15 +4,16 @@
  */
 
 import type { Config } from '#src/interfaces'
+import type { Optional } from '@flex-development/tutils'
 import type testSubject from '../define-build-config'
 
 describe('unit-d:utils/defineBuildConfig', () => {
-  it('should be callable with [Config | undefined]', () => {
+  it('should be callable with [Optional<Config>]', () => {
     // Arrange
-    type Expected = [config?: Config | undefined]
+    type Expect = [config?: Optional<Config>]
 
     // Expect
-    expectTypeOf<typeof testSubject>().parameters.toEqualTypeOf<Expected>()
+    expectTypeOf<typeof testSubject>().parameters.toEqualTypeOf<Expect>()
   })
 
   it('should return Config', () => {

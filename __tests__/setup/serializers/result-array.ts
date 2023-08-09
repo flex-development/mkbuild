@@ -4,9 +4,17 @@
  */
 
 import type { Result } from '#src/interfaces'
-import { isNIL, isObjectPlain, isString } from '@flex-development/tutils'
+import {
+  cast,
+  get,
+  isArray,
+  isNIL,
+  isObjectPlain,
+  isString,
+  omit,
+  pick
+} from '@flex-development/tutils'
 import pf from 'pretty-format'
-import { get, omit, pick } from 'radash'
 
 expect.addSnapshotSerializer({
   /**
@@ -16,7 +24,7 @@ expect.addSnapshotSerializer({
    * @return {string} `value` as printable string
    */
   print(value: unknown): string {
-    value = (value as Result[]).map(result => {
+    value = cast<Result[]>(value).map(result => {
       result.cwd = result.cwd.replace(/.*?(?=\/__.+)/, '${process.cwd()}')
 
       return {
@@ -37,16 +45,16 @@ expect.addSnapshotSerializer({
    * @return {value is Result[]} `true` if `value` is {@linkcode Result} array
    */
   test(value: unknown): value is Result[] {
-    return Array.isArray(value)
+    return isArray(value)
       ? value.every(item => {
           return (
             isString(get(item, 'cwd')) &&
-            Array.isArray(get(item, 'errors')) &&
+            isArray(get(item, 'errors')) &&
             (isObjectPlain(get(item, 'mangleCache')) ||
               isNIL(get(item, 'mangleCache'))) &&
             isString(get(item, 'outdir')) &&
-            Array.isArray(get(item, 'outputs')) &&
-            Array.isArray(get(item, 'warnings'))
+            isArray(get(item, 'outputs')) &&
+            isArray(get(item, 'warnings'))
           )
         })
       : false

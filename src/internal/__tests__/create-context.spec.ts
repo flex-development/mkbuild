@@ -5,7 +5,7 @@
 
 import pkg from '#pkg' assert { type: 'json' }
 import type { Task } from '#src'
-import type { PackageJson } from '@flex-development/pkg-types'
+import { cast } from '@flex-development/tutils'
 import testSubject from '../create-context'
 
 vi.mock('#src/utils/fs')
@@ -22,7 +22,7 @@ describe('unit:internal/createContext', () => {
     }
 
     // Act
-    const result = await testSubject(task, pkg as PackageJson)
+    const result = await testSubject(task, cast(pkg))
 
     // Expect
     expect(result).to.have.property('cancel').be.instanceof(Function)

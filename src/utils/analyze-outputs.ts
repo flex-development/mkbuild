@@ -4,9 +4,9 @@
  */
 
 import type { OutputMetadata } from '#src/types'
+import { entries, join, template } from '@flex-development/tutils'
 import * as color from 'colorette'
 import pb from 'pretty-bytes'
-import { template } from 'radash'
 
 /**
  * Generates a build analysis for the given `outputs`.
@@ -39,17 +39,17 @@ const analyzeOutputs = (
    *
    * @const {number} size
    */
-  const size: number = Object.entries(outputs).reduce((acc, output) => {
+  const size: number = entries(outputs).reduce((acc, output) => {
     const [outfile, metadata] = output
     strings.push(color.gray(`${indent}└─ ${outfile} (${pb(metadata.bytes)})`))
     return acc + metadata.bytes
   }, 0)
 
   return {
-    analysis: template(`${indent}{{0}} (total size: {{1}})\n{{2}}`, {
+    analysis: template(`${indent}{0} (total size: {1})\n{2}`, {
       0: color.bold(outdir),
       1: color.cyan(pb(size)),
-      2: strings.join('\n')
+      2: join(strings, '\n')
     }),
     bytes: size
   }

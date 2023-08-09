@@ -3,6 +3,7 @@
  * @module mkbuild/interfaces/tests/unit-d/Flags
  */
 
+import type { Omit, Optional } from '@flex-development/tutils'
 import type TestSubject from '../flags'
 import type Options from '../options'
 
@@ -14,18 +15,18 @@ describe('unit-d:interfaces/Flags', () => {
   it('should match [help?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('help')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 
   it('should match [version?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('version')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 
   it('should match [watch?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('watch')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 })

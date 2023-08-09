@@ -5,6 +5,7 @@
  * @module mkbuild/cli
  */
 
+import type { Optional } from '@flex-development/tutils'
 import mri from 'mri'
 import { CommandFactory } from 'nest-commander'
 import AppModule from './app.module'
@@ -45,7 +46,7 @@ const {
   'serve.keyfile'?: string
   'serve.port'?: number
   'serve.servedir'?: string
-  serve?: boolean | undefined
+  serve?: Optional<boolean>
   watch?: boolean
 }>(process.argv.slice(2), {
   alias: { serve: 'S', watch: 'w' },

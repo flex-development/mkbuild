@@ -6,12 +6,12 @@
 import { ERR_MODULE_NOT_FOUND, type NodeError } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
+import { cast, template } from '@flex-development/tutils'
 import * as color from 'colorette'
 import { CommanderError } from 'commander'
 import consola from 'consola'
 import * as esbuild from 'esbuild'
 import { fileURLToPath } from 'node:url'
-import { template } from 'radash'
 import TestSubject from '../app.module'
 
 vi.mock('esbuild')
@@ -32,7 +32,7 @@ describe('functional:cli/AppModule', () => {
       TestSubject.errorHandler(error)
 
       // Expect
-      expect(process).to.have.property('exitCode').equal(error.exitCode)
+      expect(process).to.have.property('exitCode', error.exitCode)
       expect(consola.log).not.toHaveBeenCalled()
     })
 
@@ -41,7 +41,7 @@ describe('functional:cli/AppModule', () => {
       const code: string = 'commander.unknownOption'
       const message: string = "error: unknown option '--formatter'"
       const error: CommanderError = new CommanderError(1, code, message)
-      const log: string = template('{{0}} {{1}} {{2}}', {
+      const log: string = template('{0} {1} {2}', {
         0: color.red('✘'),
         1: color.bgRed('[ERROR]'),
         2: color.white(error.message)
@@ -65,7 +65,7 @@ describe('functional:cli/AppModule', () => {
         fileURLToPath(mlly.toURL('dist/make.mjs')),
         'module'
       )
-      const log: string = template('{{0}} {{1}} {{2}}', {
+      const log: string = template('{0} {1} {2}', {
         0: color.red('✘'),
         1: color.bgRed('[ERROR]'),
         2: color.white(error.message)
@@ -75,21 +75,23 @@ describe('functional:cli/AppModule', () => {
       TestSubject.serviceErrorHandler(error)
 
       // Expect
-      expect(process).to.have.property('exitCode').equal(1)
+      expect(process).to.have.property('exitCode', 1)
       expect(consola.log).toHaveBeenCalledOnce()
       expect(consola.log).toHaveBeenCalledWith(log)
     })
 
     it('should handle esbuild.BuildFailure', () => {
       // Act
-      TestSubject.serviceErrorHandler({
-        ...new Error('Cannot use "external" without "bundle"'),
-        errors: [],
-        warnings: []
-      } as esbuild.BuildFailure)
+      TestSubject.serviceErrorHandler(
+        cast<esbuild.BuildFailure>({
+          ...new Error('Cannot use "external" without "bundle"'),
+          errors: [],
+          warnings: []
+        })
+      )
 
       // Expect
-      expect(process).to.have.property('exitCode').equal(1)
+      expect(process).to.have.property('exitCode', 1)
       expect(consola.log).not.toHaveBeenCalled()
     })
   })

@@ -3,6 +3,7 @@
  * @module mkbuild/types/Sourcemap
  */
 
+import type { Fallback, Optional } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 
 /**
@@ -10,9 +11,10 @@ import type * as esbuild from 'esbuild'
  *
  * @see https://esbuild.github.io/api/#sourcemap
  */
-type Sourcemap = Exclude<
-  NonNullable<esbuild.BuildOptions['sourcemap']>,
-  boolean
+type Sourcemap = Fallback<
+  esbuild.BuildOptions['sourcemap'],
+  never,
+  Optional<boolean>
 >
 
 export type { Sourcemap as default }

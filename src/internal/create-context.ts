@@ -13,11 +13,20 @@ import { EXT_DTS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
-import { isString, isUndefined } from '@flex-development/tutils'
+import {
+  DOT,
+  cast,
+  get,
+  isString,
+  isUndefined,
+  keys,
+  omit,
+  regexp,
+  shake,
+  sift
+} from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
-import regexp from 'escape-string-regexp'
 import fg from 'fast-glob'
-import { get, omit, shake, sift } from 'radash'
 import gitignore from './gitignore'
 
 /**
@@ -50,7 +59,7 @@ async function createContext(
     clean = true,
     color = true,
     conditions = ['import', 'default'],
-    cwd = '.',
+    cwd = DOT,
     drop,
     dts = await (async () => {
       try {
@@ -62,7 +71,7 @@ async function createContext(
         return false
       }
     })(),
-    external = bundle ? Object.keys(get(pkg, 'peerDependencies', {})!) : [],
+    external = bundle ? keys(get(pkg, 'peerDependencies', {})) : [],
     footer = {},
     format = 'esm',
     ignore = IGNORE_PATTERNS,
@@ -74,7 +83,7 @@ async function createContext(
     name = '[name]',
     outExtension = {},
     outdir = 'dist',
-    pattern = '**',
+    pattern = mlly.PATTERN_CHARACTER.repeat(2),
     pure,
     platform = 'neutral',
     plugins = [],
@@ -157,13 +166,13 @@ async function createContext(
       color,
       conditions: [...new Set(conditions)],
       drop: [...new Set(drop)],
-      entryNames: `[dir]/${name}`,
+      entryNames: `[dir]${pathe.sep}${name}`,
       entryPoints: files
         .map((file: string): SourceFile => {
           return {
-            ext: pathe.extname(file) as pathe.Ext,
+            ext: cast(pathe.extname(file)),
             file:
-              bundle && outbase !== '.'
+              bundle && outbase !== DOT
                 ? // outbase support for bundles (esbuild only uses outbase for
                   // multiple entries); https://esbuild.github.io/api/#outbase
                   file
@@ -177,12 +186,7 @@ async function createContext(
           return pathe.join(bundle ? outbase : source, sourcefile.file)
         }),
       external: bundle
-        ? [
-            ...new Set([
-              ...Object.keys(get(pkg, 'peerDependencies', {})!),
-              ...external
-            ])
-          ]
+        ? [...new Set([...keys(get(pkg, 'peerDependencies', {})), ...external])]
         : [],
       footer,
       format,
@@ -191,7 +195,7 @@ async function createContext(
       logLimit,
       logOverride,
       mainFields: [...new Set(mainFields)],
-      metafile: true,
+      metafile: true as const,
       outExtension: { ...outExtension, '.js': pathe.formatExt(ext) },
       outbase,
       outdir,
@@ -207,18 +211,16 @@ async function createContext(
         ...plugins,
         mkp.filter(dts === 'only' ? EXT_DTS_REGEX : undefined),
         write && mkp.write(fs)
-      ]) as esbuild.Plugin[],
+      ]),
       pure: [...new Set(pure)],
-      resolveExtensions: [...new Set(resolveExtensions)].map(ext => {
-        return pathe.formatExt(ext)
-      }),
+      resolveExtensions: [...new Set(resolveExtensions)].map(pathe.formatExt),
       target: isUndefined(target)
         ? undefined
         : isString(target)
         ? target
         : [...new Set(target)],
       tsconfig,
-      write: false
+      write: false as const
     })
   )
 }

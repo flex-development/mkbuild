@@ -4,6 +4,7 @@
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
+import { cast } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
@@ -24,12 +25,11 @@ describe('unit:plugins/filter', () => {
         createPluginAPI({ initialOptions: { metafile: true, write: true } })
       )
     } catch (e: unknown) {
-      error = e as typeof error
+      error = cast(e)
     }
 
     // Expect
-    expect(error).to.not.be.undefined
-    expect(error.message).to.equal('write must be disabled')
+    expect(error).to.have.property('message', 'write must be disabled')
   })
 
   it('should throw if metafile is disabled', async () => {
@@ -40,11 +40,10 @@ describe('unit:plugins/filter', () => {
     try {
       await subject.setup(createPluginAPI())
     } catch (e: unknown) {
-      error = e as typeof error
+      error = cast(e)
     }
 
     // Expect
-    expect(error).to.not.be.undefined
-    expect(error.message).to.equal('metafile required')
+    expect(error).to.have.property('message', 'metafile required')
   })
 })

@@ -10,11 +10,11 @@ import type { Jsx, LegalComments, OutputExtension, Sourcemap } from '#src/types'
 import type { Spy } from '#tests/interfaces'
 import createTestingCommand from '#tests/utils/create-testing-command'
 import * as mlly from '@flex-development/mlly'
+import { cast, descriptor } from '@flex-development/tutils'
 import type { TestingModule } from '@nestjs/testing'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import { CommandTestFactory } from 'nest-commander-testing'
-import { get } from 'radash'
 import TestSubject from '../mkbuild.command'
 
 vi.mock('#src/make')
@@ -431,7 +431,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
     let subject: TestSubject
 
     beforeEach(() => {
-      formatHelp = vi.spyOn(command.get(HelpService), 'formatHelp')
+      formatHelp = cast(vi.spyOn(command.get(HelpService), 'formatHelp'))
       subject = command.get(TestSubject)
     })
 
@@ -441,7 +441,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(formatHelp).toHaveBeenCalledOnce()
-      expect(formatHelp).toBeCalledWith(get(subject, 'command'))
+      expect(formatHelp).toBeCalledWith(descriptor(subject, 'command').value)
       expect(consola.log).toHaveBeenCalledOnce()
       expect(make).not.toHaveBeenCalled()
     })
@@ -452,7 +452,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(formatHelp).toHaveBeenCalledOnce()
-      expect(formatHelp).toBeCalledWith(get(subject, 'command'))
+      expect(formatHelp).toBeCalledWith(descriptor(subject, 'command').value)
       expect(consola.log).toHaveBeenCalledOnce()
       expect(make).not.toHaveBeenCalled()
     })

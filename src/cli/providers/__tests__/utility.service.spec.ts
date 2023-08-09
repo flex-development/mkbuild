@@ -56,14 +56,4 @@ describe('unit:cli/providers/UtilityService', () => {
       })
     })
   })
-
-  describe('#parseString', () => {
-    it('should return val', () => {
-      // Arrange
-      const string: string = 'esm'
-
-      // Act + Expect
-      expect(subject.parseString(string)).to.equal(string)
-    })
-  })
 })

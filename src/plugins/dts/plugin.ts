@@ -3,8 +3,6 @@
  * @module mkbuild/plugins/dts
  */
 
-import defu from '#src/internal/defu'
-import type { OutputMetadata } from '#src/types'
 import {
   EXT_DTS_REGEX,
   EXT_JS_REGEX,
@@ -12,6 +10,17 @@ import {
 } from '@flex-development/ext-regex'
 import pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
+import {
+  DOT,
+  cast,
+  constant,
+  defaults,
+  define,
+  get,
+  includes,
+  keys,
+  shake
+} from '@flex-development/tutils'
 import type {
   BuildOptions,
   BuildResult,
@@ -26,6 +35,13 @@ import type {
   CompilerOptions,
   WriteFileCallback
 } from 'typescript'
+
+/**
+ * Plugin-specific build options.
+ *
+ * @internal
+ */
+type SpecificOptions = { metafile: true; write: false }
 
 /**
  * Returns a TypeScript declaration plugin.
@@ -64,7 +80,7 @@ const plugin = (): Plugin => {
       metafile,
       outExtension: { '.js': ext = '.js' } = {},
       outbase = '',
-      outdir = '.',
+      outdir = DOT,
       preserveSymlinks = false,
       tsconfig = 'tsconfig.json',
       write
@@ -110,7 +126,7 @@ const plugin = (): Plugin => {
       return void sourcefiles.push(pathe.resolve(args.resolveDir, args.path))
     })
 
-    return void onEnd((result: BuildResult): void => {
+    return void onEnd((result: BuildResult<SpecificOptions>): void => {
       /**
        * TypeScript compiler options.
        *
@@ -143,37 +159,40 @@ const plugin = (): Plugin => {
       delete compilerOptions.noEmitOnError
 
       // merge compiler options with defaults
-      compilerOptions = defu(compilerOptions, {
-        allowJs: true,
-        allowUmdGlobalAccess: format === 'iife',
-        allowUnreachableCode: false,
-        baseUrl: absWorkingDir,
-        checkJs: false,
-        declaration: true,
-        declarationMap: false,
-        emitDeclarationOnly: true,
-        esModuleInterop: true,
-        forceConsistentCasingInFileNames: true,
-        isolatedModules: true,
-        module: ts.ModuleKind.ESNext,
-        moduleResolution: tscu.normalizeModuleResolution(
-          tscu.ModuleResolutionKind.NodeJs
-        ),
-        noEmit: false,
-        noEmitOnError: false,
-        noErrorTruncation: true,
-        noImplicitAny: true,
-        noImplicitOverride: true,
-        noImplicitReturns: true,
-        outDir: pathe.resolve(absWorkingDir, outdir),
-        preserveConstEnums: true,
-        preserveSymlinks,
-        pretty: color,
-        resolveJsonModule: true,
-        rootDir: pathe.resolve(absWorkingDir, outbase),
-        skipLibCheck: true,
-        target: ts.ScriptTarget.ESNext
-      })
+      compilerOptions = defaults(
+        compilerOptions,
+        shake({
+          allowJs: true,
+          allowUmdGlobalAccess: format === 'iife',
+          allowUnreachableCode: false,
+          baseUrl: absWorkingDir,
+          checkJs: false,
+          declaration: true,
+          declarationMap: false,
+          emitDeclarationOnly: true,
+          esModuleInterop: true,
+          forceConsistentCasingInFileNames: true,
+          isolatedModules: true,
+          module: ts.ModuleKind.ESNext,
+          moduleResolution: tscu.normalizeModuleResolution(
+            tscu.ModuleResolutionKind.NodeJs
+          ),
+          noEmit: false,
+          noEmitOnError: false,
+          noErrorTruncation: true,
+          noImplicitAny: true,
+          noImplicitOverride: true,
+          noImplicitReturns: true,
+          outDir: pathe.resolve(absWorkingDir, outdir),
+          preserveConstEnums: true,
+          preserveSymlinks,
+          pretty: color,
+          resolveJsonModule: true,
+          rootDir: pathe.resolve(absWorkingDir, outbase),
+          skipLibCheck: true,
+          target: ts.ScriptTarget.ESNext
+        })
+      )
 
       /**
        * TypeScript compiler host.
@@ -185,9 +204,9 @@ const plugin = (): Plugin => {
       /**
        * Virtual file system for declaration files.
        *
-       * @const {Map<string, string>} vfs
+       * @const {Record<string, string>} vfs
        */
-      const vfs: Map<string, string> = new Map()
+      const vfs: Record<string, string> = {}
 
       // first letter before "js" or "ts" in output file extension
       const [, cm = ''] = /\.(c|m)?[jt]sx?$/.exec(ext)!
@@ -203,10 +222,8 @@ const plugin = (): Plugin => {
         filename: string,
         contents: string
       ): void => {
-        return void vfs.set(
-          filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`),
-          contents
-        )
+        filename = filename.replace(EXT_DTS_REGEX, `.d.${cm}ts`)
+        return void (vfs[filename] = contents)
       }
 
       // override write file function
@@ -220,56 +237,33 @@ const plugin = (): Plugin => {
       ).emit()
 
       // remap output files to insert declaration file outputs
-      return void (result.outputFiles = result.outputFiles!.flatMap(output => {
+      return void (result.outputFiles = result.outputFiles.flatMap(output => {
         /**
          * Absolute path to declaration file for {@linkcode output}.
          *
          * @const {string} dtspath
          */
-        const dtspath: string = EXT_JS_REGEX.test(output.path)
+        const path: string = EXT_JS_REGEX.test(output.path)
           ? output.path.replace(EXT_JS_REGEX, '.d.$1ts')
           : EXT_TS_REGEX.test(output.path) && !EXT_DTS_REGEX.test(output.path)
           ? output.path.replace(EXT_TS_REGEX, '.d.$2ts')
           : ''
 
         // do nothing if missing declaration file
-        if (!vfs.has(dtspath)) return [output]
-
-        /**
-         * Relative path to output file.
-         *
-         * **Note**: Relative to {@linkcode absWorkingDir}.
-         *
-         * @const {string} outfile
-         */
-        const outfile: string = output.path
-          .replace(absWorkingDir, '')
-          .replace(/^\//, '')
-
-        /**
-         * {@linkcode output} metadata.
-         *
-         * @const {OutputMetadata} metadata
-         */
-        const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
-
-        /**
-         * Declaration output file content.
-         *
-         * @const {string} dtstext
-         */
-        const dtstext: string = vfs.get(dtspath)!
+        if (!includes(keys(vfs), path)) return [output]
 
         /**
          * Declaration file output.
          *
          * @const {OutputFile} dts
          */
-        const dts: OutputFile = {
-          contents: new util.TextEncoder().encode(dtstext),
-          path: dtspath,
-          text: dtstext
-        }
+        const dts: OutputFile = cast({
+          contents: new util.TextEncoder().encode(vfs[path]),
+          path
+        })
+
+        // redefine output text
+        define(dts, 'text', { get: constant(vfs[path]) })
 
         /**
          * Relative path to declaration output file.
@@ -278,13 +272,16 @@ const plugin = (): Plugin => {
          *
          * @const {string} dtsoutfile
          */
-        const dtsoutfile: string = dtspath
+        const outfile: string = path
           .replace(absWorkingDir, '')
           .replace(/^\//, '')
 
         // update metafile
-        result.metafile!.outputs[dtsoutfile] = {
-          ...metadata,
+        result.metafile.outputs[outfile] = {
+          ...get(
+            result.metafile.outputs,
+            output.path.replace(absWorkingDir, '').replace(/^\//, '')
+          ),
           bytes: Buffer.byteLength(dts.contents)
         }
 

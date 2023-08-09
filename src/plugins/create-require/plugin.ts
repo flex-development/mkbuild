@@ -3,6 +3,7 @@
  * @module mkbuild/plugins/create-require/plugin
  */
 
+import { constant, define, join, regexp } from '@flex-development/tutils'
 import {
   transform,
   type BuildOptions,
@@ -11,8 +12,14 @@ import {
   type Plugin,
   type PluginBuild
 } from 'esbuild'
-import regexp from 'escape-string-regexp'
 import util from 'node:util'
+
+/**
+ * Plugin-specific build options.
+ *
+ * @internal
+ */
+type SpecificOptions = { metafile: true; write: false }
 
 /**
  * Returns a plugin that defines the `require` function in ESM bundles.
@@ -91,10 +98,13 @@ const plugin = (): Plugin => {
      *
      * @const {string} snippet
      */
-    const snippet: string = [
-      "import { createRequire as __createRequire } from 'node:module'",
-      'const require = __createRequire(import.meta.url)'
-    ].join('\n')
+    const snippet: string = join(
+      [
+        "import { createRequire as __createRequire } from 'node:module'",
+        'const require = __createRequire(import.meta.url)'
+      ],
+      '\n'
+    )
 
     // transform snippet to re-add banner and minify
     let { code } = await transform(snippet, {
@@ -108,7 +118,7 @@ const plugin = (): Plugin => {
     // remove new line from end of code snippet if output should be minified
     if (minify || minifyWhitespace) code = code.replace(/\n$/, '')
 
-    return void onEnd((result: BuildResult): void => {
+    return void onEnd((result: BuildResult<SpecificOptions>): void => {
       /**
        * Regex used to deduce if an output file includes the `__require` shim.
        *
@@ -117,7 +127,7 @@ const plugin = (): Plugin => {
       const filter: RegExp = /Dynamic require of ".*" is not supported/m
 
       // insert require function definitions
-      result.outputFiles = result.outputFiles!.map((output: OutputFile) => {
+      result.outputFiles = result.outputFiles.map((output: OutputFile) => {
         // do nothing if output file does not contain shim
         if (!filter.test(output.text)) return output
 
@@ -129,20 +139,16 @@ const plugin = (): Plugin => {
          *
          * @var {string} text
          */
-        let text: string = output.text
-
-        // remove hashbang and re-add hashbang to code snippet
-        text = text.replace(hashbang, '')
-        code = `${hashbang}${code}`
+        let text: string = output.text.replace(hashbang, '')
 
         // remove banner
         if (banner) text = text.replace(new RegExp(regexp(banner) + '\n?'), '')
 
-        // insert require function definition
-        text = `${code}${text}`
+        // redefine output text to insert require function definition
+        define(output, 'text', { get: constant(hashbang + code + text) })
 
         // reset output file contents
-        output.contents = new util.TextEncoder().encode(text)
+        output.contents = new util.TextEncoder().encode(output.text)
 
         /**
          * Relative path to output file.
@@ -163,9 +169,9 @@ const plugin = (): Plugin => {
         const bytes: number = Buffer.byteLength(output.contents)
 
         // reset output file size
-        result.metafile!.outputs[outfile]!.bytes = bytes
+        result.metafile.outputs[outfile]!.bytes = bytes
 
-        return { ...output, text }
+        return output
       })
     })
   }

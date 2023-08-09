@@ -4,9 +4,9 @@
  */
 
 import { CLI_NAME } from '#src/cli/constants'
+import { cast, set } from '@flex-development/tutils'
 import * as commander from 'commander'
 import { Command } from 'commander'
-import { set } from 'radash'
 import TestSubject from '../help.service'
 
 describe('unit:cli/providers/HelpService', () => {
@@ -67,14 +67,14 @@ describe('unit:cli/providers/HelpService', () => {
       try {
         subject.optionTermByName(name, cmd)
       } catch (e: unknown) {
-        error = e as typeof error
+        error = cast(e)
       }
 
       // Expect
       expect(error).to.be.instanceof(commander.CommanderError)
-      expect(error).to.have.property('code').equal('commander.unknownOption')
-      expect(error).to.have.property('exitCode').equal(1)
-      expect(error).to.have.property('message').equal(message)
+      expect(error).to.have.property('code', 'commander.unknownOption')
+      expect(error).to.have.property('exitCode', 1)
+      expect(error).to.have.property('message', message)
     })
   })
 })

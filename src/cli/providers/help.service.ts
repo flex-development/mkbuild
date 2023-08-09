@@ -3,9 +3,17 @@
  * @module mkbuild/cli/providers/HelpService
  */
 
+import {
+  flat,
+  fork,
+  ifelse,
+  sort,
+  template,
+  trim,
+  type Optional
+} from '@flex-development/tutils'
 import { Injectable } from '@nestjs/common'
 import * as commander from 'commander'
-import { flat, fork, template } from 'radash'
 import { dedent } from 'ts-dedent'
 import wrap from 'word-wrap'
 
@@ -90,7 +98,9 @@ class HelpService extends commander.Help {
      */
     const options: commander.Option[] = flat(
       fork(
-        this.visibleOptions(cmd).sort((a, b) => a.long!.localeCompare(b.long!)),
+        sort(this.visibleOptions(cmd), (a, b) => {
+          return a.long!.localeCompare(b.long!)
+        }),
         option => option.name() !== 'help' && option.name() !== 'version'
       )
     )
@@ -100,7 +110,7 @@ class HelpService extends commander.Help {
       ${indentation}${this.wrap(this.commandDescription(cmd), linewidth, 0)}
 
       Usage
-      ${indentation}${template('$ {{0}}', { 0: this.commandUsage(cmd) })}
+      ${indentation}${template('$ {0}', { 0: this.commandUsage(cmd) })}
 
       Options
       ${options.reduce((acc: string, option: commander.Option): string => {
@@ -123,7 +133,7 @@ class HelpService extends commander.Help {
          *
          * @const {number} left
          */
-        const left: number = term.length + indent * (option.short ? 2 : 3)
+        const left: number = term.length + indent * ifelse(option.short, 2, 3)
 
         /**
          * String representation of {@linkcode option}.
@@ -132,7 +142,7 @@ class HelpService extends commander.Help {
          */
         const str: string =
           indentation +
-          ' '.repeat(indent * (option.short ? 0 : 2)) +
+          ' '.repeat(indent * ifelse(option.short, 0, 2)) +
           term +
           wrap(
             this.wrap(
@@ -142,9 +152,9 @@ class HelpService extends commander.Help {
             ),
             {
               cut: true,
-              indent: indentation.trim(),
-              newline: template('\n{{0}}', {
-                0: ' '.repeat(left - indent * (option.short ? 1 : 0))
+              indent: trim(indentation),
+              newline: template('\n{0}', {
+                0: ' '.repeat(left - indent * ifelse(option.short, 1, 0))
               }),
               width: linewidth - left
             }
@@ -180,9 +190,9 @@ class HelpService extends commander.Help {
     /**
      * Option in {@linkcode options} with the name {@linkcode name}, if any.
      *
-     * @const {commander.Option | undefined} option
+     * @const {Optional<commander.Option>} option
      */
-    const option: commander.Option | undefined = options.find(option => {
+    const option: Optional<commander.Option> = options.find(option => {
       return option.name() === name
     })
 
@@ -191,7 +201,7 @@ class HelpService extends commander.Help {
       throw new commander.CommanderError(
         1,
         'commander.unknownOption',
-        template("error: unknown option '{{name}}'", { name })
+        template("error: unknown option '{name}'", { name })
       )
     }
 

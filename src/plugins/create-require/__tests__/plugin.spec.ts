@@ -4,6 +4,7 @@
  */
 
 import createPluginAPI from '#tests/utils/create-plugin-api'
+import { cast } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
@@ -46,7 +47,7 @@ describe('unit:plugins/create-require', () => {
 
   it('should throw if esbuild is writing output files', async () => {
     // Arrange
-    let error: Error
+    let error!: Error
 
     // Act
     try {
@@ -56,31 +57,27 @@ describe('unit:plugins/create-require', () => {
         })
       )
     } catch (e: unknown) {
-      error = e as typeof error
+      error = cast(e)
     }
 
     // Expect
-    expect(error!).to.not.be.undefined
-    expect(error!).to.have.property('message').equal('write must be disabled')
+    expect(error).to.have.property('message', 'write must be disabled')
   })
 
   it('should throw if metafile is disabled', async () => {
     // Arrange
-    let error: Error
+    let error!: Error
 
     // Act
     try {
       await subject.setup(
-        createPluginAPI({
-          initialOptions: { bundle: true, format: 'esm' }
-        })
+        createPluginAPI({ initialOptions: { bundle: true, format: 'esm' } })
       )
     } catch (e: unknown) {
-      error = e as typeof error
+      error = cast(e)
     }
 
     // Expect
-    expect(error!).to.not.be.undefined
-    expect(error!).to.have.property('message').equal('metafile required')
+    expect(error).to.have.property('message', 'metafile required')
   })
 })

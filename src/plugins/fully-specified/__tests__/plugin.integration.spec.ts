@@ -4,12 +4,12 @@
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
-import type { Mock } from '#tests/interfaces'
 import {
   ERR_PACKAGE_IMPORT_NOT_DEFINED,
   type NodeError
 } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
+import { cast } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
@@ -50,21 +50,21 @@ describe('integration:plugins/fully-specified', () => {
 
       // Act
       try {
-        ;(mlly.fillModules as unknown as Mock).mockRejectedValueOnce(error)
+        vi.mocked(mlly.fillModules).mockRejectedValueOnce(error)
         await esbuild.build(options)
       } catch (e: unknown) {
-        errors = (e as esbuild.BuildFailure).errors
+        errors = cast<esbuild.BuildFailure>(e).errors
       }
 
       // Expect
       expect(errors).to.be.an('array').of.length(1)
-      expect(errors[0]).to.have.property('id').equal(error.code)
-      expect(errors[0]).to.have.property('location').be.null
+      expect(errors[0]).to.have.property('id', error.code)
+      expect(errors[0]).to.have.property('location', null)
       expect(errors[0]).to.have.property('notes').be.an('array').of.length(1)
-      expect(errors[0]).to.have.property('pluginName').equal('fully-specified')
-      expect(errors[0]).to.have.property('text').equal(error.message)
-      expect(errors[0]!.notes[0]).to.have.property('location').be.null
-      expect(errors[0]!.notes[0]).to.have.property('text').equal(error.stack)
+      expect(errors[0]).to.have.property('pluginName', 'fully-specified')
+      expect(errors[0]).to.have.property('text', error.message)
+      expect(errors[0]!.notes[0]).to.have.property('location', null)
+      expect(errors[0]!.notes[0]).to.have.property('text', error.stack)
     })
   })
 })

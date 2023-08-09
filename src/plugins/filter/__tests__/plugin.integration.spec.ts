@@ -5,6 +5,7 @@
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
 import pathe from '@flex-development/pathe'
+import { keys } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
@@ -29,7 +30,7 @@ describe('integration:plugins/filter', () => {
       })
 
       // Expect
-      expect(Object.keys(metafile.outputs)).to.each.match(filter)
+      expect(keys(metafile.outputs)).to.each.match(filter)
       expect(outputFiles).to.each.have.property('path').match(filter)
     })
   })

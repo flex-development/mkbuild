@@ -1,7 +1,0 @@
-diff --git a/dist/esm/object.mjs b/dist/esm/object.mjs
-index v10.8.1..v10.8.1 100644
---- a/dist/esm/object.mjs
-+++ b/dist/esm/object.mjs
-@@ -114,1 +114,1 @@
--  if (!path || !value)
-+  if (!path || value === undefined)

@@ -7,17 +7,23 @@ import { ERR_MODULE_NOT_FOUND, type NodeError } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
-import type { Nullable } from '@flex-development/tutils'
+import {
+  DOT,
+  cast,
+  defaults,
+  get,
+  regexp,
+  type Nullable
+} from '@flex-development/tutils'
 import * as color from 'colorette'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
-import regexp from 'escape-string-regexp'
 import { asyncExitHook as exitHook } from 'exit-hook'
 import { fileURLToPath } from 'node:url'
 import pb from 'pretty-bytes'
 import loadBuildConfig from './config/load'
 import type { Config, Context, Result, Task } from './interfaces'
-import { createContext, defu, defuConcat } from './internal'
+import * as internal from './internal'
 import type { OutputMetadata } from './types'
 import { analyzeOutputs, fs as fsa } from './utils'
 
@@ -46,19 +52,19 @@ import { analyzeOutputs, fs as fsa } from './utils'
  */
 async function make({
   configfile = true,
-  cwd = '.',
+  cwd = DOT,
   ...config
 }: Config = {}): Promise<Result[]> {
-  const { entries, fs, serve, watch, write, ...options } = defu(
+  const { entries, fs, serve, watch, write, ...options } = defaults(
     config,
     configfile ? await loadBuildConfig(cwd) : {},
     {
       cwd,
-      entries: [{}] as Partial<Task>[],
+      entries: cast<Partial<Task>[]>([{}]),
       fs: fsa,
-      logLevel: 'info',
+      logLevel: cast<esbuild.LogLevel>('info'),
       outdir: 'dist',
-      serve: false as esbuild.ServeOptions | boolean,
+      serve: cast<esbuild.ServeOptions | boolean>(false),
       watch: false,
       write: false
     }
@@ -115,7 +121,7 @@ async function make({
       ...rest
     } = entry
 
-    return defuConcat(
+    return defaults(
       {
         bundle,
         cwd,
@@ -147,7 +153,7 @@ async function make({
   if (!watch && serve === false) {
     for (const task of tasks) {
       // create build context
-      context = await createContext(task, pkg, fs)
+      context = await internal.createContext(task, pkg, fs)
 
       /**
        * esbuild build result.
@@ -181,7 +187,7 @@ async function make({
            *
            * @const {OutputMetadata} metadata
            */
-          const metadata: OutputMetadata = result.metafile.outputs[outfile]!
+          const metadata: OutputMetadata = get(result.metafile.outputs, outfile)
 
           return {
             bytes: metadata.bytes,
@@ -227,7 +233,7 @@ async function make({
 
   // enable serve or watch mode
   if (serve !== false || watch) {
-    const [task] = tasks as [Task]
+    const [task] = cast<[Task]>(tasks)
 
     // force clean output directory
     task.clean = true
@@ -236,14 +242,14 @@ async function make({
     task.write = true
 
     // create build context
-    context = await createContext(task, pkg, fs)
+    context = await internal.createContext(task, pkg, fs)
 
     // watch files
     watch && (await context.watch())
 
     // serve files
     if (serve !== false) {
-      await context.serve({ ...(serve as esbuild.ServeOptions) })
+      await context.serve({ ...cast<esbuild.ServeOptions>(serve) })
     }
 
     // dispose build context on process exit

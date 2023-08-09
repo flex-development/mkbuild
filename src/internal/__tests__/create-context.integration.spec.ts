@@ -10,6 +10,7 @@ import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
+import { DOT } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import testSubject from '../create-context'
 
@@ -102,7 +103,7 @@ describe('integration:internal/createContext', () => {
           mainFields,
           metafile: true,
           outExtension: { '.js': '.cjs' },
-          outbase: '.',
+          outbase: DOT,
           outdir,
           platform,
           plugins: [
@@ -119,7 +120,7 @@ describe('integration:internal/createContext', () => {
       it('should create context for cjs transpilation', async () => {
         // Arrange
         const pattern: string = 'buddy.js'
-        const source: string = '.'
+        const source: string = DOT
 
         // Act
         await testSubject({ ...task, pattern, source }, pkg)
@@ -336,7 +337,7 @@ describe('integration:internal/createContext', () => {
           mainFields,
           metafile: true,
           outExtension: { '.js': '.js' },
-          outbase: '.',
+          outbase: DOT,
           outdir,
           platform,
           plugins: [
@@ -353,7 +354,7 @@ describe('integration:internal/createContext', () => {
       it('should create context for iife transpilation', async () => {
         // Arrange
         const pattern: string[] = ['find-uniq.cts']
-        const source: string = '.'
+        const source: string = DOT
 
         // Act
         await testSubject({ ...task, pattern, source })

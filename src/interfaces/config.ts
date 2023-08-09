@@ -4,6 +4,7 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
+import type { Omit } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 import type Options from './options'
 import type Task from './task'

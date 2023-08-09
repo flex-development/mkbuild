@@ -17,7 +17,18 @@ import {
   type Commit
 } from '@flex-development/commitlint-config'
 import pathe from '@flex-development/pathe'
-import { CompareResult, isNIL } from '@flex-development/tutils'
+import {
+  CompareResult,
+  at,
+  constant,
+  includes,
+  isBoolean,
+  isNIL,
+  isString,
+  select,
+  trim,
+  type Optional
+} from '@flex-development/tutils'
 import { Inject, Module } from '@nestjs/common'
 import addStream from 'add-stream'
 import { Command, CommanderError } from 'commander'
@@ -338,13 +349,11 @@ class ChangelogCommand extends CommandRunner {
     const changelog: Readable = conventionalChangelog<Commit>(
       {
         append: false,
-        debug: debug ? consola.log.bind(consola) : undefined,
-        outputUnreleased:
-          typeof outputUnreleased === 'boolean'
-            ? outputUnreleased
-            : typeof outputUnreleased === 'string'
-            ? !!outputUnreleased.trim()
-            : false,
+        outputUnreleased: isBoolean(outputUnreleased)
+          ? outputUnreleased
+          : isString(outputUnreleased)
+          ? !!trim(outputUnreleased)
+          : false,
         pkg: { path: pathe.resolve('package.json') },
         preset: {
           header: '',
@@ -382,10 +391,10 @@ class ChangelogCommand extends CommandRunner {
           return void apply(null, {
             ...commit,
             committerDate: dateformat(commit.committerDate, 'yyyy-mm-dd', true),
-            mentions: commit.mentions.filter(m => m !== 'flexdevelopment'),
+            mentions: select(commit.mentions, m => m !== 'flexdevelopment'),
             // @ts-expect-error ts(2322)
             raw: commit,
-            references: commit.references.filter(ref => ref.action !== null),
+            references: select(commit.references, ref => ref.action !== null),
             version: commit.gitTags ? vgx.exec(commit.gitTags)?.[1] : undefined
           })
         },
@@ -480,35 +489,35 @@ class ChangelogCommand extends CommandRunner {
            *
            * @const {CommitEnhanced?} first_commit
            */
-          const first_commit: CommitEnhanced | undefined = commits.at(0)
+          const first_commit: Optional<CommitEnhanced> = at(commits, 0)
 
           /**
            * Last commit in release.
            *
            * @const {CommitEnhanced?} last_commit
            */
-          const last_commit: CommitEnhanced | undefined = commits.at(-1)
+          const last_commit: Optional<CommitEnhanced> = at(commits, -1)
 
           // set current and previous tags
           if (key && (!currentTag || !previousTag)) {
-            currentTag = key.version ?? undefined
+            currentTag = key.version
 
             // try setting previous tag based on current tag
-            if (gitSemverTags.includes(currentTag ?? '')) {
+            if (includes(gitSemverTags, currentTag)) {
               const { version = '' } = key
               previousTag = gitSemverTags[gitSemverTags.indexOf(version) + 1]
-              if (!previousTag) previousTag = last_commit?.hash ?? undefined
+              if (!previousTag) previousTag = last_commit?.hash
             }
           } else {
             currentTag = /^unreleased$/i.test(version ?? '')
               ? currentTag ??
-                (typeof outputUnreleased === 'string' && outputUnreleased
+                (isString(outputUnreleased) && outputUnreleased
                   ? outputUnreleased
-                  : first_commit?.hash ?? undefined)
+                  : first_commit?.hash)
               : !currentTag && version
               ? pkg.tagPrefix + version
               : currentTag ?? version
-            previousTag = previousTag ?? gitSemverTags[0]
+            previousTag = previousTag ?? at(gitSemverTags, 0)
           }
 
           // set release date
@@ -615,7 +624,7 @@ class ChangelogCommand extends CommandRunner {
     cmd.addHelpCommand(false)
     cmd.allowExcessArguments(false)
     cmd.allowUnknownOption(false)
-    cmd.createHelp = () => this.help
+    cmd.createHelp = constant(this.help)
     cmd.combineFlagAndOptionalValue(false)
     cmd.enablePositionalOptions()
     cmd.helpOption(false)

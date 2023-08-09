@@ -3,6 +3,7 @@
  * @module mkbuild/types/EsbuildOptions
  */
 
+import type { Omit } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 
 /**

@@ -3,6 +3,7 @@
  * @module mkbuild/types/Jsx
  */
 
+import type { Fallback } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 
 /**
@@ -10,6 +11,6 @@ import type * as esbuild from 'esbuild'
  *
  * @see https://esbuild.github.io/api/#jsx
  */
-type Jsx = NonNullable<esbuild.BuildOptions['jsx']>
+type Jsx = Fallback<esbuild.BuildOptions['jsx'], never>
 
 export type { Jsx as default }

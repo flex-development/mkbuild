@@ -17,7 +17,17 @@ import type {
 } from '#src/types'
 import { IGNORE_PATTERNS, loaders } from '#src/utils'
 import * as mlly from '@flex-development/mlly'
-import type * as pathe from '@flex-development/pathe'
+import * as pathe from '@flex-development/pathe'
+import {
+  DOT,
+  cast,
+  constant,
+  construct,
+  entries,
+  join,
+  keys,
+  set
+} from '@flex-development/tutils'
 import { Inject } from '@nestjs/common'
 import type * as commander from 'commander'
 import consola from 'consola'
@@ -28,7 +38,6 @@ import {
   OptionChoiceFor,
   RootCommand
 } from 'nest-commander'
-import { construct, set, shake } from 'radash'
 
 /**
  * `mkbuild` command model.
@@ -279,7 +288,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'charset'
   })
   protected parseCharset(val: string): esbuild.Charset {
-    return this.util.parseString<esbuild.Charset>(val)
+    return cast<esbuild.Charset>(val)
   }
 
   /**
@@ -399,7 +408,7 @@ class MkbuildCommand extends CommandRunner {
    * @return {string} Parsed option value
    */
   @Option({
-    defaultValue: '.',
+    defaultValue: DOT,
     description: 'Current working directory',
     flags: '--cwd <directory>',
     name: 'cwd'
@@ -488,7 +497,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'ext'
   })
   protected parseExt(val: string): OutputExtension {
-    return this.util.parseString<OutputExtension>(val)
+    return cast<OutputExtension>(val)
   }
 
   /**
@@ -550,7 +559,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'format'
   })
   protected parseFormat(val: string): esbuild.Format {
-    return this.util.parseString<esbuild.Format>(val)
+    return cast<esbuild.Format>(val)
   }
 
   /**
@@ -672,7 +681,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'jsx'
   })
   protected parseJsx(val: string): Jsx {
-    return this.util.parseString<Jsx>(val)
+    return cast<Jsx>(val)
   }
 
   /**
@@ -817,7 +826,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'legalComments'
   })
   protected parseLegalComments(val: string): LegalComments {
-    return this.util.parseString<LegalComments>(val)
+    return cast<LegalComments>(val)
   }
 
   /**
@@ -833,9 +842,11 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     defaultValue: loaders(),
     defaultValueDescription: JSON.stringify(
-      Object.entries(loaders())
-        .map(([ext, loader]): string => `${ext}:${loader}`)
-        .join(',')
+      join(
+        entries(loaders()).map(([ext, loader]): string => {
+          return `${ext}${pathe.delimiter}${loader}`
+        })
+      )
     ),
     description: 'https://esbuild.github.io/api/#loader',
     flags: '--loader <list>',
@@ -863,7 +874,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'logLevel'
   })
   protected parseLogLevel(val: string): esbuild.LogLevel {
-    return this.util.parseString<esbuild.LogLevel>(val)
+    return cast<esbuild.LogLevel>(val)
   }
 
   /**
@@ -1216,7 +1227,7 @@ class MkbuildCommand extends CommandRunner {
     name: 'platform'
   })
   protected parsePlatform(val: string): esbuild.Platform {
-    return this.util.parseString<esbuild.Platform>(val)
+    return cast<esbuild.Platform>(val)
   }
 
   /**
@@ -1498,7 +1509,7 @@ class MkbuildCommand extends CommandRunner {
     try {
       return this.util.parseBoolean(val)
     } catch {
-      return this.util.parseString<Sourcemap>(val)
+      return cast<Sourcemap>(val)
     }
   }
 
@@ -1679,7 +1690,7 @@ class MkbuildCommand extends CommandRunner {
    */
   public async run(_: string[], flags: Flags = {}): Promise<void> {
     // remove defaults to prevent accidental config file option override
-    for (const key of Object.keys(flags)) {
+    for (const key of keys(flags)) {
       if (this.command.getOptionValueSource(key) !== 'default') continue
       Reflect.deleteProperty(flags, key)
     }
@@ -1691,7 +1702,7 @@ class MkbuildCommand extends CommandRunner {
     if (flags.version) return void consola.log(pkg.version)
 
     // run make
-    return void (await make(shake(set(construct(flags), 'write', true))))
+    return void (await make(set(construct(flags), 'write', true)))
   }
 
   /**
@@ -1708,7 +1719,7 @@ class MkbuildCommand extends CommandRunner {
     cmd.allowExcessArguments()
     cmd.allowUnknownOption(false)
     cmd.combineFlagAndOptionalValue(false)
-    cmd.createHelp = /* c8 ignore next */ () => this.help
+    cmd.createHelp = constant(this.help)
     cmd.enablePositionalOptions()
     cmd.helpOption(false)
     cmd.showHelpAfterError()

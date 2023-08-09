@@ -3,12 +3,12 @@
  * @module mkbuild/cli/AppModule
  */
 
+import { cast, isArray, template } from '@flex-development/tutils'
 import { Module } from '@nestjs/common'
 import * as color from 'colorette'
 import type * as commander from 'commander'
 import consola from 'consola'
 import * as esbuild from 'esbuild'
-import { template } from 'radash'
 import { MkbuildCommand } from './commands'
 import { HelpService, UtilityService } from './providers'
 
@@ -35,7 +35,7 @@ class AppModule {
   public static errorHandler(error: commander.CommanderError): void {
     if (error.exitCode) {
       consola.log(
-        template('{{0}} {{1}} {{2}}', {
+        template('{{0} {1} {2}', {
           0: color.red('✘'),
           1: color.bgRed('[ERROR]'),
           2: color.white(error.message)
@@ -56,12 +56,12 @@ class AppModule {
    * @return {void} Nothing when complete
    */
   public static serviceErrorHandler(error: Error): void {
-    const { errors, warnings } = error as esbuild.BuildFailure
+    const { errors, warnings } = cast<esbuild.BuildFailure>(error)
 
     // format and log non-esbuild error
-    if (!Array.isArray(errors) && !Array.isArray(warnings)) {
+    if (!isArray(errors) && !isArray(warnings)) {
       consola.log(
-        template('{{0}} {{1}} {{2}}', {
+        template('{{0} {1} {2}', {
           0: color.red('✘'),
           1: color.bgRed('[ERROR]'),
           2: color.white(error.message)

@@ -4,6 +4,7 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
+import type { Omit, Optional } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 import type TestSubject from '../config'
 import type Options from '../options'
@@ -17,36 +18,36 @@ describe('unit-d:interfaces/Config', () => {
   it('should match [configfile?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('configfile')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 
   it('should match [entries?: Partial<Omit<Task, "write">>[]]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('entries')
-      .toEqualTypeOf<Partial<Omit<Task, 'write'>>[] | undefined>()
+      .toEqualTypeOf<Optional<Partial<Omit<Task, 'write'>>[]>>()
   })
 
   it('should match [fs?: FileSystemAdapter]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('fs')
-      .toEqualTypeOf<FileSystemAdapter | undefined>()
+      .toEqualTypeOf<Optional<FileSystemAdapter>>()
   })
 
   it('should match [serve?: esbuild.ServeOptions | boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('serve')
-      .toEqualTypeOf<esbuild.ServeOptions | boolean | undefined>()
+      .toEqualTypeOf<Optional<esbuild.ServeOptions | boolean>>()
   })
 
   it('should match [watch?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('watch')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 
   it('should match [write?: boolean]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('write')
-      .toEqualTypeOf<boolean | undefined>()
+      .toEqualTypeOf<Optional<boolean>>()
   })
 })

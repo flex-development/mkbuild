@@ -4,7 +4,6 @@
  */
 
 import ESBUILD_OPTIONS from '#fixtures/options-esbuild'
-import type { Mock } from '#tests/interfaces'
 import {
   ERR_INVALID_MODULE_SPECIFIER,
   type NodeError
@@ -12,6 +11,7 @@ import {
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
+import { cast } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import testSubject from '../plugin'
 
@@ -53,21 +53,21 @@ describe('integration:plugins/tsconfig-paths', () => {
 
       // Act
       try {
-        ;(tscu.resolvePaths as unknown as Mock).mockRejectedValueOnce(error)
+        vi.mocked(tscu.resolvePaths).mockRejectedValueOnce(error)
         await esbuild.build(options)
       } catch (e: unknown) {
-        errors = (e as esbuild.BuildFailure).errors
+        errors = cast<esbuild.BuildFailure>(e).errors
       }
 
       // Expect
       expect(errors).to.be.an('array').of.length(1)
-      expect(errors[0]).to.have.property('id').equal(error.code)
-      expect(errors[0]).to.have.property('location').be.null
+      expect(errors[0]).to.have.property('id', error.code)
+      expect(errors[0]).to.have.property('location', null)
       expect(errors[0]).to.have.property('notes').be.an('array').of.length(1)
       expect(errors[0]).to.have.property('pluginName').equal('tsconfig-paths')
-      expect(errors[0]).to.have.property('text').equal(error.message)
-      expect(errors[0]!.notes[0]).to.have.property('location').be.null
-      expect(errors[0]!.notes[0]).to.have.property('text').equal(error.stack)
+      expect(errors[0]).to.have.property('text', error.message)
+      expect(errors[0]!.notes[0]).to.have.property('location', null)
+      expect(errors[0]!.notes[0]).to.have.property('text', error.stack)
     })
   })
 })

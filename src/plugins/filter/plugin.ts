@@ -4,18 +4,20 @@
  */
 
 import type { OutputMetadata } from '#src/types'
-import type {
-  BuildOptions,
-  BuildResult,
-  OutputFile,
-  Plugin,
-  PluginBuild
-} from 'esbuild'
+import { entries, select } from '@flex-development/tutils'
+import type { BuildOptions, BuildResult, Plugin, PluginBuild } from 'esbuild'
 
 /**
- * Returns an {@linkcode OutputFile.path} filter plugin.
+ * Plugin-specific build options.
  *
- * @param {RegExp} [filter=/.+/] - {@linkcode OutputFile.path} filter
+ * @internal
+ */
+type SpecificOptions = { metafile: true; write: false }
+
+/**
+ * Returns an output file filter plugin.
+ *
+ * @param {RegExp} [filter=/.+/] - Output file path filter
  * @return {Plugin} Output file path filter plugin
  */
 const plugin = (filter: RegExp = /.+/): Plugin => {
@@ -38,38 +40,30 @@ const plugin = (filter: RegExp = /.+/): Plugin => {
     // esbuild write must be disabled to filter result.outputFiles
     if (initialOptions.write) throw new Error('write must be disabled')
 
-    // filter output files
-    return void onEnd(
-      (result: BuildResult<{ metafile: true; write: false }>): void => {
-        /**
-         * Output file metadata.
-         *
-         * @const {Record<string, OutputMetadata>} outputs
-         */
-        const outputs: Record<string, OutputMetadata> = {}
+    // filter output files and metadata
+    return void onEnd((result: BuildResult<SpecificOptions>): void => {
+      /**
+       * Output file metadata.
+       *
+       * @const {Record<string, OutputMetadata>} outputs
+       */
+      const outputs: Record<string, OutputMetadata> = {}
 
-        // filter output files
-        result.outputFiles = result.outputFiles.filter((output: OutputFile) => {
-          return filter.test(output.path)
-        })
+      // filter output files
+      result.outputFiles = select(result.outputFiles, o => filter.test(o.path))
 
-        // filter output file metadata
-        for (const output of Object.entries(result.metafile.outputs)) {
-          const [outfile, metadata] = output
-          if (result.outputFiles.some(o => o.path.endsWith(outfile))) {
-            outputs[outfile] = metadata
-          }
+      // filter output file metadata
+      for (const [outfile, metadata] of entries(result.metafile.outputs)) {
+        if (result.outputFiles.some(o => o.path.endsWith(outfile))) {
+          outputs[outfile] = metadata
         }
-
-        // reset metafile
-        result.metafile = {
-          inputs: result.metafile.inputs,
-          outputs
-        }
-
-        return void result
       }
-    )
+
+      // reset metafile
+      result.metafile.outputs = outputs
+
+      return void result
+    })
   }
 
   return { name: 'filter', setup }

@@ -7,6 +7,7 @@ import type { OutputMetadata } from '#src/types'
 import type { NodeError } from '@flex-development/errnode'
 import pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
+import { at, cast, constant, define, get, keys } from '@flex-development/tutils'
 import type {
   BuildOptions,
   BuildResult,
@@ -16,6 +17,13 @@ import type {
   PluginBuild
 } from 'esbuild'
 import util from 'node:util'
+
+/**
+ * Plugin-specific build options.
+ *
+ * @internal
+ */
+type SpecificOptions = { metafile: true; write: false }
 
 /**
  * Plugin name.
@@ -66,93 +74,95 @@ const plugin = ({ file, read }: tscu.LoadTsconfigOptions = {}): Plugin => {
     // metafile required to get output metadata
     if (!metafile) throw new Error('metafile required')
 
-    return void onEnd(async (result: BuildResult): Promise<OnEndResult> => {
-      /**
-       * Output file objects.
-       *
-       * @const {OutputFile[]} outputFiles
-       */
-      const outputFiles: OutputFile[] = []
-
-      // resolve path aliases in output content
-      for (const output of result.outputFiles!) {
+    return void onEnd(
+      async (result: BuildResult<SpecificOptions>): Promise<OnEndResult> => {
         /**
-         * Relative path to output file.
+         * Output file objects.
          *
-         * **Note**: Relative to {@linkcode absWorkingDir}.
-         *
-         * @const {string} outfile
+         * @const {OutputFile[]} outputFiles
          */
-        const outfile: string = output.path
-          .replace(absWorkingDir, '')
-          .replace(/^\//, '')
+        const outputFiles: OutputFile[] = []
 
-        /**
-         * {@linkcode output} metadata.
-         *
-         * @const {OutputMetadata} metadata
-         */
-        const metadata: OutputMetadata = result.metafile!.outputs[outfile]!
-
-        // because this plugin doesn't handle bundles, the entry point can be
-        // reset to the first (and only!) key in metadata.inputs
-        if (!metadata.entryPoint) {
-          const [entryPoint = ''] = Object.keys(metadata.inputs)
-          metadata.entryPoint = entryPoint
-        }
-
-        // skip output files without entry points
-        if (!metadata.entryPoint) {
-          outputFiles.push(output)
-          continue
-        }
-
-        try {
+        // resolve path aliases in output content
+        for (const output of result.outputFiles) {
           /**
-           * {@linkcode output.text} with path aliases replaced.
+           * {@linkcode output} metadata.
            *
-           * @const {string} text
+           * @const {OutputMetadata} metadata
            */
-          const text: string = await tscu.resolvePaths(output.text, {
-            baseUrl: absWorkingDir,
-            conditions: new Set(conditions),
-            ext: '',
-            extensions: new Set(resolveExtensions),
-            file,
-            parent: pathe.resolve(absWorkingDir, metadata.entryPoint),
-            preserveSymlinks,
-            read,
-            tsconfig: pathe.resolve(absWorkingDir, tsconfig)
-          })
+          const metadata: OutputMetadata = get(
+            result.metafile.outputs,
+            output.path.replace(absWorkingDir, '').replace(/^\//, '')
+          )
 
-          // add output file with path aliases replaced
-          outputFiles.push({
-            ...output,
-            contents: new util.TextEncoder().encode(text),
-            text
-          })
-        } catch (e: unknown) {
-          const { code, message, stack = '' } = e as NodeError
+          /**
+           * Relative path to source file.
+           *
+           * @const {string} entryPoint
+           */
+          const entryPoint: string = get(
+            metadata,
+            'entryPoint',
+            // because this plugin doesn't handle bundles, the entry point can
+            // fallback to the first (and only!) key in metadata.inputs
+            at(keys(metadata.inputs), 0, '')
+          )
 
-          return {
-            errors: [
-              {
-                id: code,
-                location: null,
-                notes: [{ location: null, text: stack }],
-                pluginName: PLUGIN_NAME,
-                text: message
-              }
-            ]
+          // skip output files without entry points
+          if (!entryPoint) {
+            outputFiles.push(output)
+            continue
+          }
+
+          // reset entry point
+          metadata.entryPoint = entryPoint
+
+          try {
+            // replace path aliases
+            define(output, 'text', {
+              get: constant(
+                await tscu.resolvePaths(output.text, {
+                  baseUrl: absWorkingDir,
+                  conditions: new Set(conditions),
+                  ext: '',
+                  extensions: new Set(resolveExtensions),
+                  file,
+                  parent: pathe.resolve(absWorkingDir, entryPoint),
+                  preserveSymlinks,
+                  read,
+                  tsconfig: pathe.resolve(absWorkingDir, tsconfig)
+                })
+              )
+            })
+
+            // reset output contents
+            output.contents = new util.TextEncoder().encode(output.text)
+
+            // add output file with path aliases replaced
+            outputFiles.push(output)
+          } catch (e: unknown) {
+            const { code, message, stack = '' } = cast<NodeError>(e)
+
+            return {
+              errors: [
+                {
+                  id: code,
+                  location: null,
+                  notes: [{ location: null, text: stack }],
+                  pluginName: PLUGIN_NAME,
+                  text: message
+                }
+              ]
+            }
           }
         }
+
+        // reset output files
+        result.outputFiles = outputFiles
+
+        return {}
       }
-
-      // reset output files
-      result.outputFiles = outputFiles
-
-      return {}
-    })
+    )
   }
 
   return { name: PLUGIN_NAME, setup }

@@ -4,6 +4,7 @@
  */
 
 import type { FileSystemAdapter } from '#src/types'
+import type { Optional } from '@flex-development/tutils'
 
 /**
  * Output file writing options.
@@ -14,7 +15,7 @@ interface WritePluginOptions {
    *
    * @default /.+/
    */
-  filter?: RegExp | undefined
+  filter?: Optional<RegExp>
 
   /**
    * Creates a directory.

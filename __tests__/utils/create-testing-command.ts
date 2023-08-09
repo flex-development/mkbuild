@@ -5,6 +5,7 @@
 
 import AppModule from '#src/cli/app.module'
 import { CLI_NAME } from '#src/cli/constants'
+import type { Omit } from '@flex-development/tutils'
 import { Module } from '@nestjs/common'
 import type { TestingModule } from '@nestjs/testing'
 import { CommandRunnerModule } from 'nest-commander'

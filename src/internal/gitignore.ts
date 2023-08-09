@@ -5,6 +5,7 @@
 
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
+import { cast, isEmptyString, trim } from '@flex-development/tutils'
 
 /**
  * Returns a set of ignore patterns found in a `.gitignore` file.
@@ -37,13 +38,13 @@ const gitignore = async (absWorkingDir: string): Promise<Set<string>> => {
      *
      * @const {string} gitignore
      */
-    const content: string = (await mlly.getSource(path)) as string
+    const content: string = cast(await mlly.getSource(path))
 
     // add ignore patterns from .gitignore
     for (const line of content.split(/\r?\n/)) {
-      if (!line.trim()) continue
+      if (isEmptyString(trim(line))) continue
       if (line.startsWith('#') || line.startsWith('!')) continue
-      ignore.add(line.trim())
+      ignore.add(trim(line))
     }
   } catch {
     // do nothing if .gitignore file was not found

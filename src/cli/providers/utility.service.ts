@@ -3,10 +3,16 @@
  * @module mkbuild/cli/providers/UtilityService
  */
 
-import type { JsonPrimitive } from '@flex-development/tutils'
+import {
+  cast,
+  objectify,
+  select,
+  split,
+  trim,
+  type JsonPrimitive
+} from '@flex-development/tutils'
 import { Injectable } from '@nestjs/common'
 import { CliUtilityService } from 'nest-commander'
-import { objectify } from 'radash'
 
 /**
  * CLI utilities provider.
@@ -32,8 +38,8 @@ class UtilityService extends CliUtilityService {
     delimiter: string = ','
   ): Set<T> {
     return val.includes(delimiter)
-      ? new Set<T>(val.split(delimiter).map(item => item.trim()) as T[])
-      : new Set<T>([val.trim()] as T[])
+      ? new Set<T>(cast(select(split(val, delimiter), null, trim)))
+      : new Set<T>(cast([trim(val)]))
   }
 
   /**
@@ -52,7 +58,7 @@ class UtilityService extends CliUtilityService {
   public parseObject<
     K extends string = string,
     V extends JsonPrimitive = string
-  >(val: string): Record<K, V> {
+  >(val: string): { [H in K]: V } {
     /**
      * Regular expression matching a key/value pair list.
      *
@@ -62,16 +68,18 @@ class UtilityService extends CliUtilityService {
       /(?:^|(?:(?<!^),))(?<pair>(?<key>[^,].+?):(?<value>(?:.+?(?=,(?=.+?:)))|(?:.+?(?=,?$))))/gs
 
     // convert key/pair list into object
-    return objectify<[string, string], K, V>(
-      [...val.matchAll(regex)].map(([, , key, value]) => [key!.trim(), value!]),
-      ([key]: [string, string]): K => this.parseString<K>(key),
-      ([, value]: [string, string]): V => {
-        try {
-          return JSON.parse(value) as V
-        } catch {
-          return value as V
+    return cast(
+      objectify(
+        select([...val.matchAll(regex)], null, ([, , k, v]) => [trim(k!), v!]),
+        ([key]): K => cast(key),
+        ([, value]): V => {
+          try {
+            return cast(JSON.parse(cast(value)))
+          } catch {
+            return cast(value)
+          }
         }
-      }
+      )
     )
   }
 
@@ -86,20 +94,6 @@ class UtilityService extends CliUtilityService {
   public parseRegExp(val: string): RegExp {
     const [, pattern = '', flags] = /^\/(.+)\/(.+$)?/.exec(val) ?? []
     return new RegExp(pattern, flags)
-  }
-
-  /**
-   * Helper for casting the given string value to a more complex string type.
-   *
-   * @public
-   *
-   * @template T - Complex string type
-   *
-   * @param {string} val - String to evaluate
-   * @return {T} `val` as `T`
-   */
-  public parseString<T extends string = string>(val: string): T {
-    return val as T
   }
 }
 

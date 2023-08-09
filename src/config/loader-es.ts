@@ -7,7 +7,7 @@ import type { Config } from '#src/interfaces'
 import * as mlly from '@flex-development/mlly'
 import * as pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
-import type { EmptyString } from '@flex-development/tutils'
+import { cast, get, type EmptyString } from '@flex-development/tutils'
 import * as esbuild from 'esbuild'
 import { pathToFileURL, type URL } from 'node:url'
 
@@ -43,7 +43,7 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
   // convert content to data url if content does not need to be transformed
   if (!/^\.(?:cts|mts|ts)$/.test(ext)) {
     content = mlly.toDataURL(await mlly.resolveModules(content, { parent }))
-    return ((await import(content)) as { default: Config }).default
+    return cast(get(await import(content), 'default'))
   }
 
   /**
@@ -65,14 +65,17 @@ const esLoader = async (path: string, content: string): Promise<Config> => {
   content = await mlly.resolveModules(content, { parent })
 
   // convert content to pure javascript
-  const { code } = await esbuild.transform(content, {
-    format: 'esm',
-    loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
-    sourcefile: path,
-    tsconfigRaw: { compilerOptions: tscu.loadCompilerOptions(tsconfig) }
-  } as esbuild.TransformOptions)
+  const { code } = await esbuild.transform(
+    content,
+    cast<esbuild.TransformOptions>({
+      format: 'esm',
+      loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
+      sourcefile: path,
+      tsconfigRaw: { compilerOptions: tscu.loadCompilerOptions(tsconfig) }
+    })
+  )
 
-  return ((await import(mlly.toDataURL(code))) as { default: Config }).default
+  return cast(get(await import(mlly.toDataURL(code)), 'default'))
 }
 
 export default esLoader

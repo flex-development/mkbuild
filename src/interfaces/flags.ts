@@ -3,6 +3,7 @@
  * @module mkbuild/interfaces/Flags
  */
 
+import type { Omit } from '@flex-development/tutils'
 import type Options from './options'
 
 /**

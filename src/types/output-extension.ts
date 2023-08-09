@@ -3,12 +3,12 @@
  * @module mkbuild/types/OutputExtension
  */
 
-import type { EmptyString } from '@flex-development/tutils'
+import type { Dot, EmptyString } from '@flex-development/tutils'
 
 /**
  * Output file extensions.
  */
-type OutputExtension = `${EmptyString | '.'}${EmptyString | 'min.'}${
+type OutputExtension = `${Dot | EmptyString}${EmptyString | `min${Dot}`}${
   | 'cjs'
   | 'js'
   | 'mjs'}`

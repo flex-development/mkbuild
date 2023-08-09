@@ -5,6 +5,7 @@
 
 import type { Config } from '#src/interfaces'
 import pathe from '@flex-development/pathe'
+import { DOT, cast, get } from '@flex-development/tutils'
 import { cosmiconfig } from 'cosmiconfig'
 import es from './loader-es'
 
@@ -18,10 +19,10 @@ import es from './loader-es'
  *
  * @async
  *
- * @param {string} [location='.'] - Directory to search
+ * @param {string} [location=DOT] - Directory to search
  * @return {Config} Build configuration options
  */
-const loadBuildConfig = async (location: string = '.'): Promise<Config> => {
+const loadBuildConfig = async (location: string = DOT): Promise<Config> => {
   /**
    * Module name.
    *
@@ -44,7 +45,7 @@ const loadBuildConfig = async (location: string = '.'): Promise<Config> => {
     stopDir: pathe.resolve(location)
   })
 
-  return ((await search(location))?.config as Config | null) ?? {}
+  return cast(get((await search(location)) ?? undefined, 'config', {}))
 }
 
 export default loadBuildConfig

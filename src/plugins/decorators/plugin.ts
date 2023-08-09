@@ -8,7 +8,7 @@ import { EXT_DTS_REGEX, EXT_TS_REGEX } from '@flex-development/ext-regex'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import * as tscu from '@flex-development/tsconfig-utils'
-import type { Nullable } from '@flex-development/tutils'
+import { DOT, cast, type Nullable } from '@flex-development/tutils'
 import type {
   BuildOptions,
   OnLoadArgs,
@@ -53,7 +53,7 @@ const plugin = (options?: tscu.LoadTsconfigOptions): Plugin => {
     initialOptions,
     onLoad
   }: PluginBuild): Promise<void> => {
-    const { absWorkingDir = '.', tsconfig = 'tsconfig.json' } = initialOptions
+    const { absWorkingDir = DOT, tsconfig = 'tsconfig.json' } = initialOptions
 
     /**
      * User compiler options.
@@ -89,16 +89,16 @@ const plugin = (options?: tscu.LoadTsconfigOptions): Plugin => {
      */
     const opts: OnLoadOptions = { filter: /.*/ }
 
-    // transpile typescript modules containing decorators
+    // transpile modules containing decorators
     onLoad(opts, async (args: OnLoadArgs): Promise<Nullable<OnLoadResult>> => {
       /**
        * Callback result.
        *
-       * @var {Nullable<OnLoadResult>} result
+       * @var {?OnLoadResult} result
        */
       let result: Nullable<OnLoadResult> = null
 
-      // transpile typescript modules, but skip typescript declaration modules
+      // transpile modules, but skip typescript declaration modules
       if (EXT_TS_REGEX.test(args.path) && !EXT_DTS_REGEX.test(args.path)) {
         /**
          * URL of module to load.
@@ -112,9 +112,9 @@ const plugin = (options?: tscu.LoadTsconfigOptions): Plugin => {
          *
          * @const {string} source
          */
-        const source: string = (await mlly.getSource(url)) as string
+        const source: string = cast(await mlly.getSource(url))
 
-        // do nothing if module does not use decorators
+        // do nothing if module does contain decorators
         if (!DECORATOR_REGEX.test(source)) return null
 
         // transpile module to emit decorator metadata

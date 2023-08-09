@@ -4,6 +4,7 @@
  */
 
 import { defineBuildConfig, type Config } from '#src'
+import pathe from '@flex-development/pathe'
 import pkg from './package.json' assert { type: 'json' }
 import tsconfig from './tsconfig.build.json' assert { type: 'json' }
 
@@ -15,7 +16,13 @@ import tsconfig from './tsconfig.build.json' assert { type: 'json' }
 const config: Config = defineBuildConfig({
   charset: 'utf8',
   entries: [
-    { ignore: ['cli/**'] },
+    { dts: 'only', ignore: ['cli/**'] },
+    { dts: false, pattern: ['(interfaces|types)/index.ts'] },
+    {
+      dts: false,
+      pattern: ['*.ts', 'config/*', 'internal/*', 'plugins/*', 'utils/*'],
+      sourcemap: true
+    },
     {
       bundle: true,
       external: [
@@ -30,11 +37,13 @@ const config: Config = defineBuildConfig({
       minify: true,
       name: 'cli',
       platform: 'node',
-      source: 'src/cli/index.ts'
+      source: 'src/cli/index.ts',
+      sourcemap: true,
+      sourcesContent: false
     }
   ],
-  sourcemap: true,
-  sourcesContent: false,
+  minifySyntax: true,
+  sourceRoot: 'file' + pathe.delimiter + pathe.sep.repeat(2),
   target: [
     pkg.engines.node.replace(/^\D+/, 'node'),
     tsconfig.compilerOptions.target

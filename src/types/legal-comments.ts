@@ -3,6 +3,7 @@
  * @module mkbuild/types/LegalComments
  */
 
+import type { Fallback } from '@flex-development/tutils'
 import type * as esbuild from 'esbuild'
 
 /**
@@ -10,6 +11,6 @@ import type * as esbuild from 'esbuild'
  *
  * @see https://esbuild.github.io/api/#legal-comments
  */
-type LegalComments = NonNullable<esbuild.BuildOptions['legalComments']>
+type LegalComments = Fallback<esbuild.BuildOptions['legalComments'], never>
 
 export type { LegalComments as default }

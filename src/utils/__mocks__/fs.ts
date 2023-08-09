@@ -4,11 +4,7 @@
  */
 
 import volume from '#fixtures/volume'
-import type {
-  IMkdirOptions,
-  IRmOptions,
-  IWriteFileOptions
-} from 'memfs/lib/volume'
+import { cast, type Optional } from '@flex-development/tutils'
 import fsc, {
   type MakeDirectoryOptions,
   type Mode,
@@ -27,15 +23,15 @@ import fsp from 'node:fs/promises'
  *
  * @param {PathLike} directory - Directory to create
  * @param {MakeDirectoryOptions | Mode} [options] - Directory creation options
- * @return {Promise<string | undefined>} First directory path created if
+ * @return {Promise<Optional<string>>} First directory path created if
  * `options.recursive` is `true` or `undefined` if `false`
  */
 const mkdir = vi.fn(
   async (
     directory: PathLike,
     options: MakeDirectoryOptions | Mode
-  ): Promise<string | undefined> => {
-    return volume.mkdirSync(directory, options as IMkdirOptions)
+  ): Promise<Optional<string>> => {
+    return volume.mkdirSync(directory, cast(options))
   }
 )
 
@@ -47,11 +43,11 @@ const mkdir = vi.fn(
  * @async
  *
  * @param {PathLike} id - Module id to evaluate
- * @param {RmOptions} [options] - Removal options
+ * @param {RmOptions?} [options] - Removal options
  * @return {Promise<void>} Nothing when complete
  */
 const rm = vi.fn(async (id: PathLike, options?: RmOptions): Promise<void> => {
-  return void volume.rmSync(id, options as IRmOptions)
+  return void volume.rmSync(id, cast(options))
 })
 
 /**
@@ -63,7 +59,7 @@ const rm = vi.fn(async (id: PathLike, options?: RmOptions): Promise<void> => {
  *
  * @param {PathLike} file - Filename or handle
  * @param {Uint8Array | string} data - File content
- * @param {WriteFileOptions} [options] - Write file options
+ * @param {WriteFileOptions?} [options] - Write file options
  * @return {Promise<void>} Nothing when complete
  */
 const writeFile = vi.fn(
@@ -72,7 +68,7 @@ const writeFile = vi.fn(
     data: Uint8Array | string,
     options?: WriteFileOptions
   ): Promise<void> => {
-    return void volume.writeFileSync(file, data, options as IWriteFileOptions)
+    return void volume.writeFileSync(file, data, cast(options))
   }
 )
 

@@ -68,7 +68,7 @@ export const load = async (url, context) => {
   /**
    * Module source code.
    *
-   * @type {esm.Source<Uint8Array | string> | undefined}
+   * @type {tutils.Optional<esm.Source<Uint8Array | string>>}
    * @var source
    */
   let source = await mlly.getSource(url, { format: context.format })
@@ -123,6 +123,7 @@ export const load = async (url, context) => {
 
   return { format: context.format, shortCircuit: true, source }
 }
+
 /**
  * Resolves the given module `specifier`, and its module format as a hint to the
  * {@linkcode load} hook.

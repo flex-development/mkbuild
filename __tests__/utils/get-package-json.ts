@@ -5,6 +5,7 @@
 
 import type mlly from '@flex-development/mlly'
 import type pkg from '@flex-development/pkg-types'
+import { cast } from '@flex-development/tutils'
 
 /**
  * Retrieves a `package.json` object.
@@ -29,7 +30,7 @@ const getPackageJson = async (
    */
   const fs: typeof import('node:fs') = await vi.importActual('node:fs')
 
-  return JSON.parse(fs.readFileSync(id, 'utf8')) as pkg.PackageJson
+  return cast(JSON.parse(fs.readFileSync(id, 'utf8')))
 }
 
 export default getPackageJson
