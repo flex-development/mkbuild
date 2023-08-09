@@ -1431,7 +1431,6 @@ __metadata:
     chai-quantifiers: "npm:1.0.17"
     chai-string: "npm:1.5.0"
     class-validator: "npm:0.14.0"
-    colorette: "npm:2.0.20"
     commander: "npm:11.0.0"
     consola: "npm:3.1.0"
     conventional-changelog: "npm:4.0.0"
@@ -1482,6 +1481,7 @@ __metadata:
     rxjs: "npm:8.0.0-alpha.9"
     semver: "npm:7.5.4"
     tempfile: "npm:5.0.0"
+    tinyrainbow: "npm:1.1.1"
     trash-cli: "npm:5.0.0"
     ts-dedent: "npm:2.2.0"
     typescript: "npm:5.1.6"
@@ -4048,7 +4048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorette@npm:2.0.20, colorette@npm:^2.0.19":
+"colorette@npm:^2.0.19":
   version: 2.0.20
   resolution: "colorette@npm:2.0.20"
   checksum: 51a2b1cf140e120074178dd17ffdd4e349b7e84d2cb498f83978124ba0efc19d4d35c1859226f7a75ef0b368b0feafd10370927e871827af428b7500396af274
@@ -9932,6 +9932,13 @@ __metadata:
   version: 0.7.0
   resolution: "tinypool@npm:0.7.0"
   checksum: 6570c0d0752ac6313a085afca3947fcc1b86347ae16789f7b8572b070f66bb1b68d0e7e3403422d6e14a5e1aedbdc63497985ea6963243eaddcb4ba8600efa47
+  languageName: node
+  linkType: hard
+
+"tinyrainbow@npm:1.1.1":
+  version: 1.1.1
+  resolution: "tinyrainbow@npm:1.1.1"
+  checksum: 73c4fcc1803aa27538e46b0ead8ffb9760561bb6e062448aba0c701b9d45074a049eb1b28e2f407ad638355a5d884e4712e02992190957246909a34a0c120fee
   languageName: node
   linkType: hard
 

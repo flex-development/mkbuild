@@ -4,7 +4,6 @@ attw
 bdougie
 cefc
 codecov
-colorette
 commitlintrc
 dedupe
 defu

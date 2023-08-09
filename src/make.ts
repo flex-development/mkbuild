@@ -15,12 +15,12 @@ import {
   regexp,
   type Nullable
 } from '@flex-development/tutils'
-import * as color from 'colorette'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import { asyncExitHook as exitHook } from 'exit-hook'
 import { fileURLToPath } from 'node:url'
 import pb from 'pretty-bytes'
+import color from 'tinyrainbow'
 import loadBuildConfig from './config/load'
 import type { Config, Context, Result, Task } from './interfaces'
 import * as internal from './internal'

@@ -5,10 +5,10 @@
 
 import { cast, isArray, template } from '@flex-development/tutils'
 import { Module } from '@nestjs/common'
-import * as color from 'colorette'
 import type * as commander from 'commander'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
+import color from 'tinyrainbow'
 import { MkbuildCommand } from './commands'
 import { HelpService, UtilityService } from './providers'
 

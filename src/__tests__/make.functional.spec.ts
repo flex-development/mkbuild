@@ -11,10 +11,10 @@ import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
-import * as color from 'colorette'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import { asyncExitHook as exitHook } from 'exit-hook'
+import color from 'tinyrainbow'
 import testSubject from '../make'
 
 vi.mock('@flex-development/mlly')

@@ -7,11 +7,11 @@ import { ERR_MODULE_NOT_FOUND, type NodeError } from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import { cast, template } from '@flex-development/tutils'
-import * as color from 'colorette'
 import { CommanderError } from 'commander'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import { fileURLToPath } from 'node:url'
+import color from 'tinyrainbow'
 import TestSubject from '../app.module'
 
 vi.mock('esbuild')

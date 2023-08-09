@@ -5,8 +5,8 @@
 
 import type { OutputMetadata } from '#src/types'
 import { entries, join, template } from '@flex-development/tutils'
-import * as color from 'colorette'
 import pb from 'pretty-bytes'
+import color from 'tinyrainbow'
 
 /**
  * Generates a build analysis for the given `outputs`.
