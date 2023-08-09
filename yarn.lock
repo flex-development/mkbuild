@@ -1313,6 +1313,7 @@ __metadata:
     is-ci: "npm:3.0.1"
     jsonc-eslint-parser: "npm:2.3.0"
     lint-staged: "npm:13.2.3"
+    lodash-es: "npm:4.17.21"
     memfs: "npm:4.2.1"
     mri: "npm:1.2.0"
     nest-commander: "npm:3.11.1"
@@ -7184,6 +7185,13 @@ __metadata:
   dependencies:
     p-locate: "npm:^6.0.0"
   checksum: 5137d791489fd403912051d2bfc5a006f2ae177c3e7eb7e224843b358a85f7f5d030253d3e5757f3248cca6af22beb2a910c84d85267e6518436ac9e304b000b
+  languageName: node
+  linkType: hard
+
+"lodash-es@npm:4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: d1c3ee94118daeeee47c630ab5f91e94cc4e41ebe2452d837edbe599e853eb2d4be7edf82b4fe62f9fc74f27a8ed7f82fdbd9d301d0acef88f00941db64c4843
   languageName: node
   linkType: hard
 

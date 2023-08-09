@@ -30,14 +30,29 @@ const config: Config = defineBuildConfig({
       sourcemap: true
     },
     {
+      alias: {
+        '@flex-development/errnode': '@flex-development/errnode',
+        '@flex-development/mlly': '@flex-development/mlly',
+        '@flex-development/pathe': '@flex-development/pathe',
+        '@flex-development/tutils': '@flex-development/tutils',
+        commander: 'node_modules/commander/esm.mjs',
+        dequal: 'dequal',
+        iterare: 'node_modules/@nestjs/common/node_modules/iterare',
+        lodash: 'lodash-es',
+        tslib: 'tslib',
+        uid: 'node_modules/@nestjs/common/node_modules/uid'
+      },
       bundle: true,
       external: [
+        '@babel/*',
         '@nestjs/microservices',
         '@nestjs/platform-express',
         '@nestjs/websockets/socket-module',
         'cache-manager',
         'class-transformer',
+        'class-validator',
         'node-fetch',
+        'reflect-metadata',
         'rxjs'
       ],
       keepNames: true,
