@@ -1400,7 +1400,7 @@ __metadata:
     chai-string: "npm:1.5.0"
     class-validator: "npm:0.14.0"
     colorette: "npm:2.0.20"
-    commander: "npm:10.0.0"
+    commander: "npm:11.0.0"
     consola: "npm:3.1.0"
     conventional-changelog: "npm:4.0.0"
     conventional-changelog-conventionalcommits: "npm:5.0.0"
@@ -1439,7 +1439,7 @@ __metadata:
     memfs: "npm:4.2.1"
     mri: "npm:1.2.0"
     nest-commander: "npm:3.6.1"
-    nest-commander-testing: "npm:3.1.0"
+    nest-commander-testing: "npm:3.3.0"
     node-notifier: "npm:10.0.1"
     pkg-size: "npm:2.4.0"
     prettier: "npm:3.0.1"
@@ -3996,10 +3996,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:10.0.0":
-  version: 10.0.0
-  resolution: "commander@npm:10.0.0"
-  checksum: 1b6c9c0a4bbb4b8aa1f123445f74972c5ddd1b83e7c3fc70a74e7fa679b685dccb7a230f56c1a951e5906da1db4accc61be99884ab6a28a50898906f652efc4d
+"commander@npm:11.0.0":
+  version: 11.0.0
+  resolution: "commander@npm:11.0.0"
+  checksum: cbdf1f81454204ef49b8ba7c1c03353fb102aa79ca6a107eff35fdfa0322c9610350510edcc098d1172f449d3a6035d108238dc5f3b846436c373740a7a3523e
   languageName: node
   linkType: hard
 
@@ -8116,15 +8116,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nest-commander-testing@npm:3.1.0":
-  version: 3.1.0
-  resolution: "nest-commander-testing@npm:3.1.0"
+"nest-commander-testing@npm:3.3.0":
+  version: 3.3.0
+  resolution: "nest-commander-testing@npm:3.3.0"
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
-    "@nestjs/testing": ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/testing": ^8.0.0 || ^9.0.0 || ^10.0.0
     nest-commander: ^2.5.0 || ^3.0.0
-  checksum: f766467498c759ff3add03eb0276d5b6ef8688494b7270e1bb52a323bacffe81c64bb458d60b076bd29f47c120aaf29f7fc89910cfeeac53710386946b5468f1
+  checksum: 10daae7bd264f1a2bc5f1262e9cbde2708e38e0ab4ed425790131e65e57633e4d32d34c08597e38b9978213729476408ed41078f03e709f6d426eeacd78aa23c
   languageName: node
   linkType: hard
 

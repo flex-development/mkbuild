@@ -136,7 +136,7 @@
     "chai-quantifiers": "1.0.17",
     "chai-string": "1.5.0",
     "class-validator": "0.14.0",
-    "commander": "10.0.0",
+    "commander": "11.0.0",
     "conventional-changelog": "4.0.0",
     "conventional-changelog-conventionalcommits": "5.0.0",
     "conventional-changelog-core": "4.2.4",
@@ -171,7 +171,7 @@
     "memfs": "4.2.1",
     "mri": "1.2.0",
     "nest-commander": "3.6.1",
-    "nest-commander-testing": "3.1.0",
+    "nest-commander-testing": "3.3.0",
     "node-notifier": "10.0.1",
     "pkg-size": "2.4.0",
     "prettier": "3.0.1",
@@ -208,7 +208,7 @@
   "resolutions": {
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
     "chai": "5.0.0-alpha.1",
-    "commander": "10.0.0",
+    "commander": "11.0.0",
     "nest-commander@npm:3.6.1": "patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch"
   },
   "engines": {
