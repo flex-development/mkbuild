@@ -19,6 +19,7 @@ hmarr
 iife
 infile
 keyid
+ksort
 larsgw
 lcov
 lintstagedrc

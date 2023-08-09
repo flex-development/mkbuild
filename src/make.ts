@@ -12,6 +12,7 @@ import {
   cast,
   defaults,
   get,
+  ksort,
   regexp,
   type Nullable
 } from '@flex-development/tutils'
@@ -189,16 +190,14 @@ async function make({
            */
           const metadata: OutputMetadata = get(result.metafile.outputs, outfile)
 
-          return {
+          return ksort({
+            ...output,
             bytes: metadata.bytes,
-            contents: output.contents,
             entryPoint: metadata.entryPoint,
             exports: [...new Set(metadata.exports)],
             imports: metadata.imports,
-            outfile,
-            path: output.path,
-            text: output.text
-          }
+            outfile
+          })
         }),
         warnings: result.warnings
       })

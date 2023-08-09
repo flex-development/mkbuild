@@ -11,6 +11,7 @@ import getPackageJson from '#tests/utils/get-package-json'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
+import { cast } from '@flex-development/tutils'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import { asyncExitHook as exitHook } from 'exit-hook'
@@ -55,16 +56,17 @@ describe('functional:make', () => {
       rebuild: vi.fn(async () => ({
         errors: [],
         mangleCache: undefined,
-        metafile: {
+        metafile: cast<esbuild.Metafile>({
           inputs: { [pattern]: { bytes: 1501, format: 'esm', imports: [] } },
           outputs
-        } as esbuild.Metafile,
+        }),
         outputFiles: [
           {
             bytes: 350,
             contents: new Uint8Array(350),
             entryPoint: pattern,
             exports: ['default'],
+            hash: faker.string.sample({ max: 11, min: 11 }),
             imports: [],
             outfile,
             path: pathe.resolve(cwd, outfile),
