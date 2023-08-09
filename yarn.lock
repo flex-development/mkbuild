@@ -1321,7 +1321,7 @@ __metadata:
     pkg-size: "npm:2.4.0"
     prettier: "npm:3.0.1"
     prettier-plugin-sh: "npm:0.13.1"
-    pretty-bytes: "npm:6.1.0"
+    pretty-bytes: "npm:6.1.1"
     pretty-format: "npm:29.6.2"
     reflect-metadata: "npm:0.1.13"
     rxjs: "npm:8.0.0-alpha.10"
@@ -8529,10 +8529,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-bytes@npm:6.1.0":
-  version: 6.1.0
-  resolution: "pretty-bytes@npm:6.1.0"
-  checksum: 6c2df1578394426e89388c1b482138480b9468daa618ceb8c974d0048ea3002d28dc80d61553be978aedaf67b2b2909a1d10280f9d00bb9ff693b088db44e3e1
+"pretty-bytes@npm:6.1.1":
+  version: 6.1.1
+  resolution: "pretty-bytes@npm:6.1.1"
+  checksum: 469c661738ce45281319361d4ebaa6579747832ffdc5bdb36c9d0104c24dbb386de0d706082db7f91827cf04df28de39cf9e04dac0ccf2b58ac67c01b511093a
   languageName: node
   linkType: hard
 
