@@ -48,11 +48,9 @@ updates:
           - '@flex-development/*'
       nest-commander:
         patterns:
+          - '@nestjs/*'
           - commander
           - nest-commander*
-      nestjs:
-        patterns:
-          - '@nestjs/*'
       typescript-eslint:
         patterns:
           - '@typescript-eslint/*'
