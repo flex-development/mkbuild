@@ -1278,7 +1278,7 @@ __metadata:
     chai-string: "npm:1.5.0"
     class-validator: "npm:0.14.0"
     commander: "npm:11.0.0"
-    consola: "npm:3.1.0"
+    consola: "npm:3.2.3"
     conventional-changelog: "npm:4.0.0"
     conventional-changelog-conventionalcommits: "npm:6.1.0"
     conventional-changelog-core: "npm:5.0.2"
@@ -3989,10 +3989,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"consola@npm:3.1.0":
-  version: 3.1.0
-  resolution: "consola@npm:3.1.0"
-  checksum: a1d33995e5ef083f1fb16d946c2fee4747f4487638e8f39136f2953b779c32b6f5e649ae945db4da80411a79511d0ebc04451c777b2c89d2498aed6ac13362b3
+"consola@npm:3.2.3":
+  version: 3.2.3
+  resolution: "consola@npm:3.2.3"
+  checksum: 9595725fa595c35a999ddd831f29cda35b77b044fc4053b49ef456c58c289f248b08ea0e0e94430881ec3ad7d185ef9b5b62ae610c6dd5072f449a501470144f
   languageName: node
   linkType: hard
 
