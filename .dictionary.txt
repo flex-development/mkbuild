@@ -38,4 +38,5 @@ tribonacci
 tscu
 unstub
 vates
+vitest
 yarnrc
