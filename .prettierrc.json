@@ -1,6 +1,7 @@
 {
   "arrowParens": "avoid",
   "bracketSpacing": true,
+  "plugins": ["prettier-plugin-sh"],
   "proseWrap": "always",
   "quoteProps": "as-needed",
   "semi": false,
@@ -22,11 +23,11 @@
         "Brewfile"
       ],
       "options": {
-        "functionNextLine": true,
+        "functionNextLine": false,
         "keepComments": true,
         "keepPadding": false,
         "parser": "sh",
-        "spaceRedirects": true,
+        "spaceRedirects": false,
         "switchCaseIndent": true,
         "variant": 0
       }

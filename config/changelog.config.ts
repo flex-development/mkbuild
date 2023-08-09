@@ -31,7 +31,7 @@ import {
 } from '@flex-development/tutils'
 import { Inject, Module } from '@nestjs/common'
 import addStream from 'add-stream'
-import { Command, CommanderError } from 'commander'
+import type { Command, CommanderError } from 'commander'
 import consola from 'consola'
 import conventionalChangelog from 'conventional-changelog'
 import type { Options } from 'conventional-changelog-core'

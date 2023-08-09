@@ -43,13 +43,23 @@ updates:
           - conventional-changelog-core
           - conventional-changelog-writer
           - conventional-recommended-bump
+      flex-development:
+        patterns:
+          - '@flex-development/*'
+      nest-commander:
+        patterns:
+          - commander
+          - nest-commander*
+      nestjs:
+        patterns:
+          - '@nestjs/*'
       typescript-eslint:
         patterns:
           - '@typescript-eslint/*'
       vitest:
         patterns:
           - '@vitest/*'
-          - vitest
+          - vitest*
     ignore:
       - dependency-name: nest-commander
     labels:

@@ -9,6 +9,8 @@ import type fsp from 'node:fs/promises'
 /**
  * Custom implementations of file system methods.
  *
+ * @todo update documentation
+ *
  * @see https://nodejs.org/api/fs.html
  */
 type FileSystemAdapter = {

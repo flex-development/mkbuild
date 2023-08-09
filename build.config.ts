@@ -17,10 +17,16 @@ const config: Config = defineBuildConfig({
   charset: 'utf8',
   entries: [
     { dts: 'only', ignore: ['cli/**'] },
-    { dts: false, pattern: ['(interfaces|types)/index.ts'] },
     {
       dts: false,
-      pattern: ['*.ts', 'config/*', 'internal/*', 'plugins/*', 'utils/*'],
+      pattern: [
+        '!plugins/**/options.ts',
+        '*.ts',
+        'config/**',
+        'internal/**',
+        'plugins/**',
+        'utils/**'
+      ],
       sourcemap: true
     },
     {

@@ -9,6 +9,13 @@ import type { BuildOptions, BuildResult, Plugin, PluginBuild } from 'esbuild'
 import type Options from './options'
 
 /**
+ * Plugin-specific build options.
+ *
+ * @internal
+ */
+type SpecificOptions = { write: false }
+
+/**
  * Returns a output file writer plugin.
  *
  * @param {Options} [options] - Plugin options
@@ -36,14 +43,16 @@ const plugin = ({
     if (initialOptions.write) throw new Error('write must be disabled')
 
     // write output files
-    return void onEnd(async (result: BuildResult): Promise<void> => {
-      for (const output of result.outputFiles!) {
-        if (filter.test(output.path)) {
-          await mkdir(pathe.dirname(output.path), { recursive: true })
-          await writeFile(output.path, output.text, 'utf8')
+    return void onEnd(
+      async (result: BuildResult<SpecificOptions>): Promise<void> => {
+        for (const output of result.outputFiles) {
+          if (filter.test(output.path)) {
+            await mkdir(pathe.dirname(output.path), { recursive: true })
+            await writeFile(output.path, output.text, 'utf8')
+          }
         }
       }
-    })
+    )
   }
 
   return { name: 'write', setup }

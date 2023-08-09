@@ -28,7 +28,7 @@ exports[`integration:plugins/decorators > esbuild > should skip modules that are
 
 exports[`integration:plugins/decorators > esbuild > should skip typescript declaration modules 1`] = `
 "declare global {
-  var faker: typeof import('@faker-js/faker')['faker']
+  var faker: (typeof import('@faker-js/faker'))['faker']
 }
 
 export {}
