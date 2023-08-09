@@ -1,3 +1,117 @@
+## [1.0.0-alpha.21](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.20...1.0.0-alpha.21) (2023-08-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps-peer:** bump typescript from >=4.8 to >=5.0.4
+* **deps-peer:** bump esbuild from >=0.17.16 to >=0.19.0
+
+### :package: Build
+
+* **deps-dev:** Bump @commitlint/cli from 17.5.1 to 17.6.1 ([#215](https://github.com/flex-development/mkbuild/issues/215)) ([bcac6be](https://github.com/flex-development/mkbuild/commit/bcac6be4533d1ef390c13dd9720f19ade4fed4a0))
+* **deps-dev:** Bump @commitlint/cli from 17.6.1 to 17.6.3 ([#245](https://github.com/flex-development/mkbuild/issues/245)) ([a8a1910](https://github.com/flex-development/mkbuild/commit/a8a191030af17cead765635657000f69f60150e1))
+* **deps-dev:** Bump @faker-js/faker from 8.0.0-alpha.2 to 8.0.0-beta.0 ([#237](https://github.com/flex-development/mkbuild/issues/237)) ([bfd8c8a](https://github.com/flex-development/mkbuild/commit/bfd8c8a245008cd24e7a83380e665e22d3d94013))
+* **deps-dev:** Bump @faker-js/faker from 8.0.0-beta.0 to 8.0.1 ([#267](https://github.com/flex-development/mkbuild/issues/267)) ([7767381](https://github.com/flex-development/mkbuild/commit/77673817454aa759b8f1b73f1130f8141638096b))
+* **deps-dev:** Bump @nestjs/common from 9.4.0 to 9.4.1 ([#264](https://github.com/flex-development/mkbuild/issues/264)) ([3a18713](https://github.com/flex-development/mkbuild/commit/3a18713ae02ac5369825e95a29ff33f1094737f4))
+* **deps-dev:** Bump @nestjs/testing from 9.4.0 to 9.4.2 ([#273](https://github.com/flex-development/mkbuild/issues/273)) ([d80e3ce](https://github.com/flex-development/mkbuild/commit/d80e3ce7d0fa34f111cd4fb216b2f981ae82b45d))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.57.1 to 5.58.0 ([#200](https://github.com/flex-development/mkbuild/issues/200)) ([2302f52](https://github.com/flex-development/mkbuild/commit/2302f523b082a1119c9803c3e6720ffcf17ac571))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.58.0 to 5.59.1 ([#226](https://github.com/flex-development/mkbuild/issues/226)) ([b7e5d2c](https://github.com/flex-development/mkbuild/commit/b7e5d2c3e1a06dda22791689004fbab4e1feec75))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.59.1 to 5.59.2 ([#239](https://github.com/flex-development/mkbuild/issues/239)) ([fbbd66f](https://github.com/flex-development/mkbuild/commit/fbbd66ff789ac98a4da2a2f6a566d714d395b22d))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.59.2 to 5.59.6 ([#263](https://github.com/flex-development/mkbuild/issues/263)) ([54af0f1](https://github.com/flex-development/mkbuild/commit/54af0f169f33bb6b456e8ece5e49f8851f212059))
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin from 5.59.6 to 5.59.9 ([#282](https://github.com/flex-development/mkbuild/issues/282)) ([346ea89](https://github.com/flex-development/mkbuild/commit/346ea897e0041912b898b80918d91bec8e8abd90))
+* **deps-dev:** Bump @typescript-eslint/parser from 5.57.1 to 5.58.0 ([#198](https://github.com/flex-development/mkbuild/issues/198)) ([0483dec](https://github.com/flex-development/mkbuild/commit/0483deca1d68e109bfebe089a3f8743abbbf5eb9))
+* **deps-dev:** Bump @typescript-eslint/parser from 5.58.0 to 5.59.1 ([#225](https://github.com/flex-development/mkbuild/issues/225)) ([8535942](https://github.com/flex-development/mkbuild/commit/853594280f3ff765013bc61d6aba189cdd287d1a))
+* **deps-dev:** Bump @typescript-eslint/parser from 5.59.1 to 5.59.2 ([#240](https://github.com/flex-development/mkbuild/issues/240)) ([12be8bd](https://github.com/flex-development/mkbuild/commit/12be8bd49a2d93d816c63f1db4df883fcf85ba9e))
+* **deps-dev:** Bump @typescript-eslint/parser from 5.59.2 to 5.59.6 ([#265](https://github.com/flex-development/mkbuild/issues/265)) ([caae4f4](https://github.com/flex-development/mkbuild/commit/caae4f47eb5580981e0b72f7a273dcd61ad9248e))
+* **deps-dev:** Bump @vitest/coverage-c8 from 0.30.0 to 0.30.1 ([#208](https://github.com/flex-development/mkbuild/issues/208)) ([8838fb5](https://github.com/flex-development/mkbuild/commit/8838fb554d172558531bf8446e8fa087a65cf257))
+* **deps-dev:** Bump @vitest/coverage-c8 from 0.30.1 to 0.31.0 ([#244](https://github.com/flex-development/mkbuild/issues/244)) ([17fa527](https://github.com/flex-development/mkbuild/commit/17fa527e9d0bdd06c700dd76ba0fd82923393842))
+* **deps-dev:** Bump @vitest/ui from 0.30.0 to 0.30.1 ([#207](https://github.com/flex-development/mkbuild/issues/207)) ([f574f57](https://github.com/flex-development/mkbuild/commit/f574f574d7f18fff517c44048e055d91f504c843))
+* **deps-dev:** Bump @vitest/ui from 0.30.1 to 0.31.0 ([#243](https://github.com/flex-development/mkbuild/issues/243)) ([fefe745](https://github.com/flex-development/mkbuild/commit/fefe74554253003c60b4cc4b3fbe83f88748e447))
+* **deps-dev:** Bump conventional-changelog from 3.1.25 to 4.0.0 ([#283](https://github.com/flex-development/mkbuild/issues/283)) ([f683b68](https://github.com/flex-development/mkbuild/commit/f683b68ee0c3a6df4e2d3f0a1934a0131efef5ab))
+* **deps-dev:** Bump esbuild from 0.17.16 to 0.17.18 ([#228](https://github.com/flex-development/mkbuild/issues/228)) ([e76b6bb](https://github.com/flex-development/mkbuild/commit/e76b6bb986788dc9e319b711fca6628905421dbf))
+* **deps-dev:** Bump esbuild from 0.17.18 to 0.17.19 ([#258](https://github.com/flex-development/mkbuild/issues/258)) ([f80b788](https://github.com/flex-development/mkbuild/commit/f80b788b5c73b3f077293cc8e273977cd2271310))
+* **deps-dev:** Bump eslint from 8.38.0 to 8.39.0 ([#236](https://github.com/flex-development/mkbuild/issues/236)) ([72f7f76](https://github.com/flex-development/mkbuild/commit/72f7f76119fb0ce488604c4d34afb09a58f4e7dd))
+* **deps-dev:** Bump eslint-plugin-jsdoc from 40.1.2 to 40.3.0 ([#202](https://github.com/flex-development/mkbuild/issues/202)) ([7c56a77](https://github.com/flex-development/mkbuild/commit/7c56a771393c6f883776df3f938a9c382d9aa619))
+* **deps-dev:** Bump eslint-plugin-jsonc from 2.7.0 to 2.8.0 ([#270](https://github.com/flex-development/mkbuild/issues/270)) ([396e34c](https://github.com/flex-development/mkbuild/commit/396e34c63f42326af86b442bc67f5c53846848fa))
+* **deps-dev:** Bump eslint-plugin-yml from 1.5.0 to 1.7.0 ([#252](https://github.com/flex-development/mkbuild/issues/252)) ([f8823e3](https://github.com/flex-development/mkbuild/commit/f8823e3a0ec3fde7ff75b93a603818570a0d82e8))
+* **deps-dev:** Bump jsonc-eslint-parser from 2.2.0 to 2.3.0 ([#266](https://github.com/flex-development/mkbuild/issues/266)) ([29b9802](https://github.com/flex-development/mkbuild/commit/29b9802d4768e70a0f1b2387726413f4cc9f9e06))
+* **deps-dev:** Bump lint-staged from 13.2.1 to 13.2.2 ([#234](https://github.com/flex-development/mkbuild/issues/234)) ([67296ee](https://github.com/flex-development/mkbuild/commit/67296ee150b5bb88dd99ac2ca974d90ae9191295))
+* **deps-dev:** Bump memfs from 3.5.0 to 3.5.1 ([#232](https://github.com/flex-development/mkbuild/issues/232)) ([4f7d78e](https://github.com/flex-development/mkbuild/commit/4f7d78eda57ffbf186dc5ae5bbdccbaee48949f9))
+* **deps-dev:** bump nest-commander from 3.6.1 to 3.11.1 ([193628e](https://github.com/flex-development/mkbuild/commit/193628ee6abdb6d16573ed3d0a185355ee9451ce))
+* **deps-dev:** Bump prettier from 2.8.7 to 2.8.8 ([#231](https://github.com/flex-development/mkbuild/issues/231)) ([aa6124a](https://github.com/flex-development/mkbuild/commit/aa6124a6c9af644862333d91dcf18c1883319cfb))
+* **deps-dev:** Bump rxjs from 8.0.0-alpha.8 to 8.0.0-alpha.9 ([#235](https://github.com/flex-development/mkbuild/issues/235)) ([f42159f](https://github.com/flex-development/mkbuild/commit/f42159fe16d26a3e29e909a55b4cd805e979d5f9))
+* **deps-dev:** Bump rxjs from 8.0.0-alpha.9 to 8.0.0-alpha.10 ([#316](https://github.com/flex-development/mkbuild/issues/316)) ([134b3a8](https://github.com/flex-development/mkbuild/commit/134b3a8f696eebc22541f8d1a871f4bba4c598f9))
+* **deps-dev:** Bump semver from 7.3.8 to 7.4.0 ([#201](https://github.com/flex-development/mkbuild/issues/201)) ([88dabfc](https://github.com/flex-development/mkbuild/commit/88dabfcca8ca589faa350dedb27311c840f147dc))
+* **deps-dev:** Bump semver from 7.4.0 to 7.5.0 ([#230](https://github.com/flex-development/mkbuild/issues/230)) ([c15d78d](https://github.com/flex-development/mkbuild/commit/c15d78de9413bb5ab9c944f37e239e689346e6c7))
+* **deps-dev:** Bump semver from 7.5.0 to 7.5.1 ([#260](https://github.com/flex-development/mkbuild/issues/260)) ([7608d6d](https://github.com/flex-development/mkbuild/commit/7608d6d263f4da9a4f9dbc37a8c8706d624250c5))
+* **deps-dev:** Bump semver from 7.5.1 to 7.5.2 ([#291](https://github.com/flex-development/mkbuild/issues/291)) ([37bd0b7](https://github.com/flex-development/mkbuild/commit/37bd0b7f0f1a084e3c9c22bd3e185b97ed36592c))
+* **deps-dev:** Bump the conventional-changelog group with 4 updates ([#308](https://github.com/flex-development/mkbuild/issues/308)) ([3221385](https://github.com/flex-development/mkbuild/commit/32213856dc244f24ba95361b23e5366aa16a81ac))
+* **deps-dev:** Bump the nest-commander group with 2 updates ([#310](https://github.com/flex-development/mkbuild/issues/310)) ([417b284](https://github.com/flex-development/mkbuild/commit/417b284d1b54cfbb40079030aa5c9979f8f26568))
+* **deps-dev:** Bump the nestjs group with 3 updates ([#311](https://github.com/flex-development/mkbuild/issues/311)) ([2c00577](https://github.com/flex-development/mkbuild/commit/2c005779e389242c06d8a4625b13f8e6bda19c22))
+* **deps-dev:** Bump vite from 4.2.1 to 4.3.3 ([#238](https://github.com/flex-development/mkbuild/issues/238)) ([2d6c332](https://github.com/flex-development/mkbuild/commit/2d6c3329c5524fda5f6dc1a177ba75ea203d7b17))
+* **deps-dev:** Bump vite from 4.3.3 to 4.3.4 ([#241](https://github.com/flex-development/mkbuild/issues/241)) ([5f82361](https://github.com/flex-development/mkbuild/commit/5f823610109407643f81d2cf4a292ed9f288d988))
+* **deps-dev:** Bump vite from 4.3.4 to 4.3.5 ([#254](https://github.com/flex-development/mkbuild/issues/254)) ([4666178](https://github.com/flex-development/mkbuild/commit/4666178ea40889ac304c995f6364078f38794392))
+* **deps-dev:** Bump vite from 4.3.5 to 4.3.9 ([#280](https://github.com/flex-development/mkbuild/issues/280)) ([6b65962](https://github.com/flex-development/mkbuild/commit/6b659629040134e309e35016329bd838d380cd4b))
+* **deps-dev:** Bump vite-tsconfig-paths from 4.0.8 to 4.1.0 ([#199](https://github.com/flex-development/mkbuild/issues/199)) ([00568f8](https://github.com/flex-development/mkbuild/commit/00568f8514c3193a6237979d33498b85e5ffcd7d))
+* **deps-dev:** Bump vite-tsconfig-paths from 4.1.0 to 4.2.0 ([#210](https://github.com/flex-development/mkbuild/issues/210)) ([05e80bc](https://github.com/flex-development/mkbuild/commit/05e80bc9ca18bde040289bad07ac2a8ffa0aae85))
+* **deps-dev:** Bump vitest from 0.30.0 to 0.30.1 ([#205](https://github.com/flex-development/mkbuild/issues/205)) ([ef3acc8](https://github.com/flex-development/mkbuild/commit/ef3acc86cc186047ec4f8579a182b242580d95bf))
+* **deps-dev:** Bump vitest from 0.30.1 to 0.31.1 ([#262](https://github.com/flex-development/mkbuild/issues/262)) ([d00ea5f](https://github.com/flex-development/mkbuild/commit/d00ea5f5d6a13409469987d3ea7903b42f69d312))
+* **deps-dev:** Bump word-wrap from 1.2.3 to 1.2.4 ([#303](https://github.com/flex-development/mkbuild/issues/303)) ([a8e34af](https://github.com/flex-development/mkbuild/commit/a8e34afd7c0923755124ffc78c91508bb5fc8796))
+* **deps-dev:** Bump word-wrap from 1.2.4 to 1.2.5 ([#317](https://github.com/flex-development/mkbuild/issues/317)) ([4029e9d](https://github.com/flex-development/mkbuild/commit/4029e9d4f306d6703a8cd505d5119287e3550435))
+* **deps-dev:** Bump yaml-eslint-parser from 1.2.0 to 1.2.2 ([#250](https://github.com/flex-development/mkbuild/issues/250)) ([fccb080](https://github.com/flex-development/mkbuild/commit/fccb08098f8fc208f6c62d9ca518b57c2e2ade0c))
+* **deps-peer:** bump esbuild from >=0.17.16 to >=0.19.0 ([530c25f](https://github.com/flex-development/mkbuild/commit/530c25f602eaa5ac3fdc4760087426023915f7d2))
+* **deps-peer:** bump typescript from >=4.8 to >=5.0.4 ([6216456](https://github.com/flex-development/mkbuild/commit/6216456c3af53743d05b45b9516399a9c739cad6))
+* **deps:** bump @flex-development/tutils from 6.0.0-alpha.10 to 6.0.0-alpha.18 ([3082838](https://github.com/flex-development/mkbuild/commit/3082838c423eabf13aa9f367823f2ca488cc382e))
+* **deps:** Bump colorette from 2.0.19 to 2.0.20 ([#219](https://github.com/flex-development/mkbuild/issues/219)) ([1d5fb7e](https://github.com/flex-development/mkbuild/commit/1d5fb7e387bdf36808c0e5eb961dbede707e72fd))
+* **deps:** Bump consola from 3.0.0-3 to 3.0.2 ([#212](https://github.com/flex-development/mkbuild/issues/212)) ([075a097](https://github.com/flex-development/mkbuild/commit/075a097a9233e7135092676b9b236bad18cb8ab7))
+* **deps:** Bump consola from 3.0.2 to 3.1.0 ([#229](https://github.com/flex-development/mkbuild/issues/229)) ([f4c5a53](https://github.com/flex-development/mkbuild/commit/f4c5a53f06526fa1e6ffaab29298d35a37ad836d))
+* **deps:** Bump consola from 3.1.0 to 3.2.3 ([#313](https://github.com/flex-development/mkbuild/issues/313)) ([d6c9df4](https://github.com/flex-development/mkbuild/commit/d6c9df4f7ac2f774d0be773a9429cf5cd9ede128))
+* **deps:** Bump cosmiconfig from 8.1.3 to 8.2.0 ([#319](https://github.com/flex-development/mkbuild/issues/319)) ([1a305bd](https://github.com/flex-development/mkbuild/commit/1a305bd598828b17b9dea88dd92d9a2ac2b642a1))
+* **deps:** Bump fast-glob from 3.2.12 to 3.3.1 ([#318](https://github.com/flex-development/mkbuild/issues/318)) ([2738ea1](https://github.com/flex-development/mkbuild/commit/2738ea1d55a1870b426ac2f095a86c2a95b3b2d9))
+* **deps:** Bump merge-anything from 5.1.4 to 5.1.5 ([#233](https://github.com/flex-development/mkbuild/issues/233)) ([a0a5af6](https://github.com/flex-development/mkbuild/commit/a0a5af67975057e60b0835ac339546802ad34dae))
+* **deps:** Bump merge-anything from 5.1.5 to 5.1.6 ([#256](https://github.com/flex-development/mkbuild/issues/256)) ([772d4f7](https://github.com/flex-development/mkbuild/commit/772d4f722b57ba5e12d0128e8df54e23168ae06e))
+* **deps:** Bump pretty-bytes from 6.1.0 to 6.1.1 ([#320](https://github.com/flex-development/mkbuild/issues/320)) ([7b3b852](https://github.com/flex-development/mkbuild/commit/7b3b8521cb0abea69523f75e9ecfdb47658b746f))
+* **deps:** Bump the flex-development group with 8 updates ([#312](https://github.com/flex-development/mkbuild/issues/312)) ([01d00df](https://github.com/flex-development/mkbuild/commit/01d00df3f0aa3058d8f9a5ecdd1dc2bbf00014cd))
+* **deps:** replace colorette with tinyrainbow ([a2d139b](https://github.com/flex-development/mkbuild/commit/a2d139b8b07c6068960c7a5102fa3e8c00c21992))
+
+
+### :robot: Continuous Integration
+
+* [[@dependabot](https://github.com/dependabot)] configure grouped version updates ([ea9bb05](https://github.com/flex-development/mkbuild/commit/ea9bb054601deddb420c675dd83ea6ce00e303ee))
+* [[@dependabot](https://github.com/dependabot)] merge nest-commander and nestjs groups ([20089cc](https://github.com/flex-development/mkbuild/commit/20089cc99ac1fd2230dc1f0d6f73a07d8e53fe49))
+* **deps:** Bump actions/checkout from 3.5.0 to 3.5.1 ([#209](https://github.com/flex-development/mkbuild/issues/209)) ([ee8602a](https://github.com/flex-development/mkbuild/commit/ee8602a3e56dca6ee6da32bb83592e8429a12dd8))
+* **deps:** Bump actions/checkout from 3.5.1 to 3.5.2 ([#211](https://github.com/flex-development/mkbuild/issues/211)) ([d82f74d](https://github.com/flex-development/mkbuild/commit/d82f74d8cdbdb880a8038f9bd2f52aae42a65688))
+* **deps:** Bump actions/checkout from 3.5.2 to 3.5.3 ([#287](https://github.com/flex-development/mkbuild/issues/287)) ([2b04e63](https://github.com/flex-development/mkbuild/commit/2b04e63ef654b99def11c248d199d3d729cc4afe))
+* **deps:** Bump actions/setup-node from 3.6.0 to 3.7.0 ([#298](https://github.com/flex-development/mkbuild/issues/298)) ([50c45b5](https://github.com/flex-development/mkbuild/commit/50c45b578eeed5fa321a0da66d268a0a9e404e33))
+* **deps:** Bump codecov/codecov-action from 3.1.1 to 3.1.2 ([#203](https://github.com/flex-development/mkbuild/issues/203)) ([57463a1](https://github.com/flex-development/mkbuild/commit/57463a1e8a1a4ba2e0d11a744a26286cc1b12600))
+* **deps:** Bump codecov/codecov-action from 3.1.2 to 3.1.3 ([#223](https://github.com/flex-development/mkbuild/issues/223)) ([41ab424](https://github.com/flex-development/mkbuild/commit/41ab42457626109fb76e5d9cd23fa4030995ae69))
+* **deps:** Bump codecov/codecov-action from 3.1.3 to 3.1.4 ([#259](https://github.com/flex-development/mkbuild/issues/259)) ([8263918](https://github.com/flex-development/mkbuild/commit/8263918f4363ad39e49753ba5b23a8329dbce4f6))
+* **deps:** Bump crazy-max/ghaction-import-gpg from 5.2.0 to 5.3.0 ([#248](https://github.com/flex-development/mkbuild/issues/248)) ([8834fb0](https://github.com/flex-development/mkbuild/commit/8834fb07c8067d40f8638749dfafb62b7acaf23b))
+* **deps:** Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 ([#217](https://github.com/flex-development/mkbuild/issues/217)) ([e96d285](https://github.com/flex-development/mkbuild/commit/e96d285771a3f9bb681b37a2520c3d530797a5ac))
+* **deps:** Bump dependabot/fetch-metadata from 1.4.0 to 1.5.0 ([#269](https://github.com/flex-development/mkbuild/issues/269)) ([31edd93](https://github.com/flex-development/mkbuild/commit/31edd934193bcb27d29cec2ef19d156e1d77cea2))
+* **deps:** Bump dependabot/fetch-metadata from 1.5.0 to 1.5.1 ([#272](https://github.com/flex-development/mkbuild/issues/272)) ([c6b70e7](https://github.com/flex-development/mkbuild/commit/c6b70e7dc1be16ba626ef22848ba17e1fc12f1aa))
+* **deps:** Bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 ([#293](https://github.com/flex-development/mkbuild/issues/293)) ([4a7fb8a](https://github.com/flex-development/mkbuild/commit/4a7fb8a06b1650ab137e96a2d3a207ea825fba31))
+* **deps:** Bump dessant/lock-threads from 4.0.0 to 4.0.1 ([#288](https://github.com/flex-development/mkbuild/issues/288)) ([9b91310](https://github.com/flex-development/mkbuild/commit/9b9131055b74f04b340b1168061cdba5b5afd3d2))
+* **deps:** Bump octokit/graphql-action from 2.2.23 to 2.2.24 ([#197](https://github.com/flex-development/mkbuild/issues/197)) ([0d23d7c](https://github.com/flex-development/mkbuild/commit/0d23d7c0c737c4683ddd79c8bad1b640a0593c7a))
+* **deps:** Bump octokit/graphql-action from 2.2.24 to 2.2.25 ([#302](https://github.com/flex-development/mkbuild/issues/302)) ([8171cf4](https://github.com/flex-development/mkbuild/commit/8171cf48f0fa503dd4932ce4fbe6a15ac335810f))
+* **workflows:** [`approve-pr`] remove `dependabot-metadata` condition ([81ed11c](https://github.com/flex-development/mkbuild/commit/81ed11c1fabf37bb63488c14f417a9c2ff29535c))
+* **workflows:** [`cache-cleanup`] refactor branch filter ([5562b1b](https://github.com/flex-development/mkbuild/commit/5562b1bf8534f9999c1f79d6996cb6bc285337f9))
+* **workflows:** [`dependabot-auto`] remove `approve-pr` condition ([ca7a2e8](https://github.com/flex-development/mkbuild/commit/ca7a2e864a0dc15d57b92c350cf903d6b2440d4f))
+
+
+### :bug: Fixes
+
+* **deps:** add @flex-development/errnode ([c3139c4](https://github.com/flex-development/mkbuild/commit/c3139c4dbdcf932c951eb2a560e8dc5e3928c2fb))
+
+
+### :house_with_garden: Housekeeping
+
+* [editorconfig] add `xml` rules ([92a664c](https://github.com/flex-development/mkbuild/commit/92a664cf3e783c93166be69d9bfd555a29676276))
+* [eslint] fix `tsconfig.cjs.json` path ([e4d5ddb](https://github.com/flex-development/mkbuild/commit/e4d5ddbef68e3e12d6e1b2849bafdc07b71b9d3b))
+* analyze types distribution ([ad28d2b](https://github.com/flex-development/mkbuild/commit/ad28d2b62b41869ef0bdab2af1059385fea7c143))
+* update project architecture ([7173959](https://github.com/flex-development/mkbuild/commit/7173959a3f6214fa81bf1e6f849ba0a393a85b06))
+* update test environments ([8f18fa2](https://github.com/flex-development/mkbuild/commit/8f18fa2b28ad80f47ab73b07e79630142c786527))
+
 ## [1.0.0-alpha.20](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.19...1.0.0-alpha.20) (2023-04-10)
 
 
