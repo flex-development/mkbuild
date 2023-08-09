@@ -8,7 +8,7 @@ import { Module } from '@nestjs/common'
 import * as color from 'colorette'
 import type * as commander from 'commander'
 import consola from 'consola'
-import * as esbuild from 'esbuild'
+import type * as esbuild from 'esbuild'
 import { MkbuildCommand } from './commands'
 import { HelpService, UtilityService } from './providers'
 

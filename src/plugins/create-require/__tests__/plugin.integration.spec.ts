@@ -44,8 +44,8 @@ describe('integration:plugins/create-require', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(1)
       expect(outputFiles[0]!.text.split('var __commonJS')[0]).toMatchSnapshot()
     })
@@ -60,8 +60,8 @@ describe('integration:plugins/create-require', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(1)
       expect(outputFiles[0]!.text.split('var __commonJS')[0]).toMatchSnapshot()
     })
@@ -76,8 +76,8 @@ describe('integration:plugins/create-require', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(1)
       expect(outputFiles[0]!.text).toMatchSnapshot()
     })

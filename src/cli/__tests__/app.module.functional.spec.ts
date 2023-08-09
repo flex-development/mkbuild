@@ -10,7 +10,7 @@ import { cast, template } from '@flex-development/tutils'
 import * as color from 'colorette'
 import { CommanderError } from 'commander'
 import consola from 'consola'
-import * as esbuild from 'esbuild'
+import type * as esbuild from 'esbuild'
 import { fileURLToPath } from 'node:url'
 import TestSubject from '../app.module'
 

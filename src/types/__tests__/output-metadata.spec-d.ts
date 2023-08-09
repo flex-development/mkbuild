@@ -9,9 +9,9 @@ import type TestSubject from '../output-metadata'
 describe('unit-d:types/OutputMetadata', () => {
   it('should equal type of esbuild.Metafile["outputs"][string]', () => {
     // Arrange
-    type Expected = esbuild.Metafile['outputs'][string]
+    type Expect = esbuild.Metafile['outputs'][string]
 
     // Expect
-    expectTypeOf<TestSubject>().toEqualTypeOf<Expected>()
+    expectTypeOf<TestSubject>().toEqualTypeOf<Expect>()
   })
 })

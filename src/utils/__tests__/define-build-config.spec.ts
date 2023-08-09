@@ -7,6 +7,6 @@ import testSubject from '../define-build-config'
 
 describe('unit:utils/defineBuildConfig', () => {
   it('should return build config object', () => {
-    expect(testSubject({ entries: [] })).to.deep.equal({ entries: [] })
+    expect(testSubject({ entries: [] })).to.eql({ entries: [] })
   })
 })

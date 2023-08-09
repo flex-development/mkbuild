@@ -30,8 +30,8 @@ describe('integration:plugins/decorators', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles[0]?.text).toMatchSnapshot()
     })
 
@@ -44,8 +44,8 @@ describe('integration:plugins/decorators', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles[0]?.text).toMatchSnapshot()
     })
 
@@ -60,8 +60,8 @@ describe('integration:plugins/decorators', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles[0]?.text).toMatchSnapshot()
     })
 
@@ -77,8 +77,8 @@ describe('integration:plugins/decorators', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles[0]?.text).toMatchSnapshot()
     })
   })

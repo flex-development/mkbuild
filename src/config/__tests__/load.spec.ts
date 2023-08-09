@@ -8,6 +8,6 @@ import testSubject from '../load'
 
 describe('unit:config/loadBuildConfig', () => {
   it('should return empty object if config is not found', async () => {
-    expect(await testSubject(path.resolve('__fixtures__'))).deep.equal({})
+    expect(await testSubject(path.resolve('__fixtures__'))).to.eql({})
   })
 })

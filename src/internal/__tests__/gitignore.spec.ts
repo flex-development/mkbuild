@@ -12,7 +12,7 @@ describe('unit:internal/gitignore', () => {
     const absWorkingDir: string = pathe.resolve('__fixtures__/pkg/buddy')
 
     // Act + Expect
-    expect(await testSubject(absWorkingDir)).to.be.instanceof(Set).and.is.empty
+    expect(await testSubject(absWorkingDir)).to.be.empty.instanceof(Set)
   })
 
   it('should return set containing .gitignore ignore patterns', async () => {

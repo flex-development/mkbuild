@@ -15,7 +15,7 @@ describe('unit:cli/providers/UtilityService', () => {
 
   describe('#parseList', () => {
     it('should return multi-item list as Set', () => {
-      expect(subject.parseList('import,node')).to.deep.equal(mlly.CONDITIONS)
+      expect(subject.parseList('import,node')).to.eql(mlly.CONDITIONS)
     })
 
     it('should return single-item list as Set', () => {
@@ -23,13 +23,13 @@ describe('unit:cli/providers/UtilityService', () => {
       const list: string = 'import'
 
       // Act + Expect
-      expect(subject.parseList(list)).to.deep.equal(new Set<string>([list]))
+      expect(subject.parseList(list)).to.eql(new Set<string>([list]))
     })
   })
 
   describe('#parseObject', () => {
     it('should return empty object if val is not key/value pair list', () => {
-      expect(subject.parseObject('import,node,default')).to.deep.equal({})
+      expect(subject.parseObject('import,node,default')).to.eql({})
     })
 
     it('should return val as object', () => {
@@ -37,7 +37,7 @@ describe('unit:cli/providers/UtilityService', () => {
       const list: string = 'customRenaming_:cR_,disabledRenaming_:false'
 
       // Act + Expect
-      expect(subject.parseObject(list)).to.deep.equal({
+      expect(subject.parseObject(list)).to.eql({
         customRenaming_: 'cR_',
         disabledRenaming_: false
       })

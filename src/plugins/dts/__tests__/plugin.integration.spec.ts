@@ -37,8 +37,8 @@ describe('integration:plugins/dts', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(2)
       expect(outputFiles).to.each.have.property('path').with.dirname(dirname)
       expect(outputFiles).to.containExactlyOne((output: esbuild.OutputFile) => {
@@ -62,8 +62,8 @@ describe('integration:plugins/dts', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(2)
       expect(outputFiles).to.each.have.property('path').with.dirname(dirname)
       expect(outputFiles).to.containExactlyOne((output: esbuild.OutputFile) => {
@@ -80,8 +80,8 @@ describe('integration:plugins/dts', () => {
       })
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(outputFiles).to.be.an('array').of.length(1)
     })
   })

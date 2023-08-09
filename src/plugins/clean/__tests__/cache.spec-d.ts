@@ -6,7 +6,7 @@
 import type TestSubject from '../cache'
 
 describe('unit-d:plugins/clean/CLEAN_CACHE', () => {
-  it('should be type of Map<string, true>', () => {
+  it('should be instance Map<string, true>', () => {
     expectTypeOf<typeof TestSubject>().toEqualTypeOf<Map<string, true>>()
   })
 })

@@ -50,7 +50,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         alias: util.parseObject(alias),
         write
       })
@@ -67,7 +67,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         assetNames,
         write
       })
@@ -84,7 +84,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         banner: util.parseObject(banner),
         write
       })
@@ -104,7 +104,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         bundle,
         write
       })
@@ -116,7 +116,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         bundle,
         write
       })
@@ -133,7 +133,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         charset,
         write
       })
@@ -150,7 +150,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         chunkNames,
         write
       })
@@ -170,7 +170,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         clean,
         write
       })
@@ -182,7 +182,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         clean,
         write
       })
@@ -199,7 +199,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ color, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ color, write })
     })
   })
 
@@ -213,7 +213,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         conditions: util.parseList(conditions),
         write
       })
@@ -232,7 +232,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         createRequire,
         write
       })
@@ -249,7 +249,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         cwd,
         write
       })
@@ -266,7 +266,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         define: util.parseObject(define),
         write
       })
@@ -283,7 +283,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         drop: [...util.parseList(drop)],
         write
       })
@@ -300,7 +300,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ dts, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ dts, write })
     })
 
     it('should call make with flags.dts given short flag', async () => {
@@ -312,7 +312,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ dts, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ dts, write })
     })
   })
 
@@ -329,7 +329,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ ext, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ ext, write })
     })
 
     it('should call make with flags.ext given short flag', async () => {
@@ -338,7 +338,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ ext, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ ext, write })
     })
   })
 
@@ -353,7 +353,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         external: [...util.parseList(external)],
         write
       })
@@ -370,7 +370,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         footer: util.parseObject(footer),
         write
       })
@@ -390,7 +390,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         format,
         write
       })
@@ -402,7 +402,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         format,
         write
       })
@@ -419,7 +419,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         globalName,
         write
       })
@@ -473,7 +473,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         ignore: parsed,
         write
       })
@@ -485,7 +485,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         ignore: parsed,
         write
       })
@@ -504,7 +504,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         ignoreAnnotations,
         write
       })
@@ -521,7 +521,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         inject: [...util.parseList(inject)],
         write
       })
@@ -538,7 +538,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsx,
         write
       })
@@ -555,7 +555,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsx: 'automatic',
         jsxDev,
         write
@@ -573,7 +573,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsxFactory,
         write
       })
@@ -590,7 +590,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsxFragment,
         write
       })
@@ -609,7 +609,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsxImportSource,
         write
       })
@@ -628,7 +628,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         jsxSideEffects,
         write
       })
@@ -645,7 +645,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         keepNames,
         write
       })
@@ -664,7 +664,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         legalComments,
         write
       })
@@ -681,7 +681,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         loader: util.parseObject(loader),
         write
       })
@@ -698,7 +698,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel,
         write
       })
@@ -716,7 +716,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logOverride: util.parseObject(logOverride),
         write
       })
@@ -733,7 +733,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLimit,
         write
       })
@@ -750,7 +750,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         mainFields: util.parseList(mainFields),
         write
       })
@@ -768,7 +768,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         mangleCache: util.parseObject(mangleCache),
         write
       })
@@ -785,7 +785,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         mangleProps: util.parseRegExp(mangleProps),
         write
       })
@@ -802,7 +802,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         mangleQuoted,
         write
       })
@@ -819,7 +819,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         minify,
         write
       })
@@ -838,7 +838,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         minifyIdentifiers,
         write
       })
@@ -855,7 +855,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         minifySyntax,
         write
       })
@@ -874,7 +874,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         minifyWhitespace,
         write
       })
@@ -894,7 +894,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         name,
         write
       })
@@ -906,7 +906,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         name,
         write
       })
@@ -923,7 +923,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         outExtension: util.parseObject(outExtension),
         write
       })
@@ -940,7 +940,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         outbase,
         write
       })
@@ -960,7 +960,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         outdir,
         write
       })
@@ -972,7 +972,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         outdir,
         write
       })
@@ -989,7 +989,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         packages,
         write
       })
@@ -1011,7 +1011,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         pattern: parsed,
         write
       })
@@ -1023,7 +1023,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         pattern: parsed,
         write
       })
@@ -1040,7 +1040,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         platform,
         write
       })
@@ -1059,7 +1059,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         preserveSymlinks,
         write
       })
@@ -1076,7 +1076,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         publicPath,
         write
       })
@@ -1093,7 +1093,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         pure: [...util.parseList(pure)],
         write
       })
@@ -1110,7 +1110,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         reserveProps: util.parseRegExp(reserveProps),
         write
       })
@@ -1129,7 +1129,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         resolveExtensions: util.parseList(resolveExtensions),
         write
       })
@@ -1143,7 +1143,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: {},
         write
@@ -1156,7 +1156,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: false,
         write
@@ -1174,7 +1174,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: { certfile },
         write
@@ -1192,7 +1192,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: { host },
         write
@@ -1210,7 +1210,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: { keyfile },
         write
@@ -1228,7 +1228,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: { port },
         write
@@ -1246,7 +1246,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         logLevel: 'info',
         serve: { servedir },
         write
@@ -1267,7 +1267,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         source,
         write
       })
@@ -1279,7 +1279,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         source,
         write
       })
@@ -1296,7 +1296,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         sourceRoot,
         write
       })
@@ -1313,7 +1313,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         sourcemap,
         write
       })
@@ -1332,7 +1332,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         sourcesContent,
         write
       })
@@ -1349,7 +1349,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         splitting,
         write
       })
@@ -1366,7 +1366,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         supported: util.parseObject(supported),
         write
       })
@@ -1383,7 +1383,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         target: [...util.parseList(target)],
         write
       })
@@ -1400,7 +1400,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         treeShaking,
         write
       })
@@ -1417,7 +1417,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({
         tsconfig,
         write
       })
@@ -1465,7 +1465,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ watch, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ watch, write })
     })
 
     it('should call make with flags.watch given short flag', async () => {
@@ -1474,7 +1474,7 @@ describe('functional:cli/commands/MkbuildCommand', () => {
 
       // Expect
       expect(make).toHaveBeenCalledOnce()
-      expect(vi.mocked(make).mock.lastCall?.[0]).to.deep.equal({ watch, write })
+      expect(vi.mocked(make).mock.lastCall?.[0]).to.eql({ watch, write })
     })
   })
 })

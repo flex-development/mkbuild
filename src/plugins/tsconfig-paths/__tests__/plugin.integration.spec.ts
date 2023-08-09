@@ -41,8 +41,8 @@ describe('integration:plugins/tsconfig-paths', () => {
       const { errors, outputFiles, warnings } = await esbuild.build(options)
 
       // Expect
-      expect(errors).to.be.an('array').of.length(0)
-      expect(warnings).to.be.an('array').of.length(0)
+      expect(errors).to.be.an('array').that.is.empty
+      expect(warnings).to.be.an('array').that.is.empty
       expect(mlly.findStaticImports(outputFiles[1]?.text)).toMatchSnapshot()
     })
 
