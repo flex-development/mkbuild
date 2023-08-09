@@ -1470,7 +1470,7 @@ __metadata:
     lint-staged: "npm:13.2.3"
     memfs: "npm:4.2.1"
     mri: "npm:1.2.0"
-    nest-commander: "npm:3.6.1"
+    nest-commander: "npm:3.11.1"
     nest-commander-testing: "npm:3.3.0"
     node-notifier: "npm:10.0.1"
     pkg-size: "npm:2.4.0"
@@ -1690,12 +1690,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@golevelup/nestjs-discovery@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@golevelup/nestjs-discovery@npm:3.0.0"
+"@golevelup/nestjs-discovery@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@golevelup/nestjs-discovery@npm:4.0.0"
   dependencies:
-    lodash: "npm:^4.17.15"
-  checksum: be820b3d9924efaa28259897ed75017a25e45c2ecf8b8dc0c2ce35dbcb4af0a6be81fe1053bfd7a485f0e39e07fa584edf03c1ca6620b83819c42cd1206d1369
+    lodash: "npm:^4.17.21"
+  peerDependencies:
+    "@nestjs/common": ^10.x
+    "@nestjs/core": ^10.x
+  checksum: 6da9d8f8a0610e7f3d59db1fc92ba3dfdef0fc891b9e81fb527f7aedbc47128296ee3e86962fe9d8e7061afd44a4103c453733fea4bca3e3462acaf0ee2cba1a
   languageName: node
   linkType: hard
 
@@ -4401,18 +4404,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:8.1.0":
-  version: 8.1.0
-  resolution: "cosmiconfig@npm:8.1.0"
-  dependencies:
-    import-fresh: "npm:^3.2.1"
-    js-yaml: "npm:^4.1.0"
-    parse-json: "npm:^5.0.0"
-    path-type: "npm:^4.0.0"
-  checksum: afc737bbfdd6e963183336d016f37dbdae4ba41b412187e3be35eaf2d095b5a6fb0bb08f9d9a0f0f7cc893ab363aaff4ebe9f28fd99064adb0a754667b170026
-  languageName: node
-  linkType: hard
-
 "cosmiconfig@npm:8.1.3":
   version: 8.1.3
   resolution: "cosmiconfig@npm:8.1.3"
@@ -4425,7 +4416,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:^8.0.0, cosmiconfig@npm:^8.1.0":
+"cosmiconfig@npm:8.2.0, cosmiconfig@npm:^8.0.0, cosmiconfig@npm:^8.1.0":
   version: 8.2.0
   resolution: "cosmiconfig@npm:8.2.0"
   dependencies:
@@ -6666,9 +6657,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inquirer@npm:8.2.4":
-  version: 8.2.4
-  resolution: "inquirer@npm:8.2.4"
+"inquirer@npm:8.2.5":
+  version: 8.2.5
+  resolution: "inquirer@npm:8.2.5"
   dependencies:
     ansi-escapes: "npm:^4.2.1"
     chalk: "npm:^4.1.1"
@@ -6685,7 +6676,7 @@ __metadata:
     strip-ansi: "npm:^6.0.0"
     through: "npm:^2.3.6"
     wrap-ansi: "npm:^7.0.0"
-  checksum: cfb2c043d74f3517ee20faadc0295eea04fe39808e084c1772a31918fcda0a5c18c341e8f313273bc00dec5e57a7a1d7826234507d1706d335dc174bf001b615
+  checksum: 50459c04bf4d6a20e1297eb82bbdf838b0fea6140759103ded99b5af50784fbebecd50f37970cde186829cec4d8f3ad58d975701a1fe03b735a31d4a5a351e63
   languageName: node
   linkType: hard
 
@@ -8102,39 +8093,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nest-commander@npm:3.6.1":
-  version: 3.6.1
-  resolution: "nest-commander@npm:3.6.1"
+"nest-commander@npm:3.11.1":
+  version: 3.11.1
+  resolution: "nest-commander@npm:3.11.1"
   dependencies:
-    "@golevelup/nestjs-discovery": "npm:3.0.0"
-    commander: "npm:10.0.0"
-    cosmiconfig: "npm:8.1.0"
-    inquirer: "npm:8.2.4"
+    "@golevelup/nestjs-discovery": "npm:4.0.0"
+    commander: "npm:11.0.0"
+    cosmiconfig: "npm:8.2.0"
+    inquirer: "npm:8.2.5"
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
     "@types/inquirer": ^8.1.3
-    reflect-metadata: 0.1.13
-    rxjs: 7.8.0
-  checksum: 3bc46b4c7e5bf6199ac7cdabebe3b2413a6d8876a5567de62d0bcab3fe98776a0df9712788d0d2d8b35d61cfa435af7566e79d828b6ed32e4ddcd6afcea6ab6f
+  checksum: c9bd78779c1590468e60824e784b69c370e63c66a2127d20bd5976aa42a53cd96694992506f77e70775579c13a3911a6bec2992ac38f6c22473c802edb239f08
   languageName: node
   linkType: hard
 
-"nest-commander@patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
-  version: 3.6.1
-  resolution: "nest-commander@patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch::version=3.6.1&hash=724d10&locator=%40flex-development%2Fmkbuild%40workspace%3A."
+"nest-commander@patch:nest-commander@npm%3A3.11.1#patches/nest-commander+3.11.1.dev.patch::locator=%40flex-development%2Fmkbuild%40workspace%3A.":
+  version: 3.11.1
+  resolution: "nest-commander@patch:nest-commander@npm%3A3.11.1#patches/nest-commander+3.11.1.dev.patch::version=3.11.1&hash=a5d89e&locator=%40flex-development%2Fmkbuild%40workspace%3A."
   dependencies:
-    "@golevelup/nestjs-discovery": "npm:3.0.0"
-    commander: "npm:10.0.0"
-    cosmiconfig: "npm:8.1.0"
-    inquirer: "npm:8.2.4"
+    "@golevelup/nestjs-discovery": "npm:4.0.0"
+    commander: "npm:11.0.0"
+    cosmiconfig: "npm:8.2.0"
+    inquirer: "npm:8.2.5"
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
     "@types/inquirer": ^8.1.3
-    reflect-metadata: 0.1.13
-    rxjs: 7.8.0
-  checksum: c60107c2bf194155a12af29eb270fbde0df608cc22e3576a1d978dc33eb50f3458be14eb37f31e7b51da2dc7980db26a37b7ae3870095a1cea2e7d2a0eebb2e6
+  checksum: dde7e1644da1128a58b480527f0951bcd0b4dca15d962fe5604c9ed1988d7a21503dfea04d3ebd3ee9239fd5e0c9847428dcb5890d49290a4b8290778cd54119
   languageName: node
   linkType: hard
 

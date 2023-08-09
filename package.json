@@ -170,7 +170,7 @@
     "lint-staged": "13.2.3",
     "memfs": "4.2.1",
     "mri": "1.2.0",
-    "nest-commander": "3.6.1",
+    "nest-commander": "3.11.1",
     "nest-commander-testing": "3.3.0",
     "node-notifier": "10.0.1",
     "pkg-size": "2.4.0",
@@ -209,7 +209,7 @@
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
     "chai": "5.0.0-alpha.1",
     "commander": "11.0.0",
-    "nest-commander@npm:3.6.1": "patch:nest-commander@npm%3A3.6.1#patches/nest-commander+3.6.1.dev.patch"
+    "nest-commander@npm:3.11.1": "patch:nest-commander@npm%3A3.11.1#patches/nest-commander+3.11.1.dev.patch"
   },
   "engines": {
     "node": ">=16.20.0",
