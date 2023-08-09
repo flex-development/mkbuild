@@ -1324,7 +1324,7 @@ __metadata:
     pretty-bytes: "npm:6.1.0"
     pretty-format: "npm:29.6.2"
     reflect-metadata: "npm:0.1.13"
-    rxjs: "npm:8.0.0-alpha.9"
+    rxjs: "npm:8.0.0-alpha.10"
     semver: "npm:7.5.4"
     tempfile: "npm:5.0.0"
     tinyrainbow: "npm:1.1.1"
@@ -9005,12 +9005,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:8.0.0-alpha.9":
-  version: 8.0.0-alpha.9
-  resolution: "rxjs@npm:8.0.0-alpha.9"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 0fd1a6a301756e767b4da18ef28499aa0fab792c50f1bf1a14ce58d492135ccfaef8eb37c69c9f26ab0b84bef642718b4ce3f793251c95c58e9397bc3d54a758
+"rxjs@npm:8.0.0-alpha.10":
+  version: 8.0.0-alpha.10
+  resolution: "rxjs@npm:8.0.0-alpha.10"
+  checksum: f36b48da30463396dbaa94982b5a43615c0d15c46797cb52051782c3e3b06121a16a9771e2baa0e211340a3bbdf4442eb0e24499829f7f5fb1d71f7f8fdcf5bc
   languageName: node
   linkType: hard
 
