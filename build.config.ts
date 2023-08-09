@@ -37,7 +37,8 @@ const config: Config = defineBuildConfig({
         '@nestjs/websockets/socket-module',
         'cache-manager',
         'class-transformer',
-        'node-fetch'
+        'node-fetch',
+        'rxjs'
       ],
       keepNames: true,
       minify: true,

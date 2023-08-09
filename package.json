@@ -178,7 +178,6 @@
     "prettier-plugin-sh": "0.13.1",
     "pretty-format": "29.6.2",
     "reflect-metadata": "0.1.13",
-    "rxjs": "8.0.0-alpha.10",
     "semver": "7.5.4",
     "tempfile": "5.0.0",
     "trash-cli": "5.0.0",
