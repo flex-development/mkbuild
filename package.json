@@ -92,7 +92,7 @@
     "@flex-development/tsconfig-utils": "2.0.1",
     "@flex-development/tutils": "6.0.0-alpha.18",
     "consola": "3.2.3",
-    "cosmiconfig": "8.1.3",
+    "cosmiconfig": "8.2.0",
     "exit-hook": "3.2.0",
     "fast-glob": "3.3.1",
     "pretty-bytes": "6.1.0",
