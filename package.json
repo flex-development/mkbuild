@@ -145,7 +145,7 @@
     "cross-env": "7.0.3",
     "cspell": "7.0.1-alpha.9",
     "dateformat": "5.0.3",
-    "esbuild": "0.19.0",
+    "esbuild": "0.19.2",
     "eslint": "8.46.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-import-resolver-typescript": "3.6.0",
@@ -209,7 +209,7 @@
     "@ardatan/sync-fetch": "larsgw/sync-fetch#head=worker_threads",
     "chai": "5.0.0-alpha.1",
     "commander": "11.0.0",
-    "esbuild": "0.19.0",
+    "esbuild": "0.19.2",
     "nest-commander@npm:3.11.1": "patch:nest-commander@npm%3A3.11.1#patches/nest-commander+3.11.1.dev.patch"
   },
   "engines": {
