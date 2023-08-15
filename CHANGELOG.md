@@ -1,3 +1,23 @@
+## [1.0.0-alpha.22](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.21...1.0.0-alpha.22) (2023-08-15)
+
+
+### :package: Build
+
+* **cli:** reduce bundle size ([91c650a](https://github.com/flex-development/mkbuild/commit/91c650a3c4912ecc51ebb917985d9c84ebe5e0fd))
+* **deps-dev:** Bump @commitlint/cli from 17.6.7 to 17.7.1 ([#323](https://github.com/flex-development/mkbuild/issues/323)) ([87af7e8](https://github.com/flex-development/mkbuild/commit/87af7e8db532d49df7006bc007e7fdf40d94820c))
+* **deps-dev:** Bump cspell from 7.0.1-alpha.8 to 7.0.1-alpha.9 ([#324](https://github.com/flex-development/mkbuild/issues/324)) ([7ceb570](https://github.com/flex-development/mkbuild/commit/7ceb570fac53a856da567b90c226cfe88c466276))
+* **deps-dev:** Bump esbuild from 0.19.0 to 0.19.2 ([#328](https://github.com/flex-development/mkbuild/issues/328)) ([a3796f6](https://github.com/flex-development/mkbuild/commit/a3796f6c5e7b28019295b1b07ecbc62f095aa5cf))
+* **deps-dev:** Bump eslint from 8.46.0 to 8.47.0 ([#326](https://github.com/flex-development/mkbuild/issues/326)) ([9efab5b](https://github.com/flex-development/mkbuild/commit/9efab5b72e8101eeb01501f7828822a89354765e))
+* **deps-dev:** Bump eslint-import-resolver-typescript from 3.5.5 to 3.6.0 ([#322](https://github.com/flex-development/mkbuild/issues/322)) ([9d09339](https://github.com/flex-development/mkbuild/commit/9d0933993835cbb6606c550e57af271539d00241))
+* **deps-dev:** Bump eslint-plugin-markdownlint from 0.4.1 to 0.5.0 ([#331](https://github.com/flex-development/mkbuild/issues/331)) ([1d144ed](https://github.com/flex-development/mkbuild/commit/1d144ed0752e72c6bc6f761d2b3c1cb1d07e6545))
+* **deps-dev:** Bump graphql from 16.7.1 to 16.8.0 ([#332](https://github.com/flex-development/mkbuild/issues/332)) ([977a400](https://github.com/flex-development/mkbuild/commit/977a400d70badcb9dc32b62484768505e663bca4))
+* **deps-dev:** Bump lint-staged from 13.2.3 to 14.0.0 ([#327](https://github.com/flex-development/mkbuild/issues/327)) ([c8226b3](https://github.com/flex-development/mkbuild/commit/c8226b329261078b78fd2e4735f72d53a89efcaa))
+* **deps-dev:** Bump the typescript-eslint group with 2 updates ([#329](https://github.com/flex-development/mkbuild/issues/329)) ([dbec932](https://github.com/flex-development/mkbuild/commit/dbec932edbb8cf0e42048e9de2eccb715ab83df8))
+* **deps-dev:** drop rxjs ([8d99303](https://github.com/flex-development/mkbuild/commit/8d99303a2d6b942b509de959c296a73063ade081))
+* **deps:** bump @flex-development/tutils from 6.0.0-alpha.18 to 6.0.0-alpha.19 ([8c450c6](https://github.com/flex-development/mkbuild/commit/8c450c6a3570594115c50271524b498d1ba7bdd7))
+* **deps:** Bump the flex-development group with 1 update ([#325](https://github.com/flex-development/mkbuild/issues/325)) ([cc5f665](https://github.com/flex-development/mkbuild/commit/cc5f665a34191efcfbdb3d6948fd75a47c2070ff))
+* **deps:** Bump the flex-development group with 3 updates ([#330](https://github.com/flex-development/mkbuild/issues/330)) ([613a69a](https://github.com/flex-development/mkbuild/commit/613a69aae2ce4087e0e6a4eebfdc3b535bcf88b8))
+
 ## [1.0.0-alpha.21](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.20...1.0.0-alpha.21) (2023-08-09)
 
 
