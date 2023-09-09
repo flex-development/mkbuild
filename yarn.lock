@@ -1255,7 +1255,7 @@ __metadata:
     "@flex-development/pkg-types": "npm:3.0.0"
     "@flex-development/toggle-pkg-type": "npm:2.0.1"
     "@flex-development/tsconfig-utils": "npm:2.0.2"
-    "@flex-development/tutils": "npm:6.0.0-alpha.21"
+    "@flex-development/tutils": "npm:6.0.0-alpha.22"
     "@graphql-eslint/eslint-plugin": "npm:3.20.1"
     "@nestjs/common": "npm:10.2.4"
     "@nestjs/core": "npm:10.2.4"
@@ -1527,6 +1527,15 @@ __metadata:
   peerDependencies:
     typescript: ">=5.0.4"
   checksum: 410b8f3501a31aa16b4ebc44521b53aea23780fd3df87611522a0a3c73334eea9f21f6ea75a44e8450ec461cffbe1857b89b1dcfb27f84a2b8388089fd5a98ac
+  languageName: node
+  linkType: hard
+
+"@flex-development/tutils@npm:6.0.0-alpha.22":
+  version: 6.0.0-alpha.22
+  resolution: "@flex-development/tutils@npm:6.0.0-alpha.22::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.22%2F22f766c2fbcdb4177f61acb9f10ce8abd66b9c01"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  checksum: 9b8340958dc8b675446c3c6ae609daad11e0182863c1067b7cf3851b87c27c31176f3fbc6775c6ba752fbbb16c52c6bbc74d1344c87ee83e9e77b07fa4982265
   languageName: node
   linkType: hard
 
