@@ -1255,7 +1255,7 @@ __metadata:
     "@flex-development/pkg-types": "npm:3.0.0"
     "@flex-development/toggle-pkg-type": "npm:2.0.1"
     "@flex-development/tsconfig-utils": "npm:2.0.2"
-    "@flex-development/tutils": "npm:6.0.0-alpha.21"
+    "@flex-development/tutils": "npm:6.0.0-alpha.22"
     "@graphql-eslint/eslint-plugin": "npm:3.20.1"
     "@nestjs/common": "npm:10.2.4"
     "@nestjs/core": "npm:10.2.4"
@@ -1479,63 +1479,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@flex-development/tutils@npm:6.0.0-alpha.10":
-  version: 6.0.0-alpha.10
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.10::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.10%2Fb2085f42d62aedfabfae2ed016c0cc5c47192f81"
-  peerDependencies:
-    typescript: ">=4.7"
-  checksum: 2e1c7ff82974da361afbdfe763771c40371bf6fc6eb5dee38028452afcd39062161554315327e4922e7950cb78470b1e625f727967a1096a65ca5918be75e3b9
-  languageName: node
-  linkType: hard
-
-"@flex-development/tutils@npm:6.0.0-alpha.11":
-  version: 6.0.0-alpha.11
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.11::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.11%2Fcd1832885d050e2b6403e471bae0b7f7ffc70680"
-  dependencies:
-    dequal: "npm:2.0.3"
+"@flex-development/tutils@npm:6.0.0-alpha.22":
+  version: 6.0.0-alpha.22
+  resolution: "@flex-development/tutils@npm:6.0.0-alpha.22::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.22%2F22f766c2fbcdb4177f61acb9f10ce8abd66b9c01"
   peerDependencies:
     typescript: ">=5.0.4"
-  checksum: 1a2f7a1a6c7b6a10cc70efe3b23df8007a86e1a55ad2a1fd9480e1453fc3c10da0ba8680e177b316c526c79871210b5c185ae27ff1a6b815f2d6c5673a413d50
-  languageName: node
-  linkType: hard
-
-"@flex-development/tutils@npm:6.0.0-alpha.12":
-  version: 6.0.0-alpha.12
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.12::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.12%2F09e3edc5c0533b5a51a88aa87c8b13bf48aeceb9"
-  dependencies:
-    dequal: "npm:2.0.3"
-  peerDependencies:
-    typescript: ">=5.0.4"
-  checksum: dd6659f9042cff4e406c7b4ab38d7929c512b9b994a98c222e63a219611cc6a79472490f9769390ae86f12004184250664639e199f8d3c90ce31300a801c895b
-  languageName: node
-  linkType: hard
-
-"@flex-development/tutils@npm:6.0.0-alpha.14":
-  version: 6.0.0-alpha.14
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.14::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.14%2F3715445f311171fd0e8215a13ed8b9b66ea14b48"
-  dependencies:
-    dequal: "npm:2.0.3"
-  peerDependencies:
-    typescript: ">=5.0.4"
-  checksum: 109064df4afc18ef77aee53700d7a9d2dc1b2f81374740978d96607967479f180390d5fb7f9dd6798c98b20c39740a75dc2fc73dde727d6a1faaf46845f33e32
-  languageName: node
-  linkType: hard
-
-"@flex-development/tutils@npm:6.0.0-alpha.21":
-  version: 6.0.0-alpha.21
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.21::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.21%2F168361f3cb7d88a373da7f051abde0b4d512e349"
-  peerDependencies:
-    typescript: ">=5.0.4"
-  checksum: 410b8f3501a31aa16b4ebc44521b53aea23780fd3df87611522a0a3c73334eea9f21f6ea75a44e8450ec461cffbe1857b89b1dcfb27f84a2b8388089fd5a98ac
-  languageName: node
-  linkType: hard
-
-"@flex-development/tutils@npm:6.0.0-alpha.7":
-  version: 6.0.0-alpha.7
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.7%2F786916dcfd30bf076b5ac74cb31ca4031f74e1f0"
-  peerDependencies:
-    typescript: ">=4.7"
-  checksum: 161901c611f0049464cc53e128b8285f12a9dc6ef551a8c8a4bd47d9e2d73afcc53c25fbcd18189dcda28a460ea64e8801398159b6daaaff63d0552d140f1f02
+  checksum: 9b8340958dc8b675446c3c6ae609daad11e0182863c1067b7cf3851b87c27c31176f3fbc6775c6ba752fbbb16c52c6bbc74d1344c87ee83e9e77b07fa4982265
   languageName: node
   linkType: hard
 
@@ -4471,13 +4420,6 @@ __metadata:
   version: 1.0.0
   resolution: "delegates@npm:1.0.0"
   checksum: a51744d9b53c164ba9c0492471a1a2ffa0b6727451bdc89e31627fdf4adda9d51277cfcbfb20f0a6f08ccb3c436f341df3e92631a3440226d93a8971724771fd
-  languageName: node
-  linkType: hard
-
-"dequal@npm:2.0.3":
-  version: 2.0.3
-  resolution: "dequal@npm:2.0.3"
-  checksum: 6ff05a7561f33603df87c45e389c9ac0a95e3c056be3da1a0c4702149e3a7f6fe5ffbb294478687ba51a9e95f3a60e8b6b9005993acd79c292c7d15f71964b6b
   languageName: node
   linkType: hard
 

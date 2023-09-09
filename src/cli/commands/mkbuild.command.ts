@@ -400,7 +400,8 @@ class MkbuildCommand extends CommandRunner {
    * @protected
    *
    * @param {string} val - Value to parse
-   * @return {Partial<Record<GeneratedFileType, string>>} Parsed option value
+   * @return {EmptyObject | Record<GeneratedFileType, string>} Parsed option
+   * value
    */
   @Option({
     description: 'https://esbuild.github.io/api/#footer',
@@ -408,7 +409,7 @@ class MkbuildCommand extends CommandRunner {
   })
   protected parseFooter(
     val: string
-  ): EmptyObject | { [K in GeneratedFileType]?: string } {
+  ): EmptyObject | { [K in GeneratedFileType]: string } {
     return this.util.parseObject<GeneratedFileType, string>(val)
   }
 
@@ -1463,7 +1464,7 @@ class MkbuildCommand extends CommandRunner {
    */
   public async run(args: string[], opts: Opts): Promise<void> {
     // remove defaults to prevent accidental config file option override
-    for (const key of keys<Opts, undefined>(opts)) {
+    for (const key of keys<Opts>(opts)) {
       if (this.command.getOptionValueSource(key) !== 'default') continue
       Reflect.deleteProperty(opts, key)
     }
