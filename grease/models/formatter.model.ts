@@ -169,7 +169,7 @@ class Formatter {
     return template('{repository}/compare/{last_version}...{version}', {
       last_version: entry.last_version,
       repository: this.formatRepository(context),
-      version: entry.key.version || entry.key.sha
+      version: entry.version
     })
   }
 

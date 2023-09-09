@@ -556,7 +556,7 @@ class ChangelogService {
     })
 
     /**
-     * File writer.
+     * Get a writer.
      *
      * If writing to file is disabled, {@linkcode process.stdout} will be used
      * to write changelog entries. A write stream will be used otherwise.
@@ -565,12 +565,13 @@ class ChangelogService {
      * @see {@linkcode WriteStream}
      * @see {@linkcode createWriteStream}
      *
-     * @const {WriteStream | (NodeJS.WriteStream & { fd: 1 })} writer
+     * @return {WriteStream | (NodeJS.WriteStream & { fd: 1 })} File writer
      */
-    const writer: WriteStream | (NodeJS.WriteStream & { fd: 1 }) =
-      opts.write && opts.outfile
+    const writer = (): WriteStream | (NodeJS.WriteStream & { fd: 1 }) => {
+      return opts.write && opts.outfile
         ? createWriteStream(opts.outfile)
         : process.stdout
+    }
 
     /**
      * Readable changelog.
@@ -591,7 +592,7 @@ class ChangelogService {
     }
 
     // output changelog if infile should not be added to readable changelog
-    if (!(opts.infile && opts.releases)) return void changelog.pipe(writer)
+    if (!(opts.infile && opts.releases)) return void changelog.pipe(writer())
 
     /**
      * Readable {@linkcode opts.infile} stream.
@@ -603,14 +604,14 @@ class ChangelogService {
     // add error handler to infile stream
     infile.on('error', () => {
       if (opts.debug) consola.error('infile does not exist.')
-      if (opts.samefile) changelog.pipe(writer)
+      if (opts.samefile) changelog.pipe(writer())
     })
 
     // add infile to readable changelog
     for await (const chunk of infile) changelog.push(chunk)
 
     // write changelog to infile, outfile, or stdout
-    return void changelog.pipe(writer)
+    return void changelog.pipe(writer())
   }
 }
 
