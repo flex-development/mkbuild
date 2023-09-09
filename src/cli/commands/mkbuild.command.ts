@@ -4,9 +4,7 @@
  */
 
 import pkg from '#pkg' assert { type: 'json' }
-import { CHOICES_BOOLEAN, CLI_NAME } from '#src/cli/constants'
-import { HelpService, UtilityService } from '#src/cli/providers'
-import type { Flags } from '#src/interfaces'
+import type { Opts } from '#src/cli/interfaces'
 import make from '#src/make'
 import type {
   GeneratedFileType,
@@ -17,77 +15,345 @@ import type {
 } from '#src/types'
 import { IGNORE_PATTERNS, loaders } from '#src/utils'
 import * as mlly from '@flex-development/mlly'
+import {
+  CliUtilityService,
+  Command,
+  CommandRunner,
+  HelpService,
+  Option
+} from '@flex-development/nest-commander'
+import type * as commander from '@flex-development/nest-commander/commander'
 import * as pathe from '@flex-development/pathe'
 import {
   DOT,
   cast,
-  constant,
   construct,
   entries,
+  ifelse,
+  isBooleanish,
   join,
   keys,
-  set
+  set,
+  type EmptyObject
 } from '@flex-development/tutils'
-import { Inject } from '@nestjs/common'
-import type * as commander from 'commander'
-import consola from 'consola'
 import type * as esbuild from 'esbuild'
-import {
-  CommandRunner,
-  Option,
-  OptionChoiceFor,
-  RootCommand
-} from 'nest-commander'
 
 /**
  * `mkbuild` command model.
  *
+ * @todo `--allow-overwrite`
  * @todo `--serve.onrequest`
  *
  * @class
  * @extends {CommandRunner}
  */
-@RootCommand({ description: pkg.description, name: CLI_NAME })
+@Command({
+  description: pkg.description,
+  examples: [],
+  name: pkg.name.replace(/.*\//, ''),
+  root: true
+})
 class MkbuildCommand extends CommandRunner {
   /**
    * Creates a new `mkbuild` command instance.
    *
    * @param {HelpService} help - Help service instance
-   * @param {UtilityService} util - CLI utilities service instance
+   * @param {CliUtilityService} util - Utilities service instance
    */
   constructor(
-    @Inject(HelpService) protected readonly help: HelpService,
-    @Inject(UtilityService) protected readonly util: UtilityService
+    protected readonly help: HelpService,
+    protected readonly util: CliUtilityService
   ) {
     super()
   }
 
   /**
-   * Returns an array containing `--charset` flag choices.
+   * Parses the `--alias` flag.
    *
-   * @see {@linkcode esbuild.Charset}
+   * @see {@linkcode Opts.alias}
    *
    * @protected
    *
-   * @return {esbuild.Charset[]} `--charset` flag choices
+   * @param {string} val - Value to parse
+   * @return {Record<string, string>} Parsed option value
    */
-  @OptionChoiceFor({ name: 'charset' })
-  protected choicesCharset(): esbuild.Charset[] {
-    return ['ascii', 'utf8']
+  @Option({
+    description: 'https://esbuild.github.io/api/#alias',
+    flags: '--alias <list>'
+  })
+  protected parseAlias(val: string): Record<string, string> {
+    return this.util.parseObject(val)
   }
 
   /**
-   * Returns an array containing `--ext` flag choices.
+   * Parses the `--asset-names` flag.
    *
-   * @see {@linkcode OutputExtension}
+   * @see {@linkcode Opts.assetNames}
    *
    * @protected
    *
-   * @return {OutputExtension[]} `--ext` flag choices
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
    */
-  @OptionChoiceFor({ name: 'ext' })
-  protected choicesExt(): OutputExtension[] {
-    return [
+  @Option({
+    description: 'https://esbuild.github.io/api/#asset-names',
+    fallback: { value: 'assets/[name]-[hash]' },
+    flags: '--asset-names <template>'
+  })
+  protected parseAssetNames(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--banner` flag.
+   *
+   * @see {@linkcode Opts.banner}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {EmptyObject | Record<GeneratedFileType, string>} Parsed option
+   * value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#banner',
+    flags: '--banner <list>'
+  })
+  protected parseBanner(
+    val: string
+  ): EmptyObject | { [K in GeneratedFileType]: string } {
+    return this.util.parseObject<GeneratedFileType, string>(val)
+  }
+
+  /**
+   * Parses the `--bundle` flag.
+   *
+   * @see {@linkcode Opts.bundle}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CliUtilityService.BOOLEAN_CHOICES,
+    description: 'https://esbuild.github.io/api/#bundle',
+    fallback: { value: false },
+    flags: '-b, --bundle [choice]',
+    preset: 'true'
+  })
+  protected parseBundle(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--charset` flag.
+   *
+   * @see {@linkcode Opts.charset}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {esbuild.Charset} Parsed option value
+   */
+  @Option({
+    choices: ['ascii', 'utf8'],
+    description: 'https://esbuild.github.io/api/#charset',
+    flags: '--charset <charset>'
+  })
+  protected parseCharset(val: string): esbuild.Charset {
+    return cast<esbuild.Charset>(val)
+  }
+
+  /**
+   * Parses the `--chunk-names` flag.
+   *
+   * @see {@linkcode Opts.chunkNames}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#chunk-names',
+    fallback: { value: 'chunks/[name]-[hash]' },
+    flags: '--chunk-names <template>'
+  })
+  protected parseChunkNames(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--clean` flag.
+   *
+   * @see {@linkcode Opts.clean}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CliUtilityService.BOOLEAN_CHOICES,
+    description: 'Remove output directories before starting build',
+    fallback: { value: true },
+    flags: '-c, --clean [choice]',
+    preset: 'true'
+  })
+  protected parseClean(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--color` flag.
+   *
+   * @see {@linkcode Opts.color}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CliUtilityService.BOOLEAN_CHOICES,
+    description: 'https://esbuild.github.io/api/#color',
+    env: 'NO_COLOR',
+    fallback: { value: true },
+    flags: '--color [choice]',
+    preset: 'true'
+  })
+  protected parseColor(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--conditions` flag.
+   *
+   * @see {@linkcode Opts.conditions}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Set<string>} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#conditions',
+    fallback: { description: 'import,default', value: ['import', 'default'] },
+    flags: '--conditions <list>'
+  })
+  protected parseConditions(val: string): Set<string> {
+    return this.util.parseList(val)
+  }
+
+  /**
+   * Parses the `--create-require` flag.
+   *
+   * @see {@linkcode Opts.createRequire}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean} Parsed option value
+   */
+  @Option({
+    choices: CliUtilityService.BOOLEAN_CHOICES,
+    description: 'Insert `require` function definition',
+    flags: '--create-require [choice]',
+    preset: 'true'
+  })
+  protected parseCreateRequire(val: string): boolean {
+    return this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--cwd` flag.
+   *
+   * @see {@linkcode Opts.cwd}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string} Parsed option value
+   */
+  @Option({
+    description: 'Current working directory',
+    fallback: { value: DOT },
+    flags: '--cwd <directory>'
+  })
+  protected parseCwd(val: string): string {
+    return val
+  }
+
+  /**
+   * Parses the `--define` flag.
+   *
+   * @see {@linkcode Opts.define}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {Record<string, string>} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#define',
+    flags: '--define <list>'
+  })
+  protected parseDefine(val: string): Record<string, string> {
+    return this.util.parseObject(val)
+  }
+
+  /**
+   * Parses the `--drop` flag.
+   *
+   * @see {@linkcode Opts.drop}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {string[]} Parsed option value
+   */
+  @Option({
+    description: 'https://esbuild.github.io/api/#drop',
+    flags: '--drop <list>'
+  })
+  protected parseDrop(val: string): string[] {
+    return [...this.util.parseList(val)]
+  }
+
+  /**
+   * Parses the `--dts` flag.
+   *
+   * @see {@linkcode Opts.dts}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {boolean | 'only'} Parsed option value
+   */
+  @Option({
+    choices: ['only', ...CliUtilityService.BOOLEAN_CHOICES],
+    description: 'Generate TypeScript declaration files',
+    flags: '-d, --dts [choice]',
+    preset: 'true'
+  })
+  protected parseDts(val: string): boolean | 'only' {
+    return val === 'only' ? val : this.util.parseBoolean(val)
+  }
+
+  /**
+   * Parses the `--ext` flag.
+   *
+   * @see {@linkcode Opts.ext}
+   *
+   * @protected
+   *
+   * @param {string} val - Value to parse
+   * @return {OutputExtension} Parsed option value
+   * @throws {Error}
+   */
+  @Option({
+    choices: [
       '.cjs',
       '.js',
       '.mjs',
@@ -100,401 +366,9 @@ class MkbuildCommand extends CommandRunner {
       'min.cjs',
       'min.js',
       'min.mjs'
-    ]
-  }
-
-  /**
-   * Returns an array containing `--format` flag choices.
-   *
-   * @see {@linkcode esbuild.Format}
-   *
-   * @protected
-   *
-   * @return {esbuild.Format[]} `--format` flag choices
-   */
-  @OptionChoiceFor({ name: 'format' })
-  protected choicesFormat(): esbuild.Format[] {
-    return ['cjs', 'esm', 'iife']
-  }
-
-  /**
-   * Returns an array containing `--jsx` flag choices.
-   *
-   * @see {@linkcode Jsx}
-   *
-   * @protected
-   *
-   * @return {Jsx[]} `--jsx` flag choices
-   */
-  @OptionChoiceFor({ name: 'jsx' })
-  protected choicesJsx(): Jsx[] {
-    return ['automatic', 'preserve', 'transform']
-  }
-
-  /**
-   * Returns an array containing `--legal-comments` flag choices.
-   *
-   * @see {@linkcode LegalComments}
-   *
-   * @protected
-   *
-   * @return {LegalComments[]} `--legal-comments` flag choices
-   */
-  @OptionChoiceFor({ name: 'legalComments' })
-  protected choicesLegalComments(): LegalComments[] {
-    return ['eof', 'external', 'inline', 'linked', 'none']
-  }
-
-  /**
-   * Returns an array containing `--log-level` flag choices.
-   *
-   * @see {@linkcode esbuild.LogLevel}
-   *
-   * @protected
-   *
-   * @return {esbuild.LogLevel[]} `--log-level` flag choices
-   */
-  @OptionChoiceFor({ name: 'logLevel' })
-  protected choicesLogLevel(): esbuild.LogLevel[] {
-    return ['debug', 'error', 'info', 'silent', 'verbose', 'warning']
-  }
-
-  /**
-   * Returns an array containing `--platform` flag choices.
-   *
-   * @see {@linkcode esbuild.Platform}
-   *
-   * @protected
-   *
-   * @return {esbuild.Platform[]} `--platform` flag choices
-   */
-  @OptionChoiceFor({ name: 'platform' })
-  protected choicesPlatform(): esbuild.Platform[] {
-    return ['browser', 'neutral', 'node']
-  }
-
-  /**
-   * Returns an array containing `--sourcemap` flag choices.
-   *
-   * @see {@linkcode esbuild.BuildOptions.sourcemap}
-   *
-   * @protected
-   *
-   * @return {(Sourcemap | 'false' | 'true')[]} `--sourcemap` flag choices
-   */
-  @OptionChoiceFor({ name: 'sourcemap' })
-  protected choicesSourcemap(): (Sourcemap | 'false' | 'true')[] {
-    return ['false', 'true', 'both', 'external', 'inline', 'linked']
-  }
-
-  /**
-   * Parses the `--alias` flag.
-   *
-   * @see {@linkcode Flags.alias}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {Record<string, string>} Parsed option value
-   */
-  @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
-    description: 'https://esbuild.github.io/api/#alias',
-    flags: '--alias <list>',
-    name: 'alias'
-  })
-  protected parseAlias(val: string): Record<string, string> {
-    return this.util.parseObject(val)
-  }
-
-  /**
-   * Parses the `--asset-names` flag.
-   *
-   * @see {@linkcode Flags.assetNames}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {string} Parsed option value
-   */
-  @Option({
-    defaultValue: 'assets/[name]-[hash]',
-    description: 'https://esbuild.github.io/api/#asset-names',
-    flags: '--asset-names <template>',
-    name: 'assetNames'
-  })
-  protected parseAssetNames(val: string): string {
-    return val
-  }
-
-  /**
-   * Parses the `--banner` flag.
-   *
-   * @see {@linkcode Flags.banner}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {Partial<Record<GeneratedFileType, string>>} Parsed option value
-   */
-  @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
-    description: 'https://esbuild.github.io/api/#banner',
-    flags: '--banner <list>',
-    name: 'banner'
-  })
-  protected parseBanner(val: string): { [K in GeneratedFileType]?: string } {
-    return this.util.parseObject<GeneratedFileType>(val)
-  }
-
-  /**
-   * Parses the `--bundle` flag.
-   *
-   * @see {@linkcode Flags.bundle}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
-   */
-  @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
-    description: 'https://esbuild.github.io/api/#bundle',
-    flags: '-b, --bundle [choice]',
-    name: 'bundle',
-    preset: 'true'
-  })
-  protected parseBundle(val: string): boolean {
-    return this.util.parseBoolean(val)
-  }
-
-  /**
-   * Parses the `--charset` flag.
-   *
-   * @see {@linkcode Flags.charset}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {esbuild.Charset} Parsed option value
-   */
-  @Option({
-    choices: true,
-    description: 'https://esbuild.github.io/api/#charset',
-    flags: '--charset <charset>',
-    name: 'charset'
-  })
-  protected parseCharset(val: string): esbuild.Charset {
-    return cast<esbuild.Charset>(val)
-  }
-
-  /**
-   * Parses the `--chunk-names` flag.
-   *
-   * @see {@linkcode Flags.chunkNames}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {string} Parsed option value
-   */
-  @Option({
-    defaultValue: 'chunks/[name]-[hash]',
-    description: 'https://esbuild.github.io/api/#chunk-names',
-    flags: '--chunk-names <template>',
-    name: 'chunkNames'
-  })
-  protected parseChunkNames(val: string): string {
-    return val
-  }
-
-  /**
-   * Parses the `--clean` flag.
-   *
-   * @see {@linkcode Flags.clean}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
-   */
-  @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: true,
-    description: 'Remove output directories before starting build',
-    flags: '-c, --clean [choice]',
-    name: 'clean',
-    preset: 'true'
-  })
-  protected parseClean(val: string): boolean {
-    return this.util.parseBoolean(val)
-  }
-
-  /**
-   * Parses the `--color` flag.
-   *
-   * @see {@linkcode Flags.color}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
-   */
-  @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: true,
-    description: 'https://esbuild.github.io/api/#color',
-    flags: '--color [choice]',
-    name: 'color',
-    preset: 'true'
-  })
-  protected parseColor(val: string): boolean {
-    return this.util.parseBoolean(val)
-  }
-
-  /**
-   * Parses the `--conditions` flag.
-   *
-   * @see {@linkcode Flags.conditions}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {Set<string>} Parsed option value
-   */
-  @Option({
-    defaultValue: ['import', 'default'],
-    defaultValueDescription: 'import,default',
-    description: 'https://esbuild.github.io/api/#conditions',
-    flags: '--conditions <list>',
-    name: 'conditions'
-  })
-  protected parseConditions(val: string): Set<string> {
-    return this.util.parseList(val)
-  }
-
-  /**
-   * Parses the `--create-require` flag.
-   *
-   * @see {@linkcode Flags.createRequire}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {boolean} Parsed option value
-   */
-  @Option({
-    choices: CHOICES_BOOLEAN,
-    description: 'Insert `require` function definition',
-    flags: '--create-require [choice]',
-    name: 'createRequire',
-    preset: 'true'
-  })
-  protected parseCreateRequire(val: string): boolean {
-    return this.util.parseBoolean(val)
-  }
-
-  /**
-   * Parses the `--cwd` flag.
-   *
-   * @see {@linkcode Flags.cwd}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {string} Parsed option value
-   */
-  @Option({
-    defaultValue: DOT,
-    description: 'Current working directory',
-    flags: '--cwd <directory>',
-    name: 'cwd'
-  })
-  protected parseCwd(val: string): string {
-    return val
-  }
-
-  /**
-   * Parses the `--define` flag.
-   *
-   * @see {@linkcode Flags.define}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {Record<string, string>} Parsed option value
-   */
-  @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
-    description: 'https://esbuild.github.io/api/#define',
-    flags: '--define <list>',
-    name: 'define'
-  })
-  protected parseDefine(val: string): Record<string, string> {
-    return this.util.parseObject(val)
-  }
-
-  /**
-   * Parses the `--drop` flag.
-   *
-   * @see {@linkcode Flags.drop}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {string[]} Parsed option value
-   */
-  @Option({
-    defaultValue: [],
-    defaultValueDescription: "''",
-    description: 'https://esbuild.github.io/api/#drop',
-    flags: '--drop <list>',
-    name: 'drop'
-  })
-  protected parseDrop(val: string): string[] {
-    return [...this.util.parseList(val)]
-  }
-
-  /**
-   * Parses the `--dts` flag.
-   *
-   * @see {@linkcode Flags.dts}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {boolean | 'only'} Parsed option value
-   */
-  @Option({
-    choices: ['only', ...CHOICES_BOOLEAN],
-    description: 'Generate TypeScript declaration files',
-    flags: '-d, --dts [choice]',
-    name: 'dts'
-  })
-  protected parseDts(val: string): boolean | 'only' {
-    return val === 'only' ? val : this.util.parseBoolean(val)
-  }
-
-  /**
-   * Parses the `--ext` flag.
-   *
-   * @see {@linkcode Flags.ext}
-   *
-   * @protected
-   *
-   * @param {string} val - Value to parse
-   * @return {OutputExtension} Parsed option value
-   * @throws {Error}
-   */
-  @Option({
-    choices: true,
+    ],
     description: 'Output file extension',
-    flags: '-e, --ext <ext>',
-    name: 'ext'
+    flags: '-e, --ext <ext>'
   })
   protected parseExt(val: string): OutputExtension {
     return cast<OutputExtension>(val)
@@ -503,7 +377,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--external` flag.
    *
-   * @see {@linkcode Flags.external}
+   * @see {@linkcode Opts.external}
    *
    * @protected
    *
@@ -512,8 +386,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#external',
-    flags: '--external <list>',
-    name: 'external'
+    flags: '--external <list>'
   })
   protected parseExternal(val: string): string[] {
     return [...this.util.parseList(val)]
@@ -522,7 +395,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--footer` flag.
    *
-   * @see {@linkcode Flags.footer}
+   * @see {@linkcode Opts.footer}
    *
    * @protected
    *
@@ -530,20 +403,19 @@ class MkbuildCommand extends CommandRunner {
    * @return {Partial<Record<GeneratedFileType, string>>} Parsed option value
    */
   @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#footer',
-    flags: '--footer <list>',
-    name: 'footer'
+    flags: '--footer <list>'
   })
-  protected parseFooter(val: string): { [K in GeneratedFileType]?: string } {
-    return this.util.parseObject<GeneratedFileType>(val)
+  protected parseFooter(
+    val: string
+  ): EmptyObject | { [K in GeneratedFileType]?: string } {
+    return this.util.parseObject<GeneratedFileType, string>(val)
   }
 
   /**
    * Parses the `--format` flag.
    *
-   * @see {@linkcode Flags.format}
+   * @see {@linkcode Opts.format}
    *
    * @protected
    *
@@ -552,11 +424,10 @@ class MkbuildCommand extends CommandRunner {
    * @throws {Error}
    */
   @Option({
-    choices: true,
-    defaultValue: 'esm',
+    choices: ['cjs', 'esm', 'iife'],
     description: 'Output file format',
-    flags: '-f, --format <format>',
-    name: 'format'
+    fallback: { value: 'esm' },
+    flags: '-f, --format <format>'
   })
   protected parseFormat(val: string): esbuild.Format {
     return cast<esbuild.Format>(val)
@@ -565,7 +436,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--global-name` flag.
    *
-   * @see {@linkcode Flags.globalName}
+   * @see {@linkcode Opts.globalName}
    *
    * @protected
    *
@@ -574,36 +445,16 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#global-name',
-    flags: '--global-name <name>',
-    name: 'globalName'
+    flags: '--global-name <name>'
   })
   protected parseGlobalName(val: string): string {
     return val
   }
 
   /**
-   * Parses the `--help` flag.
-   *
-   * @see {@linkcode Flags.help}
-   *
-   * @protected
-   *
-   * @return {true} Option value
-   */
-  @Option({
-    description: 'Display this message',
-    flags: '-h, --help',
-    name: 'help',
-    preset: true
-  })
-  protected parseHelp(): true {
-    return true
-  }
-
-  /**
    * Parses the `--ignore` flag.
    *
-   * @see {@linkcode Flags.ignore}
+   * @see {@linkcode Opts.ignore}
    *
    * @protected
    *
@@ -611,11 +462,12 @@ class MkbuildCommand extends CommandRunner {
    * @return {Set<string>} Parsed option value
    */
   @Option({
-    defaultValue: [...IGNORE_PATTERNS],
-    defaultValueDescription: JSON.stringify([...IGNORE_PATTERNS].join(',')),
     description: 'Glob patterns to exclude matches in --pattern',
-    flags: '-i, --ignore <list>',
-    name: 'ignore'
+    fallback: {
+      description: JSON.stringify(join([...IGNORE_PATTERNS], ', ')),
+      value: [...IGNORE_PATTERNS]
+    },
+    flags: '-i, --ignore <list>'
   })
   protected parseIgnore(val: string): Set<string> {
     return this.util.parseList(val)
@@ -624,7 +476,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--ignore-annotations` flag.
    *
-   * @see {@linkcode Flags.ignoreAnnotations}
+   * @see {@linkcode Opts.ignoreAnnotations}
    *
    * @protected
    *
@@ -632,11 +484,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#ignore-annotations',
+    fallback: { value: false },
     flags: '--ignore-annotations [choice]',
-    name: 'ignoreAnnotations',
     preset: 'true'
   })
   protected parseIgnoreAnnotations(val: string): boolean {
@@ -646,7 +497,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--inject` flag.
    *
-   * @see {@linkcode Flags.inject}
+   * @see {@linkcode Opts.inject}
    *
    * @protected
    *
@@ -654,11 +505,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {string[]} Parsed option value
    */
   @Option({
-    defaultValue: [],
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#inject',
-    flags: '--inject <list>',
-    name: 'inject'
+    flags: '--inject <list>'
   })
   protected parseInject(val: string): string[] {
     return [...this.util.parseList(val)]
@@ -667,7 +515,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx` flag.
    *
-   * @see {@linkcode Flags.jsx}
+   * @see {@linkcode Opts.jsx}
    *
    * @protected
    *
@@ -675,10 +523,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {Jsx} Parsed option value
    */
   @Option({
-    choices: true,
+    choices: ['automatic', 'preserve', 'transform'],
     description: 'https://esbuild.github.io/api/#jsx',
-    flags: '--jsx <mode>',
-    name: 'jsx'
+    flags: '--jsx <mode>'
   })
   protected parseJsx(val: string): Jsx {
     return cast<Jsx>(val)
@@ -687,7 +534,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx-dev` flag.
    *
-   * @see {@linkcode Flags.jsxDev}
+   * @see {@linkcode Opts.jsxDev}
    *
    * @protected
    *
@@ -695,12 +542,11 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#jsx-dev',
+    fallback: { value: false },
     flags: '--jsx-dev [choice]',
     implies: { jsx: 'automatic' },
-    name: 'jsxDev',
     preset: 'true'
   })
   protected parseJsxDev(val: string): boolean {
@@ -710,7 +556,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx-factory` flag.
    *
-   * @see {@linkcode Flags.jsxFactory}
+   * @see {@linkcode Opts.jsxFactory}
    *
    * @protected
    *
@@ -719,8 +565,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#jsx-factory',
-    flags: '--jsx-factory <factory>',
-    name: 'jsxFactory'
+    flags: '--jsx-factory <factory>'
   })
   protected parseJsxFactory(val: string): string {
     return val
@@ -729,7 +574,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx-fragment` flag.
    *
-   * @see {@linkcode Flags.jsxFragment}
+   * @see {@linkcode Opts.jsxFragment}
    *
    * @protected
    *
@@ -738,8 +583,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#jsx-fragment',
-    flags: '--jsx-fragment <fragment>',
-    name: 'jsxFragment'
+    flags: '--jsx-fragment <fragment>'
   })
   protected parseJsxFragment(val: string): string {
     return val
@@ -748,7 +592,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx-import-source` flag.
    *
-   * @see {@linkcode Flags.jsxImportSource}
+   * @see {@linkcode Opts.jsxImportSource}
    *
    * @protected
    *
@@ -756,10 +600,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {string} Parsed option value
    */
   @Option({
-    defaultValue: 'react',
     description: 'https://esbuild.github.io/api/#jsx-import-source',
-    flags: '--jsx-import-source <source>',
-    name: 'jsxImportSource'
+    fallback: { value: 'react' },
+    flags: '--jsx-import-source <source>'
   })
   protected parseJsxImportSource(val: string): string {
     return val
@@ -768,7 +611,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--jsx-side-effects` flag.
    *
-   * @see {@linkcode Flags.jsxSideEffects}
+   * @see {@linkcode Opts.jsxSideEffects}
    *
    * @protected
    *
@@ -776,11 +619,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#jsx-side-effects',
+    fallback: { value: false },
     flags: '--jsx-side-effects [choice]',
-    name: 'jsxSideEffects',
     preset: 'true'
   })
   protected parseJsxSideEffects(val: string): boolean {
@@ -790,7 +632,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--keep-names` flag.
    *
-   * @see {@linkcode Flags.keepNames}
+   * @see {@linkcode Opts.keepNames}
    *
    * @protected
    *
@@ -798,11 +640,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#keep-names',
+    fallback: { value: false },
     flags: '--keep-names [choice]',
-    name: 'keepNames',
     preset: 'true'
   })
   protected parseKeepNames(val: string): boolean {
@@ -812,7 +653,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--legal-comments` flag.
    *
-   * @see {@linkcode Flags.legalComments}
+   * @see {@linkcode Opts.legalComments}
    *
    * @protected
    *
@@ -820,10 +661,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {LegalComments} Parsed option value
    */
   @Option({
-    choices: true,
+    choices: ['eof', 'external', 'inline', 'linked', 'none'],
     description: 'https://esbuild.github.io/api/#legal-comments',
-    flags: '--legal-comments <choice>',
-    name: 'legalComments'
+    flags: '--legal-comments <choice>'
   })
   protected parseLegalComments(val: string): LegalComments {
     return cast<LegalComments>(val)
@@ -832,7 +672,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--loader` flag.
    *
-   * @see {@linkcode Flags.loader}
+   * @see {@linkcode Opts.loader}
    *
    * @protected
    *
@@ -840,17 +680,19 @@ class MkbuildCommand extends CommandRunner {
    * @return {Record<pathe.Ext, esbuild.Loader>} Parsed option value
    */
   @Option({
-    defaultValue: loaders(),
-    defaultValueDescription: JSON.stringify(
-      join(
-        entries(loaders()).map(([ext, loader]): string => {
-          return `${ext}${pathe.delimiter}${loader}`
-        })
-      )
-    ),
     description: 'https://esbuild.github.io/api/#loader',
-    flags: '--loader <list>',
-    name: 'loader'
+    fallback: {
+      description: JSON.stringify(
+        join(
+          entries(loaders()).map(([ext, loader]): string => {
+            return `${ext}${pathe.delimiter}${loader}`
+          }),
+          ', '
+        )
+      ),
+      value: loaders()
+    },
+    flags: '--loader <list>'
   })
   protected parseLoader(val: string): Record<pathe.Ext, esbuild.Loader> {
     return this.util.parseObject<pathe.Ext, esbuild.Loader>(val)
@@ -859,7 +701,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--log-level` flag.
    *
-   * @see {@linkcode Flags.logLevel}
+   * @see {@linkcode Opts.logLevel}
    *
    * @protected
    *
@@ -867,11 +709,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {esbuild.LogLevel} Parsed option value
    */
   @Option({
-    choices: true,
-    defaultValue: 'info',
+    choices: ['debug', 'error', 'info', 'silent', 'verbose', 'warning'],
     description: 'https://esbuild.github.io/api/#log-level',
-    flags: '--log-level <level>',
-    name: 'logLevel'
+    fallback: { value: 'info' },
+    flags: '--log-level <level>'
   })
   protected parseLogLevel(val: string): esbuild.LogLevel {
     return cast<esbuild.LogLevel>(val)
@@ -880,7 +721,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--log-limit` flag.
    *
-   * @see {@linkcode Flags.logLimit}
+   * @see {@linkcode Opts.logLimit}
    *
    * @protected
    *
@@ -888,10 +729,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {number} Parsed option value
    */
   @Option({
-    defaultValue: 10,
     description: 'https://esbuild.github.io/api/#log-limit',
-    flags: '--log-limit <limit>',
-    name: 'logLimit'
+    fallback: { value: 10 },
+    flags: '--log-limit <limit>'
   })
   protected parseLogLimit(val: string): number {
     return this.util.parseInt(val)
@@ -900,7 +740,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--log-override` flag.
    *
-   * @see {@linkcode Flags.logOverride}
+   * @see {@linkcode Opts.logOverride}
    *
    * @protected
    *
@@ -908,11 +748,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {Record<string, esbuild.LogLevel>} Parsed option value
    */
   @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#log-override',
-    flags: '--log-override <list>',
-    name: 'logOverride'
+    flags: '--log-override <list>'
   })
   protected parseLogOverride(val: string): Record<string, esbuild.LogLevel> {
     return this.util.parseObject<string, esbuild.LogLevel>(val)
@@ -921,7 +758,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--main-fields` flag.
    *
-   * @see {@linkcode Flags.mainFields}
+   * @see {@linkcode Opts.mainFields}
    *
    * @protected
    *
@@ -929,11 +766,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {Set<string>} Parsed option value
    */
   @Option({
-    defaultValue: ['module', 'main'],
-    defaultValueDescription: 'module,main',
     description: 'https://esbuild.github.io/api/#main-fields',
-    flags: '--main-fields <list>',
-    name: 'mainFields'
+    fallback: { description: 'module,main', value: ['module', 'main'] },
+    flags: '--main-fields <list>'
   })
   protected parseMainFields(val: string): Set<string> {
     return this.util.parseList(val)
@@ -942,7 +777,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--mangle-cache` flag.
    *
-   * @see {@linkcode Flags.mangleCache}
+   * @see {@linkcode Opts.mangleCache}
    *
    * @protected
    *
@@ -950,11 +785,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {Record<string, string | false>} Parsed option value
    */
   @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#mangle-cache',
-    flags: '--mangle-cache <list>',
-    name: 'mangleCache'
+    flags: '--mangle-cache <list>'
   })
   protected parseMangleCache(val: string): Record<string, string | false> {
     return this.util.parseObject<string, string | false>(val)
@@ -963,7 +795,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--mangle-props` flag.
    *
-   * @see {@linkcode Flags.mangleProps}
+   * @see {@linkcode Opts.mangleProps}
    *
    * @protected
    *
@@ -972,8 +804,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#mangle-props',
-    flags: '--mangle-props <regex>',
-    name: 'mangleProps'
+    flags: '--mangle-props <regex>'
   })
   protected parseMangleProps(val: string): RegExp {
     return this.util.parseRegExp(val)
@@ -982,7 +813,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--mangle-quoted` flag.
    *
-   * @see {@linkcode Flags.mangleQuoted}
+   * @see {@linkcode Opts.mangleQuoted}
    *
    * @protected
    *
@@ -990,11 +821,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#mangle-quoted',
+    fallback: { value: false },
     flags: '--mangle-quoted [choice]',
-    name: 'mangleQuoted',
     preset: 'true'
   })
   protected parseMangleQuoted(val: string): boolean {
@@ -1004,7 +834,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--minify` flag.
    *
-   * @see {@linkcode Flags.minify}
+   * @see {@linkcode Opts.minify}
    *
    * @protected
    *
@@ -1012,11 +842,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#minify',
+    fallback: { value: false },
     flags: '--minify [choice]',
-    name: 'minify',
     preset: 'true'
   })
   protected parseMinify(val: string): boolean {
@@ -1026,7 +855,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--minify-identifiers` flag.
    *
-   * @see {@linkcode Flags.minifyIdentifiers}
+   * @see {@linkcode Opts.minifyIdentifiers}
    *
    * @protected
    *
@@ -1034,11 +863,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#minify-identifiers',
+    fallback: { value: false },
     flags: '--minify-identifiers [choice]',
-    name: 'minifyIdentifiers',
     preset: 'true'
   })
   protected parseMinifyIdentifiers(val: string): boolean {
@@ -1048,7 +876,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--minify-syntax` flag.
    *
-   * @see {@linkcode Flags.minifySyntax}
+   * @see {@linkcode Opts.minifySyntax}
    *
    * @protected
    *
@@ -1056,11 +884,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#minify-syntax',
+    fallback: { value: false },
     flags: '--minify-syntax [choice]',
-    name: 'minifySyntax',
     preset: 'true'
   })
   protected parseMinifySyntax(val: string): boolean {
@@ -1070,7 +897,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--minify-whitespace` flag.
    *
-   * @see {@linkcode Flags.minifyWhitespace}
+   * @see {@linkcode Opts.minifyWhitespace}
    *
    * @protected
    *
@@ -1078,11 +905,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#minify-whitespace',
+    fallback: { value: false },
     flags: '--minify-whitespace [choice]',
-    name: 'minifyWhitespace',
     preset: 'true'
   })
   protected parseMinifyWhitespace(val: string): boolean {
@@ -1092,7 +918,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--name` flag.
    *
-   * @see {@linkcode Flags.name}
+   * @see {@linkcode Opts.name}
    *
    * @protected
    *
@@ -1100,10 +926,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {string} Parsed option value
    */
   @Option({
-    defaultValue: '[name]',
     description: 'Bundle output file name',
-    flags: '-n, --name <name>',
-    name: 'name'
+    fallback: { value: '[name]' },
+    flags: '-n, --name <name>'
   })
   protected parseName(val: string): string {
     return val
@@ -1112,7 +937,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--out-extension` flag.
    *
-   * @see {@linkcode Flags.outExtension}
+   * @see {@linkcode Opts.outExtension}
    *
    * @protected
    *
@@ -1120,11 +945,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {Record<pathe.Ext, pathe.Ext>} Parsed option value
    */
   @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#out-extension',
-    flags: '--out-extension <list>',
-    name: 'outExtension'
+    flags: '--out-extension <list>'
   })
   protected parseOutExtension(val: string): Record<pathe.Ext, pathe.Ext> {
     return this.util.parseObject<pathe.Ext, pathe.Ext>(val)
@@ -1133,7 +955,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--outbase` flag.
    *
-   * @see {@linkcode Flags.outbase}
+   * @see {@linkcode Opts.outbase}
    *
    * @protected
    *
@@ -1142,8 +964,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#outbase',
-    flags: '--outbase <directory>',
-    name: 'outbase'
+    flags: '--outbase <directory>'
   })
   protected parseOutbase(val: string): string {
     return val
@@ -1152,7 +973,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--outdir` flag.
    *
-   * @see {@linkcode Flags.outdir}
+   * @see {@linkcode Opts.outdir}
    *
    * @protected
    *
@@ -1160,10 +981,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {string} Parsed option value
    */
   @Option({
-    defaultValue: 'dist',
     description: 'Output directory',
-    flags: '-o, --outdir <directory>',
-    name: 'outdir'
+    fallback: { value: 'dist' },
+    flags: '-o, --outdir <directory>'
   })
   protected parseOutdir(val: string): string {
     return val
@@ -1172,7 +992,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--packages` flag.
    *
-   * @see {@linkcode Flags.packages}
+   * @see {@linkcode Opts.packages}
    *
    * @protected
    *
@@ -1182,8 +1002,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     choices: ['external'],
     description: 'https://esbuild.github.io/api/#packages',
-    flags: '--packages <choice>',
-    name: 'packages'
+    flags: '--packages <choice>'
   })
   protected parsePackages(val: string): string {
     return val
@@ -1192,7 +1011,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--pattern` flag.
    *
-   * @see {@linkcode Flags.pattern}
+   * @see {@linkcode Opts.pattern}
    *
    * @protected
    *
@@ -1200,10 +1019,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {Set<string>} Parsed option value
    */
   @Option({
-    defaultValue: '**',
     description: 'Glob patterns matching source files',
-    flags: '-p, --pattern <list>',
-    name: 'pattern'
+    fallback: { value: '**' },
+    flags: '-p, --pattern <list>'
   })
   protected parsePattern(val: string): Set<string> {
     return this.util.parseList(val)
@@ -1212,7 +1030,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--platform` flag.
    *
-   * @see {@linkcode Flags.platform}
+   * @see {@linkcode Opts.platform}
    *
    * @protected
    *
@@ -1220,11 +1038,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {esbuild.Platform} Parsed option value
    */
   @Option({
-    choices: true,
-    defaultValue: 'neutral',
+    choices: ['browser', 'neutral', 'node'],
     description: 'https://esbuild.github.io/api/#platform',
-    flags: '--platform <platform>',
-    name: 'platform'
+    fallback: { value: 'neutral' },
+    flags: '--platform <platform>'
   })
   protected parsePlatform(val: string): esbuild.Platform {
     return cast<esbuild.Platform>(val)
@@ -1233,7 +1050,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--preserve-symlinks` flag.
    *
-   * @see {@linkcode Flags.preserveSymlinks}
+   * @see {@linkcode Opts.preserveSymlinks}
    *
    * @protected
    *
@@ -1241,11 +1058,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#preserve-symlinks',
+    fallback: { value: false },
     flags: '--preserve-symlinks [choice]',
-    name: 'preserveSymlinks',
     preset: 'true'
   })
   protected parsePreserveSymlinks(val: string): boolean {
@@ -1255,7 +1071,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--public-path` flag.
    *
-   * @see {@linkcode Flags.publicPath}
+   * @see {@linkcode Opts.publicPath}
    *
    * @protected
    *
@@ -1264,8 +1080,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#public-path',
-    flags: '--public-path <path>',
-    name: 'publicPath'
+    flags: '--public-path <path>'
   })
   protected parsePublicPath(val: string): string {
     return val
@@ -1274,7 +1089,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--pure` flag.
    *
-   * @see {@linkcode Flags.pure}
+   * @see {@linkcode Opts.pure}
    *
    * @protected
    *
@@ -1282,11 +1097,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {string[]} Parsed option value
    */
   @Option({
-    defaultValue: [],
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#pure',
-    flags: '--pure <list>',
-    name: 'pure'
+    flags: '--pure <list>'
   })
   protected parsePure(val: string): string[] {
     return [...this.util.parseList(val)]
@@ -1295,7 +1107,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--reserve-props` flag.
    *
-   * @see {@linkcode Flags.reserveProps}
+   * @see {@linkcode Opts.reserveProps}
    *
    * @protected
    *
@@ -1304,8 +1116,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#reserve-props',
-    flags: '--reserve-props <regex>',
-    name: 'reserveProps'
+    flags: '--reserve-props <regex>'
   })
   protected parseReserveProps(val: string): RegExp {
     return this.util.parseRegExp(val)
@@ -1314,7 +1125,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--resolve-extensions` flag.
    *
-   * @see {@linkcode Flags.resolveExtensions}
+   * @see {@linkcode Opts.resolveExtensions}
    *
    * @protected
    *
@@ -1322,13 +1133,12 @@ class MkbuildCommand extends CommandRunner {
    * @return {Set<string>} Parsed option value
    */
   @Option({
-    defaultValue: [...mlly.RESOLVE_EXTENSIONS],
-    defaultValueDescription: JSON.stringify(
-      [...mlly.RESOLVE_EXTENSIONS].join(',')
-    ),
     description: 'Resolvable file extensions',
-    flags: '--resolve-extensions <list>',
-    name: 'resolveExtensions'
+    fallback: {
+      description: JSON.stringify(join([...mlly.RESOLVE_EXTENSIONS])),
+      value: [...mlly.RESOLVE_EXTENSIONS]
+    },
+    flags: '--resolve-extensions <list>'
   })
   protected parseResolveExtensions(val: string): Set<string> {
     return this.util.parseList(val)
@@ -1337,7 +1147,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--serve` flag.
    *
-   * @see {@linkcode Flags.serve}
+   * @see {@linkcode Opts.serve}
    *
    * @protected
    *
@@ -1345,12 +1155,11 @@ class MkbuildCommand extends CommandRunner {
    * @return {esbuild.ServeOptions | false} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#serve',
+    fallback: { value: false },
     flags: '-S, --serve [choice]',
     implies: { logLevel: 'info' },
-    name: 'serve',
     preset: 'true'
   })
   protected parseServe(val: string): esbuild.ServeOptions | false {
@@ -1368,8 +1177,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'https://esbuild.github.io/api/#serve-arguments',
     flags: '--serve.certfile <path>',
-    implies: { logLevel: 'info', serve: {} },
-    name: 'serve.certfile'
+    implies: { logLevel: 'info', serve: {} }
   })
   protected parseServeCertfile(val: string): string {
     return val
@@ -1386,8 +1194,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'https://esbuild.github.io/api/#serve-arguments',
     flags: '--serve.servedir <directory>',
-    implies: { logLevel: 'info', serve: {} },
-    name: 'serve.servedir'
+    implies: { logLevel: 'info', serve: {} }
   })
   protected parseServeDir(val: string): string {
     return val
@@ -1402,11 +1209,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {string} Parsed option value
    */
   @Option({
-    defaultValue: '0.0.0.0',
     description: 'https://esbuild.github.io/api/#serve-arguments',
+    fallback: { value: '0.0.0.0' },
     flags: '--serve.host <host>',
-    implies: { logLevel: 'info', serve: {} },
-    name: 'serve.host'
+    implies: { logLevel: 'info', serve: {} }
   })
   protected parseServeHost(val: string): string {
     return val
@@ -1423,8 +1229,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'https://esbuild.github.io/api/#serve-arguments',
     flags: '--serve.keyfile <path>',
-    implies: { logLevel: 'info', serve: {} },
-    name: 'serve.keyfile'
+    implies: { logLevel: 'info', serve: {} }
   })
   protected parseServeKeyfile(val: string): string {
     return val
@@ -1441,8 +1246,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description: 'https://esbuild.github.io/api/#serve-arguments',
     flags: '--serve.port <port>',
-    implies: { logLevel: 'info', serve: {} },
-    name: 'serve.port'
+    implies: { logLevel: 'info', serve: {} }
   })
   protected parseServePort(val: string): number {
     return this.util.parseInt(val)
@@ -1451,7 +1255,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--source` flag.
    *
-   * @see {@linkcode Flags.source}
+   * @see {@linkcode Opts.source}
    *
    * @protected
    *
@@ -1461,8 +1265,7 @@ class MkbuildCommand extends CommandRunner {
   @Option({
     description:
       'Directory containing source files or relative path to bundle input',
-    flags: '-s, --source <path>',
-    name: 'source'
+    flags: '-s, --source <path>'
   })
   protected parseSource(val: string): string {
     return val
@@ -1471,7 +1274,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--source-root` flag.
    *
-   * @see {@linkcode Flags.sourceRoot}
+   * @see {@linkcode Opts.sourceRoot}
    *
    * @protected
    *
@@ -1480,8 +1283,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#source-root',
-    flags: '--source-root <root>',
-    name: 'sourceRoot'
+    flags: '--source-root <root>'
   })
   protected parseSourceRoot(val: string): string {
     return val
@@ -1490,7 +1292,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--sourcemap` flag.
    *
-   * @see {@linkcode Flags.sourcemap}
+   * @see {@linkcode Opts.sourcemap}
    *
    * @protected
    *
@@ -1498,25 +1300,24 @@ class MkbuildCommand extends CommandRunner {
    * @return {Sourcemap | boolean} Parsed option value
    */
   @Option({
-    choices: true,
-    defaultValue: false,
+    choices: ['false', 'true', 'both', 'external', 'inline', 'linked'],
     description: 'https://esbuild.github.io/api/#sourcemap',
+    fallback: { value: false },
     flags: '--sourcemap [choice]',
-    name: 'sourcemap',
     preset: 'true'
   })
   protected parseSourcemap(val: string): Sourcemap | boolean {
-    try {
-      return this.util.parseBoolean(val)
-    } catch {
-      return cast<Sourcemap>(val)
-    }
+    return ifelse(
+      isBooleanish(val),
+      this.util.parseBoolean(val),
+      cast<Sourcemap>(val)
+    )
   }
 
   /**
    * Parses the `--sources-content` flag.
    *
-   * @see {@linkcode Flags.sourcesContent}
+   * @see {@linkcode Opts.sourcesContent}
    *
    * @protected
    *
@@ -1524,11 +1325,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#sources-content',
+    fallback: { value: false },
     flags: '--sources-content [choice]',
-    name: 'sourcesContent',
     preset: 'true'
   })
   protected parseSourcesContent(val: string): boolean {
@@ -1538,7 +1338,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--splitting` flag.
    *
-   * @see {@linkcode Flags.splitting}
+   * @see {@linkcode Opts.splitting}
    *
    * @protected
    *
@@ -1546,11 +1346,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#splitting',
+    fallback: { value: false },
     flags: '--splitting [choice]',
-    name: 'splitting',
     preset: 'true'
   })
   protected parseSplitting(val: string): boolean {
@@ -1560,7 +1359,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--supported` flag.
    *
-   * @see {@linkcode Flags.supported}
+   * @see {@linkcode Opts.supported}
    *
    * @protected
    *
@@ -1568,11 +1367,8 @@ class MkbuildCommand extends CommandRunner {
    * @return {Record<string, boolean>} Parsed option value
    */
   @Option({
-    defaultValue: {},
-    defaultValueDescription: "''",
     description: 'https://esbuild.github.io/api/#supported',
-    flags: '--supported <list>',
-    name: 'supported'
+    flags: '--supported <list>'
   })
   protected parseSupported(val: string): Record<string, boolean> {
     return this.util.parseObject<string, boolean>(val)
@@ -1581,7 +1377,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--target` flag.
    *
-   * @see {@linkcode Flags.target}
+   * @see {@linkcode Opts.target}
    *
    * @protected
    *
@@ -1590,8 +1386,7 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#target',
-    flags: '--target <list>',
-    name: 'target'
+    flags: '--target <list>'
   })
   protected parseTarget(val: string): string[] {
     return [...this.util.parseList(val)]
@@ -1600,7 +1395,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--tree-shaking` flag.
    *
-   * @see {@linkcode Flags.treeShaking}
+   * @see {@linkcode Opts.treeShaking}
    *
    * @protected
    *
@@ -1608,10 +1403,9 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'https://esbuild.github.io/api/#tree-shaking',
     flags: '--tree-shaking [choice]',
-    name: 'treeShaking',
     preset: 'true'
   })
   protected parseTreeShaking(val: string): boolean {
@@ -1621,7 +1415,7 @@ class MkbuildCommand extends CommandRunner {
   /**
    * Parses the `--tsconfig` flag.
    *
-   * @see {@linkcode Flags.tsconfig}
+   * @see {@linkcode Opts.tsconfig}
    *
    * @protected
    *
@@ -1630,36 +1424,16 @@ class MkbuildCommand extends CommandRunner {
    */
   @Option({
     description: 'https://esbuild.github.io/api/#tsconfig',
-    flags: '--tsconfig <tsconfig>',
-    name: 'tsconfig'
+    flags: '--tsconfig <tsconfig>'
   })
   protected parseTsconfig(val: string): string {
     return val
   }
 
   /**
-   * Parses the `--version` flag.
-   *
-   * @see {@linkcode Flags.version}
-   *
-   * @protected
-   *
-   * @return {true} Option value
-   */
-  @Option({
-    description: 'Print version number',
-    flags: '-v, --version',
-    name: 'version',
-    preset: true
-  })
-  protected parseVersion(): true {
-    return true
-  }
-
-  /**
    * Parses the `--watch` flag.
    *
-   * @see {@linkcode Flags.watch}
+   * @see {@linkcode Opts.watch}
    *
    * @protected
    *
@@ -1667,11 +1441,10 @@ class MkbuildCommand extends CommandRunner {
    * @return {boolean} Parsed option value
    */
   @Option({
-    choices: CHOICES_BOOLEAN,
-    defaultValue: false,
+    choices: CliUtilityService.BOOLEAN_CHOICES,
     description: 'Watch files',
+    fallback: { value: false },
     flags: '-w, --watch [choice]',
-    name: 'watch',
     preset: 'true'
   })
   protected parseWatch(val: string): boolean {
@@ -1684,48 +1457,35 @@ class MkbuildCommand extends CommandRunner {
    * @public
    * @async
    *
-   * @param {string[]} _ - Command arguments
-   * @param {Flags} [flags={}] - Command options
+   * @param {string[]} args - Parsed command arguments
+   * @param {Opts} opts - Parsed command options
    * @return {Promise<void>} Nothing when complete
    */
-  public async run(_: string[], flags: Flags = {}): Promise<void> {
+  public async run(args: string[], opts: Opts): Promise<void> {
     // remove defaults to prevent accidental config file option override
-    for (const key of keys(flags)) {
+    for (const key of keys<Opts, undefined>(opts)) {
       if (this.command.getOptionValueSource(key) !== 'default') continue
-      Reflect.deleteProperty(flags, key)
+      Reflect.deleteProperty(opts, key)
     }
 
-    // print help text and exit
-    if (flags.help) return void consola.log(this.help.formatHelp(this.command))
-
-    // print version number and exit
-    if (flags.version) return void consola.log(pkg.version)
-
     // run make
-    return void (await make(set(construct(flags), 'write', true)))
+    return void (await make(cast(construct(set(opts, 'write', true)))))
   }
 
   /**
-   * Sets {@linkcode command}.
+   * Set the current command.
    *
-   * @protected
+   * @see {@linkcode command}
+   *
+   * @public
    * @override
    *
-   * @param {commander.Command} cmd - CLI command instance
-   * @return {this} `this`
+   * @param {commander.Command} cmd - New command instance
+   * @return {this} `this` command runner
    */
   public override setCommand(cmd: commander.Command): this {
-    cmd.addHelpCommand(false)
-    cmd.allowExcessArguments()
-    cmd.allowUnknownOption(false)
-    cmd.combineFlagAndOptionalValue(false)
-    cmd.createHelp = constant(this.help)
-    cmd.enablePositionalOptions()
-    cmd.helpOption(false)
     cmd.showHelpAfterError()
-    cmd.showSuggestionAfterError()
-    this.command = cmd
-    return this
+    return super.setCommand(cmd)
   }
 }
 

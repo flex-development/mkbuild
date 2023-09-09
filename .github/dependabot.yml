@@ -33,24 +33,13 @@ updates:
     groups:
       conventional-changelog:
         patterns:
-          - '@types/conventional-changelog'
-          - '@types/conventional-changelog-core'
-          - '@types/conventional-changelog-writer'
-          - '@types/conventional-recommended-bump'
-          - '@types/git-raw-commits'
-          - conventional-changelog
-          - conventional-changelog-conventionalcommits
-          - conventional-changelog-core
-          - conventional-changelog-writer
           - conventional-recommended-bump
       flex-development:
         patterns:
           - '@flex-development/*'
-      nest-commander:
+      nestjs:
         patterns:
           - '@nestjs/*'
-          - commander
-          - nest-commander*
       typescript-eslint:
         patterns:
           - '@typescript-eslint/*'

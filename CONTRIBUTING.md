@@ -95,21 +95,21 @@ Follow the steps below to setup your local development environment:
 
 10. Reload shell
 
-   ```sh
-   exec $SHELL
-   ```
+    ```sh
+    exec $SHELL
+    ```
 
 ### Environment Variables
 
-| name                    |
-| ----------------------- |
-| `CODECOV_TOKEN`         |
-| `GITHUB_TOKEN`          |
-| `HOMEBREW_BREWFILE`     |
-| `NODE_ENV`              |
-| `NODE_NO_WARNINGS`      |
-| `PAT_BOT`               |
-| `ZSH_DOTENV_FILE`       |
+| name                |
+| ------------------- |
+| `CODECOV_TOKEN`     |
+| `GITHUB_TOKEN`      |
+| `HOMEBREW_BREWFILE` |
+| `NODE_ENV`          |
+| `NODE_NO_WARNINGS`  |
+| `PAT_BOT`           |
+| `ZSH_DOTENV_FILE`   |
 
 #### GitHub Actions
 
@@ -263,8 +263,8 @@ To manually upload coverage reports:
 ### Getting Help
 
 If you need help, make note of any issues in their respective files in the form of a [JSDoc comment][12]. If you need
-help with a test, don't forget to use [`it.skip`][15] and/or [`it.todo`][16]. Afterwards, [start a discussion in the
-Q&A category][19].
+help with a test, don't forget to use [`it.skip`][15] and/or [`it.todo`][16]. Afterwards, [start a discussion in the Q&A
+category][19].
 
 ## Labels
 

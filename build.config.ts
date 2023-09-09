@@ -35,12 +35,11 @@ const config: Config = defineBuildConfig({
         '@flex-development/mlly': '@flex-development/mlly',
         '@flex-development/pathe': '@flex-development/pathe',
         '@flex-development/tutils': '@flex-development/tutils',
-        commander: 'node_modules/commander/esm.mjs',
         dequal: 'dequal',
-        iterare: 'node_modules/@nestjs/common/node_modules/iterare',
+        iterare: 'iterare',
         lodash: 'lodash-es',
         tslib: 'tslib',
-        uid: 'node_modules/@nestjs/common/node_modules/uid'
+        uid: 'uid'
       },
       bundle: true,
       external: [
@@ -51,11 +50,8 @@ const config: Config = defineBuildConfig({
         'cache-manager',
         'class-transformer',
         'class-validator',
-        'node-fetch',
-        'reflect-metadata',
-        'rxjs'
+        'node-fetch'
       ],
-      keepNames: true,
       minify: true,
       name: 'cli',
       platform: 'node',
@@ -64,6 +60,7 @@ const config: Config = defineBuildConfig({
       sourcesContent: false
     }
   ],
+  keepNames: true,
   minifySyntax: true,
   sourceRoot: 'file' + pathe.delimiter + pathe.sep.repeat(2),
   target: [

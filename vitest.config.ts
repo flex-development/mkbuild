@@ -4,16 +4,19 @@
  * @see https://vitest.dev/config/
  */
 
+import { DECORATOR_REGEX } from '@flex-development/decorator-regex'
 import pathe from '@flex-development/pathe'
+import { cast, split, type Nullable } from '@flex-development/tutils'
+import swc from '@swc/core'
 import ci from 'is-ci'
 import tsconfigpaths from 'vite-tsconfig-paths'
-import GithubActionsReporter from 'vitest-github-actions-reporter'
 import {
   defineConfig,
   type UserConfig,
   type UserConfigExport
 } from 'vitest/config'
 import { BaseSequencer, type WorkspaceSpec } from 'vitest/node'
+import tsconfig from './tsconfig.json' assert { type: 'json' }
 
 /**
  * Vitest configuration export.
@@ -32,7 +35,82 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
 
   return {
     define: {},
-    plugins: [tsconfigpaths({ projects: [pathe.resolve('tsconfig.json')] })],
+    plugins: [
+      {
+        enforce: 'pre',
+        name: 'decorators',
+
+        /**
+         * Transforms source `code` containing decorators.
+         *
+         * @see https://github.com/swc-project/swc/issues/3854
+         *
+         * @param {string} code - Source code
+         * @param {string} id - Module id of source code
+         * @return {Promise<Nullable<{ code: string }>>} Transform result
+         */
+        async transform(
+          code: string,
+          id: string
+        ): Promise<Nullable<{ code: string }>> {
+          // do nothing if source code does not contain decorators
+          DECORATOR_REGEX.lastIndex = 0
+          if (!DECORATOR_REGEX.test(code)) return null
+
+          /**
+           * Regular expression used to match constructor parameters.
+           *
+           * @see https://regex101.com/r/kTq0JK
+           *
+           * @const {RegExp} CONSTRUCTOR_PARAMS_REGEX
+           */
+          const CONSTRUCTOR_PARAMS_REGEX: RegExp =
+            /(?<=constructor\(\s*)([^\n)].+?)(?=\n? *?\) ?{)/gs
+
+          // add "/* c8 ignore next */" before constructor parameters
+          for (const [match] of code.matchAll(CONSTRUCTOR_PARAMS_REGEX)) {
+            code = code.replace(match, (params: string): string => {
+              return split(params, '\n').reduce((acc, param) => {
+                return acc.replace(
+                  param,
+                  param.replace(/(\S)/, '/* c8 ignore next */ $1')
+                )
+              }, params)
+            })
+          }
+
+          return {
+            code: (
+              await swc.transform(code, {
+                configFile: false,
+                filename: id,
+                inlineSourcesContent: true,
+                jsc: {
+                  keepClassNames: true,
+                  parser: {
+                    decorators: true,
+                    dynamicImport: true,
+                    syntax: 'typescript',
+                    tsx: pathe.extname(id) === '.tsx'
+                  },
+                  target: cast<swc.JscTarget>(tsconfig.compilerOptions.target),
+                  transform: {
+                    decoratorMetadata:
+                      tsconfig.compilerOptions.emitDecoratorMetadata,
+                    legacyDecorator: true,
+                    useDefineForClassFields:
+                      tsconfig.compilerOptions.useDefineForClassFields
+                  }
+                },
+                sourceMaps: 'inline',
+                swcrc: false
+              })
+            ).code
+          }
+        }
+      },
+      tsconfigpaths({ projects: [pathe.resolve('tsconfig.json')] })
+    ],
     test: {
       allowOnly: !ci,
       benchmark: {},
@@ -50,14 +128,14 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
           '**/__mocks__/**',
           '**/__tests__/**',
           '**/index.ts',
-          'src/interfaces/',
-          'src/plugins/**/options.ts',
-          'src/types/'
+          '**/interfaces/',
+          '**/types/',
+          'src/plugins/**/options.ts'
         ],
         extension: ['.ts'],
         include: ['src'],
         provider: 'v8',
-        reporter: [ci ? 'lcovonly' : 'html', 'text'],
+        reporter: [...(ci ? [] : (['html'] as const)), 'lcovonly', 'text'],
         reportsDirectory: './coverage',
         skipFull: false
       },
@@ -76,7 +154,7 @@ const config: UserConfigExport = defineConfig((): UserConfig => {
       reporters: [
         'json',
         'verbose',
-        ci ? new GithubActionsReporter() : './__tests__/reporters/notifier.ts'
+        ...(ci ? [] : ['./__tests__/reporters/notifier.ts'])
       ],
       /**
        * Stores snapshots next to `file`'s directory.

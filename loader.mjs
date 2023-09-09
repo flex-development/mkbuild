@@ -73,6 +73,20 @@ export const load = async (url, context) => {
    */
   let source = await mlly.getSource(url, { format: context.format })
 
+  // emit decorator metadata
+  DECORATOR_REGEX.lastIndex = 0
+  if (DECORATOR_REGEX.test(source)) {
+    const { outputText } = ts.transpileModule(source, {
+      compilerOptions: tscu.normalizeCompilerOptions({
+        ...compilerOptions,
+        sourceMap: false
+      }),
+      fileName: url
+    })
+
+    source = outputText
+  }
+
   // transform typescript files
   if (/^\.(?:cts|mts|tsx?)$/.test(ext) && !/\.d\.(?:cts|mts|ts)$/.test(url)) {
     // push require condition for .cts files and update format
@@ -96,19 +110,10 @@ export const load = async (url, context) => {
       parent: url
     })
 
-    // emit decorator metadata
-    if (DECORATOR_REGEX.test(source)) {
-      const { outputText } = ts.transpileModule(source, {
-        compilerOptions: { ...compilerOptions, sourceMap: false },
-        fileName: url
-      })
-
-      source = outputText
-    }
-
     // transpile source code
     const { code } = await esbuild.transform(source, {
       format: 'esm',
+      keepNames: true,
       loader: ext.slice(/^\.[cm]/.test(ext) ? 2 : 1),
       minify: false,
       sourcefile: fileURLToPath(url),
@@ -121,7 +126,11 @@ export const load = async (url, context) => {
     source = code
   }
 
-  return { format: context.format, shortCircuit: true, source }
+  return {
+    format: context.format,
+    shortCircuit: true,
+    source: context.format === mlly.Format.COMMONJS ? null : source
+  }
 }
 
 /**

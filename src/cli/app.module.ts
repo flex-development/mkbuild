@@ -3,47 +3,35 @@
  * @module mkbuild/cli/AppModule
  */
 
-import { cast, isArray, template } from '@flex-development/tutils'
+import type * as commander from '@flex-development/nest-commander/commander'
+import { cast, isArray, isObject, template } from '@flex-development/tutils'
 import { Module } from '@nestjs/common'
-import type * as commander from 'commander'
 import consola from 'consola'
 import type * as esbuild from 'esbuild'
 import color from 'tinyrainbow'
 import { MkbuildCommand } from './commands'
-import { HelpService, UtilityService } from './providers'
+import type { Opts } from './interfaces'
 
 /**
  * CLI application module.
  *
  * @class
  */
-@Module({ providers: [MkbuildCommand, HelpService, UtilityService] })
+@Module({ providers: [MkbuildCommand] })
 class AppModule {
   /**
-   * Commander error handler.
-   *
-   * @see {@linkcode commander.Command.exitOverride}
-   * @see {@linkcode commander.CommanderError}
-   * @see https://github.com/jmcdo29/nest-commander/blob/nest-commander%403.6.1/packages/nest-commander/src/command-runner.service.ts#L49-L51
+   * Callback ran after command-line arguments are parsed and the CLI program
+   * has run successfully.
    *
    * @public
    * @static
    *
-   * @param {commander.CommanderError} error - Error to handle
+   * @param {string[]} args - Parsed command arguments
+   * @param {Partial<Opts>} opts - Parsed command options
    * @return {void} Nothing when complete
    */
-  public static errorHandler(error: commander.CommanderError): void {
-    if (error.exitCode) {
-      consola.log(
-        template('{{0} {1} {2}', {
-          0: color.red('✘'),
-          1: color.bgRed('[ERROR]'),
-          2: color.white(error.message)
-        })
-      )
-    }
-
-    return void (process.exitCode = error.exitCode)
+  public static done(args: string[], opts: Partial<Opts>): void {
+    return void (!isObject(opts.serve) && !opts.watch && process.exit())
   }
 
   /**
@@ -55,7 +43,7 @@ class AppModule {
    * @param {Error} error - Error to handle
    * @return {void} Nothing when complete
    */
-  public static serviceErrorHandler(error: Error): void {
+  public static error(error: Error): void {
     const { errors, warnings } = cast<esbuild.BuildFailure>(error)
 
     // format and log non-esbuild error
@@ -70,6 +58,33 @@ class AppModule {
     }
 
     return void (process.exitCode = 1)
+  }
+
+  /**
+   * Commander error handler.
+   *
+   * @see {@linkcode commander.Command.exitOverride}
+   * @see {@linkcode commander.CommanderError}
+   * @see https://github.com/jmcdo29/nest-commander/blob/nest-commander%403.6.1/packages/nest-commander/src/command-runner.service.ts#L49-L51
+   *
+   * @public
+   * @static
+   *
+   * @param {commander.CommanderError} error - Error to handle
+   * @return {void} Nothing when complete
+   */
+  public static exit(error: commander.CommanderError): void {
+    if (error.exitCode) {
+      consola.log(
+        template('{{0} {1} {2}', {
+          0: color.red('✘'),
+          1: color.bgRed('[ERROR]'),
+          2: color.white(error.message)
+        })
+      )
+    }
+
+    return void (process.exitCode = error.exitCode)
   }
 }
 

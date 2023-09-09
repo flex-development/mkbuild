@@ -2,8 +2,10 @@ ardatan
 atoi
 attw
 bdougie
+booleanish
 cefc
 codecov
+commitish
 commitlintrc
 dedupe
 defu
@@ -11,11 +13,13 @@ dequal
 dessant
 dists
 dohm
+emojify
 esbuild
 evanw
 fbca
 ggshield
 gpgsign
+groupby
 hmarr
 iife
 infile
@@ -36,6 +40,7 @@ onrequest
 pathe
 pkgs
 preid
+swcrc
 toodles
 tribonacci
 tscu

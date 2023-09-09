@@ -326,7 +326,8 @@ const config = {
           2,
           {
             ignoreConditionalTests: true,
-            ignoreMixedLogicalExpressions: true
+            ignoreMixedLogicalExpressions: true,
+            ignorePrimitives: { string: true }
           }
         ],
         '@typescript-eslint/prefer-optional-chain': 2,
@@ -376,7 +377,7 @@ const config = {
           {
             allowAny: false,
             allowNullableBoolean: true,
-            allowNullableNumber: false,
+            allowNullableNumber: true,
             allowNullableObject: true,
             allowNullableString: true,
             allowNumber: true,
@@ -594,6 +595,7 @@ const config = {
         'no-return-await': 0,
         'no-shadow': 0,
         'no-sparse-arrays': 0,
+        'no-throw-literal': 0,
         'no-unused-expressions': 0,
         'no-unused-vars': 0,
         'no-use-before-define': 0,
@@ -634,7 +636,7 @@ const config = {
         'padding-line-between-statements': 0,
         'prefer-arrow-callback': 0,
         'promise/always-return': 2,
-        'promise/avoid-new': 2,
+        'promise/avoid-new': 0,
         'promise/catch-or-return': [2, { allowFinally: true, allowThen: true }],
         'promise/no-callback-in-promise': 2,
         'promise/no-native': 0,
@@ -644,7 +646,7 @@ const config = {
         'promise/no-return-in-finally': 2,
         'promise/no-return-wrap': [2, { allowReject: false }],
         'promise/param-names': 2,
-        'promise/prefer-await-to-callbacks': 2,
+        'promise/prefer-await-to-callbacks': 1,
         'promise/prefer-await-to-then': 2,
         'promise/valid-params': 2,
         quotes: 0,
@@ -687,7 +689,6 @@ const config = {
           2,
           {
             styles: {
-              chalk: { default: true },
               shelljs: { default: true }
             }
           }
@@ -697,7 +698,7 @@ const config = {
         'unicorn/no-array-callback-reference': 0,
         'unicorn/no-array-for-each': 2,
         'unicorn/no-array-method-this-argument': 2,
-        'unicorn/no-array-push-push': 2,
+        'unicorn/no-array-push-push': 0,
         'unicorn/no-array-reduce': 0,
         'unicorn/no-await-expression-member': 0,
         'unicorn/no-console-spaces': 2,
@@ -802,6 +803,7 @@ const config = {
         'jsdoc/no-undefined-types': 0,
         'jsdoc/require-file-overview': 0,
         'no-var': 0,
+        'unicorn/filename-case': 0,
         'unicorn/no-keyword-prefix': 0
       }
     },
@@ -831,9 +833,9 @@ const config = {
         chai: true,
         describe: true,
         expect: true,
-        faker: fs.existsSync('node_modules/@faker-js/faker/package.json'),
+        faker: fs.existsSync('node_modules/@faker-js/faker'),
         it: true,
-        pf: fs.existsSync('node_modules/pretty-format/package.json'),
+        pf: fs.existsSync('node_modules/pretty-format'),
         suite: true,
         test: true,
         vi: true,
@@ -845,7 +847,9 @@ const config = {
         '@typescript-eslint/consistent-indexed-object-style': 0,
         '@typescript-eslint/no-base-to-string': 0,
         '@typescript-eslint/no-empty-function': 0,
+        '@typescript-eslint/no-invalid-void-type': 0,
         '@typescript-eslint/no-unused-expressions': 0,
+        '@typescript-eslint/prefer-as-const': 0,
         '@typescript-eslint/prefer-ts-expect-error': 0,
         '@typescript-eslint/require-await': 0,
         '@typescript-eslint/restrict-template-expressions': 0,
@@ -887,7 +891,8 @@ const config = {
     {
       files: ['**/decorators/*.constraint.ts', '**/*.decorator.ts'],
       rules: {
-        '@typescript-eslint/ban-types': 0
+        '@typescript-eslint/ban-types': 0,
+        '@typescript-eslint/no-invalid-void-type': 0
       }
     },
     {
@@ -898,11 +903,9 @@ const config = {
       }
     },
     {
-      extends: ['plugin:@graphql-eslint/operations-all'],
-      files: '**/*.gql',
+      files: '**/*.+(cjs|js|mjs)',
       rules: {
-        '@graphql-eslint/no-anonymous-operations': 0,
-        '@graphql-eslint/require-id-when-available': 0
+        '@typescript-eslint/explicit-member-accessibility': 0
       }
     },
     {
@@ -941,6 +944,34 @@ const config = {
         'jsonc/sort-keys': [
           2,
           {
+            order: { caseSensitive: true, type: 'asc' },
+            pathPattern: '^$'
+          }
+        ],
+        'jsonc/valid-json-number': 2,
+        'jsonc/vue-custom-block/no-parsing-error': 2
+      }
+    },
+    {
+      files: ['**/*.+(json5|jsonc)', 'tsconfig*.json'],
+      rules: {
+        'jsonc/no-comments': 0
+      }
+    },
+    {
+      extends: ['plugin:@graphql-eslint/operations-all'],
+      files: '**/*.gql',
+      rules: {
+        '@graphql-eslint/no-anonymous-operations': 0,
+        '@graphql-eslint/require-id-when-available': 0
+      }
+    },
+    {
+      files: ['**/package.json'],
+      rules: {
+        'jsonc/sort-keys': [
+          2,
+          {
             order: [
               'name',
               'description',
@@ -970,20 +1001,8 @@ const config = {
               'readme'
             ],
             pathPattern: '^$'
-          },
-          {
-            order: { caseSensitive: true, type: 'asc' },
-            pathPattern: '^$'
           }
-        ],
-        'jsonc/valid-json-number': 2,
-        'jsonc/vue-custom-block/no-parsing-error': 2
-      }
-    },
-    {
-      files: ['**/*.+(json5|jsonc)', 'tsconfig*.json'],
-      rules: {
-        'jsonc/no-comments': 0
+        ]
       }
     },
     {
@@ -1010,6 +1029,7 @@ const config = {
         '@typescript-eslint/no-misused-promises': 0,
         '@typescript-eslint/no-mixed-enums': 0,
         '@typescript-eslint/no-redundant-type-constituents': 0,
+        '@typescript-eslint/no-throw-literal': 0,
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': 0,
         '@typescript-eslint/no-unnecessary-condition': 0,
         '@typescript-eslint/no-unnecessary-qualifier': 0,
@@ -1051,6 +1071,7 @@ const config = {
       plugins: ['yml'],
       rules: {
         'prettier/prettier': 0,
+        'spaced-comment': 0,
         'yml/block-mapping': 2,
         'yml/block-mapping-question-indicator-newline': [2, 'never'],
         'yml/block-sequence': 2,
@@ -1156,6 +1177,12 @@ const config = {
       files: ['.github/workflows/*.yml', '.yarnrc.yml'],
       rules: {
         'yml/key-name-casing': 0
+      }
+    },
+    {
+      files: ['.vscode/launch.json'],
+      rules: {
+        'jsonc/sort-keys': 0
       }
     }
   ],

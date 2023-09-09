@@ -3,6 +3,7 @@
  * @module tests/setup
  */
 
+import 'reflect-metadata'
 import './chai'
 import './faker'
 import './matchers'

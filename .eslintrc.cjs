@@ -13,9 +13,9 @@ const config = {
   overrides: [
     ...require('./.eslintrc.base.cjs').overrides,
     {
-      files: ['config/changelog.config.ts'],
+      files: ['src/cli/app.module.ts'],
       rules: {
-        '@typescript-eslint/require-await': 0
+        'unicorn/no-process-exit': 0
       }
     }
   ],
