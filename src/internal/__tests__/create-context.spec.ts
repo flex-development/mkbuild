@@ -17,7 +17,7 @@ describe('unit:internal/createContext', () => {
       ignore: ['cli/**'],
       sourcemap: true,
       sourcesContent: false,
-      target: pkg.engines.node.replace(/^\D+/, 'node'),
+      target: 'node16.20.0',
       tsconfig: 'tsconfig.build.json'
     }
 
