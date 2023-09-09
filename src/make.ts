@@ -101,8 +101,11 @@ async function make({
      *
      * @const {string} prefix
      */
-    const prefix: string =
-      serve !== false ? 'Serving' : watch ? 'Watching' : 'Building'
+    const prefix: string = serve !== false
+      ? 'Serving'
+      : watch
+      ? 'Watching'
+      : 'Building'
 
     consola.info(color.cyan(`${prefix} ${pkg.name}`))
   }

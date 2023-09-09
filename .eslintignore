@@ -6,9 +6,9 @@
 **/*.snap
 **/*config.*.timestamp*
 **/.DS_Store
-**/.temp/
 **/__tests__/report.json
 **/coverage/
+**/.temp/
 **/dist/
 **/node_modules/
 **/tsconfig*temp.json
@@ -23,10 +23,9 @@ yarn.lock
 !.codecov.yml
 !.commitlintrc.*
 !.cspell.json
+!.dprint.*
 !.github/
-!.graphqlrc.yml
 !.lintstagedrc.json
 !.markdownlint.jsonc
-!.prettierrc.json
 !.vscode/
 !.yarnrc.yml

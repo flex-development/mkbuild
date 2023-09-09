@@ -145,8 +145,8 @@ async function createContext(
    *
    * @const {boolean} fill
    */
-  const fill: boolean =
-    format === 'esm' || ['.cjs', '.mjs'].some(e => ext.endsWith(e))
+  const fill: boolean = format === 'esm' ||
+    ['.cjs', '.mjs'].some(e => ext.endsWith(e))
 
   // remove unsupported options that are not overridden
   Reflect.deleteProperty(options, 'incremental')
@@ -171,14 +171,13 @@ async function createContext(
         .map((file: string): SourceFile => {
           return {
             ext: cast(pathe.extname(file)),
-            file:
-              bundle && outbase !== DOT
-                ? // outbase support for bundles (esbuild only uses outbase for
-                  // multiple entries); https://esbuild.github.io/api/#outbase
-                  file
-                    .replace(new RegExp(`^${regexp(outbase)}`), '')
-                    .replace(/^\//, '')
-                : file,
+            file: bundle && outbase !== DOT
+              // outbase support for bundles (esbuild only uses outbase for
+              // multiple entries); https://esbuild.github.io/api/#outbase
+              ? file
+                .replace(new RegExp(`^${regexp(outbase)}`), '')
+                .replace(/^\//, '')
+              : file,
             path: pathe.join(absWorkingDir, source, bundle ? '' : file)
           }
         })

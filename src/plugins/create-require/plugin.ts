@@ -100,7 +100,7 @@ const plugin = (): Plugin => {
      */
     const snippet: string = join(
       [
-        "import { createRequire as __createRequire } from 'node:module'",
+        'import { createRequire as __createRequire } from \'node:module\'',
         'const require = __createRequire(import.meta.url)'
       ],
       '\n'

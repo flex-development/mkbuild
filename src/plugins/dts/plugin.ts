@@ -133,6 +133,7 @@ const plugin = (): Plugin => {
        * @var {CompilerOptions | tscu.CompilerOptions} compilerOptions
        */
       let compilerOptions: CompilerOptions | tscu.CompilerOptions =
+        // dprint-ignore-next
         tscu.loadCompilerOptions(pathe.resolve(absWorkingDir, tsconfig))
 
       // normalize compiler options

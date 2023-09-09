@@ -13,6 +13,7 @@ dequal
 dessant
 dists
 dohm
+dprint
 emojify
 esbuild
 evanw
@@ -40,6 +41,7 @@ onrequest
 pathe
 pkgs
 preid
+shfmt
 swcrc
 toodles
 tribonacci

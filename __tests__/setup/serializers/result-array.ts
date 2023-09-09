@@ -47,16 +47,16 @@ expect.addSnapshotSerializer({
   test(value: unknown): value is Result[] {
     return isArray(value)
       ? value.every(item => {
-          return (
-            isString(get(item, 'cwd')) &&
-            isArray(get(item, 'errors')) &&
-            (isObjectPlain(get(item, 'mangleCache')) ||
-              isNIL(get(item, 'mangleCache'))) &&
-            isString(get(item, 'outdir')) &&
-            isArray(get(item, 'outputs')) &&
-            isArray(get(item, 'warnings'))
-          )
-        })
+        return (
+          isString(get(item, 'cwd')) &&
+          isArray(get(item, 'errors')) &&
+          (isObjectPlain(get(item, 'mangleCache')) ||
+            isNIL(get(item, 'mangleCache'))) &&
+          isString(get(item, 'outdir')) &&
+          isArray(get(item, 'outputs')) &&
+          isArray(get(item, 'warnings'))
+        )
+      })
       : false
   }
 })

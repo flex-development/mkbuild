@@ -304,8 +304,8 @@ class ChangelogOptions {
           : b.hidden
           ? CompareResult.LESS_THAN
           : emoji
-              .emojify(a.section, { format })
-              .localeCompare(emoji.emojify(b.section, { format }))
+            .emojify(a.section, { format })
+            .localeCompare(emoji.emojify(b.section, { format }))
       },
       infile: undefined,
       outfile: undefined,

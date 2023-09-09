@@ -123,12 +123,12 @@ class Formatter {
         commits: group.hidden
           ? ''
           : iterate(group.commits.length, '', (acc, i) => {
-              return template('{acc}{newline}{commit}', {
-                acc,
-                commit: this.formatCommit(group.commits[i]!, context),
-                newline: ifelse(acc, '\n', acc)
-              })
+            return template('{acc}{newline}{commit}', {
+              acc,
+              commit: this.formatCommit(group.commits[i]!, context),
+              newline: ifelse(acc, '\n', acc)
             })
+          })
       })
     )
   }

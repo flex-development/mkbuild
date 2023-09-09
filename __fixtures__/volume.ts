@@ -34,7 +34,7 @@ const reset: Volume['reset'] = volume.reset.bind(volume)
  *
  * @return {void} Nothing when complete
  */
-volume.reset = function (): void {
+volume.reset = function(): void {
   reset()
   return void volume.mkdirSync(process.cwd(), { recursive: true })
 }

@@ -397,14 +397,14 @@ class ChangelogService {
               const [group] = select(groups, group => group.type === type)
               return group && !group.hidden
                 ? [
-                    ...acc,
-                    {
-                      ...group,
-                      commits: sort(commits, (a, b) => {
-                        return a.header.localeCompare(b.header)
-                      })
-                    }
-                  ]
+                  ...acc,
+                  {
+                    ...group,
+                    commits: sort(commits, (a, b) => {
+                      return a.header.localeCompare(b.header)
+                    })
+                  }
+                ]
                 : acc
             }, []),
             groupsort
@@ -527,7 +527,7 @@ class ChangelogService {
       tag => {
         return (
           tag.startsWith(tagprefix) &&
-          !!semver.valid((tag = tag.replace(tagprefix, ''))) &&
+          !!semver.valid(tag = tag.replace(tagprefix, '')) &&
           (!unstable ? !semver.parse(tag)!.prerelease.length : true)
         )
       }

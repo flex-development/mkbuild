@@ -106,7 +106,6 @@ Follow the steps below to setup your local development environment:
 | `CODECOV_TOKEN`     |
 | `GITHUB_TOKEN`      |
 | `HOMEBREW_BREWFILE` |
-| `NODE_ENV`          |
 | `NODE_NO_WARNINGS`  |
 | `PAT_BOT`           |
 | `ZSH_DOTENV_FILE`   |
@@ -204,18 +203,12 @@ See [`.commitlintrc.cts`](.commitlintrc.cts) to view all commit guidelines.
 
 ### Code Style
 
-[Prettier][10] is used to format code and [ESLint][11] to lint files.
+[dprint][10] is used to format code and [ESLint][11] to lint files.
 
-#### ESLint Configuration
-
+- [`.dprint.jsonc`](.dprint.jsonc)
+- [`.eslintignore`](.eslintignore)
 - [`.eslintrc.base.cjs`](.eslintrc.base.cjs)
 - [`.eslintrc.cjs`](.eslintrc.cjs)
-- [`.eslintignore`](.eslintignore)
-
-#### Prettier Configuration
-
-- [`.prettierrc.json`](.prettierrc.json)
-- [`.prettierignore`](.prettierignore)
 
 ### Making Changes
 
@@ -390,8 +383,7 @@ Before deploying, the following steps must be completed:
          - publish package to [npm][22]
 
 [1]: https://brew.sh
-[2]:
-  https://docs.github.com/authentication/managing-commit-signature-verification/about-commit-signature-verification#gpg-commit-signature-verification
+[2]: https://docs.github.com/authentication/managing-commit-signature-verification/about-commit-signature-verification#gpg-commit-signature-verification
 [3]: https://yarnpkg.com/getting-started
 [4]: https://github.com/ohmyzsh/ohmyzsh
 [5]: https://github.com/typicode/husky
@@ -399,7 +391,7 @@ Before deploying, the following steps must be completed:
 [7]: https://trunkbaseddevelopment.com/styles/#short-lived-feature-branches
 [8]: https://conventionalcommits.org
 [9]: https://github.com/conventional-changelog/commitlint
-[10]: https://prettier.io
+[10]: https://dprint.dev/
 [11]: https://eslint.org
 [12]: https://jsdoc.app
 [13]: https://github.com/gajus/eslint-plugin-jsdoc

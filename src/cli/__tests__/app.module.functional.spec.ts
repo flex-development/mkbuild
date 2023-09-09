@@ -113,7 +113,7 @@ describe('functional:cli/AppModule', () => {
     it('should handle error with exit code greater than 0', () => {
       // Arrange
       const code: string = 'commander.unknownOption'
-      const message: string = "error: unknown option '--formatter'"
+      const message: string = 'error: unknown option \'--formatter\''
       const error: CommanderError = new CommanderError(1, code, message)
       const log: string = template('{0} {1} {2}', {
         0: color.red('✘'),

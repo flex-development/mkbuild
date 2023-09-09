@@ -31,7 +31,7 @@ const config = {
     [require('./tsconfig.build.json').compilerOptions.target]: true,
     node: true
   },
-  extends: ['plugin:prettier/recommended'],
+  extends: [],
   overrides: [
     {
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
@@ -56,7 +56,6 @@ const config = {
         'import',
         'jsdoc',
         'node',
-        'prettier',
         'promise',
         'unicorn'
       ],
@@ -959,14 +958,6 @@ const config = {
       }
     },
     {
-      extends: ['plugin:@graphql-eslint/operations-all'],
-      files: '**/*.gql',
-      rules: {
-        '@graphql-eslint/no-anonymous-operations': 0,
-        '@graphql-eslint/require-id-when-available': 0
-      }
-    },
-    {
       files: ['**/package.json'],
       rules: {
         'jsonc/sort-keys': [
@@ -1070,7 +1061,6 @@ const config = {
       parser: 'yaml-eslint-parser',
       plugins: ['yml'],
       rules: {
-        'prettier/prettier': 0,
         'spaced-comment': 0,
         'yml/block-mapping': 2,
         'yml/block-mapping-question-indicator-newline': [2, 'never'],
@@ -1167,14 +1157,15 @@ const config = {
       files: [
         '.github/dependabot.yml',
         '.github/workflows/*.yml',
-        'action.yml'
+        'action.yml',
+        'docker*.yml'
       ],
       rules: {
         'yml/sort-keys': 0
       }
     },
     {
-      files: ['.github/workflows/*.yml', '.yarnrc.yml'],
+      files: ['.github/workflows/*.yml', '.yarnrc.yml', 'docker*.yml'],
       rules: {
         'yml/key-name-casing': 0
       }
@@ -1186,11 +1177,9 @@ const config = {
       }
     }
   ],
-  plugins: ['prettier'],
+  plugins: [],
   reportUnusedDisableDirectives: true,
-  rules: {
-    'prettier/prettier': [2, {}, { usePrettierrc: true }]
-  },
+  rules: {},
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.cts', '.mts', '.ts', '.tsx']
