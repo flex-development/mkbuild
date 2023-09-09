@@ -1,3 +1,42 @@
+## [1.0.0-alpha.23](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.22...1.0.0-alpha.23) (2023-09-09)
+
+### :package: Build
+
+- **deps-dev:** Bump @arethetypeswrong/cli from 0.7.1 to 0.10.1 ([#355](https://github.com/flex-development/mkbuild/pull/355)) ([54bb2fb](https://github.com/flex-development/mkbuild/commit/54bb2fb03f077a1fdb5c46c017b04c137cc9a1cf))
+- **deps-dev:** Bump cspell from 7.0.1-alpha.9 to 7.0.1 ([#343](https://github.com/flex-development/mkbuild/pull/343)) ([e79d07d](https://github.com/flex-development/mkbuild/commit/e79d07ddcee1b6b43e6f0cbf636101cbb8dab4bc))
+- **deps-dev:** Bump eslint-plugin-import from 2.27.5 to 2.28.1 ([#338](https://github.com/flex-development/mkbuild/pull/338)) ([213b9c7](https://github.com/flex-development/mkbuild/commit/213b9c7ae852898ba11b500f102dbbce3490bd34))
+- **deps-dev:** Bump lint-staged from 14.0.0 to 14.0.1 ([#342](https://github.com/flex-development/mkbuild/pull/342)) ([26ede25](https://github.com/flex-development/mkbuild/commit/26ede255854b4bfe712839bef75eb02335d4c8c6))
+- **deps-dev:** Bump prettier from 3.0.1 to 3.0.2 ([#335](https://github.com/flex-development/mkbuild/pull/335)) ([61ffe13](https://github.com/flex-development/mkbuild/commit/61ffe13a5241bb3dfcd88c9db58faf56079918ba))
+- **deps-dev:** Bump pretty-format from 29.6.2 to 29.6.3 ([#345](https://github.com/flex-development/mkbuild/pull/345)) ([a897063](https://github.com/flex-development/mkbuild/commit/a897063a884d72541c633c54742fd46aa04b25ec))
+- **deps-dev:** Bump the conventional-changelog group with 1 update ([#358](https://github.com/flex-development/mkbuild/pull/358)) ([57ce066](https://github.com/flex-development/mkbuild/commit/57ce0667b631d471f2167ac6d18de22ffac67b25))
+- **deps-dev:** Bump the nest-commander group with 3 updates ([#341](https://github.com/flex-development/mkbuild/pull/341)) ([3de0482](https://github.com/flex-development/mkbuild/commit/3de048237ffa0226a6550526068d19766694e614))
+- **deps-dev:** Bump the nest-commander group with 3 updates ([#344](https://github.com/flex-development/mkbuild/pull/344)) ([9878ba8](https://github.com/flex-development/mkbuild/commit/9878ba8f9254fec008ea19f415e08f6440222194))
+- **deps-dev:** Bump the typescript-eslint group with 2 updates ([#340](https://github.com/flex-development/mkbuild/pull/340)) ([a2aad8a](https://github.com/flex-development/mkbuild/commit/a2aad8a5cf4f990317ed6dcc2bdb5b33c59ee0ee))
+- **deps-dev:** Bump the typescript-eslint group with 2 updates ([#359](https://github.com/flex-development/mkbuild/pull/359)) ([ce91937](https://github.com/flex-development/mkbuild/commit/ce91937a9c8ec7cf091e98784dd89b6ca4e5fe75))
+- **deps-dev:** Bump the vitest group with 3 updates ([#336](https://github.com/flex-development/mkbuild/pull/336)) ([5d00999](https://github.com/flex-development/mkbuild/commit/5d00999cb1246a2ec83e5822e8e6847504cbe6d1))
+- **deps-dev:** bump typescript from 5.1.6 to 5.2.2 ([53f2198](https://github.com/flex-development/mkbuild/commit/53f21981e4184a1e3f31b6522ca209b6651be6c8))
+- **deps-dev:** use @flex-development/nest-commander in lieu of nest-commander ([6624182](https://github.com/flex-development/mkbuild/commit/6624182ccc862dd2a690225372fb825b8c4b6714))
+- **deps:** bump @flex-development/tutils from 6.0.0-alpha.21 to 6.0.0-alpha.22 ([493ead9](https://github.com/flex-development/mkbuild/commit/493ead95d1c05f21b3d69574084df75da745f376))
+- **node:** require `>=16.20.0 <20.6.0 || >20.6.0` ([c7be6f0](https://github.com/flex-development/mkbuild/commit/c7be6f0c30e6b8921589ee7d4a149763512fbd69))
+
+### :robot: Continuous Integration
+
+- **deps:** Bump actions/cache from 3.3.1 to 3.3.2 ([#357](https://github.com/flex-development/mkbuild/pull/357)) ([45b7880](https://github.com/flex-development/mkbuild/commit/45b7880ba9b920c4619abc512cbb0032aaaf5bb6))
+- **deps:** Bump actions/checkout from 3.5.3 to 3.6.0 ([#347](https://github.com/flex-development/mkbuild/pull/347)) ([cb21aa1](https://github.com/flex-development/mkbuild/commit/cb21aa17124a6d3ec9e48bf14f15fe66eb11ef48))
+- **deps:** Bump actions/checkout from 3.6.0 to 4.0.0 ([#354](https://github.com/flex-development/mkbuild/pull/354)) ([c3bc181](https://github.com/flex-development/mkbuild/commit/c3bc18119155aba2de5fb48c28d13d364ad1cac2))
+- **deps:** Bump actions/setup-node from 3.7.0 to 3.8.0 ([#334](https://github.com/flex-development/mkbuild/pull/334)) ([bc0a5ce](https://github.com/flex-development/mkbuild/commit/bc0a5ce3640d3e74ed2aaf320356d10486f2b2f9))
+- **deps:** Bump actions/setup-node from 3.8.0 to 3.8.1 ([#337](https://github.com/flex-development/mkbuild/pull/337)) ([b65fdfa](https://github.com/flex-development/mkbuild/commit/b65fdfa1326f45535d6363643e4e2e3a07df52fa))
+- **deps:** Bump actions/upload-artifact from 3.1.2 to 3.1.3 ([#356](https://github.com/flex-development/mkbuild/pull/356)) ([5a5d1b0](https://github.com/flex-development/mkbuild/commit/5a5d1b0683320ea53de228f693fdf2d0f1dc1b65))
+- **deps:** Bump crazy-max/ghaction-import-gpg from 5.3.0 to 5.4.0 ([#353](https://github.com/flex-development/mkbuild/pull/353)) ([1404901](https://github.com/flex-development/mkbuild/commit/1404901e7bad0940db7447f29cf07251d0da6cfd))
+
+### :bug: Fixes
+
+- **plugins:** [`decorators`] decorator check ([978ffe9](https://github.com/flex-development/mkbuild/commit/978ffe9ec9abfb25868f6ff547cfd45c87c4111a))
+
+### :house_with_garden: Housekeeping
+
+- dprint migration ([7f578c9](https://github.com/flex-development/mkbuild/commit/7f578c90c69d12b283e49b9036c06029585630f8))
+
 ## [1.0.0-alpha.22](https://github.com/flex-development/mkbuild/compare/1.0.0-alpha.21...1.0.0-alpha.22) (2023-08-15)
 
 ### :package: Build
