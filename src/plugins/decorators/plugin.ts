@@ -114,7 +114,8 @@ const plugin = (options?: tscu.LoadTsconfigOptions): Plugin => {
          */
         const source: string = cast(await mlly.getSource(url))
 
-        // do nothing if module does contain decorators
+        // do nothing if module does not contain decorators
+        DECORATOR_REGEX.lastIndex = 0
         if (!DECORATOR_REGEX.test(source)) return null
 
         // transpile module to emit decorator metadata
