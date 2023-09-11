@@ -747,44 +747,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dprint/darwin-arm64@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/darwin-arm64@npm:0.40.2"
+"@dprint/darwin-arm64@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/darwin-arm64@npm:0.41.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@dprint/darwin-x64@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/darwin-x64@npm:0.40.2"
+"@dprint/darwin-x64@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/darwin-x64@npm:0.41.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@dprint/linux-arm64-glibc@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/linux-arm64-glibc@npm:0.40.2"
+"@dprint/linux-arm64-glibc@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/linux-arm64-glibc@npm:0.41.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@dprint/linux-x64-glibc@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/linux-x64-glibc@npm:0.40.2"
+"@dprint/linux-x64-glibc@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/linux-x64-glibc@npm:0.41.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@dprint/linux-x64-musl@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/linux-x64-musl@npm:0.40.2"
+"@dprint/linux-x64-musl@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/linux-x64-musl@npm:0.41.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@dprint/win32-x64@npm:0.40.2":
-  version: 0.40.2
-  resolution: "@dprint/win32-x64@npm:0.40.2"
+"@dprint/win32-x64@npm:0.41.0":
+  version: 0.41.0
+  resolution: "@dprint/win32-x64@npm:0.41.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -1197,7 +1197,7 @@ __metadata:
     cross-env: "npm:7.0.3"
     cspell: "npm:7.0.1"
     dateformat: "npm:5.0.3"
-    dprint: "npm:0.40.2"
+    dprint: "npm:0.41.0"
     editorconfig: "npm:2.0.0"
     esbuild: "npm:0.19.2"
     eslint: "npm:8.49.0"
@@ -3669,16 +3669,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dprint@npm:0.40.2":
-  version: 0.40.2
-  resolution: "dprint@npm:0.40.2"
+"dprint@npm:0.41.0":
+  version: 0.41.0
+  resolution: "dprint@npm:0.41.0"
   dependencies:
-    "@dprint/darwin-arm64": "npm:0.40.2"
-    "@dprint/darwin-x64": "npm:0.40.2"
-    "@dprint/linux-arm64-glibc": "npm:0.40.2"
-    "@dprint/linux-x64-glibc": "npm:0.40.2"
-    "@dprint/linux-x64-musl": "npm:0.40.2"
-    "@dprint/win32-x64": "npm:0.40.2"
+    "@dprint/darwin-arm64": "npm:0.41.0"
+    "@dprint/darwin-x64": "npm:0.41.0"
+    "@dprint/linux-arm64-glibc": "npm:0.41.0"
+    "@dprint/linux-x64-glibc": "npm:0.41.0"
+    "@dprint/linux-x64-musl": "npm:0.41.0"
+    "@dprint/win32-x64": "npm:0.41.0"
   dependenciesMeta:
     "@dprint/darwin-arm64":
       optional: true
@@ -3694,7 +3694,7 @@ __metadata:
       optional: true
   bin:
     dprint: bin.js
-  checksum: 0d0ded36970a2b1af1ef12b8ae383c974efc25efa852783d4c24310236e6c99010958f2f9b0031481d4bba2bef0329351d5aa030026a3da4c94961f489f9bd0c
+  checksum: 908d8fbd134841d6109d6b20074a070822690c712714a184610bdd0ffcf9dcf87fc5cda6cd3a1d62bf3f6c1265d0eb23c5f68535c5dfe847ae214b963502f852
   languageName: node
   linkType: hard
 
