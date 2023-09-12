@@ -1167,9 +1167,9 @@ __metadata:
     "@flex-development/toggle-pkg-type": "npm:2.0.1"
     "@flex-development/tsconfig-utils": "npm:2.0.2"
     "@flex-development/tutils": "npm:6.0.0-alpha.22"
-    "@nestjs/common": "npm:10.2.4"
-    "@nestjs/core": "npm:10.2.4"
-    "@nestjs/testing": "npm:10.2.4"
+    "@nestjs/common": "npm:10.2.5"
+    "@nestjs/core": "npm:10.2.5"
+    "@nestjs/testing": "npm:10.2.5"
     "@swc/core": "npm:1.3.83"
     "@types/chai": "npm:4.3.5"
     "@types/chai-fs": "npm:2.0.2"
@@ -1551,9 +1551,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:10.2.4":
-  version: 10.2.4
-  resolution: "@nestjs/common@npm:10.2.4"
+"@nestjs/common@npm:10.2.5":
+  version: 10.2.5
+  resolution: "@nestjs/common@npm:10.2.5"
   dependencies:
     iterare: "npm:1.2.1"
     tslib: "npm:2.6.2"
@@ -1568,13 +1568,13 @@ __metadata:
       optional: true
     class-validator:
       optional: true
-  checksum: dc79681e69f0af6a2adbd96f3d837af928dacc9120a87534ac2dac3e8569acadb6fb0ed76947c0c8b0fe15d6cd9fc94614713b5e4cea17ddc470162e11ee7f62
+  checksum: 18c0b82d4f9b813c1bfabc8bb8b9038ac3cca370157906ac2d5c3007237117f467a17a508d11f65b9a25fdf74a3622ad62edc520f7c904fc067e12b1769cc20f
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:10.2.4":
-  version: 10.2.4
-  resolution: "@nestjs/core@npm:10.2.4"
+"@nestjs/core@npm:10.2.5":
+  version: 10.2.5
+  resolution: "@nestjs/core@npm:10.2.5"
   dependencies:
     "@nuxtjs/opencollective": "npm:0.3.2"
     fast-safe-stringify: "npm:2.1.1"
@@ -1596,13 +1596,13 @@ __metadata:
       optional: true
     "@nestjs/websockets":
       optional: true
-  checksum: 387057c88a27e70a0e1efebbbb25d6a8e2bf177866ae13b1fbc870d1ff1186f19fbf4756c15b8fbd1b12fb0875947c90fd5801777d55414cd603081b0a517144
+  checksum: 870b0878e78072559784a9b8c3d94996d51cc2a8623b1a67033e9a58a996f18aa01a0f5c1173af828dd9958a69a706b6f3fbf24eb5ee1512b00f5e72d5f3fb08
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:10.2.4":
-  version: 10.2.4
-  resolution: "@nestjs/testing@npm:10.2.4"
+"@nestjs/testing@npm:10.2.5":
+  version: 10.2.5
+  resolution: "@nestjs/testing@npm:10.2.5"
   dependencies:
     tslib: "npm:2.6.2"
   peerDependencies:
@@ -1615,7 +1615,7 @@ __metadata:
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: cd9313f4e4dac78bd089108e5fde9b71fadd774b3dc0e6dd3db4026ac395ce15818f5c9d8d7d91dead81760c793b190be6b25248270a8698a355c1185f3074fd
+  checksum: 1a04d3c35f700c45cd4c8b341f1c98db5a5693b9ff13b1cf0459f2910e2baa0bb909e19c4e2ade800626fa4754bce00df2ec93186748e4998f616fd19dad7eed
   languageName: node
   linkType: hard
 
