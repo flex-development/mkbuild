@@ -1227,7 +1227,7 @@ __metadata:
     pkg-size: "npm:2.4.0"
     prettier: "npm:3.0.3"
     pretty-bytes: "npm:6.1.1"
-    pretty-format: "npm:29.6.3"
+    pretty-format: "npm:29.7.0"
     reflect-metadata: "npm:0.1.13"
     rxjs: "npm:7.8.1"
     semver: "npm:7.5.4"
@@ -7208,7 +7208,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:29.6.3, pretty-format@npm:^29.5.0":
+"pretty-format@npm:29.7.0":
+  version: 29.7.0
+  resolution: "pretty-format@npm:29.7.0"
+  dependencies:
+    "@jest/schemas": "npm:^29.6.3"
+    ansi-styles: "npm:^5.0.0"
+    react-is: "npm:^18.0.0"
+  checksum: dea96bc83c83cd91b2bfc55757b6b2747edcaac45b568e46de29deee80742f17bc76fe8898135a70d904f4928eafd8bb693cd1da4896e8bdd3c5e82cadf1d2bb
+  languageName: node
+  linkType: hard
+
+"pretty-format@npm:^29.5.0":
   version: 29.6.3
   resolution: "pretty-format@npm:29.6.3"
   dependencies:
