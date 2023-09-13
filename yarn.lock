@@ -1212,7 +1212,7 @@ __metadata:
     eslint-plugin-node: "npm:11.1.0"
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-unicorn: "npm:48.0.1"
-    eslint-plugin-yml: "npm:1.8.0"
+    eslint-plugin-yml: "npm:1.9.0"
     exit-hook: "npm:3.2.0"
     fast-glob: "npm:3.3.1"
     growl: "npm:1.10.5"
@@ -4195,9 +4195,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-yml@npm:1.8.0":
-  version: 1.8.0
-  resolution: "eslint-plugin-yml@npm:1.8.0"
+"eslint-plugin-yml@npm:1.9.0":
+  version: 1.9.0
+  resolution: "eslint-plugin-yml@npm:1.9.0"
   dependencies:
     debug: "npm:^4.3.2"
     lodash: "npm:^4.17.21"
@@ -4205,7 +4205,7 @@ __metadata:
     yaml-eslint-parser: "npm:^1.2.1"
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: ab40a7c82daafd7ab3c17b5e74ae60f81b9fb19d5e98cac65ce51bea4b4cc3670d3def66f59e2ce5c8dad90a2aff774bb922f994098ccfe4eabbe4d99c3c95d9
+  checksum: c25a648c7115f4ab549d4045f0850b7feeb099fb85875cc99f951c5694683cf21339fc1159a7e6e197deb98a86d8b4645d38d8275678e8ea090d3499b7f9ede6
   languageName: node
   linkType: hard
 
