@@ -138,7 +138,7 @@
     "dateformat": "5.0.3",
     "dprint": "0.41.0",
     "editorconfig": "2.0.0",
-    "esbuild": "0.19.2",
+    "esbuild": "0.19.3",
     "eslint": "8.49.0",
     "eslint-import-resolver-typescript": "3.6.0",
     "eslint-plugin-chai-expect": "3.0.0",
@@ -193,7 +193,7 @@
   "resolutions": {
     "@flex-development/tutils": "6.0.0-alpha.22",
     "chai": "5.0.0-alpha.1",
-    "esbuild": "0.19.2"
+    "esbuild": "0.19.3"
   },
   "engines": {
     "node": ">=16.20.0 <20.6.0 || >20.6.0",
