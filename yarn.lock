@@ -1237,7 +1237,7 @@ __metadata:
     ts-dedent: "npm:2.2.0"
     typescript: "npm:5.2.2"
     version-bump-prompt: "npm:6.1.0"
-    vite: "npm:5.0.0-beta.1"
+    vite: "npm:5.0.0-beta.2"
     vite-tsconfig-paths: "npm:4.2.1"
     vitest: "npm:0.34.4"
     yaml-eslint-parser: "npm:1.2.2"
@@ -8716,9 +8716,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:5.0.0-beta.1, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
-  version: 5.0.0-beta.1
-  resolution: "vite@npm:5.0.0-beta.1"
+"vite@npm:5.0.0-beta.2, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
+  version: 5.0.0-beta.2
+  resolution: "vite@npm:5.0.0-beta.2"
   dependencies:
     esbuild: "npm:^0.18.10"
     fsevents: "npm:~2.3.2"
@@ -8752,7 +8752,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: f94dfa628eee86220fa7785b39281d8cba8b9bec6e51b4ade538e81fd11ffb5dda68da8273eff06d95f49c3ba928c341a79bc9516706e0b6461e4129fa33fa1e
+  checksum: eae94dfa66bebab984d465e8b549e7d9b04eca3f1d55c2d79e801d9fce9bf57118788698cdf22d752427ee806e46292a0fb1ab2dcc4816612a47dd378dbe3b10
   languageName: node
   linkType: hard
 
