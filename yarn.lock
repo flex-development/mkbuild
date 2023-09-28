@@ -1221,7 +1221,7 @@ __metadata:
     jsonc-eslint-parser: "npm:2.3.0"
     lint-staged: "npm:14.0.1"
     lodash-es: "npm:4.17.21"
-    memfs: "npm:4.4.0"
+    memfs: "npm:4.5.0"
     node-emoji: "npm:2.1.0"
     node-notifier: "npm:10.0.1"
     pkg-size: "npm:2.4.0"
@@ -6279,15 +6279,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memfs@npm:4.4.0":
-  version: 4.4.0
-  resolution: "memfs@npm:4.4.0"
+"memfs@npm:4.5.0":
+  version: 4.5.0
+  resolution: "memfs@npm:4.5.0"
   dependencies:
     json-joy: "npm:^9.2.0"
     thingies: "npm:^1.11.1"
   peerDependencies:
     tslib: 2
-  checksum: 6c7df0254a638059e9180634cb291e2e394b088bcfa89756fa792cd1d37c8319c0b2959d4021643861c8c9721455d0569221d37d1054f10bda072b3c725febdd
+  checksum: 9f10c869b9b1f55fb02aa4af13d98d83e30a92028b526dd3bd00cafebe6c88c4557f48af3aff46a1d7f73ffa13a2c0ed6f290231978e46df2ed76e96ed7bb052
   languageName: node
   linkType: hard
 
