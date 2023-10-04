@@ -172,7 +172,7 @@
     "ts-dedent": "2.2.0",
     "typescript": "5.2.2",
     "version-bump-prompt": "6.1.0",
-    "vite": "5.0.0-beta.3",
+    "vite": "5.0.0-beta.4",
     "vite-tsconfig-paths": "4.2.1",
     "vitest": "0.34.6",
     "yaml-eslint-parser": "1.2.2"
