@@ -1214,7 +1214,7 @@ __metadata:
     eslint-plugin-promise: "npm:6.1.1"
     eslint-plugin-unicorn: "npm:48.0.1"
     eslint-plugin-yml: "npm:1.10.0"
-    exit-hook: "npm:3.2.0"
+    exit-hook: "npm:4.0.0"
     fast-glob: "npm:3.3.1"
     growl: "npm:1.10.5"
     husky: "npm:8.0.3"
@@ -4419,10 +4419,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"exit-hook@npm:3.2.0":
-  version: 3.2.0
-  resolution: "exit-hook@npm:3.2.0"
-  checksum: 48b7ab6538043eb5b91379852fa01cb301810806f181f2f784fc596a6ce08016bb8b636881b873a3cf0a604f3ec746a6da52081a9c2e02b1858c59481cf00442
+"exit-hook@npm:4.0.0":
+  version: 4.0.0
+  resolution: "exit-hook@npm:4.0.0"
+  checksum: 5aa8b4e45fa943e7e174c25329750a0ffefb593ccc2eafd5d67e1d734b114c93cb36b5714548fb1c2a1dd90f3e9cdc606b5e788f428f780708774da444021fdc
   languageName: node
   linkType: hard
 
