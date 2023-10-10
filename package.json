@@ -101,7 +101,7 @@
     "tinyrainbow": "1.1.1"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "0.11.0",
+    "@arethetypeswrong/cli": "0.12.1",
     "@commitlint/cli": "17.7.2",
     "@commitlint/types": "17.4.4",
     "@faker-js/faker": "8.1.0",
