@@ -1238,7 +1238,7 @@ __metadata:
     ts-dedent: "npm:2.2.0"
     typescript: "npm:5.2.2"
     version-bump-prompt: "npm:6.1.0"
-    vite: "npm:5.0.0-beta.6"
+    vite: "npm:5.0.0-beta.7"
     vite-tsconfig-paths: "npm:4.2.1"
     vitest: "npm:0.34.6"
     yaml-eslint-parser: "npm:1.2.2"
@@ -7582,9 +7582,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^3.29.2":
-  version: 3.29.3
-  resolution: "rollup@npm:3.29.3"
+"rollup@npm:^3.29.4":
+  version: 3.29.4
+  resolution: "rollup@npm:3.29.4"
   dependencies:
     fsevents: "npm:~2.3.2"
   dependenciesMeta:
@@ -7592,7 +7592,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: ea735e1fdd71fe16b53c8d740cdaa8ffe0d717128f8377653c2783443f004883c3c98e2157af8c00acbaf678028c11b27496fa30e81707bf08959937489d757c
+  checksum: 9e39d54e23731a4c4067e9c02910cdf7479a0f9a7584796e2dc6efaa34bb1e5e015c062c87d1e64d96038baca76cefd47681ff22604fae5827147f54123dc6d0
   languageName: node
   linkType: hard
 
@@ -8736,14 +8736,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:5.0.0-beta.6, vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
-  version: 5.0.0-beta.6
-  resolution: "vite@npm:5.0.0-beta.6"
+"vite@npm:5.0.0-beta.7, vite@npm:^3.0.0 || ^4.0.0 || ^5.0.0-0, vite@npm:^3.1.0 || ^4.0.0 || ^5.0.0-0":
+  version: 5.0.0-beta.7
+  resolution: "vite@npm:5.0.0-beta.7"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
     postcss: "npm:^8.4.31"
-    rollup: "npm:^3.29.2"
+    rollup: "npm:^3.29.4"
   peerDependencies:
     "@types/node": ^18.0.0 || >=20.0.0
     less: "*"
@@ -8772,7 +8772,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 696f1378211cd723bdccce55ea4127bf7e4f8b94d6e17ea0660b619a21b5f8c2757496cbddde9c1365b55b1fe1763945fe548f4fd750f8275dc4cfb8c4b5cbff
+  checksum: 4c44e30131bc0d8062acc19c619a87bc36c1151fd349c4a9330c49a04d8ecd18b630d47758d2460cc3300b30be1f57ab5513c919515cafa9f95b0672f759f51a
   languageName: node
   linkType: hard
 
