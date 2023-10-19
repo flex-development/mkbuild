@@ -1167,7 +1167,7 @@ __metadata:
     "@flex-development/pkg-types": "npm:3.0.0"
     "@flex-development/toggle-pkg-type": "npm:2.0.1"
     "@flex-development/tsconfig-utils": "npm:2.0.2"
-    "@flex-development/tutils": "npm:6.0.0-alpha.22"
+    "@flex-development/tutils": "npm:6.0.0-alpha.25"
     "@nestjs/common": "npm:10.2.7"
     "@nestjs/core": "npm:10.2.7"
     "@nestjs/testing": "npm:10.2.7"
@@ -1387,12 +1387,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@flex-development/tutils@npm:6.0.0-alpha.22":
-  version: 6.0.0-alpha.22
-  resolution: "@flex-development/tutils@npm:6.0.0-alpha.22::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.22%2F22f766c2fbcdb4177f61acb9f10ce8abd66b9c01"
+"@flex-development/tutils@npm:6.0.0-alpha.25":
+  version: 6.0.0-alpha.25
+  resolution: "@flex-development/tutils@npm:6.0.0-alpha.25::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F6.0.0-alpha.25%2F514989f908c827de2c4f28c7709873fb8e3fd62a"
   peerDependencies:
     typescript: ">=5.0.4"
-  checksum: 9b8340958dc8b675446c3c6ae609daad11e0182863c1067b7cf3851b87c27c31176f3fbc6775c6ba752fbbb16c52c6bbc74d1344c87ee83e9e77b07fa4982265
+  checksum: 9f33799b67bad1057ad7da30d7f7d02888ce06f73fd42c8f07ddfc2fe292af14acb4cc3a377edb25f029cbc45e2ded944c3d200a54b549330d869e24f18ec5ef
   languageName: node
   linkType: hard
 
