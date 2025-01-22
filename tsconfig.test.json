@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "customConditions": ["mkbuild", "development", "node"]
+  },
+  "extends": "./tsconfig.json"
+}

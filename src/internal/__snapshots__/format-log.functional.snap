@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`functional:internal/formatLog > should format rollup \`log\` (0) 1`] = `
+{
+  "code": "EMPTY_BUNDLE",
+  "level": "warn",
+  "message": "Generated an empty chunk: "interfaces/task".",
+  "names": [
+    "interfaces/task",
+  ],
+}
+`;
+
+exports[`functional:internal/formatLog > should format rollup \`log\` (1) 1`] = `
+{
+  "code": "PLUGIN_WARNING",
+  "hook": "renderStart",
+  "id": \${process.cwd()}/tsconfig.build.json,
+  "level": "warn",
+  "message": "Compiler option 'sourceMap' requires a value of type boolean.",
+  "meta": {
+    "category": 1,
+  },
+  "plugin": "mkbuild:dts",
+  "pluginCode": 5024,
+}
+`;
+
+exports[`functional:internal/formatLog > should format rollup \`log\` (2) 1`] = `
+{
+  "code": "PLUGIN_WARNING",
+  "frame": "        : (await import(url.href) as { default?: Config | null }).default",
+  "hook": "transform",
+  "level": "warn",
+  "loc": {
+    "column": 18,
+    "file": \${process.cwd()}/src/utils/load-build-config.mts,
+    "line": 96,
+  },
+  "message": "This "import" expression will not be bundled because the argument is not a string literal",
+  "meta": {
+    "level": "warning",
+    "notes": [],
+  },
+  "plugin": "mkbuild:esbuild",
+  "pluginCode": "unsupported-dynamic-import",
+  "pos": 2188,
+}
+`;

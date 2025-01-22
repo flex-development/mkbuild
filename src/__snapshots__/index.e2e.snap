@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`e2e:mkbuild > should expose public api 1`] = `
+[
+  "make",
+  "defineBuildConfig",
+  "formatToExt",
+  "gitignore",
+  "IGNORE_PATTERNS",
+  "loadBuildConfig",
+  "runnableTask",
+  "TASK_PLUGIN_NAME",
+]
+`;

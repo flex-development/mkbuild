@@ -1,8 +1,0 @@
-{
-  "name": "dbl-linear",
-  "type": "module",
-  "exports": {
-    ".": "./dbl-linear.mjs",
-    "./package.json": "./package.json"
-  }
-}

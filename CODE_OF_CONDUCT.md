@@ -48,7 +48,7 @@ account, or acting as an appointed representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible
-for enforcement at [`support@flexdevelopment.llc`](mailto:support@flexdevelopment.llc). All complaints will be reviewed
+for enforcement at [`support@flexdevelopment.llc`](mailto\:support@flexdevelopment.llc). All complaints will be reviewed
 and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
@@ -102,5 +102,7 @@ For answers to common questions about this code of conduct, see the FAQ at <http
 Translations are available at <https://www.contributor-covenant.org/translations>.
 
 [1]: https://www.contributor-covenant.org
+
 [2]: https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
+
 [3]: https://github.com/mozilla/inclusion/blob/master/code-of-conduct-enforcement/consequence-ladder.md

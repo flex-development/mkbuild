@@ -1,8 +1,0 @@
-{
-  "name": "find-uniq",
-  "type": "module",
-  "exports": {
-    ".": "./dist/find-uniq.cjs",
-    "./package.json": "./package.json"
-  }
-}

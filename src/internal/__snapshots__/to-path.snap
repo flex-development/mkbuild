@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:internal/toPath > should return \`input\` as path ("./build.config.mts") 1`] = `"./build.config.mts"`;
+
+exports[`unit:internal/toPath > should return \`input\` as path ("file:///build.config.mts") 1`] = `"/build.config.mts"`;

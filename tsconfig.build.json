@@ -1,11 +1,23 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "allowImportingTsExtensions": false,
+    "allowJs": false,
+    "checkJs": false,
+    "customConditions": ["mkbuild", "production", "import", "node"],
+    "declarationMap": true,
     "noEmitOnError": true,
-    "skipLibCheck": false,
-    "target": "es2022"
+    "noUnusedLocals": true,
+    "outDir": "dist",
+    "paths": {},
+    "rootDir": "src",
+    "target": "es2024"
   },
-  "exclude": ["**/__mocks__", "**/__tests__"],
+  "exclude": ["**/__tests__/**"],
   "extends": "./tsconfig.json",
-  "include": ["./dist/*", "./src/*"]
+  "files": [
+    "typings/@flex-development/fst-util-from-fs/index.d.mts",
+    "typings/rollup/index.d.ts",
+    "typings/typescript/lib.es5.d.ts"
+  ],
+  "include": ["dist/**/*", "src/**/**.mts"]
 }

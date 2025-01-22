@@ -1,14 +1,10 @@
 /**
- * @file Build Config Fixture - reverse
+ * @file Build Config
  * @module fixtures/pkg/reverse/build.config
  */
 
-import * as mlly from '@flex-development/mlly'
-
 export default {
-  conditions: mlly.CONDITIONS,
-  cwd: '__fixtures__/pkg/reverse',
-  sourcemap: true,
-  sourcesContent: false,
+  input: ['src/*.mts'],
+  root: '__fixtures__/pkg/reverse',
   tsconfig: 'tsconfig.json'
 }

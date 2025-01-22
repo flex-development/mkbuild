@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:plugins/resolve > should return plugin 1`] = `
+{
+  "api": {},
+  "buildStart": [Function buildStart],
+  "name": "mkbuild:resolve",
+  "resolveId": [Function resolveId],
+}
+`;

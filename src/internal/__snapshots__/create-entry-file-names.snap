@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:internal/createEntryFileNames > entryFileNames > should return pattern to use for naming \`chunk\` (0) 1`] = `"[name].mjs"`;
+
+exports[`unit:internal/createEntryFileNames > entryFileNames > should return pattern to use for naming \`chunk\` (1) 1`] = `"make.mjs"`;

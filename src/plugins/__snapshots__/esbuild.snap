@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:plugins/esbuild > should return plugin 1`] = `
+{
+  "buildStart": [Function buildStart],
+  "generateBundle": [Function generateBundle],
+  "name": "mkbuild:esbuild",
+  "onLog": [Function onLog],
+  "renderChunk": [Function renderChunk],
+  "transform": [Function transform],
+}
+`;

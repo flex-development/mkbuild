@@ -1,7 +1,0 @@
-{
-  "name": "my-atoi",
-  "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "name": "post",
-  "type": "module",
-  "exports": {
-    ".": "./dist/post.mjs",
-    "./package.json": "./package.json"
-  }
-}

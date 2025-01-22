@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:plugins/write > should return plugin 1`] = `
+{
+  "generateBundle": {
+    "handler": [Function generateBundle],
+    "order": "post",
+  },
+  "name": "mkbuild:write",
+}
+`;

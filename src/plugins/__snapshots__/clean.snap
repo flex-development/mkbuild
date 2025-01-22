@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:plugins/clean > should return plugin 1`] = `
+{
+  "name": "mkbuild:clean",
+  "renderStart": {
+    "handler": [Function renderStart],
+    "order": "pre",
+    "sequential": true,
+  },
+}
+`;

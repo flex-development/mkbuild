@@ -4,12 +4,12 @@
 ---
 codecov:
   notify:
-    after_n_builds: 4
+    after_n_builds: 1
     wait_for_ci: true
   require_ci_to_pass: true
 
 comment:
-  after_n_builds: 4
+  after_n_builds: 1
   behavior: default
   layout: header,diff,flags,components,tree,footer
   require_base: false
@@ -27,23 +27,19 @@ component_management:
     - component_id: cli
       name: cli
       paths:
-        - src/cli/**/*.ts
-    - component_id: config
-      name: config
-      paths:
-        - src/config/*.ts
+        - src/cli/**/*.mts
     - component_id: internal
       name: internal
       paths:
-        - src/internal/*.ts
+        - src/internal/*.mts
     - component_id: plugins
       name: plugins
       paths:
-        - src/plugins/**/*.ts
+        - src/plugins/*.mts
     - component_id: utils
       name: utils
       paths:
-        - src/utils/*.ts
+        - src/utils/*.mts
 
 coverage:
   precision: 2
@@ -92,19 +88,7 @@ coverage:
         threshold: 0%
 
 flags:
-  node20:
-    carryforward: false
-    paths:
-      - src/
-  node19:
-    carryforward: false
-    paths:
-      - src/
-  node18:
-    carryforward: false
-    paths:
-      - src/
-  node16:
+  node23:
     carryforward: false
     paths:
       - src/
@@ -113,16 +97,19 @@ github_checks:
   annotations: true
 
 ignore:
-  - '**/__mocks__/**'
-  - '**/__tests__/**'
-  - '**/index.ts'
+  - '**/*.d.mts'
+  - '**/__mocks__/'
+  - '**/__tests__/'
+  - '**/index.mts'
   - '**/interfaces/'
   - '**/types/'
-  - src/plugins/**/options.ts
+  - '!src/index.mts'
+  - src/internal/*.browser.mts
 
 profiling:
   critical_files_paths:
-    - src/cli/**/*.ts
-    - src/config/*.ts
-    - src/internal/create-context.ts
-    - src/make.ts
+    - src/cli/**/*.mts
+    - src/make.mts
+    - src/plugins/*.mts
+    - src/utils/load-build-config.mts
+    - src/utils/runnable-task.mts

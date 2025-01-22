@@ -1,0 +1,5 @@
+{
+  "esbuild": { "loader": { ".jsonc": "copy" } },
+  "input": "*",
+  "root": "__fixtures__/pkg/apple-stock"
+}

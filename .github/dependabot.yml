@@ -8,7 +8,7 @@
 version: 2
 registries:
   github:
-    token: ${{ secrets.PAT_BOT }}
+    token: ${{ secrets.GH_REGISTRY_TOKEN }}
     type: npm-registry
     url: https://npm.pkg.github.com
 updates:
@@ -20,9 +20,6 @@ updates:
     labels:
       - scope:dependencies
       - type:ci
-    reviewers:
-      - flex-development/dependabot-review
-      - flexdevelopment
     schedule:
       interval: daily
   - package-ecosystem: npm
@@ -31,31 +28,37 @@ updates:
       include: scope
     directory: /
     groups:
-      conventional-changelog:
+      commitlint:
         patterns:
-          - conventional-recommended-bump
+          - '@commitlint/*'
+      eslint:
+        patterns:
+          - '@eslint/js'
+          - '@types/eslint'
+          - '@types/eslint__js'
+          - eslint
       flex-development:
         patterns:
           - '@flex-development/*'
       nestjs:
         patterns:
           - '@nestjs/*'
+      remark:
+        patterns:
+          - 'remark-*'
+          - remark
       typescript-eslint:
         patterns:
           - '@typescript-eslint/*'
+          - typescript-eslint
       vitest:
         patterns:
           - '@vitest/*'
-          - vitest*
-    ignore:
-      - dependency-name: nest-commander
+          - vitest
     labels:
       - scope:dependencies
       - type:build
     registries:
       - github
-    reviewers:
-      - flex-development/dependabot-review
-      - flexdevelopment
     schedule:
       interval: daily

@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:plugins/metadata > should return plugin 1`] = `
+{
+  "generateBundle": [Function generateBundle],
+  "name": "mkbuild:metadata",
+}
+`;

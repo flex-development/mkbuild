@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:utils/mergeTask > should return merged build task (0) 1`] = `
+{
+  "input": [
+    "src/*.mts",
+  ],
+  "root": "__fixtures__/pkg/reverse",
+  "sourcemap": true,
+}
+`;
+
+exports[`unit:utils/mergeTask > should return merged build task (1) 1`] = `
+{
+  "esbuild": {
+    "logOverride": {
+      "ambiguous-reexport": "warning",
+      "assert-to-with": "warning",
+      "assert-type-json": "warning",
+      "assign-to-constant": "warning",
+      "assign-to-define": "warning",
+      "assign-to-import": "warning",
+      "call-import-namespace": "warning",
+      "class-name-will-throw": "warning",
+      "commonjs-variable-in-esm": "warning",
+      "css-syntax-error": "warning",
+      "delete-super-property": "warning",
+      "different-path-case": "warning",
+      "direct-eval": "warning",
+      "duplicate-case": "warning",
+      "duplicate-class-member": "warning",
+      "duplicate-object-key": "warning",
+      "empty-glob": "warning",
+      "empty-import-meta": "warning",
+      "equals-nan": "warning",
+      "equals-negative-zero": "warning",
+      "equals-new-object": "warning",
+      "html-comment-in-js": "warning",
+      "ignored-bare-import": "warning",
+      "ignored-dynamic-import": "warning",
+      "import-is-undefined": "warning",
+      "impossible-typeof": "warning",
+      "indirect-require": "warning",
+      "invalid-@charset": "warning",
+      "invalid-@import": "warning",
+      "invalid-@layer": "warning",
+      "invalid-calc": "warning",
+      "invalid-source-mappings": "warning",
+      "js-comment-in-css": "warning",
+      "missing-source-map": "warning",
+      "package.json": "warning",
+      "private-name-will-throw": "warning",
+      "require-resolve-not-external": "warning",
+      "sections-in-source-map": "warning",
+      "semicolon-after-return": "warning",
+      "suspicious-boolean-not": "warning",
+      "suspicious-define": "warning",
+      "suspicious-logical-operator": "warning",
+      "suspicious-nullish-coalescing": "warning",
+      "this-is-undefined-in-esm": "warning",
+      "tsconfig.json": "warning",
+      "undefined-composes-from": "warning",
+      "unsupported-@charset": "warning",
+      "unsupported-@namespace": "warning",
+      "unsupported-css-nesting": "warning",
+      "unsupported-css-property": "warning",
+      "unsupported-dynamic-import": "silent",
+      "unsupported-jsx-comment": "warning",
+      "unsupported-regexp": "warning",
+      "unsupported-require-call": "warning",
+      "unsupported-source-map-comment": "warning",
+    },
+    "target": [
+      "es2024",
+      "node18",
+    ],
+  },
+  "input": [
+    "src/*.mts",
+    "src/interfaces/*.mts",
+    "src/types/*.mts",
+    "src/utils/*.mts",
+  ],
+  "resolve": {
+    "conditions": Set {
+      "import",
+      "node",
+      "mkbuild",
+      "production",
+    },
+  },
+  "tsconfig": "tsconfig.build.json",
+}
+`;

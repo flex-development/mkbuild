@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:utils/formatToExt > should return file extension for \`format\` ("cjs") 1`] = `".cjs"`;
+
+exports[`unit:utils/formatToExt > should return file extension for \`format\` ("esm") 1`] = `".mjs"`;
+
+exports[`unit:utils/formatToExt > should return file extension for \`format\` ("iife") 1`] = `".js"`;
