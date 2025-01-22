@@ -167,7 +167,7 @@
     "@flex-development/pkg-types": "4.1.0",
     "@flex-development/unist-util-inspect": "1.0.1",
     "@flex-development/unist-util-types": "1.6.1",
-    "@stylistic/eslint-plugin": "2.10.0",
+    "@stylistic/eslint-plugin": "2.13.0",
     "@tsconfig/strictest": "2.0.5",
     "@types/chai": "5.0.1",
     "@types/chai-string": "1.4.5",
