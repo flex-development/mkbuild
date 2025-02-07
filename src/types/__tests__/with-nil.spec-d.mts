@@ -18,7 +18,7 @@ describe('unit-d:types/WithNil', () => {
     expectTypeOf<TestSubject<T>>().toEqualTypeOf<Expect>()
   })
 
-  it('should add `null | undefined` to each property in `T` (0)', () => {
+  it('should add `null | undefined` to each property in `T` (1)', () => {
     // Arrange
     type T = { 0?: Value; 1?: Value }
     type Expect = { 0?: Nilable<Value>; 1?: Nilable<Value> }
