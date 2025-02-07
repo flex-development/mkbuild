@@ -74,6 +74,8 @@ interface RollupCodeMap {
   OPTIMIZE_CHUNK_STATUS: true
   PARSE_ERROR: true
   PLUGIN_ERROR: true
+  PLUGIN_LOG: true
+  PLUGIN_WARNING: true
   REDECLARATION_ERROR: true
   RESERVED_NAMESPACE: true
   SHIMMED_EXPORT: true

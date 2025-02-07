@@ -14,6 +14,7 @@ import type {
   FooterFn,
   Format,
   Input,
+  LogType,
   ResolveOptions,
   SanitizeFileNameFn,
   SourcemapFileNamesFn,
@@ -24,7 +25,7 @@ import type {
 import type { ModuleId } from '@flex-development/mlly'
 import type { Tsconfig } from '@flex-development/tsconfig-types'
 import type { Nilable } from '@flex-development/tutils'
-import type { HashCharacters, InputPluginOption, LogLevelOption } from 'rollup'
+import type { HashCharacters, InputPluginOption } from 'rollup'
 
 describe('unit-d:interfaces/Task', () => {
   it('should match [assetFileNames?: AssetFileNamesFn | string | null | undefined]', () => {
@@ -57,10 +58,10 @@ describe('unit-d:interfaces/Task', () => {
       .toEqualTypeOf<Nilable<EntryFileNamesFn | string>>()
   })
 
-  it('should match [esbuild?: EsbuildOptions | null | undefined]', () => {
+  it('should match [esbuild?: EsbuildOptions | false | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('esbuild')
-      .toEqualTypeOf<Nilable<EsbuildOptions>>()
+      .toEqualTypeOf<Nilable<EsbuildOptions | false>>()
   })
 
   it('should match [experimental?: ExperimentalOptions | null | undefined]', () => {
@@ -111,10 +112,10 @@ describe('unit-d:interfaces/Task', () => {
       .toEqualTypeOf<Nilable<Input>>()
   })
 
-  it('should match [logLevel?: LogLevelOption | null | undefined]', () => {
+  it('should match [logLevel?: LogType | "silent" | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('logLevel')
-      .toEqualTypeOf<Nilable<LogLevelOption>>()
+      .toEqualTypeOf<Nilable<LogType | 'silent'>>()
   })
 
   it('should match [maxParallelFileOps?: number | null | undefined]', () => {

@@ -633,6 +633,7 @@ export default [
       'no-redeclare': 0,
       'no-restricted-imports': 0,
       'no-return-await': 0,
+      'no-setter-return': 0,
       'no-shadow': 0,
       'no-sparse-arrays': 0,
       'no-throw-literal': 0,

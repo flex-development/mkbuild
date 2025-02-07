@@ -3,13 +3,16 @@
  * @module mkbuild/interfaces/Result
  */
 
+import type { Logger } from '@flex-development/log'
 import type {
+  Failure,
   Format,
   Message,
   OutputAsset,
   OutputChunk,
   RunnableTask
 } from '@flex-development/mkbuild'
+import type { PackageJson } from '@flex-development/pkg-types'
 import type { SerializedTimings } from 'rollup'
 
 /**
@@ -20,8 +23,10 @@ import type { SerializedTimings } from 'rollup'
 interface Result {
   /**
    * Build failure.
+   *
+   * @see {@linkcode Failure}
    */
-  failure?: Error | null | undefined
+  failure?: Failure | null | undefined
 
   /**
    * Output file format.
@@ -29,6 +34,13 @@ interface Result {
    * @see {@linkcode Format}
    */
   format: Format
+
+  /**
+   * Task logger.
+   *
+   * @see {@linkcode Logger}
+   */
+  logger: Logger
 
   /**
    * Build messages.
@@ -51,6 +63,13 @@ interface Result {
    * @see {@linkcode OutputChunk}
    */
   outputs: (OutputAsset | OutputChunk)[]
+
+  /**
+   * Package manifest.
+   *
+   * @see {@linkcode PackageJson}
+   */
+  pkg: PackageJson
 
   /**
    * Absolute path to working directory.

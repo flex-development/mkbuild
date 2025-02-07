@@ -3,18 +3,22 @@
  * @module mkbuild/internal/createOnLog
  */
 
-import type { Message, RollupCode } from '@flex-development/mkbuild'
-import { ksort, omit } from '@flex-development/tutils'
+import toInputLog from '#internal/to-input-log'
+import type { Colors } from '@flex-development/colors'
+import type { Logger } from '@flex-development/log'
+import type { Message } from '@flex-development/mkbuild'
+import { ksort } from '@flex-development/tutils'
 import { ok } from 'devlop'
 import type { LogHandler, LogLevel, RollupLog } from 'rollup'
 
 export default createOnLog
 
 /**
- * Create a log handler.
+ * Create a rollup log handler.
  *
  * @see https://rollupjs.org/configuration-options/#onlog
  * @see {@linkcode LogHandler}
+ * @see {@linkcode Logger}
  * @see {@linkcode Message}
  *
  * @internal
@@ -23,15 +27,29 @@ export default createOnLog
  *
  * @param {Message[]} messages
  *  List to collect build messages
+ * @param {Logger} logger
+ *  Build task logger
  * @return {LogHandler}
  *  Rollup log handler
  */
-function createOnLog(this: void, messages: Message[]): LogHandler {
+function createOnLog(
+  this: void,
+  messages: Message[],
+  logger: Logger
+): LogHandler {
+  /**
+   * Colorizer.
+   *
+   * > 👉 **Note**: This is a variable to avoid re-calculating the color
+   * > functions map.
+   *
+   * @const {Colors} colors
+   */
+  const colors: Colors = logger.colors
+
   return onLog
 
   /**
-   * @see https://rollupjs.org/configuration-options/#onlog
-   *
    * @this {void}
    *
    * @param {LogLevel} level
@@ -42,12 +60,17 @@ function createOnLog(this: void, messages: Message[]): LogHandler {
    */
   function onLog(this: void, level: LogLevel, log: RollupLog): undefined {
     ok(typeof log.code === 'string', 'expected `log.code`')
+    const { type = level, ...rest } = log
 
-    return void messages.push(ksort({
-      ...omit(log, ['message']),
-      code: log.code as RollupCode,
-      level,
-      text: log.message
+    /**
+     * Build message.
+     *
+     * @const {Message} message
+     */
+    const message: Message = ksort(Object.assign(rest as Message, {
+      level: type
     }))
+
+    return messages.push(message), void logger.log(toInputLog(message, colors))
   }
 }

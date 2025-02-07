@@ -19,23 +19,6 @@ describe('unit:make', () => {
     Fn<Parameters<typeof testSubject>, Fn<[Report], undefined>>?
   ]>([
     [
-      null,
-      function assertion(this: void): Fn<[Report], undefined> {
-        return assert
-
-        /**
-         * @this {void}
-         *
-         * @param {Report} report
-         *  Build report
-         * @return {undefined}
-         */
-        function assert(report: Report): undefined {
-          return void expect(report).to.have.property('builds').be.of.length(0)
-        }
-      }
-    ],
-    [
       reverse,
       function assertion(this: void): Fn<[Report], undefined> {
         return assert
@@ -80,7 +63,7 @@ describe('unit:make', () => {
     assert = constant(constant(undefined))
   ) => {
     // Act
-    const result = await testSubject(config)
+    const result = await testSubject({ ...config, logLevel: 'silent' })
 
     // Expect
     expect(result).to.satisfy(isObjectPlain)

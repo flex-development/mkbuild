@@ -29,9 +29,10 @@ export default [
     ]
   },
   {
-    files: ['src/providers/logger.service.mts'],
+    files: ['**/*.+(cts|mts|ts|tsx)'],
+    ignores: ['**/*.{md,mdx}/*.+(cts|mts|ts|tsx)'],
     rules: {
-      '@typescript-eslint/unified-signatures': 0
+      '@typescript-eslint/only-throw-error': [2, { allow: ['Failure'] }]
     }
   }
 ]

@@ -3,9 +3,11 @@
  * @module mkbuild/internal/formatEsbuildMessage
  */
 
+import logLevels from '#internal/log-levels'
+import type { LogType } from '@flex-development/mkbuild'
 import { Location } from '@flex-development/vfile-location'
 import type { LogLevel, Message } from 'esbuild'
-import type { RollupLog, LogLevel as RollupLogLevel } from 'rollup'
+import type { RollupLog } from 'rollup'
 
 /**
  * Convert an esbuild `message` to a rollup log.
@@ -54,13 +56,15 @@ function formatEsbuildMessage(
   }
 
   if (level !== 'silent') {
-    log.level = ({
+    log.type = ({
       debug: 'debug',
       error: 'error',
       info: 'info',
-      verbose: 'debug',
+      verbose: 'verbose',
       warning: 'warn'
-    } as Record<LogLevel, RollupLogLevel | 'error'>)[level]
+    } as Record<LogLevel, LogType>)[level]
+
+    log.level = logLevels.get(log.type)
   }
 
   if (message.location) {

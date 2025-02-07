@@ -13,6 +13,7 @@ import type {
   FooterFn,
   Format,
   Input,
+  LogType,
   ResolveOptions,
   SanitizeFileNameFn,
   SourcemapFileNamesFn,
@@ -24,8 +25,7 @@ import type { ModuleId } from '@flex-development/mlly'
 import type { Tsconfig } from '@flex-development/tsconfig-types'
 import type {
   HashCharacters,
-  InputPluginOption,
-  LogLevelOption
+  InputPluginOption
 } from 'rollup'
 
 /**
@@ -119,7 +119,7 @@ interface Task {
    * @see {@linkcode EsbuildOptions}
    * @see https://esbuild.github.io/api/#transform
    */
-  esbuild?: EsbuildOptions | null | undefined
+  esbuild?: EsbuildOptions | false | null | undefined
 
   /**
    * Experimental options.
@@ -199,11 +199,11 @@ interface Task {
   /**
    * Log level.
    *
-   * @see {@linkcode LogLevelOption}
+   * @see {@linkcode LogType}
    *
    * @default 'info'
    */
-  logLevel?: LogLevelOption | null | undefined
+  logLevel?: LogType | 'silent' | null | undefined
 
   /**
    * Limit the number of files that can be opened in parallel when reading

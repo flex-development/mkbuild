@@ -14,6 +14,7 @@ export type { default as InputFile } from '#types/input-file'
 export type { default as InputList } from '#types/input-list'
 export type { default as InputMap } from '#types/input-map'
 export type { default as JsxTransform } from '#types/jsx-transform'
+export type { default as LogType } from '#types/log-type'
 export type { default as RollupCode } from '#types/rollup-code'
 export type {
   default as SanitizeFileNameFn

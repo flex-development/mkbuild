@@ -3,8 +3,11 @@
  * @module mkbuild/interfaces/Message
  */
 
-import type { MessageLocation, RollupCode } from '@flex-development/mkbuild'
-import type * as rollup from 'rollup'
+import type {
+  LogType,
+  MessageLocation,
+  RollupCode
+} from '@flex-development/mkbuild'
 
 /**
  * Build message.
@@ -21,11 +24,11 @@ interface Message {
   cause?: unknown
 
   /**
-   * Message code.
+   * Log code.
    *
    * @see {@linkcode RollupCode}
    */
-  code: RollupCode
+  code?: RollupCode | null | undefined
 
   /**
    * Module id of exporting file.
@@ -62,9 +65,14 @@ interface Message {
   /**
    * Log level of message.
    *
-   * @see {@linkcode rollup.LogLevel}
+   * @see {@linkcode LogType}
    */
-  level: rollup.LogLevel
+  level: LogType
+
+  /**
+   * Message text.
+   */
+  message: string
 
   /**
    * Message metadata.
@@ -100,11 +108,6 @@ interface Message {
    * Stack trace.
    */
   stack?: string | null | undefined
-
-  /**
-   * Message text.
-   */
-  text: string
 
   /**
    * Help URL.

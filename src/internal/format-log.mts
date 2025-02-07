@@ -5,7 +5,6 @@
 
 import pathe from '@flex-development/pathe'
 import { ksort } from '@flex-development/tutils'
-import { ok } from 'devlop'
 import type { LogLevel, RollupLog } from 'rollup'
 
 /**
@@ -20,17 +19,19 @@ import type { LogLevel, RollupLog } from 'rollup'
  *
  * @this {void}
  *
- * @param {LogLevel} level
+ * @param {LogLevel | 'error'} level
  *  Rollup log level
  * @param {RollupLog} log
  *  Rollup log object
  * @return {undefined}
  */
-function formatLog(this: void, level: LogLevel, log: RollupLog): undefined {
-  ok(typeof log.code === 'string', 'expected `log.code`')
-
+function formatLog(
+  this: void,
+  level: LogLevel | 'error',
+  log: RollupLog
+): undefined {
   /**
-   * Path to module where message originated.
+   * Module id.
    *
    * @const {string | undefined} id
    */
@@ -54,7 +55,7 @@ function formatLog(this: void, level: LogLevel, log: RollupLog): undefined {
     log.message = log.message.trimStart()
   }
 
-  if (!log.level) log.level = level
+  log.type ??= log.level ??= level
   return void ksort(log)
 }
 

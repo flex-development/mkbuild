@@ -20,12 +20,14 @@ describe('integration:plugins/metadata', () => {
       {
         esbuild: { loader: { '.jsonc': 'copy' } },
         input: ['*'],
+        logLevel: 'silent',
         root: '__fixtures__/pkg/apple-stock'
       }
     ],
     [
       {
         input: ['src/*.mts'],
+        logLevel: 'silent',
         root: '__fixtures__/pkg/reverse',
         sourcemap: true
       }

@@ -4,9 +4,12 @@
  */
 
 import type TestSubject from '#interfaces/message'
-import type { MessageLocation, RollupCode } from '@flex-development/mkbuild'
+import type {
+  LogType,
+  MessageLocation,
+  RollupCode
+} from '@flex-development/mkbuild'
 import type { Nilable } from '@flex-development/tutils'
-import type * as rollup from 'rollup'
 
 describe('unit-d:interfaces/Message', () => {
   it('should match [binding?: string | null | undefined]', () => {
@@ -19,10 +22,10 @@ describe('unit-d:interfaces/Message', () => {
     expectTypeOf<TestSubject>().toHaveProperty('cause').toEqualTypeOf<unknown>()
   })
 
-  it('should match [code: RollupCode]', () => {
+  it('should match [code?: RollupCode | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('code')
-      .toEqualTypeOf<RollupCode>()
+      .toEqualTypeOf<Nilable<RollupCode>>()
   })
 
   it('should match [exporter?: string | null | undefined]', () => {
@@ -61,10 +64,14 @@ describe('unit-d:interfaces/Message', () => {
       .toEqualTypeOf<Nilable<MessageLocation>>()
   })
 
-  it('should match [level: rollup.LogLevel]', () => {
+  it('should match [level: LogType]', () => {
+    expectTypeOf<TestSubject>().toHaveProperty('level').toEqualTypeOf<LogType>()
+  })
+
+  it('should match [message: string]', () => {
     expectTypeOf<TestSubject>()
-      .toHaveProperty('level')
-      .toEqualTypeOf<rollup.LogLevel>()
+      .toHaveProperty('message')
+      .toEqualTypeOf<string>()
   })
 
   it('should match [meta?: unknown]', () => {
@@ -105,10 +112,6 @@ describe('unit-d:interfaces/Message', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('stack')
       .toEqualTypeOf<Nilable<string>>()
-  })
-
-  it('should match [text: string]', () => {
-    expectTypeOf<TestSubject>().toHaveProperty('text').toEqualTypeOf<string>()
   })
 
   it('should match [url?: string | null | undefined]', () => {

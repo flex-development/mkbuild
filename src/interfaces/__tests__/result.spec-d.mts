@@ -4,7 +4,9 @@
  */
 
 import type TestSubject from '#interfaces/result'
+import type { Logger } from '@flex-development/log'
 import type {
+  Failure,
   Format,
   Message,
   OutputAsset,
@@ -15,14 +17,18 @@ import type { Nilable } from '@flex-development/tutils'
 import type { SerializedTimings } from 'rollup'
 
 describe('unit-d:interfaces/Result', () => {
-  it('should match [failure?: Error | null | undefined]', () => {
+  it('should match [failure?: Failure | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('failure')
-      .toEqualTypeOf<Nilable<Error>>()
+      .toEqualTypeOf<Nilable<Failure>>()
   })
 
   it('should match [format: Format]', () => {
     expectTypeOf<TestSubject>().toHaveProperty('format').toEqualTypeOf<Format>()
+  })
+
+  it('should match [logger: Logger]', () => {
+    expectTypeOf<TestSubject>().toHaveProperty('logger').toEqualTypeOf<Logger>()
   })
 
   it('should match [messages: Message[]]', () => {

@@ -4,10 +4,6 @@
  */
 
 import dfs from '#internal/fs'
-import {
-  ERR_MODULE_NOT_FOUND,
-  type ErrModuleNotFound
-} from '@flex-development/errnode'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
@@ -28,7 +24,6 @@ readPackageJson.cache = cache
 /**
  * Load a `package.json` file.
  *
- * @see {@linkcode ErrModuleNotFound}
  * @see {@linkcode PackageJson}
  * @see {@linkcode mlly.FileSystem}
  * @see {@linkcode mlly.ModuleId}
@@ -39,15 +34,13 @@ readPackageJson.cache = cache
  *  Absolute module id of working directory
  * @param {mlly.FileSystem | null | undefined} [fs]
  *  File system API
- * @return {PackageJson}
+ * @return {PackageJson | null}
  *  Package manifest object
- * @throws {ErrModuleNotFound}
- *  If `package.json` file is not found
  */
 function readPackageJson(
   root: mlly.ModuleId,
   fs?: mlly.FileSystem | null | undefined
-): PackageJson {
+): PackageJson | null {
   ok(String(root).endsWith('/'), 'expected trailing slash ("/") end')
 
   root = pathe.toPath(root)
@@ -65,13 +58,5 @@ function readPackageJson(
     fs ?? dfs
   )
 
-  if (!pkg) {
-    throw new ERR_MODULE_NOT_FOUND(
-      pathe.join(root, 'package.json'),
-      import.meta.url,
-      new URL('package.json', pathe.pathToFileURL(root))
-    )
-  }
-
-  return cache.set(root, pkg), pkg
+  return pkg && cache.set(root, pkg), pkg
 }

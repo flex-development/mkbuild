@@ -29,6 +29,7 @@ describe('integration:plugins/esbuild', () => {
       {
         esbuild: { tsconfigRaw: {} },
         input: ['*'],
+        logLevel: 'silent',
         root: '__fixtures__/pkg/browser-usage',
         sourcemap: true
       },

@@ -62,7 +62,7 @@ describe('integration:plugins/dts', () => {
          * @return {undefined}
          */
         function assert(this: void, result: Result): undefined {
-          expect(result).to.have.property('messages').of.length(1)
+          expect(result).to.have.property('messages').be.of.length(1)
           expect(result).to.have.nested.property('task.dts', dts)
           expect(result.outputs).to.have.property('length', 4)
           expect(result.outputs).to.each.have.property('fileName').match(ext)
@@ -75,6 +75,7 @@ describe('integration:plugins/dts', () => {
       {
         dts: true,
         input: 'src/*.ts',
+        logLevel: 'silent',
         root: '__fixtures__/pkg/tribonacci',
         tsconfig: 'tsconfig.json'
       },
@@ -110,7 +111,7 @@ describe('integration:plugins/dts', () => {
          * @return {undefined}
          */
         function assert(this: void, result: Result): undefined {
-          expect(result).to.have.property('messages').of.length(0)
+          expect(result).to.have.property('messages').be.not.empty
           expect(result).to.have.nested.property('task.dts', dts)
           expect(result.outputs).to.have.property('length', 3)
           expect(result.outputs).to.each.have.property('fileName').match(ext)

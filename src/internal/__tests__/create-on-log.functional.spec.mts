@@ -4,61 +4,58 @@
  */
 
 import testSubject from '#internal/create-on-log'
+import toInputLog from '#internal/to-input-log'
+import {
+  createLogger,
+  type InputLogObject,
+  type Logger
+} from '@flex-development/log'
 import type { Message } from '@flex-development/mkbuild'
-import pathe from '@flex-development/pathe'
-import { ok } from 'devlop'
-import ts from 'typescript'
+import type { LogLevel, RollupLog } from 'rollup'
+
+vi.mock('#internal/to-input-log', async og => ({
+  default: vi
+    .fn((await og<{ default: typeof toInputLog }>()).default)
+    .mockName('toInputLog')
+}))
 
 describe('functional:internal/createOnLog', () => {
   describe('onLog', () => {
-    it.each<Parameters<ReturnType<typeof testSubject>>>([
-      ['warn', {
+    let level: LogLevel
+    let log: RollupLog
+    let logger: Logger
+
+    beforeAll(() => {
+      level = 'warn'
+      logger = createLogger({ format: { colors: false }, level })
+
+      log = {
         code: 'EMPTY_BUNDLE',
         message: 'Generated an empty chunk: "interfaces/task".',
         names: ['interfaces/task']
-      }],
-      ['warn', {
-        code: 'PLUGIN_WARNING',
-        hook: 'renderStart',
-        id: pathe.resolve('tsconfig.build.json'),
-        message:
-          'Compiler option \'sourceMap\' requires a value of type boolean.',
-        meta: { category: ts.DiagnosticCategory.Error },
-        plugin: 'mkbuild:dts',
-        pluginCode: 5024,
-        pos: 299
-      }],
-      ['warn', {
-        code: 'PLUGIN_WARNING',
-        frame:
-          '        : (await import(url.href) as { default?: Config | null }).default',
-        hook: 'transform',
-        loc: {
-          column: 18,
-          file: pathe.resolve('src/utils/load-build-config.mts'),
-          line: 96
-        },
-        message:
-          'This "import" expression will not be bundled because the argument is not a string literal',
-        meta: { level: 'warning', notes: [] },
-        plugin: 'mkbuild:esbuild',
-        pluginCode: 'unsupported-dynamic-import',
-        pos: 2188
-      }]
-    ])('should handle rollup `log` (%#)', (...args) => {
-      ok(args[1].code, 'expected `log.code`')
+      }
+    })
 
+    beforeEach(() => {
+      vi.spyOn(logger, 'log')
+    })
+
+    it('should handle rollup `log`', () => {
       // Arrange
       const messages: Message[] = []
+      let input: InputLogObject
 
       // Act
-      testSubject(messages)(...args)
+      testSubject(messages, logger)(level, log)
+      input = vi.mocked(toInputLog).mock.results[0]?.value
 
       // Expect
       expect(messages).to.be.of.length(1)
-      expect(messages).to.have.nested.property('0.code', args[1].code)
-      expect(messages).to.have.nested.property('0.level', args[0])
-      expect(messages).to.have.nested.property('0.text', args[1].message)
+      expect(messages).to.have.nested.property('0.code', log.code)
+      expect(messages).to.have.nested.property('0.level', level)
+      expect(messages).to.have.nested.property('0.message', log.message)
+      expect(toInputLog).toHaveBeenCalledOnce()
+      expect(logger.log).toHaveBeenCalledExactlyOnceWith(input)
     })
   })
 })

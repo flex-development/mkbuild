@@ -9,6 +9,7 @@ export type { default as EsbuildOptions } from '#interfaces/esbuild-options'
 export type {
   default as ExperimentalOptions
 } from '#interfaces/experimental-options'
+export type { default as Failure } from '#interfaces/failure'
 export type { default as FileSystem } from '#interfaces/file-system'
 export type { default as Message } from '#interfaces/message'
 export type { default as MessageLocation } from '#interfaces/message-location'

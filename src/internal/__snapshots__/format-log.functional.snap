@@ -8,6 +8,7 @@ exports[`functional:internal/formatLog > should format rollup \`log\` (0) 1`] = 
   "names": [
     "interfaces/task",
   ],
+  "type": "warn",
 }
 `;
 
@@ -23,6 +24,7 @@ exports[`functional:internal/formatLog > should format rollup \`log\` (1) 1`] = 
   },
   "plugin": "mkbuild:dts",
   "pluginCode": 5024,
+  "type": "warn",
 }
 `;
 
@@ -45,5 +47,6 @@ exports[`functional:internal/formatLog > should format rollup \`log\` (2) 1`] = 
   "plugin": "mkbuild:esbuild",
   "pluginCode": "unsupported-dynamic-import",
   "pos": 2188,
+  "type": "warn",
 }
 `;

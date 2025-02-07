@@ -28,6 +28,7 @@ describe('integration:plugins/clean', () => {
 
     taskBase = {
       input: '*',
+      logLevel: 'silent',
       root: '__fixtures__/pkg/browser-usage',
       write: true
     }

@@ -23,9 +23,14 @@ import formatToExt from '#utils/format-to-ext'
 import gitignore from '#utils/gitignore'
 import IGNORE_PATTERNS from '#utils/ignore-patterns'
 import TASK_PLUGIN_NAME from '#utils/task-plugin-name'
+import { createLogger, type Logger } from '@flex-development/log'
+import { FancyReporter } from '@flex-development/log/reporters'
 import type {
+  Failure,
   FileSystem,
+  Format,
   Input,
+  LogType,
   Message,
   OutputAsset,
   OutputChunk,
@@ -35,16 +40,13 @@ import type {
 } from '@flex-development/mkbuild'
 import pathe from '@flex-development/pathe'
 import type { PackageJson } from '@flex-development/pkg-types'
-import {
-  ifelse,
-  isNIL,
-  ksort
-} from '@flex-development/tutils'
+import { ifelse, isNIL, ksort } from '@flex-development/tutils'
 import { ok } from 'devlop'
 import {
   rollup,
   type InputOptions,
   type InputPluginOption,
+  type LogLevelOption,
   type MinimalPluginContext,
   type NormalizedInputOptions,
   type NormalizedOutputOptions,
@@ -82,6 +84,16 @@ function runnableTask(
 ): RunnableTask {
   task ??= {}
   fs = { ...dfs, ...fs }
+
+  /**
+   * Build task logger.
+   *
+   * @const {Logger} logger
+   */
+  const logger: Logger = createLogger({
+    format: { badge: false },
+    reporters: new FancyReporter()
+  })
 
   /**
    * Entry points.
@@ -200,7 +212,7 @@ function runnableTask(
       ...options.plugins,
       task.plugins,
       resolve({ ...task.resolve }),
-      esbuild({
+      task.esbuild !== false && esbuild({
         ...task.esbuild,
         format: task.format,
         sourceRoot: task.sourcemapBaseUrl,
@@ -216,10 +228,18 @@ function runnableTask(
       cache: false,
       input,
       jsx: false,
-      logLevel: ifelse(task.logLevel === 'silent', undefined, task.logLevel),
+      logLevel: ({
+        debug: 'debug',
+        error: 'warn',
+        info: 'info',
+        silent: 'debug',
+        trace: 'debug',
+        verbose: 'debug',
+        warn: 'warn'
+      } as Record<LogLevelOption | LogType, LogLevelOption>)[task.logLevel],
       makeAbsoluteExternalsRelative: undefined,
       maxParallelFileOps: task.maxParallelFileOps ?? 20,
-      onLog: createOnLog(messages),
+      onLog: createOnLog(messages, logger),
       perf: task.experimental?.perf ?? undefined,
       plugins,
       preserveSymlinks: task.resolve?.preserveSymlinks ?? false,
@@ -341,10 +361,8 @@ function runnableTask(
 
     input = task.input ?? undefined
     messages = []
-    pkg = readPackageJson(task.root, fs as FileSystem)
 
-    task.format ??= pkg.type === 'module' ? 'esm' : 'cjs'
-    task.logLevel ??= 'info'
+    logger.level = task.logLevel ??= 'info'
     task.outdir ??= 'dist'
 
     /**
@@ -354,20 +372,19 @@ function runnableTask(
      */
     const result: Result = Object.defineProperties({
       failure: null,
-      format: task.format,
+      format: '' as unknown as Format,
+      logger,
       messages,
       outdir: task.outdir,
       outputs: [],
-      pkg,
+      pkg: {},
       root: task.root,
       size: 0,
       task: task as Result['task'],
       timings: null
     }, {
-      pkg: {
-        enumerable: false,
-        value: pkg,
-        writable: true
+      logger: {
+        enumerable: false
       },
       size: {
         enumerable: true,
@@ -389,6 +406,10 @@ function runnableTask(
       }
     })
 
+    pkg = result.pkg = readPackageJson(result.root, fs as FileSystem) ?? {}
+    result.format = task.format ??= pkg.type === 'module' ? 'esm' : 'cjs'
+    Object.defineProperties(result, { pkg: { enumerable: false } })
+
     try {
       /**
        * Rollup build.
@@ -398,7 +419,7 @@ function runnableTask(
       const build: RollupBuild = await rollup({
         plugins: [
           {
-            api: { fs, pkg },
+            api: { fs, pkg: result.pkg },
             // @ts-expect-error [2353] vite-only option
             apply: 'build',
             buildStart: { handler: buildStart, order: 'pre', sequential: true },
@@ -420,7 +441,9 @@ function runnableTask(
       // add performance timings to build result
       if (build.getTimings) result.timings = build.getTimings()
     } catch (e: unknown) {
-      result.failure = e as Error
+      ok(e instanceof Error, 'expected error instance')
+      formatLog('error', e)
+      result.failure = e as unknown as Failure
     }
 
     // rollup will throw if `task.input` is empty, `null`, or `undefined`

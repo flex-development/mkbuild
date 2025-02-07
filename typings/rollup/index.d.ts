@@ -1,4 +1,8 @@
-import type { FileSystem, MessageLocation } from '@flex-development/mkbuild'
+import type {
+  FileSystem,
+  LogType,
+  MessageLocation
+} from '@flex-development/mkbuild'
 import type { PackageJson } from '@flex-development/pkg-types'
 import type { Tsconfig } from '@flex-development/tsconfig-types'
 
@@ -28,6 +32,7 @@ declare module 'rollup' {
   interface RollupLog {
     loc?: { column: number; file?: string; line: number } | MessageLocation
     level?: LogLevel | 'error' | undefined
+    type?: LogType | undefined
   }
 }
 

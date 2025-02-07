@@ -5,7 +5,7 @@
 
 import formatDiagnostic from '#internal/format-diagnostic'
 import withTrailingSlash from '#internal/with-trailing-slash'
-import type { InputFile } from '@flex-development/mkbuild'
+import type { InputFile, LogType } from '@flex-development/mkbuild'
 import pathe from '@flex-development/pathe'
 import {
   createGetCanonicalFileName as canonicalFileName,
@@ -470,9 +470,9 @@ function plugin(this: void, opts: Options): Plugin {
   function trace(this: MinimalPluginContext, message: string): undefined {
     return void this.debug({
       message,
-      meta: this.meta,
+      meta: { ...this.meta },
       plugin: PLUGIN_NAME,
-      pluginCode: trace.name
+      type: trace.name as LogType
     })
   }
 }

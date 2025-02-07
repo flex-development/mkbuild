@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:internal/toInputLog > should return input log object (0) 1`] = `
+{
+  "args": [
+    "[33m[rollup][39m",
+  ],
+  "level": "warn",
+  "message": "[1m%s[22m Generated an empty chunk: "interfaces/task".",
+  "stack": undefined,
+  "type": "warn",
+}
+`;
+
+exports[`unit:internal/toInputLog > should return input log object (1) 1`] = `
+{
+  "args": [
+    "[31m[mkbuild:dts][39m",
+    "[90msrc/utils/runnable-task.mts[39m",
+    "[90m:449:17[39m",
+    449,
+    "formatLog('error', e)",
+  ],
+  "level": "error",
+  "message": "[1m%s[22m Argument of type '"error"' is not assignable to parameter of type 'LogLevel'.
+  %s%s[90m:
+    %j |    [39m[2m[31m%s[39m[22m",
+  "stack": RollupError: Argument of type '"error"' is not assignable to parameter of type 'LogLevel'.
+  at getRollupError (file://\${process.cwd()}/node_modules/rollup/dist/es/shared/parseAst.js:396:41)
+  at error (file://\${process.cwd()}/node_modules/rollup/dist/es/shared/parseAst.js:392:42)
+  at Object.diagnostics (\${process.cwd()}/src/plugins/dts.mts:135:22)
+  at Object.renderStart (\${process.cwd()}/src/plugins/dts.mts:359:17)
+  at async Promise.all (index 0)
+  at async PluginDriver.hookParallel (file://\${process.cwd()}/node_modules/rollup/dist/es/shared/node-entry.js:20868:9)
+  at async Bundle.generate (file://\${process.cwd()}/node_modules/rollup/dist/es/shared/node-entry.js:19200:13)
+  at async file://\${process.cwd()}/node_modules/rollup/dist/es/shared/node-entry.js:21904:27
+  at async catchUnfinishedHookActions (file://\${process.cwd()}/node_modules/rollup/dist/es/shared/node-entry.js:21286:16),
+  "type": "error",
+}
+`;
+
+exports[`unit:internal/toInputLog > should return input log object (2) 1`] = `
+{
+  "args": [
+    "[36m[mkbuild:esbuild][39m",
+    "[90msrc/utils/load-build-config.mts[39m",
+    "[90m:96:18[39m",
+    96,
+    ": (await import(url.href) as { default?: Config | null }).default",
+  ],
+  "level": "info",
+  "message": "[1m%s[22m This "import" expression will not be bundled because the argument is not a string literal
+  %s%s[90m:
+    %j |    [39m[2m[36m%s[39m[22m",
+  "stack": undefined,
+  "type": "info",
+}
+`;

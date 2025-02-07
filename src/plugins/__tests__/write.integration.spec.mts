@@ -27,6 +27,7 @@ describe('integration:plugins/write', () => {
     const task: Task = {
       clean: false,
       input: 'src/*.ts',
+      logLevel: 'silent',
       root: '__fixtures__/pkg/tribonacci',
       sourcemap: true,
       write: true

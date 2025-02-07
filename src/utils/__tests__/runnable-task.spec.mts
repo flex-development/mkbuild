@@ -12,14 +12,10 @@ import { ok } from 'devlop'
 
 describe('unit:utils/runnableTask', () => {
   it('should return runnable build task', () => {
-    // Arrange
-    const task: Task = {}
-
     // Act
-    const result = testSubject(task)
+    const result = testSubject(null)
 
     // Expect
-    expect(result).to.satisfy(isObjectPlain).and.not.eq(task)
     expect(result).to.have.property('run').be.a('function')
   })
 
@@ -29,7 +25,9 @@ describe('unit:utils/runnableTask', () => {
       Fn<Parameters<typeof testSubject>, Fn<[Result], undefined>>?
     ]>([
       [
-        null,
+        {
+          logLevel: 'silent'
+        },
         null,
         function assertion(this: void): Fn<[Result], undefined> {
           return function assert(this: void, result: Result): undefined {
@@ -40,6 +38,44 @@ describe('unit:utils/runnableTask', () => {
             expect(result).to.have.property('root', pathe.cwd() + pathe.sep)
             expect(result).to.have.property('size', 0)
             expect(result).to.have.nested.property('task.dts', true)
+            expect(result).to.have.nested.property('task.format', result.format)
+            expect(result).to.have.nested.property('task.ignore').eql(IGNORE)
+            expect(result).to.have.nested.property('task.logLevel', 'silent')
+            expect(result).to.have.nested.property('task.outdir', result.outdir)
+            expect(result).to.have.nested.property('task.root', result.root)
+            expect(result).to.have.property('timings', null)
+
+            return void result
+          }
+        }
+      ],
+      [
+        {
+          root: '__fixtures__/pkg/no-package-json'
+        },
+        null,
+        function assertion(
+          this: void,
+          task: Task | null | undefined
+        ): Fn<[Result], undefined> {
+          ok(task, 'expected `task`')
+          ok(typeof task.root === 'string', 'expected `task.root`')
+
+          /**
+           * Expected root.
+           *
+           * @const {string} root
+           */
+          const root: string = pathe.resolve(task.root) + pathe.sep
+
+          return function assert(this: void, result: Result): undefined {
+            expect(result).to.have.property('format', 'cjs')
+            expect(result).to.have.property('messages').of.length(0)
+            expect(result).to.have.property('outdir', 'dist')
+            expect(result).to.have.property('outputs').of.length(0)
+            expect(result).to.have.property('root', root)
+            expect(result).to.have.property('size', 0)
+            expect(result).to.have.nested.property('task.dts', false)
             expect(result).to.have.nested.property('task.format', result.format)
             expect(result).to.have.nested.property('task.ignore').eql(IGNORE)
             expect(result).to.have.nested.property('task.logLevel', 'info')
@@ -54,6 +90,7 @@ describe('unit:utils/runnableTask', () => {
       [
         {
           input: ['*'],
+          logLevel: 'silent',
           resolve: {},
           root: '__fixtures__/pkg/browser-usage'
         },
@@ -88,6 +125,7 @@ describe('unit:utils/runnableTask', () => {
           experimental: { perf: true },
           gitignore: false,
           input: 'src/*.ts',
+          logLevel: 'silent',
           root: '__fixtures__/pkg/tribonacci',
           sourcemap: true,
           tsconfig: 'tsconfig.json'
@@ -111,9 +149,11 @@ describe('unit:utils/runnableTask', () => {
       assert = () => constant(undefined)
     ) => {
       // Act
-      const result = await testSubject(task, fs).run()
+      const runner = testSubject(task, fs)
+      const result = await runner.run()
 
       // Expect
+      expect(runner).to.satisfy(isObjectPlain).and.not.eq(task)
       expect(result).to.have.property('failure', null)
       expect(result).to.have.property('format').be.oneOf(['cjs', 'esm', 'iife'])
       expect(result).to.have.property('messages').be.an('array')

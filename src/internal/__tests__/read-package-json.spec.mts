@@ -4,7 +4,6 @@
  */
 
 import testSubject from '#internal/read-package-json'
-import { codes, isNodeError, type NodeError } from '@flex-development/errnode'
 import pkg from '@flex-development/mkbuild/package.json'
 import * as mlly from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
@@ -28,6 +27,14 @@ describe('unit:internal/readPackageJson', () => {
     key = pathe.fileURLToPath(root)
   })
 
+  it('should return `null` if `package.json` file is not found', () => {
+    // Arrange
+    const input: string = '__fixtures__/pkg/no-package-json' + pathe.sep
+
+    // Act + Expect
+    expect(testSubject(new URL(input, root))).to.be.null
+  })
+
   it('should return cached package manifest object', () => {
     // Arrange
     testSubject.cache.set(key, pkg as PackageJson)
@@ -42,21 +49,5 @@ describe('unit:internal/readPackageJson', () => {
 
   it('should return package manifest object', () => {
     expect(testSubject(root)).to.eql(pkg)
-  })
-
-  it('should throw if `package.json` file is not found', () => {
-    // Arrange
-    let error!: NodeError
-
-    // Act
-    try {
-      testSubject(new URL('__fixtures__/pkg/no-package-json' + pathe.sep, root))
-    } catch (e: unknown) {
-      error = e as typeof error
-    }
-
-    // Expect
-    expect(error).to.satisfy(isNodeError)
-    expect(error).to.have.property('code', codes.ERR_MODULE_NOT_FOUND)
   })
 })

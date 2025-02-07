@@ -19,5 +19,6 @@ exports[`unit:internal/formatEsbuildMessage > should return \`message\` as rollu
   "plugin": "mkbuild:esbuild",
   "pluginCode": "unsupported-dynamic-import",
   "pos": 2183,
+  "type": "warn",
 }
 `;
