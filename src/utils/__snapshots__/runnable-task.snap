@@ -1,0 +1,191 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`unit:utils/runnableTask > #run > transpile > should return build result (4) 1`] = `
+[
+  {
+    "bytes": 52,
+    "code": "export { default as reverse } from './reverse.mjs';
+",
+    "dynamicImports": [],
+    "exports": [
+      "reverse",
+    ],
+    "facadeModuleId": \${process.cwd()}/__fixtures__/pkg/reverse/src/index.mts,
+    "fileName": "index.mjs",
+    "implicitlyLoadedBefore": [],
+    "importedBindings": {
+      "reverse.mjs": [
+        "default",
+      ],
+    },
+    "imports": [
+      "reverse.mjs",
+    ],
+    "isDynamicEntry": false,
+    "isEntry": true,
+    "isImplicitEntry": false,
+    "map": null,
+    "moduleIds": [
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/index.mts,
+    ],
+    "modules": {
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/index.mts: {
+        "code": null,
+        "originalLength": 131,
+        "removedExports": [],
+        "renderedExports": [
+          "reverse",
+        ],
+        "renderedLength": 0,
+      },
+    },
+    "name": "index",
+    "preliminaryFileName": "index.mjs",
+    "referencedFiles": [],
+    "sourcemapFileName": null,
+    "type": "chunk",
+  },
+  {
+    "bytes": 79,
+    "code": "var max_value_default = 2 ** 31 - 1;
+
+export { max_value_default as default };
+",
+    "dynamicImports": [],
+    "exports": [
+      "default",
+    ],
+    "facadeModuleId": \${process.cwd()}/__fixtures__/pkg/reverse/src/max-value.mts,
+    "fileName": "max-value.mjs",
+    "implicitlyLoadedBefore": [],
+    "importedBindings": {},
+    "imports": [],
+    "isDynamicEntry": false,
+    "isEntry": true,
+    "isImplicitEntry": false,
+    "map": null,
+    "moduleIds": [
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/max-value.mts,
+    ],
+    "modules": {
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/max-value.mts: {
+        "code": "var max_value_default = 2 ** 31 - 1;",
+        "originalLength": 97,
+        "removedExports": [],
+        "renderedExports": [
+          "default",
+        ],
+        "renderedLength": 36,
+      },
+    },
+    "name": "max-value",
+    "preliminaryFileName": "max-value.mjs",
+    "referencedFiles": [],
+    "sourcemapFileName": null,
+    "type": "chunk",
+  },
+  {
+    "bytes": 78,
+    "code": "var min_value_default = (-2) ** 31;
+
+export { min_value_default as default };
+",
+    "dynamicImports": [],
+    "exports": [
+      "default",
+    ],
+    "facadeModuleId": \${process.cwd()}/__fixtures__/pkg/reverse/src/min-value.mts,
+    "fileName": "min-value.mjs",
+    "implicitlyLoadedBefore": [],
+    "importedBindings": {},
+    "imports": [],
+    "isDynamicEntry": false,
+    "isEntry": true,
+    "isImplicitEntry": false,
+    "map": null,
+    "moduleIds": [
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/min-value.mts,
+    ],
+    "modules": {
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/min-value.mts: {
+        "code": "var min_value_default = (-2) ** 31;",
+        "originalLength": 96,
+        "removedExports": [],
+        "renderedExports": [
+          "default",
+        ],
+        "renderedLength": 35,
+      },
+    },
+    "name": "min-value",
+    "preliminaryFileName": "min-value.mjs",
+    "referencedFiles": [],
+    "sourcemapFileName": null,
+    "type": "chunk",
+  },
+  {
+    "bytes": 432,
+    "code": "import max_value_default from './max-value.mjs';
+import min_value_default from './min-value.mjs';
+
+function reverse(x) {
+  if (x >= -9 && x <= 9) return x;
+  const digits = [...x.toString(), x < 0 ? "-" : ""];
+  const reversed = Number.parseInt(digits.reverse().join(""));
+  return reversed < min_value_default || reversed > max_value_default ? 0 : reversed;
+}
+var reverse_default = reverse;
+
+export { reverse_default as default };
+",
+    "dynamicImports": [],
+    "exports": [
+      "default",
+    ],
+    "facadeModuleId": \${process.cwd()}/__fixtures__/pkg/reverse/src/reverse.mts,
+    "fileName": "reverse.mjs",
+    "implicitlyLoadedBefore": [],
+    "importedBindings": {
+      "max-value.mjs": [
+        "default",
+      ],
+      "min-value.mjs": [
+        "default",
+      ],
+    },
+    "imports": [
+      "max-value.mjs",
+      "min-value.mjs",
+    ],
+    "isDynamicEntry": false,
+    "isEntry": true,
+    "isImplicitEntry": false,
+    "map": null,
+    "moduleIds": [
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/reverse.mts,
+    ],
+    "modules": {
+      \${process.cwd()}/__fixtures__/pkg/reverse/src/reverse.mts: {
+        "code": "function reverse(x) {
+  if (x >= -9 && x <= 9) return x;
+  const digits = [...x.toString(), x < 0 ? "-" : ""];
+  const reversed = Number.parseInt(digits.reverse().join(""));
+  return reversed < min_value_default || reversed > max_value_default ? 0 : reversed;
+}
+var reverse_default = reverse;",
+        "originalLength": 1200,
+        "removedExports": [],
+        "renderedExports": [
+          "default",
+        ],
+        "renderedLength": 292,
+      },
+    },
+    "name": "reverse",
+    "preliminaryFileName": "reverse.mjs",
+    "referencedFiles": [],
+    "sourcemapFileName": null,
+    "type": "chunk",
+  },
+]
+`;

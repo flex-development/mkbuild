@@ -3,6 +3,7 @@
  * @module mkbuild/interfaces/ResolveOptions
  */
 
+import type { ExternalOption } from '@flex-development/mkbuild'
 import type { ResolveModuleOptions } from '@flex-development/mlly'
 
 /**
@@ -54,6 +55,13 @@ interface ResolveOptions extends Omit<ResolveModuleOptions, Skip> {
   extensions?: Set<string> | string[] | null | undefined
 
   /**
+   * External module marker.
+   *
+   * @see {@linkcode ExternalOption}
+   */
+  external?: ExternalOption | null | undefined
+
+  /**
    * List of legacy `main` fields.
    *
    * > 👉 **Note**: Should be sorted by priority.
@@ -61,6 +69,21 @@ interface ResolveOptions extends Omit<ResolveModuleOptions, Skip> {
    * @default mlly.defaultMainFields
    */
   mainFields?: Set<string> | string[] | null | undefined
+
+  /**
+   * Convert absolute external paths to relative paths.
+   *
+   * > 👉 **Note**: This does not only apply to paths that are absolute in the
+   * > source code, but also to paths that are **resolved to an absolute path by
+   * > either a plugin or Rollup core**.
+   *
+   * @default 'ifRelativeSource'
+   */
+  makeAbsoluteExternalsRelative?:
+    | 'ifRelativeSource'
+    | boolean
+    | null
+    | undefined
 }
 
 export type { ResolveOptions as default, Skip }

@@ -52,7 +52,8 @@ import {
   type NormalizedOutputOptions,
   type OutputOptions,
   type PluginContext,
-  type RollupBuild
+  type RollupBuild,
+  type RollupCache
 } from 'rollup'
 import { createMerger } from 'smob'
 
@@ -62,8 +63,6 @@ import { createMerger } from 'smob'
  * @see {@linkcode FileSystem}
  * @see {@linkcode RunnableTask}
  * @see {@linkcode Task}
- *
- * @todo bundle mode support
  *
  * @category
  *  utils
@@ -94,6 +93,13 @@ function runnableTask(
     format: { badge: false },
     reporters: new FancyReporter()
   })
+
+  /**
+   * Rollup cache.
+   *
+   * @var {RollupCache | undefined} cache
+   */
+  let cache: RollupCache | undefined
 
   /**
    * Entry points.
@@ -144,8 +150,10 @@ function runnableTask(
   ): Promise<undefined> {
     ok(fs, 'expected `fs`')
     ok(task, 'expected `task`')
+    ok(typeof task.bundle === 'boolean', 'expected `task.bundle`')
     ok(typeof task.root === 'string', 'expected `task.root`')
 
+    options.bundle = task.bundle
     options.fs = fs as FileSystem
     options.pkg = pkg
     options.root = task.root
@@ -188,6 +196,7 @@ function runnableTask(
     ok(typeof task.root === 'string', 'expected `task.root`')
     ok(Array.isArray(options.plugins), 'expected `options.plugins`')
 
+    const { cacheExpiry, logSideEffects, perf } = task.experimental ?? {}
     plugins = []
 
     task.dts ??= Object.keys({ ...pkg.devDependencies }).includes('typescript')
@@ -212,12 +221,17 @@ function runnableTask(
       ...options.plugins,
       task.plugins,
       resolve({ ...task.resolve }),
-      task.esbuild !== false && esbuild({
-        ...task.esbuild,
-        format: task.format,
-        sourceRoot: task.sourcemapBaseUrl,
-        sourcesContent: !task.sourcemapExcludeSources
-      }),
+      task.esbuild !== false &&
+        task.format !== 'system' &&
+        task.format !== 'umd' &&
+        esbuild({
+          ...task.esbuild,
+          format: task.format,
+          globalName: task.globalName,
+          sourceRoot: task.sourcemapBaseUrl,
+          sourcesContent: !task.sourcemapExcludeSources,
+          treeShaking: !!task.bundle && task.treeshake !== false
+        }),
       task.dts && dts({ only: task.dts === 'only', path: task.typescriptPath }),
       metadata(),
       clean(),
@@ -225,7 +239,13 @@ function runnableTask(
     )
 
     return {
-      cache: false,
+      cache,
+      context: typeof task.moduleContext !== 'string'
+        ? undefined
+        : task.moduleContext,
+      experimentalCacheExpiry: cacheExpiry ?? 10,
+      experimentalLogSideEffects: logSideEffects ?? false,
+      external: task.bundle && task.resolve?.external || undefined,
       input,
       jsx: false,
       logLevel: ({
@@ -237,13 +257,20 @@ function runnableTask(
         verbose: 'debug',
         warn: 'warn'
       } as Record<LogLevelOption | LogType, LogLevelOption>)[task.logLevel],
-      makeAbsoluteExternalsRelative: undefined,
+      makeAbsoluteExternalsRelative:
+        task.resolve?.makeAbsoluteExternalsRelative ?? 'ifRelativeSource',
       maxParallelFileOps: task.maxParallelFileOps ?? 20,
+      moduleContext: typeof task.moduleContext !== 'string'
+        ? task.moduleContext ?? undefined
+        : undefined,
       onLog: createOnLog(messages, logger),
-      perf: task.experimental?.perf ?? undefined,
+      perf: perf ?? undefined,
       plugins,
+      preserveEntrySignatures: task.preserveEntrySignatures ?? 'exports-only',
       preserveSymlinks: task.resolve?.preserveSymlinks ?? false,
+      shimMissingExports: task.shimMissingExports ?? false,
       strictDeprecations: task.strictDeprecations,
+      treeshake: task.treeshake ?? true,
       watch: false
     }
   }
@@ -281,6 +308,8 @@ function runnableTask(
     ok(task, 'expected `task`')
     ok(typeof task.format === 'string', 'expected `task.format`')
     ok(typeof task.outdir === 'string', 'expected `task.outdir`')
+    ok(typeof task.root === 'string', 'expected `task.root`')
+    ok(pathe.isAbsolute(task.root), 'expected `task.root` to be absolute')
 
     task.assetFileNames ??= 'assets/[name][extname]'
     task.clean ??= true
@@ -294,12 +323,32 @@ function runnableTask(
     return {
       assetFileNames: task.assetFileNames,
       banner: task.banner ?? undefined,
+      compact: task.compact ?? false,
       dir: task.outdir,
+      dynamicImportInCjs: task.dynamicImportInCjs ?? true,
       entryFileNames: createEntryFileNames(task),
+      esModule: task.esModule ?? 'if-default-prop',
+      experimentalMinChunkSize: task.experimental?.minChunkSize ?? 1,
+      exports: task.exports ?? 'auto',
+      extend: task.globalExtend ?? false,
+      externalImportAttributes: task.externalImportAttributes ?? true,
+      externalLiveBindings: task.externalLiveBindings ?? true,
       footer: task.footer ?? undefined,
       format: task.format,
+      freeze: task.freeze ?? true,
+      generatedCode: task.generatedCode ?? 'es5',
       hashCharacters: task.hashCharacters ?? 'base64',
-      preserveModules: true,
+      hoistTransitiveImports: task.hoistTransitiveImports ?? true,
+      importAttributesKey: task.importAttributesKey ?? 'with',
+      indent: task.indent ?? true,
+      inlineDynamicImports: task.inlineDynamicImports ?? false,
+      interop: task.interop ?? 'default',
+      minifyInternalExports: task.minifyInternalExports ?? undefined,
+      name: task.globalName ?? undefined,
+      noConflict: task.noConflict ?? false,
+      preserveModules: !task.bundle,
+      preserveModulesRoot: task.root.slice(1),
+      reexportProtoFromExternal: task.reexportProtoFromExternal ?? true,
       sanitizeFileName: task.sanitizeFileName,
       sourcemap: task.sourcemap ?? undefined,
       sourcemapBaseUrl: ifelse(
@@ -310,6 +359,8 @@ function runnableTask(
       sourcemapExcludeSources: task.sourcemapExcludeSources!,
       sourcemapIgnoreList: task.sourcemapIgnoreList ?? undefined,
       sourcemapPathTransform: task.sourcemapPathTransform ?? undefined,
+      strict: task.strict ?? true,
+      systemNullSetters: task.systemNullSetters ?? true,
       validate: task.validate ?? undefined,
       virtualDirname: task.virtualDirname ?? undefined
     }
@@ -324,20 +375,25 @@ function runnableTask(
    *
    * @param {NormalizedOutputOptions} output
    *  Normalized output options
+   * @param {NormalizedInputOptions} input
+   *  Normalized input options
    * @return {undefined}
    */
   function renderStart(
     this: PluginContext,
-    output: NormalizedOutputOptions
+    output: NormalizedOutputOptions,
+    input: NormalizedInputOptions
   ): undefined {
-    ok(fs, 'expected `fs`')
+    ok(input.fs, 'expected `input.fs`')
     ok(task, 'expected `task`')
+    ok(typeof input.bundle === 'boolean', 'expected `input.bundle`')
     ok(typeof task.clean === 'boolean', 'expected `task.clean`')
     ok(typeof task.root === 'string', 'expected `task.root`')
     ok(typeof task.write === 'boolean', 'expected `task.write`')
 
     output.clean = task.clean
-    output.fs = fs as FileSystem
+    output.bundle = input.bundle
+    output.fs = input.fs
     output.root = task.root
     output.write = task.write
 
@@ -356,6 +412,7 @@ function runnableTask(
     ok(fs, 'expected `fs`')
     ok(task, 'expected `task`')
 
+    task.bundle = !!task.bundle
     task.root = toPath(task.root ?? pathe.cwd())
     task.root = withTrailingSlash(pathe.resolve(task.root))
 
@@ -371,6 +428,7 @@ function runnableTask(
      * @const {Result} result
      */
     const result: Result = Object.defineProperties({
+      bundle: task.bundle,
       failure: null,
       format: '' as unknown as Format,
       logger,
@@ -431,6 +489,9 @@ function runnableTask(
           }
         ]
       })
+
+      // store cache
+      cache = build.cache
 
       // generate rollup build outputs and add outputs to build result
       result.outputs = (await build.generate({})).output.sort(outputCompare)

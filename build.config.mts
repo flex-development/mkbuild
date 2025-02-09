@@ -4,7 +4,7 @@
  */
 
 import { defineBuildConfig, type Config } from '@flex-development/mkbuild'
-import tsconfig from './tsconfig.build.json' assert { type: 'json' }
+import tsconfig from './tsconfig.build.json' with { type: 'json' }
 
 /**
  * Build configuration.

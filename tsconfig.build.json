@@ -15,6 +15,7 @@
   "extends": "./tsconfig.json",
   "files": [
     "typings/@flex-development/fst-util-from-fs/index.d.mts",
+    "typings/esbuild/index.d.ts",
     "typings/rollup/index.d.ts",
     "typings/typescript/lib.es5.d.ts"
   ],

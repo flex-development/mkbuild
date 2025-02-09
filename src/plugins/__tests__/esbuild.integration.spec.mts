@@ -27,7 +27,7 @@ describe('integration:plugins/esbuild', () => {
   ]>([
     [
       {
-        esbuild: { tsconfigRaw: {} },
+        esbuild: { drop: Object.freeze([]), dropLabels: null, tsconfigRaw: {} },
         input: ['*'],
         logLevel: 'silent',
         root: '__fixtures__/pkg/browser-usage',
@@ -81,6 +81,7 @@ describe('integration:plugins/esbuild', () => {
           logOverride: {
             'unsupported-dynamic-import': 'warning'
           },
+          pure: new Set(),
           target: ['node18', tsconfig.compilerOptions.target]
         },
         input: [

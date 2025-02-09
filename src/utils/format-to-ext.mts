@@ -31,6 +31,8 @@ function formatToExt(this: void, format: Format): Ext {
     case 'esm':
       return '.mjs'
     case 'iife':
+    case 'system':
+    case 'umd':
       return '.js'
   }
 }

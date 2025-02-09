@@ -17,10 +17,13 @@ import type { SerializedTimings } from 'rollup'
 
 /**
  * Build task result.
- *
- * @todo `bundle`
  */
 interface Result {
+  /**
+   * Bundle mode enabled?
+   */
+  bundle: boolean
+
   /**
    * Build failure.
    *

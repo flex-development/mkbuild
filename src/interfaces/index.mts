@@ -11,8 +11,12 @@ export type {
 } from '#interfaces/experimental-options'
 export type { default as Failure } from '#interfaces/failure'
 export type { default as FileSystem } from '#interfaces/file-system'
+export type { default as InputMap } from '#interfaces/input-map'
 export type { default as Message } from '#interfaces/message'
 export type { default as MessageLocation } from '#interfaces/message-location'
+export type {
+  default as ModuleContextMap
+} from '#interfaces/module-context-map'
 export type { default as OutputAsset } from '#interfaces/output-asset'
 export type { default as OutputChunk } from '#interfaces/output-chunk'
 export type { default as Report } from '#interfaces/report'

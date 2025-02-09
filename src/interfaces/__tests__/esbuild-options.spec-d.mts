@@ -24,22 +24,28 @@ describe('unit-d:interfaces/EsbuildOptions', () => {
       .toEqualTypeOf<Nilable<{ [key: string]: string }>>()
   })
 
-  it('should match [drop?: Drop[] | null | undefined]', () => {
+  it('should match [drop?: Set<Drop> | readonly Drop[] | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('drop')
-      .toEqualTypeOf<Nilable<Drop[]>>()
+      .toEqualTypeOf<Nilable<Set<Drop> | readonly Drop[]>>()
   })
 
-  it('should match [dropLabels?: string[] | null | undefined]', () => {
+  it('should match [dropLabels?: Set<string> | readonly string[] | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('dropLabels')
-      .toEqualTypeOf<Nilable<string[]>>()
+      .toEqualTypeOf<Nilable<Set<string> | readonly string[]>>()
   })
 
   it('should match [exclude?: FilterPattern | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('exclude')
       .toEqualTypeOf<Nilable<FilterPattern>>()
+  })
+
+  it('should match [ignoreAnnotations?: boolean | null | undefined]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('ignoreAnnotations')
+      .toEqualTypeOf<Nilable<boolean>>()
   })
 
   it('should match [include?: FilterPattern | null | undefined]', () => {
@@ -150,6 +156,12 @@ describe('unit-d:interfaces/EsbuildOptions', () => {
       .toEqualTypeOf<Nilable<Platform>>()
   })
 
+  it('should match [pure?: Set<string> | readonly string[] | null | undefined]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('pure')
+      .toEqualTypeOf<Nilable<Set<string> | readonly string[]>>()
+  })
+
   it('should match [reserveProps?: RegExp | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('reserveProps')
@@ -162,10 +174,10 @@ describe('unit-d:interfaces/EsbuildOptions', () => {
       .toEqualTypeOf<Nilable<Record<string, boolean>>>()
   })
 
-  it('should match [target?: Set<string> | string[] | string | null | undefined]', () => {
+  it('should match [target?: Set<string> | readonly string[] | string | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('target')
-      .toEqualTypeOf<Nilable<Set<string> | string[] | string>>()
+      .toEqualTypeOf<Nilable<Set<string> | readonly string[] | string>>()
   })
 
   it('should match [tsconfigRaw?: Tsconfig | string | null | undefined]', () => {

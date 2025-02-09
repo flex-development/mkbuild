@@ -6,6 +6,6 @@
 /**
  * Union of output file formats.
  */
-type Format = 'cjs' | 'esm' | 'iife'
+type Format = 'cjs' | 'esm' | 'iife' | 'system' | 'umd'
 
 export type { Format as default }

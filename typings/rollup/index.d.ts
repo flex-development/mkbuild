@@ -8,6 +8,7 @@ import type { Tsconfig } from '@flex-development/tsconfig-types'
 
 declare module 'rollup' {
   interface NormalizedInputOptions {
+    bundle: boolean
     fs: FileSystem
     pkg: PackageJson
     root: string
@@ -15,6 +16,7 @@ declare module 'rollup' {
   }
 
   interface NormalizedOutputOptions {
+    bundle: boolean
     clean: boolean
     fs: FileSystem
     root: string

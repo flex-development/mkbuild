@@ -5,16 +5,13 @@
 
 import formatEsbuildMessage from '#internal/format-esbuild-message'
 import type WithUndefined from '#types/with-undefined'
-import type {
-  EsbuildOptions,
-  Format
-} from '@flex-development/mkbuild'
+import type { EsbuildOptions } from '@flex-development/mkbuild'
 import pathe from '@flex-development/pathe'
 import { ifelse, isNIL } from '@flex-development/tutils'
 import { createFilter } from '@rollup/pluginutils'
 import { ok } from 'devlop'
 import type * as Esbuild from 'esbuild'
-import type { Loader, LogLevel, TransformOptions, TsconfigRaw } from 'esbuild'
+import type { Format, Loader, LogLevel, TsconfigRaw } from 'esbuild'
 import type {
   MinimalPluginContext,
   ModuleInfo,
@@ -62,6 +59,13 @@ export default plugin
  */
 interface Options extends EsbuildOptions {
   /**
+   * Name of the global variable used to store the exports from the entry point.
+   *
+   * @see https://esbuild.github.io/api/#global-name
+   */
+  globalName?: string | null | undefined
+
+  /**
    * Module format.
    *
    * @see {@linkcode Format}
@@ -84,6 +88,13 @@ interface Options extends EsbuildOptions {
    * @see https://esbuild.github.io/api/#sources-content
    */
   sourcesContent?: boolean | null | undefined
+
+  /**
+   * Whether to apply treeshaking.
+   *
+   * @see https://esbuild.github.io/api/#tree-shaking
+   */
+  treeShaking: boolean
 }
 
 /**
@@ -249,11 +260,6 @@ function plugin(this: void, opts: Options): Plugin {
    *
    * @see https://rollupjs.org/plugin-development/#transform
    *
-   * @todo `globalName`
-   * @todo `ignoreAnnotations`
-   * @todo `pure`
-   * @todo `treeShaking`
-   *
    * @this {TransformPluginContext}
    *
    * @param {string} code
@@ -330,8 +336,6 @@ function plugin(this: void, opts: Options): Plugin {
         loader = 'empty'
       }
 
-      const { transform } = esbuild ??= await import('esbuild')
-
       /**
        * Log level overrides.
        *
@@ -346,14 +350,20 @@ function plugin(this: void, opts: Options): Plugin {
         map,
         legalComments,
         mangleCache,
-        warnings
-      } = await transform(code, {
+        warnings: messages
+      } = await (esbuild ??= await import('esbuild')).transform(code, {
         charset: opts.charset ?? undefined,
         color: false,
         define: opts.define ?? undefined,
-        drop: opts.drop ?? undefined,
-        dropLabels: opts.dropLabels ?? undefined,
+        drop: typeof opts.drop === 'object'
+          ? [...new Set(opts.drop)]
+          : opts.drop,
+        dropLabels: typeof opts.dropLabels === 'object'
+          ? [...new Set(opts.dropLabels)]
+          : opts.dropLabels,
         format: opts.format,
+        globalName: opts.globalName ?? undefined,
+        ignoreAnnotations: opts.ignoreAnnotations ?? undefined,
         jsx: opts.jsx ?? undefined,
         jsxDev: opts.jsxDev ?? undefined,
         jsxFactory: opts.jsxFactory ?? undefined,
@@ -380,6 +390,9 @@ function plugin(this: void, opts: Options): Plugin {
         minifySyntax: opts.minifySyntax ?? undefined,
         minifyWhitespace: opts.minifyWhitespace ?? undefined,
         platform: opts.platform ?? undefined,
+        pure: typeof opts.pure === 'object'
+          ? [...new Set(opts.pure)]
+          : opts.pure,
         reserveProps: opts.reserveProps ?? undefined,
         sourceRoot: ifelse(
           isNIL(opts.sourceRoot),
@@ -397,10 +410,11 @@ function plugin(this: void, opts: Options): Plugin {
         target: typeof opts.target === 'object'
           ? [...new Set(opts.target)]
           : opts.target,
+        treeShaking: opts.treeShaking,
         tsconfigRaw: opts.tsconfigRaw ?? tsconfigRaw
-      } as TransformOptions)
+      })
 
-      for (const message of warnings) {
+      for (const message of messages) {
         /**
          * Message formatted as rollup log.
          *
@@ -422,7 +436,7 @@ function plugin(this: void, opts: Options): Plugin {
         ast,
         code: typeof ast === 'object' ? code : transformed,
         map,
-        meta: { legalComments, mangleCache, warnings }
+        meta: { legalComments, mangleCache, messages }
       }
     }
 

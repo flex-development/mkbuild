@@ -9,7 +9,9 @@ describe('unit:utils/formatToExt', () => {
   it.each<Parameters<typeof testSubject>>([
     ['cjs'],
     ['esm'],
-    ['iife']
+    ['iife'],
+    ['system'],
+    ['umd']
   ])('should return file extension for `format` (%j)', format => {
     expect(testSubject(format)).toMatchSnapshot()
   })

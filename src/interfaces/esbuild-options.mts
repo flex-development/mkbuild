@@ -13,11 +13,6 @@ import type { Charset, Drop, Loader, LogLevel, Platform } from 'esbuild'
  * Options passed to the [esbuild transform api][esbuild-transform].
  *
  * [esbuild-transform]: https://esbuild.github.io/api/#transform
- *
- * @todo `globalName`
- * @todo `ignoreAnnotations`
- * @todo `pure`
- * @todo `treeShaking`
  */
 interface EsbuildOptions {
   /**
@@ -43,14 +38,14 @@ interface EsbuildOptions {
    * @see https://esbuild.github.io/api/#drop
    * @see {@linkcode Drop}
    */
-  drop?: Drop[] | null | undefined
+  drop?: Set<Drop> | readonly Drop[] | null | undefined
 
   /**
    * Remove labeled statements with specific label names.
    *
    * @see https://esbuild.github.io/api/#drop-labels
    */
-  dropLabels?: string[] | null | undefined
+  dropLabels?: Set<string> | readonly string[] | null | undefined
 
   /**
    * Patterns matching modules to exclude from transformation.
@@ -58,6 +53,13 @@ interface EsbuildOptions {
    * @see {@linkcode FilterPattern}
    */
   exclude?: FilterPattern | null | undefined
+
+  /**
+   * Ignore side-effect annotations.
+   *
+   * @see https://esbuild.github.io/api/#ignore-annotations
+   */
+  ignoreAnnotations?: boolean | null | undefined
 
   /**
    * Patterns matching modules to transform.
@@ -211,6 +213,14 @@ interface EsbuildOptions {
   platform?: Platform | null | undefined
 
   /**
+   * Emit pure comments before `new` or call expressions to show that the
+   * expression can be removed if the resulting value is unused.
+   *
+   * @see https://esbuild.github.io/api/#pure
+   */
+  pure?: Set<string> | readonly string[] | null | undefined
+
+  /**
    * Regular expression matching properties to exclude from mangling.
    *
    * @see https://esbuild.github.io/api/#reserve-props
@@ -230,7 +240,7 @@ interface EsbuildOptions {
    *
    * @see https://esbuild.github.io/api/#target
    */
-  target?: Set<string> | string[] | string | null | undefined
+  target?: Set<string> | readonly string[] | string | null | undefined
 
   /**
    * Raw tsconfig.

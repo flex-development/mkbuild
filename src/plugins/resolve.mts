@@ -4,7 +4,6 @@
  */
 
 import VIRTUAL_MODULE_RE from '#internal/virtual-module-re'
-import type WithUndefined from '#types/with-undefined'
 import { isBuiltin } from '@flex-development/is-builtin'
 import type {
   ResolveIdOptions,
@@ -14,7 +13,6 @@ import {
   isRelativeSpecifier,
   resolveAlias,
   resolveModule,
-  toRelativeSpecifier,
   type ResolveModuleOptions
 } from '@flex-development/mlly'
 import pathe from '@flex-development/pathe'
@@ -59,8 +57,6 @@ interface Api extends ResolveModuleOptions {
 /**
  * Create a module resolver plugin.
  *
- * @todo `makeAbsoluteExternalsRelative` support (?)
- *
  * @internal
  *
  * @see {@linkcode Api}
@@ -85,6 +81,13 @@ function plugin(
    */
   const api: Api = { ...options } as Api
 
+  /**
+   * Bundle mode enabled?
+   *
+   * @var {boolean} bundle
+   */
+  let bundle: boolean = false
+
   return {
     api,
     buildStart,
@@ -105,6 +108,7 @@ function plugin(
     this: PluginContext,
     options: NormalizedInputOptions
   ): undefined {
+    ok(typeof options.bundle === 'boolean', 'expected `bundle`')
     ok(typeof options.root === 'string', 'expected `root`')
 
     api.cwd = pathe.pathToFileURL(options.root)
@@ -120,6 +124,8 @@ function plugin(
     ]
 
     api.fs = options.fs
+
+    bundle = options.bundle
 
     return void this
   }
@@ -139,7 +145,7 @@ function plugin(
    * @param {string} id
    *  The module specifier to resolve
    * @param {string | undefined} importer
-   *  The parent module path
+   *  Path to importing (parent) module
    * @param {ResolveIdOptions} options
    *  Hook options
    * @return {Promise<PartialResolvedId | undefined>}
@@ -155,12 +161,12 @@ function plugin(
     /**
      * Resolve result.
      *
-     * @var {WithUndefined<PartialResolvedId> | undefined} resolved
+     * @var {PartialResolvedId | undefined} resolved
      */
-    let resolved: WithUndefined<PartialResolvedId> | undefined
+    let resolved: PartialResolvedId | undefined
 
     if (!VIRTUAL_MODULE_RE.test(id)) {
-      ok(api.cwd, 'expected `api.cwd`')
+      ok(pathe.isURL(api.cwd), 'expected `api.cwd`')
 
       /**
        * URL of parent module.
@@ -172,13 +178,14 @@ function plugin(
       if (isBuiltin(id)) {
         resolved = {
           external: true,
-          id: String(await resolveModule(id, parent))
+          id: String(await resolveModule(id, parent)),
+          resolvedBy: PLUGIN_NAME
         }
       } else {
         /**
          * Specifier of aliased module.
          *
-         * @const {string | null} url
+         * @const {string | null} aliased
          */
         const aliased: string | null = resolveAlias(id, {
           ...api,
@@ -186,23 +193,21 @@ function plugin(
           parent
         })
 
-        // reset `id` if path alias match was found
-        id = aliased ?? id
+        resolved = { id: aliased ?? id, resolvedBy: PLUGIN_NAME }
 
-        /**
-         * URL of resolved module.
-         *
-         * @const {URL} url
-         */
-        const url: URL = await resolveModule(id, parent, api)
-
-        resolved = {
-          external: !options.isEntry,
-          id: isRelativeSpecifier(id) ? toRelativeSpecifier(url, parent) : id
+        if (bundle || isRelativeSpecifier(resolved.id)) {
+          resolved.id = pathe.fileURLToPath(await resolveModule(
+            resolved.id,
+            parent,
+            api
+          ))
+        } else {
+          // `resolved.id` is an absolute or bare specifier
+          resolved.external = !options.isEntry
         }
       }
     }
 
-    return resolved as PartialResolvedId
+    return resolved
   }
 }

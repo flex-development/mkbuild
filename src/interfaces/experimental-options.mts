@@ -7,8 +7,37 @@ import type { Result } from '@flex-development/mkbuild'
 
 /**
  * Experimental options.
+ *
+ * @see https://rollupjs.org/configuration-options/#experimental-options
  */
 interface ExperimentalOptions {
+  /**
+   * After how many runs cached assets that are no longer used by plugins should
+   * be removed.
+   *
+   * @default 10
+   */
+  cacheExpiry?: number | null | undefined
+
+  /**
+   * Log the first side effect found in every file to the console. This can
+   * be very helpful to figure which files have side effects and what the actual
+   * side effects are. Removing side effects can improve tree-shaking and chunk
+   * generation and is crucial to make {@linkcode minChunkSize} work.
+   *
+   * @default false
+   */
+  logSideEffects?: boolean | null | undefined
+
+  /**
+   * Minimal chunk size target (in bytes) for code-splitting setups.
+   *
+   * @see https://rollupjs.org/configuration-options/#output-experimentalminchunksize
+   *
+   * @default 1
+   */
+  minChunkSize?: number | null | undefined
+
   /**
    * Whether to collect performance timings.
    *

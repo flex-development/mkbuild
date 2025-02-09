@@ -17,6 +17,12 @@ import type { Nilable } from '@flex-development/tutils'
 import type { SerializedTimings } from 'rollup'
 
 describe('unit-d:interfaces/Result', () => {
+  it('should match [bundle: boolean]', () => {
+    expectTypeOf<TestSubject>()
+      .toHaveProperty('bundle')
+      .toEqualTypeOf<boolean>()
+  })
+
   it('should match [failure?: Failure | null | undefined]', () => {
     expectTypeOf<TestSubject>()
       .toHaveProperty('failure')

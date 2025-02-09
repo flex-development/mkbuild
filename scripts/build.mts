@@ -14,5 +14,5 @@ import config from '../build.config.mts'
 const report: Report = await make({ ...config, write: true })
 
 for (const result of report.builds) {
-  if (result.failure) console.error(result.failure)
+  if (result.failure) result.logger.fail(result.failure)
 }
