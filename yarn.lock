@@ -1514,7 +1514,7 @@ __metadata:
     "@flex-development/unist-util-types": "npm:1.6.1"
     "@flex-development/vfile-location": "npm:1.1.0"
     "@rollup/pluginutils": "npm:5.1.4"
-    "@stylistic/eslint-plugin": "npm:2.10.0"
+    "@stylistic/eslint-plugin": "npm:3.1.0"
     "@tsconfig/strictest": "npm:2.0.5"
     "@types/chai": "npm:5.0.1"
     "@types/chai-string": "npm:1.4.5"
@@ -2467,18 +2467,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin@npm:2.10.0":
-  version: 2.10.0
-  resolution: "@stylistic/eslint-plugin@npm:2.10.0"
+"@stylistic/eslint-plugin@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@stylistic/eslint-plugin@npm:3.1.0"
   dependencies:
-    "@typescript-eslint/utils": "npm:^8.12.2"
+    "@typescript-eslint/utils": "npm:^8.13.0"
     eslint-visitor-keys: "npm:^4.2.0"
     espree: "npm:^10.3.0"
     estraverse: "npm:^5.3.0"
     picomatch: "npm:^4.0.2"
   peerDependencies:
     eslint: ">=8.40.0"
-  checksum: 10/8a1efc154cd9405e3708058d409cc2839e7225315e024746c5c9f5791ee12babee507e2a6123f85594b3924fa700ea5a2be9578df6d5bfbbfb78cae4caa52f7c
+  checksum: 10/1fc20b0294168df7c35e3b1f74628c42f34116a93bb9b4599d26abca175fa90f04bde26489b30a04fca436db8ed281ff95a97869065399058b5a34a00a679316
   languageName: node
   linkType: hard
 
@@ -2899,7 +2899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.23.0, @typescript-eslint/utils@npm:^8.12.2":
+"@typescript-eslint/utils@npm:8.23.0, @typescript-eslint/utils@npm:^8.13.0":
   version: 8.23.0
   resolution: "@typescript-eslint/utils@npm:8.23.0"
   dependencies:
