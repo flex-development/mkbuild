@@ -1550,7 +1550,7 @@ __metadata:
     envinfo: "npm:7.14.0"
     esbuild: "npm:0.24.2"
     eslint: "npm:9.20.1"
-    eslint-import-resolver-typescript: "npm:3.7.0"
+    eslint-import-resolver-typescript: "npm:3.8.2"
     eslint-mdx: "npm:3.1.5"
     eslint-plugin-chai-expect: "npm:3.1.0"
     eslint-plugin-import: "npm:2.31.0"
@@ -4856,18 +4856,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:3.7.0":
-  version: 3.7.0
-  resolution: "eslint-import-resolver-typescript@npm:3.7.0"
+"eslint-import-resolver-typescript@npm:3.8.2":
+  version: 3.8.2
+  resolution: "eslint-import-resolver-typescript@npm:3.8.2"
   dependencies:
     "@nolyfill/is-core-module": "npm:1.0.39"
     debug: "npm:^4.3.7"
     enhanced-resolve: "npm:^5.15.0"
-    fast-glob: "npm:^3.3.2"
-    get-tsconfig: "npm:^4.7.5"
+    get-tsconfig: "npm:^4.10.0"
     is-bun-module: "npm:^1.0.2"
-    is-glob: "npm:^4.0.3"
     stable-hash: "npm:^0.0.4"
+    tinyglobby: "npm:^0.2.11"
   peerDependencies:
     eslint: "*"
     eslint-plugin-import: "*"
@@ -4877,7 +4876,7 @@ __metadata:
       optional: true
     eslint-plugin-import-x:
       optional: true
-  checksum: 10/8158730c11e562c56ed9bf7236dc75bce35b6992dc32c39ac2f4177ab77fca97b95999850204a6458054243607b54aee88c028a61fed4184f24f425fa1afff01
+  checksum: 10/7d556db1026fd73ce4e86d7308e46300916fda83abcc68812ad5f61eca853f55ee05f09f586143e705ddc93e0c41d36875b6d49f7f0c0ed5c9ae0e04a4c918e2
   languageName: node
   linkType: hard
 
@@ -5429,6 +5428,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fdir@npm:^6.4.3":
+  version: 6.4.3
+  resolution: "fdir@npm:6.4.3"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 10/8e6d20f4590dc168de1374a9cadaa37e20ca6e0b822aa247c230e7ea1d9e9674a68cd816146435e4ecc98f9285091462ab7e5e56eebc9510931a1794e4db68b2
+  languageName: node
+  linkType: hard
+
 "fflate@npm:^0.8.2":
   version: 0.8.2
   resolution: "fflate@npm:0.8.2"
@@ -5701,7 +5712,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.7.5, get-tsconfig@npm:^4.8.1":
+"get-tsconfig@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "get-tsconfig@npm:4.10.0"
+  dependencies:
+    resolve-pkg-maps: "npm:^1.0.0"
+  checksum: 10/5259b5c99a1957114337d9d0603b4a305ec9e29fa6cac7d2fbf634ba6754a0cc88bfd281a02416ce64e604b637d3cb239185381a79a5842b17fb55c097b38c4b
+  languageName: node
+  linkType: hard
+
+"get-tsconfig@npm:^4.8.1":
   version: 4.8.1
   resolution: "get-tsconfig@npm:4.8.1"
   dependencies:
@@ -10709,6 +10729,16 @@ __metadata:
     fdir: "npm:^6.4.2"
     picomatch: "npm:^4.0.2"
   checksum: 10/10c976866d849702edc47fc3fef27d63f074c40f75ef17171ecc1452967900699fa1e62373681dd58e673ddff2e3f6094bcd0a2101e3e4b30f4c2b9da41397f2
+  languageName: node
+  linkType: hard
+
+"tinyglobby@npm:^0.2.11":
+  version: 0.2.12
+  resolution: "tinyglobby@npm:0.2.12"
+  dependencies:
+    fdir: "npm:^6.4.3"
+    picomatch: "npm:^4.0.2"
+  checksum: 10/4ad28701fa9118b32ef0e27f409e0a6c5741e8b02286d50425c1f6f71e6d6c6ded9dd5bbbbb714784b08623c4ec4d150151f1d3d996cfabe0495f908ab4f7002
   languageName: node
   linkType: hard
 
